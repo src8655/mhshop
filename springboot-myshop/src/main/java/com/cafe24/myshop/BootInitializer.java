@@ -1,4 +1,4 @@
-package com.cafe24.mysite;
+package com.cafe24.myshop;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

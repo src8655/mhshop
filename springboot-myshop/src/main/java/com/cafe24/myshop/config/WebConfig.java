@@ -1,4 +1,4 @@
-package com.cafe24.mysite.config;
+package com.cafe24.myshop.config;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

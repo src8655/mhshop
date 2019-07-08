@@ -1,4 +1,4 @@
-package com.cafe24.mysite.controller.api;
+package com.cafe24.myshop.controller.api;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.cafe24.mysite;
+package com.cafe24.myshop;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.cafe24.mysite.controller.api")).paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.cafe24.myshop.controller.api")).paths(PathSelectors.any())
 				.build().useDefaultResponseMessages(false)
 				.globalResponseMessage(RequestMethod.GET, getArrayList());
 	}
