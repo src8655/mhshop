@@ -3,6 +3,8 @@ package com.cafe24.mhshop.controller.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.websocket.Session;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,8 @@ public class HelloController {
 			) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("Name", names);
+		
+		
 		return map;
 	}
 }
