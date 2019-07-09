@@ -3,7 +3,7 @@ package com.cafe24.mhshop.vo;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class MemberVo {
-	private String member_id;
+	private String id;
 	private String password;
 	private String name;
 	private String phone;
@@ -12,11 +12,12 @@ public class MemberVo {
 	private String addr;
 	private String regDate;
 	private String role;
-	public String getMember_id() {
-		return member_id;
+	
+	public String getId() {
+		return id;
 	}
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getPassword() {
 		return password;

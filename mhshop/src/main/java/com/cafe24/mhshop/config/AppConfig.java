@@ -11,7 +11,7 @@ import com.cafe24.config.web.SwaggerConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan({"com.cafe24.mysite.service","com.cafe24.mysite.repository"})
+@ComponentScan({"com.cafe24.mhshop.service.impl","com.cafe24.mhshop.repository.impl"})
 @Import({DBConfig.class, MybatisConfig.class})
 public class AppConfig {
 
