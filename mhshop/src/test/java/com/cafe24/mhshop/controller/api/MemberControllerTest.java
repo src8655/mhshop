@@ -91,7 +91,7 @@ public class MemberControllerTest {
 				.param("id", "test_id")
 				.param("password", "test_password")
 				.param("name", "test_name")
-				.param("phones", "010-0000-0000")
+				.param("phone", "010-0000-0000")
 				.param("email", "test_email")
 				.param("zipcode", "test_zipcode")
 				.param("addr", "test_addr")
@@ -108,7 +108,7 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.data.memberVo.id", is("test_id")))
 		.andExpect(jsonPath("$.data.memberVo.password", is("test_password")))
 		.andExpect(jsonPath("$.data.memberVo.name", is("test_name")))
-		.andExpect(jsonPath("$.data.memberVo.phones", is("010-0000-0000")))
+		.andExpect(jsonPath("$.data.memberVo.phone", is("010-0000-0000")))
 		.andExpect(jsonPath("$.data.memberVo.email", is("test_email")))
 		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode")))
 		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr")))
@@ -155,24 +155,22 @@ public class MemberControllerTest {
 	public void testFLogin() throws Exception {
 
 		ResultActions resultActions = mockMvc.perform(post("/api/member/login")
-				.param("member_id", "test_id")
+				.param("id", "test_id")
 				.param("password", "test_password")
 				.contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
 		// 결과가 성공햇는지
-		// 로그인 성공 여부
 		// 로그인된 정보
 		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
 		
 		.andExpect(jsonPath("$.data.memberVo.id", is("test_id")))
 		.andExpect(jsonPath("$.data.memberVo.password", is("test_password")))
 		.andExpect(jsonPath("$.data.memberVo.name", is("test_name")))
-		.andExpect(jsonPath("$.data.memberVo.phones", is("010-0000-0000")))
+		.andExpect(jsonPath("$.data.memberVo.phone", is("010-0000-0000")))
 		.andExpect(jsonPath("$.data.memberVo.email", is("test_email")))
 		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode")))
 		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr")))
@@ -190,12 +188,10 @@ public class MemberControllerTest {
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
-		// 로그아웃 성공 여부
 		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
 		.andExpect(jsonPath("$.data.redirect", is("/")));
 		
 	}

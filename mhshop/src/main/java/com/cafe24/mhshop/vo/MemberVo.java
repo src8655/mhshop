@@ -3,6 +3,14 @@ package com.cafe24.mhshop.vo;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class MemberVo {
+	// 정규식 
+	// (시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하)
+	public static final String REGX_ID = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$";
+	public static final String REGX_EMAIL = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+	// (최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함)
+	public static final String REGX_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
+
+	
 	private String id;
 	private String password;
 	private String name;

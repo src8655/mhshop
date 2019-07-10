@@ -2,7 +2,9 @@ package com.cafe24.mhshop.controller.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +61,9 @@ public class MemberController {
 		
 		
 		// Service에 요청
+		boolean isExist = memberService.idCheck(id);
 		
-		return JSONResult.success(false);
+		return JSONResult.success(isExist);
 	}
 	
 	
@@ -71,43 +74,30 @@ public class MemberController {
 		@ApiImplicitParam(name = "phone", value = "연락처", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "regDate", value = "", paramType = "", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "role", value = "", paramType = "", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	@ApiOperation(value = "회원을 DB에 등록", notes = "회원등록 API")
-	public Map<String, Object> join(
-			@RequestParam(value = "id", required = true, defaultValue = "") String id,
-			@RequestParam(value = "password", required = true, defaultValue = "") String password,
-			@RequestParam(value = "name", required = true, defaultValue = "") String name,
-			@RequestParam(value = "phone", required = true, defaultValue = "") String phone,
-			@RequestParam(value = "email", required = true, defaultValue = "") String email,
-			@RequestParam(value = "zipcode", required = true, defaultValue = "") String zipcode,
-			@RequestParam(value = "addr", required = true, defaultValue = "") String addr
-			
+	public JSONResult join(
+			@ModelAttribute MemberVo memberVo
 			) {
 		
 		// 유효성검사
+		//if(Pattern.matches(MemberVo.REGX_ID, memberVo.getId())) return JSONResult.fail("잘못된 아이디 형식 입니다.");
+		//if(Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword())) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
 		
-		
-		// @ModelAttribute로 처리
-		MemberVo mvo = new MemberVo();
-		mvo.setId(id);
-		mvo.setPassword(password);
-		mvo.setName(name);
-		mvo.setPhone(phone);
-		mvo.setEmail(email);
-		mvo.setZipcode(zipcode);
-		mvo.setAddr(addr);
 		
 		// Service에 등록
+		MemberVo newMemberVo = memberService.add(memberVo);
 		
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
-		map.put("message", null);
-		map.put("data", mvo);
-		
-		return map;
+		// JSON 리턴 생성
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("memberVo", newMemberVo);
+		dataMap.put("redirect", "/join_result");
+		return JSONResult.success(dataMap);
 	}
 	
 	
@@ -146,49 +136,46 @@ public class MemberController {
 	})
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 로그인", notes = "회원 로그인 API")
-	public Map<String, Object> login(
+	public JSONResult login(
 			@RequestParam(value = "id", required = true, defaultValue = "") String id,
-			@RequestParam(value = "password", required = true, defaultValue = "") String password
+			@RequestParam(value = "password", required = true, defaultValue = "") String password,
+			HttpSession session
 			) {
 		
 		// 유효성검사
 		
 		
-		// @ModelAttribute로 처리
-		MemberVo mvo = new MemberVo();
-		mvo.setId(id);
-		mvo.setPassword(password);
-		
 		// Service로 회원 확인
+		MemberVo newMemberVo = memberService.login(id, password);
 		
 		
 		// 확인 후 로그인
+		if(newMemberVo != null) {
+			session.setAttribute("authUser", newMemberVo);
+		}
 		
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
-		map.put("message", null);
-		map.put("data", mvo);
-		
-		return map;
+		// JSON 리턴 생성
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("memberVo", newMemberVo);
+		dataMap.put("redirect", "/");
+		return JSONResult.success(dataMap);
 	}
 	
 	
 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 로그아웃", notes = "회원 로그아웃 API")
-	public Map<String, Object> logout() {
-		
+	public JSONResult logout(HttpSession session) {
 		
 		
 		// 로그아웃 처리
+		session.setAttribute("authUser", null);
 		
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", "success");
-		map.put("message", null);
-		map.put("data", "main/index");
-		
-		return map;
+		// JSON 리턴 생성
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("redirect", "/");
+		return JSONResult.success(dataMap);
 	}
 }
