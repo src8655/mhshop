@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// 회원등록
 	@Override
-	public MemberVo add(MemberVo memberVo) {
+	public Boolean add(MemberVo memberVo) {
 		
 		memberVo.setRole("USER");
 		
@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
 		// DAO에 요청
 		
 		
-		return memberVo;
+		return true;
 	}
 
 

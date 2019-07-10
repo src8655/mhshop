@@ -12,4 +12,14 @@ public class ItemServiceImpl implements ItemService {
 	@Autowired
 	ItemDao itemDao;
 
+	
+	// 카테고리번호에 해당하는 아이템이 있는지?
+	@Override
+	public boolean hasItemByCategory(Long categoryNo) {
+		
+		// DAO에 요청
+		
+		return false;
+	}
+
 }

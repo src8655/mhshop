@@ -1,4 +1,4 @@
-package com.cafe24.mhshop.securiry;
+package com.cafe24.mhshop.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

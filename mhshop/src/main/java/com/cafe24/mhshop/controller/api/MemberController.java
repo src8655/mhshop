@@ -98,13 +98,13 @@ public class MemberController {
 		
 		
 		// Service에 등록
-		MemberVo newMemberVo = memberService.add(memberVo);
+		boolean isSuccess = memberService.add(memberVo);
 		
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("memberVo", newMemberVo);
-		dataMap.put("redirect", "/join_result");
+		dataMap.put("result", isSuccess);
+		dataMap.put("redirect", "/api/member/join_result");
 		return JSONResult.success(dataMap);
 	}
 	
