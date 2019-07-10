@@ -49,9 +49,9 @@ public class MemberServiceImpl implements MemberService {
 		MemberVo memberVo = new MemberVo();
 		memberVo.setId(id);
 		memberVo.setPassword(password);
-		memberVo.setName("test_name");
-		memberVo.setPhone("010-0000-0000");
-		memberVo.setEmail("test_email");
+		memberVo.setName("test");
+		memberVo.setPhone("01000000000");
+		memberVo.setEmail("test_email@naver.com");
 		memberVo.setZipcode("test_zipcode");
 		memberVo.setAddr("test_addr");
 		memberVo.setRole("USER");

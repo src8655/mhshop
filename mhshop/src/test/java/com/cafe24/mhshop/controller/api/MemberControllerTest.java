@@ -89,10 +89,10 @@ public class MemberControllerTest {
 		
 		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id")
-				.param("password", "test_password")
-				.param("name", "test_name")
-				.param("phone", "010-0000-0000")
-				.param("email", "test_email")
+				.param("password", "testpassword1!")
+				.param("name", "test")
+				.param("phone", "01000000000")
+				.param("email", "test_email@naver.com")
 				.param("zipcode", "test_zipcode")
 				.param("addr", "test_addr")
 				.contentType(MediaType.APPLICATION_JSON));
@@ -106,10 +106,9 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.result", is("success")))
 		
 		.andExpect(jsonPath("$.data.memberVo.id", is("test_id")))
-		.andExpect(jsonPath("$.data.memberVo.password", is("test_password")))
-		.andExpect(jsonPath("$.data.memberVo.name", is("test_name")))
-		.andExpect(jsonPath("$.data.memberVo.phone", is("010-0000-0000")))
-		.andExpect(jsonPath("$.data.memberVo.email", is("test_email")))
+		.andExpect(jsonPath("$.data.memberVo.name", is("test")))
+		.andExpect(jsonPath("$.data.memberVo.phone", is("01000000000")))
+		.andExpect(jsonPath("$.data.memberVo.email", is("test_email@naver.com")))
 		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode")))
 		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr")))
 		.andExpect(jsonPath("$.data.memberVo.role", is("USER")))
@@ -156,7 +155,7 @@ public class MemberControllerTest {
 
 		ResultActions resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "test_id")
-				.param("password", "test_password")
+				.param("password", "testpassword1!")
 				.contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
@@ -168,10 +167,9 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.result", is("success")))
 		
 		.andExpect(jsonPath("$.data.memberVo.id", is("test_id")))
-		.andExpect(jsonPath("$.data.memberVo.password", is("test_password")))
-		.andExpect(jsonPath("$.data.memberVo.name", is("test_name")))
-		.andExpect(jsonPath("$.data.memberVo.phone", is("010-0000-0000")))
-		.andExpect(jsonPath("$.data.memberVo.email", is("test_email")))
+		.andExpect(jsonPath("$.data.memberVo.name", is("test")))
+		.andExpect(jsonPath("$.data.memberVo.phone", is("01000000000")))
+		.andExpect(jsonPath("$.data.memberVo.email", is("test_email@naver.com")))
 		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode")))
 		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr")))
 		.andExpect(jsonPath("$.data.memberVo.role", is("USER")))

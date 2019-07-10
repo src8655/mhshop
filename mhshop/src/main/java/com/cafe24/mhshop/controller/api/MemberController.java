@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,7 +59,8 @@ public class MemberController {
 			@PathVariable(value = "id") String id
 			) {
 		
-		// Service에 유효성검사
+		// 유효성검사
+		if(!Pattern.matches(MemberVo.REGX_ID, id)) return JSONResult.fail("잘못된 아이디 형식 입니다.");
 		
 		
 		// Service에 요청
@@ -75,18 +78,23 @@ public class MemberController {
 		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "regDate", value = "", paramType = "", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "role", value = "", paramType = "", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	@ApiOperation(value = "회원을 DB에 등록", notes = "회원등록 API")
 	public JSONResult join(
-			@ModelAttribute MemberVo memberVo
+			@ModelAttribute @Valid MemberVo memberVo,
+			BindingResult result
 			) {
 		
 		// 유효성검사
-		//if(Pattern.matches(MemberVo.REGX_ID, memberVo.getId())) return JSONResult.fail("잘못된 아이디 형식 입니다.");
-		//if(Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword())) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_ID, memberVo.getId())) return JSONResult.fail("잘못된 아이디 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword())) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_PHONE, memberVo.getPhone())) return JSONResult.fail("잘못된 연락처 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_EMAIL, memberVo.getEmail())) return JSONResult.fail("잘못된 이메일 형식 입니다.");
+		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
 		
 		
 		// Service에 등록
@@ -143,6 +151,8 @@ public class MemberController {
 			) {
 		
 		// 유효성검사
+		if(!Pattern.matches(MemberVo.REGX_ID, id)) return JSONResult.fail("잘못된 아이디 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_PASSWORD, password)) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
 		
 		
 		// Service로 회원 확인
