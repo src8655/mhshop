@@ -22,7 +22,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
-import com.cafe24.mhshop.service.MemberService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,20 +33,11 @@ public class MemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
-	@Autowired
-	private MemberService memberService;
-	
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		// db초기화
-	}
-	
-	@Test
-	public void testDIMemberService() {
-		// DI를 잘 받는지 테스트
-		assertNotNull(memberService);
 	}
 	
 	// 회원가입 컨트롤러 테스트
