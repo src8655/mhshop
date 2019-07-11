@@ -6,6 +6,16 @@ public class OptionVo {
 	private Long optionDetailNo1;
 	private Long optionDetailNo2;
 	private int cnt;
+	
+
+	public OptionVo() {}
+	public OptionVo(Long no, Long itemNo, Long optionDetailNo1, Long optionDetailNo2, int cnt) {
+		this.no = no;
+		this.itemNo = itemNo;
+		this.optionDetailNo1 = optionDetailNo1;
+		this.optionDetailNo2 = optionDetailNo2;
+		this.cnt = cnt;
+	}
 	public Long getNo() {
 		return no;
 	}

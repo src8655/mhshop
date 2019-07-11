@@ -1,15 +1,32 @@
 package com.cafe24.mhshop.vo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ItemVo {
 	private Long no;
+	@NotEmpty
 	private String name;
 	private String description;
-	private String money;
+	private Long money;
+	@NotEmpty
 	private String thumbnail;
 	private String display;
 	private Long categoryNo;
 	
 	private String categoryName;
+
+	public ItemVo() {}
+	public ItemVo(Long no, String name, String description, Long money, String thumbnail, String display,
+			Long categoryNo, String categoryName) {
+		this.no = no;
+		this.name = name;
+		this.description = description;
+		this.money = money;
+		this.thumbnail = thumbnail;
+		this.display = display;
+		this.categoryNo = categoryNo;
+		this.categoryName = categoryName;
+	}
 
 	public Long getNo() {
 		return no;
@@ -35,11 +52,11 @@ public class ItemVo {
 		this.description = description;
 	}
 
-	public String getMoney() {
+	public Long getMoney() {
 		return money;
 	}
 
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 

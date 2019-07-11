@@ -53,16 +53,36 @@ public class AdminCategoryControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 
-		// DB 테이블 초기화
+		// DB category, item 테이블 초기화
 		// DB 테스트용 데이터 insert
 
-		// insert1
+		// category insert1
 		// ("no", 1)
 		// ("name", "test_category1")
 		
-		// insert2
+		// category insert2
 		// ("no", 2)
 		// ("name", "test_category2")
+		
+		
+		
+		// item insert1
+		// ("no", 1)
+		// ("name", "test_item1")
+		// ("description", "test_description1")
+		// ("money", 10000)
+		// ("thumbnail", "test_thumbnail1")
+		// ("display", "FALSE")
+		// ("category_no", 1)
+		
+		// item insert2
+		// ("no", 2)
+		// ("name", "test_item2")
+		// ("description", "test_description2")
+		// ("money", 20000)
+		// ("thumbnail", "test_thumbnail2")
+		// ("display", "FALSE")
+		// ("category_no", 1)
 	}
 	
 	
@@ -183,9 +203,12 @@ public class AdminCategoryControllerTest {
 	// 관리자 카테고리 삭제
 	@Test
 	public void testECategoryDelete() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(delete("/api/admincategory/delete")
-				.param("no", "1")
+		
+		// 삭제 성공하는 경우
+		resultActions = mockMvc.perform(delete("/api/admincategory/delete")
+				.param("no", "2")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -199,6 +222,20 @@ public class AdminCategoryControllerTest {
 		.andExpect(jsonPath("$.data.result", is(true)))
 		
 		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		
+		
+		
+
+		// 카테고리에 속한 아이템이 존재하여 실패하는 경우
+		resultActions = mockMvc.perform(delete("/api/admincategory/delete")
+				.param("no", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("fail"))).andDo(print());
 		
 	}
 	

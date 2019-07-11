@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	// 카테고리 리스트 조회
 	@Override
-	public List<CategoryVo> get() {
+	public List<CategoryVo> getList() {
 		
 		// DAO에 요청
 		
@@ -72,6 +72,22 @@ public class CategoryServiceImpl implements CategoryService {
 		// DAO에 요청
 		
 		return true;
+	}
+
+
+
+	// 카테고리 No로 존재하는지 확인
+	@Override
+	public boolean isExistByNo(Long categoryNo) {
+		
+		// DAO에 요청
+		
+		
+		// 가짜 존재 확인
+		List<CategoryVo> categoryTable = getCategoryTable();
+		for(CategoryVo vo : categoryTable) if(vo.getNo() == categoryNo) return true;
+		
+		return false;
 	}
 
 

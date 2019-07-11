@@ -89,7 +89,7 @@ public class AdminCategoryController {
 	public JSONResult list() {
 		
 		// Service에 카테고리리스트 요청
-		List<CategoryVo> list = categoryService.get();
+		List<CategoryVo> list = categoryService.getList();
 		
 		
 		// JSON 리턴 생성

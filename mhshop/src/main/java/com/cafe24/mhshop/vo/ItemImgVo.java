@@ -4,6 +4,14 @@ public class ItemImgVo {
 	private Long no;
 	private Long itemNo;
 	private String itemImg;
+	
+	public ItemImgVo() {}
+	public ItemImgVo(Long no, Long itemNo, String itemImg) {
+		this.no = no;
+		this.itemNo = itemNo;
+		this.itemImg = itemImg;
+	}
+	
 	public Long getNo() {
 		return no;
 	}
