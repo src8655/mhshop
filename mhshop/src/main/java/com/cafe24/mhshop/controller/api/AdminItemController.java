@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -79,7 +80,7 @@ public class AdminItemController {
 	
 	
 
-	@RequestMapping(value = "/write_form", method = RequestMethod.GET)
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	@ApiOperation(value = "[관리자 상품 작성 페이지]", notes = "관리자 상품 작성 페이지 API")
 	public JSONResult write_form() {
 		
@@ -142,12 +143,12 @@ public class AdminItemController {
 	
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/item/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 DB에 삭제", notes = "관리자 상품 DB에 삭제 API")
 	public JSONResult delete(
-			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 권한 확인
@@ -176,12 +177,12 @@ public class AdminItemController {
 	
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit_form", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
 	@ApiOperation(value = "[관리자 상품 수정 페이지]", notes = "관리자 상품 수정 페이지 API")
 	public JSONResult edit_form(
-			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 권한 확인
@@ -303,7 +304,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "itemImg", value = "상품이미지", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/additemimg", method = RequestMethod.POST)
+	@RequestMapping(value = "/itemimg", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에 저장", notes = "관리자 상품 이미지를 DB에 저장 API")
 	public JSONResult additemimg(
 			@RequestParam(value = "itemNo", required = true, defaultValue = "-1") Long itemNo,
@@ -330,7 +331,7 @@ public class AdminItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "상품이미지번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/deleteitemimg", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/itemimg", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에서 삭제", notes = "관리자 상품 이미지를 DB에서 삭제 API")
 	public JSONResult deleteitemimg(
 			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no
@@ -360,7 +361,7 @@ public class AdminItemController {
 		
 		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/addoptiondetail", method = RequestMethod.POST)
+	@RequestMapping(value = "/optiondetail", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 상세옵션 추가", notes = "관리자 상품 상세옵션 추가 API")
 	public JSONResult addoptiondetail(
 			@ModelAttribute @Valid OptionDetailVo optionDetailVo,
@@ -391,7 +392,7 @@ public class AdminItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "상세옵션번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/deleteoptiondetail", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/optiondetail", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 상세옵션 삭제", notes = "관리자 상품 상세옵션 삭제 API")
 	public JSONResult deleteoptiondetail(
 			@RequestParam(value = "no", required = true, defaultValue = "") Long no
@@ -426,7 +427,7 @@ public class AdminItemController {
 		
 		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/addoption", method = RequestMethod.POST)
+	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 옵션 추가", notes = "관리자 상품 옵션 추가 API")
 	public JSONResult addoption(
 			@ModelAttribute OptionVo optionVo
@@ -454,7 +455,7 @@ public class AdminItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/deleteoption", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/option", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 옵션 삭제", notes = "관리자 상품 옵션 삭제 API")
 	public JSONResult addoption(
 			@RequestParam(value = "no", required = true, defaultValue = "") Long no

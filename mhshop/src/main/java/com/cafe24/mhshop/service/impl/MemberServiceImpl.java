@@ -73,12 +73,52 @@ public class MemberServiceImpl implements MemberService {
 
 		// 가짜
 		MemberVo memberVo = null;
-		for(MemberVo vo : memberTable) {
+		for(MemberVo vo : memberTable)
 			if(vo.getId().equals(id) && vo.getPassword().equals(password)) memberVo = vo;
-		}
 		
 		
 		return memberVo;
+	}
+
+
+	// 회원 리스트
+	@Override
+	public List<MemberVo> getList() {
+
+		
+		// DAO에 요청
+		
+
+		// 가짜
+		return getMemberTable();
+	}
+
+
+	// 아이디로 회원조회
+	@Override
+	public MemberVo getById(String id) {
+		// 가짜DB
+		List<MemberVo> memberTable = getMemberTable();
+		
+		
+		// DAO에 요청
+		
+
+		// 가짜
+		for(MemberVo vo : memberTable) if(vo.getId().equals(id)) return vo;
+		return null;
+	}
+
+
+	// 회원삭제
+	@Override
+	public boolean delete(String id) {
+
+		
+		// DAO에 요청
+		
+		
+		return true;
 	}
 	
 	

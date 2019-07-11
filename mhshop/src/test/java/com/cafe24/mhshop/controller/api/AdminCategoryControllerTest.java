@@ -56,33 +56,14 @@ public class AdminCategoryControllerTest {
 		// DB category, item 테이블 초기화
 		// DB 테스트용 데이터 insert
 
-		// category insert1
-		// ("no", 1)
-		// ("name", "test_category1")
-		
-		// category insert2
-		// ("no", 2)
-		// ("name", "test_category2")
+		// category insert
+		// insert into category(no, name) values(1, 'test_category1')
+		// insert into category(no, name) values(2, 'test_category2')
 		
 		
-		
-		// item insert1
-		// ("no", 1)
-		// ("name", "test_item1")
-		// ("description", "test_description1")
-		// ("money", 10000)
-		// ("thumbnail", "test_thumbnail1")
-		// ("display", "FALSE")
-		// ("category_no", 1)
-		
-		// item insert2
-		// ("no", 2)
-		// ("name", "test_item2")
-		// ("description", "test_description2")
-		// ("money", 20000)
-		// ("thumbnail", "test_thumbnail2")
-		// ("display", "FALSE")
-		// ("category_no", 1)
+		// item insert
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 2)
 	}
 	
 	
@@ -90,7 +71,7 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testACategoryWriteForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admincategory/write_form").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/admincategory/write").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -179,9 +160,7 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testDCategoryEdit() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(put("/api/admincategory/edit")
-				.param("no", "1")
-				.param("name", "test_category")
+		ResultActions resultActions = mockMvc.perform(put("/api/admincategory/{no}/{name}", "1", "test_category")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -207,8 +186,7 @@ public class AdminCategoryControllerTest {
 		
 		
 		// 삭제 성공하는 경우
-		resultActions = mockMvc.perform(delete("/api/admincategory/delete")
-				.param("no", "2")
+		resultActions = mockMvc.perform(delete("/api/admincategory/{no}", 2L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -227,8 +205,7 @@ public class AdminCategoryControllerTest {
 		
 
 		// 카테고리에 속한 아이템이 존재하여 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/admincategory/delete")
-				.param("no", "1")
+		resultActions = mockMvc.perform(delete("/api/admincategory/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지

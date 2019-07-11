@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +41,7 @@ public class AdminCategoryController {
 	
 	
 	@Auth(role=Auth.Role.ADMIN)
-	@RequestMapping(value = "/write_form", method = RequestMethod.GET)
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	@ApiOperation(value = "[관리자 카테고리 작성 페이지]", notes = "관리자 카테고리 작성 페이지 API")
 	public JSONResult write_form() {
 		
@@ -55,8 +56,9 @@ public class AdminCategoryController {
 
 	@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 카테고리를 DB에 등록", notes = "관리자 카테고리 등록 API")
@@ -103,13 +105,13 @@ public class AdminCategoryController {
 
 	@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{no}/{name}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 수정", notes = "관리자 카테고리 수정 API")
 	public JSONResult edit(
-			@ModelAttribute CategoryVo categoryVo,
+			@ModelAttribute @Valid CategoryVo categoryVo,
 			BindingResult result
 			) {
 		
@@ -133,12 +135,12 @@ public class AdminCategoryController {
 
 	@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 삭제", notes = "관리자 카테고리 삭제 API")
 	public JSONResult delete(
-			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 유효성검사

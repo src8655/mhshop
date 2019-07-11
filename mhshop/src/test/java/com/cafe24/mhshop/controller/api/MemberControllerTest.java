@@ -53,28 +53,10 @@ public class MemberControllerTest {
 		// DB Member 테이블 초기화
 		// DB 테스트용 데이터 insert
 		
-		// insert1
-		// ("id", "test_id1")
-		// ("password", "testpassword1!")
-		// ("name", "test1")
-		// ("phone", "01000000001")
-		// ("email", "test_email1@naver.com")
-		// ("zipcode", "test_zipcode1")
-		// ("addr", "test_addr1")
-		// ("regDate", "2019-07-11")
-		// ("role", "USER")
-		
+		// member insert
+		// insert into member(id, password, name, phone, email, zipcode, addr, regDate, role) values('test_id1', 'testpassword1!', 'test1', '01000000001', 'test_email1@naver.com', 'test_zipcode1', 'test_addr1', '2019-07-11', 'USER')
+		// insert into member(id, password, name, phone, email, zipcode, addr, regDate, role) values('test_id2', 'testpassword2!', 'test2', '01000000002', 'test_email2@naver.com', 'test_zipcode2', 'test_addr2', '2019-07-11', 'ADMIN')
 
-		// insert2
-		// ("id", "test_id2")
-		// ("password", "testpassword2!")
-		// ("name", "test2")
-		// ("phone", "01000000002")
-		// ("email", "test_email2@naver.com")
-		// ("zipcode", "test_zipcode2")
-		// ("addr", "test_addr2")
-		// ("regDate", "2019-07-11")
-		// ("role", "ADMIN")
 	}
 	
 	
@@ -83,7 +65,7 @@ public class MemberControllerTest {
 	@Test
 	public void testAJoinForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/join_form").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/member/join").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -102,7 +84,7 @@ public class MemberControllerTest {
 		ResultActions resultActions;
 		
 		// 중복된 아이디 상황
-		resultActions = mockMvc.perform(get("/api/member/join_idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -115,7 +97,7 @@ public class MemberControllerTest {
 		
 		
 		// 사용가능한 아이디 상황
-		resultActions = mockMvc.perform(get("/api/member/join_idcheck/{id}", "test_id3").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id3").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -175,7 +157,7 @@ public class MemberControllerTest {
 	@Test
 	public void testELoginForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/login_form").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/member/login").contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
 		// 결과가 성공햇는지

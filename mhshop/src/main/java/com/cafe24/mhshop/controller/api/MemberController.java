@@ -37,7 +37,7 @@ public class MemberController {
 	MemberService memberService;
 	
 	
-	@RequestMapping(value = "/join_form", method = RequestMethod.GET)
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	@ApiOperation(value = "[회원약관과 회원가입 입력 페이지]", notes = "회원가입 요청 API")
 	public JSONResult join_form() {
 		
@@ -53,7 +53,7 @@ public class MemberController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "id", value = "아이디", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/join_idcheck/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/join/idcheck/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "회원ID 중복여부 확인", notes = "회원ID 중복확인 API")
 	public JSONResult idcheck(
 			@PathVariable(value = "id") String id
@@ -130,7 +130,7 @@ public class MemberController {
 	
 	
 	
-	@RequestMapping(value = "/login_form", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	@ApiOperation(value = "[로그인 페이지]", notes = "로그인 요청 API")
 	@ResponseBody
 	public JSONResult login_form() {

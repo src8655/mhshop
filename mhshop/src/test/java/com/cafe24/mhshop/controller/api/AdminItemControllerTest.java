@@ -55,92 +55,34 @@ public class AdminItemControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 
-		// DB category, item, item_img테이블 초기화
+		// DB 테이블 초기화
 		// DB 테스트용 데이터 insert
 
+		// category insert
+		// insert into category(no, name) values(1, 'test_category1')
+		// insert into category(no, name) values(2, 'test_category2')
 		
 		
-		// category insert1
-		// ("no", 1)
-		// ("name", "test_category1")
-		
-		// category insert2
-		// ("no", 2)
-		// ("name", "test_category2")
+		// item insert
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 2)
 		
 		
-		
-		// item insert1
-		// ("no", 1)
-		// ("name", "test_item1")
-		// ("description", "test_description1")
-		// ("money", 10000)
-		// ("thumbnail", "test_thumbnail1")
-		// ("display", "FALSE")
-		// ("category_no", 1)
-		
-		// item insert2
-		// ("no", 2)
-		// ("name", "test_item2")
-		// ("description", "test_description2")
-		// ("money", 20000)
-		// ("thumbnail", "test_thumbnail2")
-		// ("display", "FALSE")
-		// ("category_no", 1)
+		// itemimg insert
+		// insert into item_img(no, item_no, item_img) values(1, 1, 'test_img1')
+		// insert into item_img(no, item_no, item_img) values(2, 1, 'test_img2')
 		
 		
-		
-		// itemimg insert1
-		// ("no", 1)
-		// ("itemNo", "1")
-		// ("itemImg", "test_img1")
-
-		// itemimg insert2
-		// ("no", 2)
-		// ("itemNo", "1")
-		// ("itemImg", "test_img2")
+		// optiondetail insert
+		// insert into option_detail(no, optionName, level, itemNo) values(1, '파란색', 1, 1)
+		// insert into option_detail(no, optionName, level, itemNo) values(2, 'L', 2, 1)
+		// insert into option_detail(no, optionName, level, itemNo) values(3, 'XL', 2, 1)
+		// insert into option_detail(no, optionName, level, itemNo) values(4, 'XXL', 2, 1)
 		
 		
-
-		// optiondetail insert1
-		// ("no", 1)
-		// ("optionName", "파란색")
-		// ("level", 1)
-		// ("itemNo", 1)
-
-		// optiondetail insert2
-		// ("no", 2)
-		// ("optionName", "L")
-		// ("level", 2)
-		// ("itemNo", 1)
-
-		// optiondetail insert3
-		// ("no", 3)
-		// ("optionName", "XL")
-		// ("level", 2)
-		// ("itemNo", 1)
-		
-		// optiondetail insert4
-		// ("no", 4)
-		// ("optionName", "XXL")
-		// ("level", 2)
-		// ("itemNo", 1)
-		
-		
-
-		// option insert1
-		// ("no", 1)
-		// ("itemNo", 1)
-		// ("optionDetail1", 1)
-		// ("optionDetail2", 2)
-		// ("cnt", 10)
-		
-		// option insert2
-		// ("no", 2)
-		// ("itemNo", 1)
-		// ("optionDetail1", 1)
-		// ("optionDetail2", 3)
-		// ("cnt", -1)
+		// option insert
+		// insert into option(no, itemNo, optionDetail1, optionDetail2, cnt) values(1, 1, 1, 2, 10)
+		// insert into option(no, itemNo, optionDetail1, optionDetail2, cnt) values(2, 1, 1, 3, -1)
 		
 	}
 	
@@ -194,7 +136,7 @@ public class AdminItemControllerTest {
 	public void testBItemWriteForm() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/adminitem/write_form").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/adminitem/write").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -268,8 +210,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testDItemDelete() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(delete("/api/adminitem/delete")
-				.param("no", "1")
+		ResultActions resultActions = mockMvc.perform(delete("/api/adminitem/item/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -290,8 +231,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testEItemEditForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/adminitem/edit_form")
-				.param("no", "1")
+		ResultActions resultActions = mockMvc.perform(get("/api/adminitem/edit/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -403,7 +343,7 @@ public class AdminItemControllerTest {
 	public void testHAddItemImg() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(post("/api/adminitem/additemimg")
+		resultActions = mockMvc.perform(post("/api/adminitem/itemimg")
 				.param("itemNo", "1")
 				.param("itemImg", "test_img3")
 				.contentType(MediaType.APPLICATION_JSON));
@@ -428,7 +368,7 @@ public class AdminItemControllerTest {
 	public void testIDeleteItemImg() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(delete("/api/adminitem/deleteitemimg")
+		resultActions = mockMvc.perform(delete("/api/adminitem/itemimg")
 				.param("itemNo", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -451,7 +391,7 @@ public class AdminItemControllerTest {
 	public void testJAddOptionDetail() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(post("/api/adminitem/addoptiondetail")
+		resultActions = mockMvc.perform(post("/api/adminitem/optiondetail")
 				.param("optionName", "초록색")
 				.param("level", "1")
 				.param("itemNo", "1")
@@ -477,7 +417,7 @@ public class AdminItemControllerTest {
 		
 		
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/deleteoptiondetail")
+		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail")
 				.param("no", "4")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -496,7 +436,7 @@ public class AdminItemControllerTest {
 		
 
 		// 상세옵션번호를 가지는 옵션이 존재할 때 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/adminitem/deleteoptiondetail")
+		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail")
 				.param("no", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -523,7 +463,7 @@ public class AdminItemControllerTest {
 
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(post("/api/adminitem/addoption")
+		resultActions = mockMvc.perform(post("/api/adminitem/option")
 				.param("itemNo", "1")
 				.param("optionDetail1", "1")
 				.param("optionDetail2", "4")
@@ -544,7 +484,7 @@ public class AdminItemControllerTest {
 		
 
 		// 수량이 -1 보다 작아서 실패했을 때
-		resultActions = mockMvc.perform(post("/api/adminitem/addoption")
+		resultActions = mockMvc.perform(post("/api/adminitem/option")
 				.param("itemNo", "1")
 				.param("optionDetail1", "1")
 				.param("optionDetail2", "4")
@@ -567,7 +507,7 @@ public class AdminItemControllerTest {
 
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/deleteoption")
+		resultActions = mockMvc.perform(delete("/api/adminitem/option")
 				.param("no", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
