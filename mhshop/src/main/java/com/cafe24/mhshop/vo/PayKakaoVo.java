@@ -5,6 +5,14 @@ public class PayKakaoVo {
 	private String tid;
 	private String aid;
 	private String payDate;
+
+	public PayKakaoVo() {}
+	public PayKakaoVo(String ordersNo, String tid, String aid, String payDate) {
+		this.ordersNo = ordersNo;
+		this.tid = tid;
+		this.aid = aid;
+		this.payDate = payDate;
+	}
 	public String getOrdersNo() {
 		return ordersNo;
 	}

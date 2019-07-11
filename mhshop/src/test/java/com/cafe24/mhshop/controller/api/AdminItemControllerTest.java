@@ -303,8 +303,7 @@ public class AdminItemControllerTest {
 		
 
 		// 성공했을 경우
-		resultActions = mockMvc.perform(put("/api/adminitem/edit_display")
-				.param("no", "1")
+		resultActions = mockMvc.perform(put("/api/adminitem/edit/display/{no}", 1L)
 				.param("display", "TRUE")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -323,8 +322,7 @@ public class AdminItemControllerTest {
 		
 
 		// 옵션이 존재하지 않아서 진열상태로 변경 못하는 경우
-		resultActions = mockMvc.perform(put("/api/adminitem/edit_display")
-				.param("no", "2")
+		resultActions = mockMvc.perform(put("/api/adminitem/edit/display/{no}", 2L)
 				.param("display", "TRUE")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -368,8 +366,7 @@ public class AdminItemControllerTest {
 	public void testIDeleteItemImg() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(delete("/api/adminitem/itemimg")
-				.param("itemNo", "1")
+		resultActions = mockMvc.perform(delete("/api/adminitem/itemimg/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -417,8 +414,7 @@ public class AdminItemControllerTest {
 		
 		
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail")
-				.param("no", "4")
+		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail/{no}", 4L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -436,8 +432,7 @@ public class AdminItemControllerTest {
 		
 
 		// 상세옵션번호를 가지는 옵션이 존재할 때 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail")
-				.param("no", "1")
+		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -507,8 +502,7 @@ public class AdminItemControllerTest {
 
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/option")
-				.param("no", "1")
+		resultActions = mockMvc.perform(delete("/api/adminitem/option/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지

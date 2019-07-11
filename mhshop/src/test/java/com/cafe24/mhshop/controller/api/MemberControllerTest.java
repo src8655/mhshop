@@ -141,7 +141,7 @@ public class MemberControllerTest {
 	@Test
 	public void testDJoinResult() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/join_result").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/member/join/result").contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
 		// 결과가 성공햇는지

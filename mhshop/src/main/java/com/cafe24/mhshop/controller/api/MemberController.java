@@ -116,7 +116,7 @@ public class MemberController {
 	
 	
 	
-	@RequestMapping(value = "/join_result", method = RequestMethod.GET)
+	@RequestMapping(value = "/join/result", method = RequestMethod.GET)
 	@ApiOperation(value = "[회원가입 결과 페이지]", notes = "회원가입 결과 API")
 	@ResponseBody
 	public JSONResult join_result() {

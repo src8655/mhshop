@@ -10,6 +10,20 @@ public class OrdersItemVo {
 	private String itemOptionDetail2;
 	private Long money;
 	private Long cnt;
+
+	public OrdersItemVo() {}
+	public OrdersItemVo(Long no, String ordersNo, Long optionNo, String itemName, String itemThumbnail,
+			String itemOptionDetail1, String itemOptionDetail2, Long money, Long cnt) {
+		this.no = no;
+		this.ordersNo = ordersNo;
+		this.optionNo = optionNo;
+		this.itemName = itemName;
+		this.itemThumbnail = itemThumbnail;
+		this.itemOptionDetail1 = itemOptionDetail1;
+		this.itemOptionDetail2 = itemOptionDetail2;
+		this.money = money;
+		this.cnt = cnt;
+	}
 	public Long getNo() {
 		return no;
 	}

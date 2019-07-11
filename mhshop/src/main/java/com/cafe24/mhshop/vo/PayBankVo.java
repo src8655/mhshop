@@ -5,6 +5,14 @@ public class PayBankVo {
 	private String bankName;
 	private String bankNumber;
 	private String payDate;
+
+	public PayBankVo() {}
+	public PayBankVo(String ordersNo, String bankName, String bankNumber, String payDate) {
+		this.ordersNo = ordersNo;
+		this.bankName = bankName;
+		this.bankNumber = bankNumber;
+		this.payDate = payDate;
+	}
 	public String getOrdersNo() {
 		return ordersNo;
 	}

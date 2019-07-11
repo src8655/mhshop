@@ -1,6 +1,6 @@
 package com.cafe24.mhshop.vo;
 
-public class OrderVo {
+public class OrdersVo {
 	private String ordersNo;
 	private String regDate;
 	private String status;
@@ -12,6 +12,22 @@ public class OrderVo {
 	private String toZipcode;
 	private String toAddr;
 	private String memberId;
+
+	public OrdersVo() {}
+	public OrdersVo(String ordersNo, String regDate, String status, String pay, Long money, String trackingNum,
+			String toName, String toPhone, String toZipcode, String toAddr, String memberId) {
+		this.ordersNo = ordersNo;
+		this.regDate = regDate;
+		this.status = status;
+		this.pay = pay;
+		this.money = money;
+		this.trackingNum = trackingNum;
+		this.toName = toName;
+		this.toPhone = toPhone;
+		this.toZipcode = toZipcode;
+		this.toAddr = toAddr;
+		this.memberId = memberId;
+	}
 	public String getOrdersNo() {
 		return ordersNo;
 	}

@@ -5,6 +5,14 @@ public class GuestVo {
 	private String guestName;
 	private String guestPhone;
 	private String guestPassword;
+
+	public GuestVo() {}
+	public GuestVo(String ordersNo, String guestName, String guestPhone, String guestPassword) {
+		this.ordersNo = ordersNo;
+		this.guestName = guestName;
+		this.guestPhone = guestPhone;
+		this.guestPassword = guestPassword;
+	}
 	public String getOrdersNo() {
 		return ordersNo;
 	}

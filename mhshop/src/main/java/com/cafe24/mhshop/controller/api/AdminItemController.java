@@ -262,13 +262,13 @@ public class AdminItemController {
 	
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "display", value = "상품진열여부", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit_display", method = RequestMethod.PUT)
+	@RequestMapping(value = "/edit/display/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 진열여부 DB에 수정", notes = "관리자 상품 진열여부 DB에 수정 API")
 	public JSONResult edit_display(
-			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no,
+			@PathVariable(value = "no") Long no,
 			@RequestParam(value = "display", required = true, defaultValue = "") String display
 			) {
 		
@@ -329,12 +329,12 @@ public class AdminItemController {
 	
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상품이미지번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "상품이미지번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/itemimg", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/itemimg/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에서 삭제", notes = "관리자 상품 이미지를 DB에서 삭제 API")
 	public JSONResult deleteitemimg(
-			@RequestParam(value = "no", required = true, defaultValue = "-1") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 권한 확인
@@ -390,12 +390,12 @@ public class AdminItemController {
 	
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상세옵션번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "상세옵션번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/optiondetail", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/optiondetail/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 상세옵션 삭제", notes = "관리자 상품 상세옵션 삭제 API")
 	public JSONResult deleteoptiondetail(
-			@RequestParam(value = "no", required = true, defaultValue = "") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 권한 확인
@@ -453,12 +453,12 @@ public class AdminItemController {
 	
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/option", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/option/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 옵션 삭제", notes = "관리자 상품 옵션 삭제 API")
 	public JSONResult addoption(
-			@RequestParam(value = "no", required = true, defaultValue = "") Long no
+			@PathVariable(value = "no") Long no
 			) {
 		
 		// 권한 확인
