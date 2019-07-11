@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.hamcrest.Matchers;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
@@ -48,6 +51,18 @@ public class AdminCategoryControllerTest {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+
+		// DB 테이블 초기화
+		// DB 테스트용 데이터 insert
+
+		// insert1
+		// ("no", 1)
+		// ("name", "test_category1")
+		
+		// insert2
+		// ("no", 2)
+		// ("name", "test_category2")
 	}
 	
 	
@@ -71,9 +86,12 @@ public class AdminCategoryControllerTest {
 	// 관리자 카테고리 등록
 	@Test
 	public void testBCategoryWrite() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(post("/api/admincategory/write")
-				.param("name", "test_category")
+		
+		// 중복된 카테고리인 경우
+		resultActions = mockMvc.perform(post("/api/admincategory/write")
+				.param("name", "test_category1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -84,7 +102,28 @@ public class AdminCategoryControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		
-		.andExpect(jsonPath("$.data.categoryVo.name", is("test_category")))
+		.andExpect(jsonPath("$.data.categoryVo", Matchers.nullValue()))
+		
+		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		
+		
+		
+		
+		// 성공한 경우
+		resultActions = mockMvc.perform(post("/api/admincategory/write")
+				.param("name", "test_category3")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 성공햇는지
+		// 리턴한 카테고리 확인
+		// 리다이렉트할 페이지를 리턴하는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")))
+
+		.andExpect(jsonPath("$.data.categoryVo", Matchers.notNullValue()))
+		.andExpect(jsonPath("$.data.categoryVo.name", is("test_category3")))
 		
 		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
 		
@@ -104,8 +143,11 @@ public class AdminCategoryControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		
-		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category")))
+
+		.andExpect(jsonPath("$.data.categoryList[0].no", is(1)))
+		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data.categoryList[1].no", is(2)))
+		.andExpect(jsonPath("$.data.categoryList[1].name", is("test_category2")))
 		
 		.andExpect(jsonPath("$.data.forward", is("admin/category_list")));
 		

@@ -68,7 +68,7 @@ public class AdminCategoryController {
 		// 유효성검사
 		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
 		
-		// Service에 등록 요청
+		// Service에 등록 요청(이름 중복 시 null)
 		CategoryVo newCategoryVo = categoryService.add(categoryVo);
 		
 		

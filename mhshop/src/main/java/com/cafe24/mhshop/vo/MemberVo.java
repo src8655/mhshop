@@ -27,7 +27,20 @@ public class MemberVo {
 	private String addr;
 	private String regDate;
 	private String role;
-	
+
+	public MemberVo() {}
+	public MemberVo(String id, String password, String name, String phone, String email, String zipcode, String addr,
+			String regDate, String role) {
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.zipcode = zipcode;
+		this.addr = addr;
+		this.regDate = regDate;
+		this.role = role;
+	}
 	public String getId() {
 		return id;
 	}

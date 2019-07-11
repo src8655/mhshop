@@ -6,6 +6,12 @@ public class CategoryVo {
 	private Long no;
 	@Length(min=1, max=20)
 	private String name;
+	
+	public CategoryVo() {}
+	public CategoryVo(Long no, String name) {
+		this.no = no;
+		this.name = name;
+	}
 	public Long getNo() {
 		return no;
 	}

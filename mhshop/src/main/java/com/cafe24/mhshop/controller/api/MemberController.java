@@ -97,6 +97,11 @@ public class MemberController {
 		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
 		
 		
+		// Service에 중복확인 요청
+		boolean isExist = memberService.idCheck(memberVo.getId());
+		if(isExist) return JSONResult.fail("중복된 아이디 입니다.");
+		
+		
 		// Service에 등록
 		boolean isSuccess = memberService.add(memberVo);
 		

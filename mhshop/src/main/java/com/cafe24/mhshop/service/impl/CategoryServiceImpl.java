@@ -15,6 +15,20 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Autowired
 	CategoryDao categoryDao;
+	
+	
+	
+	// 가짜DB
+	private List<CategoryVo> getCategoryTable() {
+		List<CategoryVo> categoryTable = new ArrayList<CategoryVo>();
+		categoryTable.add(new CategoryVo(1L, "test_category1"));
+		categoryTable.add(new CategoryVo(2L, "test_category2"));
+		
+		return categoryTable;
+	}
+	
+	
+	
 
 	// 카테고리 리스트 조회
 	@Override
@@ -22,14 +36,9 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		// DAO에 요청
 		
-		CategoryVo categoryVo = new CategoryVo();
-		categoryVo.setNo(1L);
-		categoryVo.setName("test_category");
 		
-		List<CategoryVo> list = new ArrayList<CategoryVo>();
-		list.add(categoryVo);
-		
-		return list;
+		// 가짜
+		return getCategoryTable();
 	}
 
 	// 카테고리 추가
@@ -38,6 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		
 		// DAO에 요청
+		
+		
+		// 가짜 중복확인
+		List<CategoryVo> categoryTable = getCategoryTable();
+		for(CategoryVo vo : categoryTable) if(vo.getName().equals(categoryVo.getName())) return null;
 		
 		return categoryVo;
 	}
