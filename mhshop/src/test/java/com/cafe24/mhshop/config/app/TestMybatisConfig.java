@@ -1,4 +1,4 @@
-package com.cafe24.config.app;
+package com.cafe24.mhshop.config.app;
 
 import javax.sql.DataSource;
 
@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MybatisConfig {
+public class TestMybatisConfig {
 
 	@Bean
 	public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSource, ApplicationContext applicationContext) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
 		sqlSessionFactory.setDataSource(dataSource);
-		sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:com/cafe24/config/app/mybatis/configuration.xml"));
+		sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:com/cafe24/config/app/mybatis/test_configuration.xml"));
 		return sqlSessionFactory.getObject();
 	}
 	

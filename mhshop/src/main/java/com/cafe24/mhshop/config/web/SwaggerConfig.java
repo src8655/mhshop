@@ -1,4 +1,4 @@
-package com.cafe24.config.web;
+package com.cafe24.mhshop.config.web;
 
 import java.util.ArrayList;
 import java.util.Collections;

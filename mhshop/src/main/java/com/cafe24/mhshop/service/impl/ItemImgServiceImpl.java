@@ -55,7 +55,7 @@ public class ItemImgServiceImpl implements ItemImgService {
 
 	// 상품이미지 추가
 	@Override
-	public boolean add(Long itemNo, String itemImg) {
+	public boolean add(ItemImgVo itemImgVo) {
 
 		// DAO에 요청
 		

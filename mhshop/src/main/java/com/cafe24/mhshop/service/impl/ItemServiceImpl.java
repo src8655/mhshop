@@ -6,17 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cafe24.mhshop.repository.ItemDao;
 import com.cafe24.mhshop.service.ItemService;
 import com.cafe24.mhshop.vo.ItemVo;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 	
-	@Autowired
-	ItemDao itemDao;
-	
-	
+
 	
 	
 	// 가짜DB

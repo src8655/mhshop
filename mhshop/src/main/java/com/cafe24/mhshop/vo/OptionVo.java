@@ -1,15 +1,21 @@
 package com.cafe24.mhshop.vo;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class OptionVo {
 	private Long no;
+	@NotNull
 	private Long itemNo;
 	private Long optionDetailNo1;
 	private Long optionDetailNo2;
-	private int cnt;
+	@NotNull
+	@Min(-1)
+	private Integer cnt;
 	
 
 	public OptionVo() {}
-	public OptionVo(Long no, Long itemNo, Long optionDetailNo1, Long optionDetailNo2, int cnt) {
+	public OptionVo(Long no, Long itemNo, Long optionDetailNo1, Long optionDetailNo2, Integer cnt) {
 		this.no = no;
 		this.itemNo = itemNo;
 		this.optionDetailNo1 = optionDetailNo1;
@@ -40,10 +46,10 @@ public class OptionVo {
 	public void setOptionDetailNo2(Long optionDetailNo2) {
 		this.optionDetailNo2 = optionDetailNo2;
 	}
-	public int getCnt() {
+	public Integer getCnt() {
 		return cnt;
 	}
-	public void setCnt(int cnt) {
+	public void setCnt(Integer cnt) {
 		this.cnt = cnt;
 	}
 

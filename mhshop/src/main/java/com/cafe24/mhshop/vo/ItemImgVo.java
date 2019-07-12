@@ -1,8 +1,14 @@
 package com.cafe24.mhshop.vo;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ItemImgVo {
 	private Long no;
+	@NotNull
 	private Long itemNo;
+	@NotEmpty
 	private String itemImg;
 	
 	public ItemImgVo() {}
