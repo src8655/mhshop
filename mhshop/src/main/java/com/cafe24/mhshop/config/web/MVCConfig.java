@@ -1,4 +1,4 @@
-package com.cafe24.mhshop.config;
+package com.cafe24.mhshop.config.web;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 @Configuration
 @EnableWebMvc
-public class TestMVCConfig extends WebMvcConfigurerAdapter {
+public class MVCConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -39,7 +39,7 @@ public class TestMVCConfig extends WebMvcConfigurerAdapter {
 	//
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		//configurer.enable();
+		configurer.enable();
 	}
 	
 	//

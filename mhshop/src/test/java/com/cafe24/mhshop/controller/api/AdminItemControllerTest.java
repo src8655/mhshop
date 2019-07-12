@@ -30,14 +30,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.AppConfig;
+import com.cafe24.mhshop.config.TestAppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 
 import io.swagger.annotations.ApiImplicitParam;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
+@ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 public class AdminItemControllerTest {
 	private MockMvc mockMvc;
@@ -94,7 +94,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testAItemList() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/adminitem/list").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/list").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -136,7 +136,7 @@ public class AdminItemControllerTest {
 	public void testBItemWriteForm() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/adminitem/write").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/admin/item/write").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -164,7 +164,7 @@ public class AdminItemControllerTest {
 		
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(post("/api/adminitem/write")
+		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "test_item3")
 				.param("description", "test_description2")
 				.param("money", "30000")
@@ -180,12 +180,12 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/item_list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/item_list")));
 		
 		
 
 		// 없는 카테고리로 등록했을 때 실패
-		resultActions = mockMvc.perform(post("/api/adminitem/write")
+		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "test_item3")
 				.param("description", "test_description2")
 				.param("money", "30000")
@@ -210,7 +210,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testDItemDelete() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(delete("/api/adminitem/item/{no}", 1L)
+		ResultActions resultActions = mockMvc.perform(delete("/api/admin/item/item/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -221,7 +221,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/list")));
 		
 	}
 	
@@ -231,7 +231,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testEItemEditForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/adminitem/edit/{no}", 1L)
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/edit/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -272,7 +272,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testFItemEdit() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(put("/api/adminitem/edit")
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
 				.param("no", "1")
 				.param("name", "test_item11")
 				.param("description", "test_description11")
@@ -289,7 +289,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 		
 	}
 	
@@ -303,7 +303,7 @@ public class AdminItemControllerTest {
 		
 
 		// 성공했을 경우
-		resultActions = mockMvc.perform(put("/api/adminitem/edit/display/{no}", 1L)
+		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 1L)
 				.param("display", "TRUE")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -315,14 +315,14 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 		
 		
 		
 		
 
 		// 옵션이 존재하지 않아서 진열상태로 변경 못하는 경우
-		resultActions = mockMvc.perform(put("/api/adminitem/edit/display/{no}", 2L)
+		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
 				.param("display", "TRUE")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -341,7 +341,7 @@ public class AdminItemControllerTest {
 	public void testHAddItemImg() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(post("/api/adminitem/itemimg")
+		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
 				.param("itemNo", "1")
 				.param("itemImg", "test_img3")
 				.contentType(MediaType.APPLICATION_JSON));
@@ -354,7 +354,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 	}
 	
 	
@@ -366,7 +366,7 @@ public class AdminItemControllerTest {
 	public void testIDeleteItemImg() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(delete("/api/adminitem/itemimg/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/itemimg/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -377,7 +377,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 	}
 	
 	
@@ -388,7 +388,7 @@ public class AdminItemControllerTest {
 	public void testJAddOptionDetail() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(post("/api/adminitem/optiondetail")
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
 				.param("optionName", "초록색")
 				.param("level", "1")
 				.param("itemNo", "1")
@@ -402,7 +402,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 	}
 	
 	
@@ -414,7 +414,7 @@ public class AdminItemControllerTest {
 		
 		
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail/{no}", 4L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 4L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -425,14 +425,14 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 		
 		
 		
 		
 
 		// 상세옵션번호를 가지는 옵션이 존재할 때 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/adminitem/optiondetail/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -441,14 +441,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
-	
-	
-	// option insert1
-	// ("no", 1)
-	// ("itemNo", 1)
-	// ("optionDetail1", 1)
-	// ("optionDetail2", 2)
-	// ("cnt", 10)
+
 	
 
 	// 관리자 상품 옵션 추가
@@ -458,7 +451,7 @@ public class AdminItemControllerTest {
 
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(post("/api/adminitem/option")
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
 				.param("itemNo", "1")
 				.param("optionDetail1", "1")
 				.param("optionDetail2", "4")
@@ -473,13 +466,13 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 		
 		
 		
 
 		// 수량이 -1 보다 작아서 실패했을 때
-		resultActions = mockMvc.perform(post("/api/adminitem/option")
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
 				.param("itemNo", "1")
 				.param("optionDetail1", "1")
 				.param("optionDetail2", "4")
@@ -502,7 +495,7 @@ public class AdminItemControllerTest {
 
 
 		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/adminitem/option/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -513,7 +506,7 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/adminitem/edit")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
 	}
 	
 	

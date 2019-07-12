@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController("adminOrdersAPIController")
-@RequestMapping("/api/adminorders")
+@RequestMapping("/api/admin/orders")
 @Api(value = "AdminOrdersController", description = "관리자 주문관리 컨트롤러")
 public class AdminOrdersController {
 	
@@ -151,7 +151,7 @@ public class AdminOrdersController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/adminorders/view");
+		dataMap.put("redirect", "/api/admin/orders/view");
 		return JSONResult.success(dataMap);
 	}
 	
@@ -184,7 +184,7 @@ public class AdminOrdersController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/adminorders/view");
+		dataMap.put("redirect", "/api/admin/orders/view");
 		return JSONResult.success(dataMap);
 	}
 	

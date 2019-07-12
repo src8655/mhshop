@@ -30,12 +30,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.AppConfig;
+import com.cafe24.mhshop.config.TestAppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
+@ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 public class AdminCategoryControllerTest {
 	private MockMvc mockMvc;
@@ -71,7 +71,7 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testACategoryWriteForm() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admincategory/write").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/write").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -91,7 +91,7 @@ public class AdminCategoryControllerTest {
 		
 		
 		// 중복된 카테고리인 경우
-		resultActions = mockMvc.perform(post("/api/admincategory/write")
+		resultActions = mockMvc.perform(post("/api/admin/category/write")
 				.param("name", "test_category1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -105,13 +105,13 @@ public class AdminCategoryControllerTest {
 		
 		.andExpect(jsonPath("$.data.categoryVo", Matchers.nullValue()))
 		
-		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/category/category_list")));
 		
 		
 		
 		
 		// 성공한 경우
-		resultActions = mockMvc.perform(post("/api/admincategory/write")
+		resultActions = mockMvc.perform(post("/api/admin/category/write")
 				.param("name", "test_category3")
 				.contentType(MediaType.APPLICATION_JSON));
 		
@@ -126,7 +126,7 @@ public class AdminCategoryControllerTest {
 		.andExpect(jsonPath("$.data.categoryVo", Matchers.notNullValue()))
 		.andExpect(jsonPath("$.data.categoryVo.name", is("test_category3")))
 		
-		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/category/category_list")));
 		
 	}
 	
@@ -135,7 +135,7 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testCCategoryList() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admincategory/list").contentType(MediaType.APPLICATION_JSON));
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/list").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -160,7 +160,7 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testDCategoryEdit() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(put("/api/admincategory/{no}/{name}", "1", "test_category")
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", "1", "test_category")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -173,7 +173,7 @@ public class AdminCategoryControllerTest {
 
 		.andExpect(jsonPath("$.data.result", is(true)))
 		
-		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/category/category_list")));
 		
 	}
 	
@@ -186,7 +186,7 @@ public class AdminCategoryControllerTest {
 		
 		
 		// 삭제 성공하는 경우
-		resultActions = mockMvc.perform(delete("/api/admincategory/{no}", 2L)
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -199,13 +199,13 @@ public class AdminCategoryControllerTest {
 
 		.andExpect(jsonPath("$.data.result", is(true)))
 		
-		.andExpect(jsonPath("$.data.redirect", is("/api/admincategory/category_list")));
+		.andExpect(jsonPath("$.data.redirect", is("/api/admin/category/category_list")));
 		
 		
 		
 
 		// 카테고리에 속한 아이템이 존재하여 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/admincategory/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지

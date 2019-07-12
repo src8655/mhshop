@@ -14,6 +14,7 @@ public class OrdersVo {
 	private String memberId;
 
 	public OrdersVo() {}
+	
 	public OrdersVo(String ordersNo, String regDate, String status, String pay, Long money, String trackingNum,
 			String toName, String toPhone, String toZipcode, String toAddr, String memberId) {
 		this.ordersNo = ordersNo;
@@ -26,6 +27,13 @@ public class OrdersVo {
 		this.toPhone = toPhone;
 		this.toZipcode = toZipcode;
 		this.toAddr = toAddr;
+		this.memberId = memberId;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
 	public String getOrdersNo() {
@@ -87,12 +95,6 @@ public class OrdersVo {
 	}
 	public void setToAddr(String toAddr) {
 		this.toAddr = toAddr;
-	}
-	public String getMemberId() {
-		return memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.cafe24.config.app;
+package com.cafe24.mhshop.config.app;
 
 import javax.sql.DataSource;
 

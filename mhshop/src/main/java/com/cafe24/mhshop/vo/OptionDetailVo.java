@@ -1,9 +1,20 @@
 package com.cafe24.mhshop.vo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class OptionDetailVo {
 	private Long no;
+	@NotEmpty
 	private String optionName;
+	@NotNull
+	@Min(1)
+	@Max(2)
 	private Long level;
+	@NotNull
 	private Long itemNo;
 	
 

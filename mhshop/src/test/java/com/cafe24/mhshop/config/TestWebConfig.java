@@ -12,8 +12,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.cafe24.config.web.MVCConfig;
-import com.cafe24.config.web.SwaggerConfig;
+import com.cafe24.mhshop.config.web.MVCConfig;
+import com.cafe24.mhshop.config.web.SwaggerConfig;
+import com.cafe24.mhshop.config.web.TestMVCConfig;
 
 @Configuration
 @EnableWebMvc

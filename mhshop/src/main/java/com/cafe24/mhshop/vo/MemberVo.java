@@ -19,6 +19,7 @@ public class MemberVo {
 	@NotEmpty
 	@Length(min=2, max=5)
 	private String name;
+	@NotEmpty
 	private String phone;
 	private String email;
 	@NotEmpty
@@ -27,10 +28,13 @@ public class MemberVo {
 	private String addr;
 	private String regDate;
 	private String role;
+	
+	private String aesKey;
 
 	public MemberVo() {}
+	
 	public MemberVo(String id, String password, String name, String phone, String email, String zipcode, String addr,
-			String regDate, String role) {
+			String regDate, String role, String aesKey) {
 		this.id = id;
 		this.password = password;
 		this.name = name;
@@ -40,6 +44,15 @@ public class MemberVo {
 		this.addr = addr;
 		this.regDate = regDate;
 		this.role = role;
+		this.aesKey = aesKey;
+	}
+
+
+	public String getAesKey() {
+		return aesKey;
+	}
+	public void setAesKey(String aesKey) {
+		this.aesKey = aesKey;
 	}
 	public String getId() {
 		return id;

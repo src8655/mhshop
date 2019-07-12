@@ -88,7 +88,6 @@ public class MemberController {
 			@ModelAttribute @Valid MemberVo memberVo,
 			BindingResult result
 			) {
-		
 		// 유효성검사
 		if(!Pattern.matches(MemberVo.REGX_ID, memberVo.getId())) return JSONResult.fail("잘못된 아이디 형식 입니다.");
 		if(!Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword())) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
@@ -96,10 +95,6 @@ public class MemberController {
 		if(!Pattern.matches(MemberVo.REGX_EMAIL, memberVo.getEmail())) return JSONResult.fail("잘못된 이메일 형식 입니다.");
 		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
 		
-		
-		// Service에 중복확인 요청
-		boolean isExist = memberService.idCheck(memberVo.getId());
-		if(isExist) return JSONResult.fail("중복된 아이디 입니다.");
 		
 		
 		// Service에 등록

@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController("adminMemberAPIController")
-@RequestMapping("/api/adminmember")
+@RequestMapping("/api/admin/member")
 @Api(value = "AdminMemberController", description = "관리자 회원관리 컨트롤러")
 public class AdminMemberController {
 	
@@ -99,7 +99,7 @@ public class AdminMemberController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/adminmember/list");
+		dataMap.put("redirect", "/api/admin/member/list");
 		return JSONResult.success(dataMap);
 	}
 	

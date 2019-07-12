@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.apache.ibatis.session.SqlSession;
 import org.hamcrest.Matchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,12 +29,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.AppConfig;
+import com.cafe24.mhshop.config.TestAppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
+import com.cafe24.mhshop.vo.MemberVo;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
+@ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 public class MemberControllerTest {
 	private MockMvc mockMvc;
@@ -41,10 +43,8 @@ public class MemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
-	@BeforeClass
-	public static void classSetup() {
-		// DB Member 테이블 초기화
-	}
+	@Autowired
+	SqlSession sqlSession;
 	
 	@Before
 	public void setup() {
@@ -54,9 +54,10 @@ public class MemberControllerTest {
 		// DB 테스트용 데이터 insert
 		
 		// member insert
-		// insert into member(id, password, name, phone, email, zipcode, addr, regDate, role) values('test_id1', 'testpassword1!', 'test1', '01000000001', 'test_email1@naver.com', 'test_zipcode1', 'test_addr1', '2019-07-11', 'USER')
-		// insert into member(id, password, name, phone, email, zipcode, addr, regDate, role) values('test_id2', 'testpassword2!', 'test2', '01000000002', 'test_email2@naver.com', 'test_zipcode2', 'test_addr2', '2019-07-11', 'ADMIN')
-
+		sqlSession.delete("test_member.deleteall");
+		sqlSession.insert("test_member.insert", new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key"));
+		sqlSession.insert("test_member.insert", new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN", "mhshop_key"));
+	
 	}
 	
 	
@@ -241,9 +242,11 @@ public class MemberControllerTest {
 	}
 	
 	
-	@AfterClass
-	public static void finish() {
-		// DB Member 테이블 초기화
+	
+	
+	@After
+	public void finish() {
+		sqlSession.delete("test_member.deleteall");
 	}
 	
 	

@@ -16,30 +16,14 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberDao memberDao;
 
-	// 가짜DB
-	private List<MemberVo> getMemberTable() {
-		List<MemberVo> memberTable = new ArrayList<MemberVo>();
-		memberTable.add(new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER"));
-		memberTable.add(new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN"));
-		
-		return memberTable;
-	}
+
 	
 	
 	// 아이디 중복확인
 	@Override
 	public boolean idCheck(String id) {
-
-		// 가짜DB
-		List<MemberVo> memberTable = getMemberTable();
 		
-		
-		// DAO에 요청
-		
-		
-		//가짜
-		int cnt = 0;
-		for(MemberVo vo : memberTable) if(vo.getId().equals(id)) cnt++;
+		int cnt = memberDao.countById(id);
 		if(cnt == 0) return false;
 		else return true;
 	}
@@ -48,14 +32,15 @@ public class MemberServiceImpl implements MemberService {
 	// 회원등록
 	@Override
 	public Boolean add(MemberVo memberVo) {
-		
+
 		memberVo.setRole("USER");
 		
+		// 중복확인
+		int cnt = memberDao.countById(memberVo.getId());
+		if(cnt != 0) return false;
 		
-		// DAO에 요청
-		
-		
-		return true;
+		int result = memberDao.insert(memberVo);
+		return result == 1;
 	}
 
 
@@ -63,20 +48,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVo login(String id, String password) {
 		
-		// 가짜DB
-		List<MemberVo> memberTable = getMemberTable();
-		
-		
-		
-		// DAO에 요청
-		
-
-		// 가짜
-		MemberVo memberVo = null;
-		for(MemberVo vo : memberTable)
-			if(vo.getId().equals(id) && vo.getPassword().equals(password)) memberVo = vo;
-		
-		
+		MemberVo vo = new MemberVo();
+		vo.setId(id);
+		vo.setPassword(password);
+		MemberVo memberVo = memberDao.selectByIdAndPassword(vo);
 		return memberVo;
 	}
 
@@ -84,29 +59,16 @@ public class MemberServiceImpl implements MemberService {
 	// 회원 리스트
 	@Override
 	public List<MemberVo> getList() {
-
 		
-		// DAO에 요청
-		
-
-		// 가짜
-		return getMemberTable();
+		return memberDao.selectList();
 	}
 
 
 	// 아이디로 회원조회
 	@Override
 	public MemberVo getById(String id) {
-		// 가짜DB
-		List<MemberVo> memberTable = getMemberTable();
 		
-		
-		// DAO에 요청
-		
-
-		// 가짜
-		for(MemberVo vo : memberTable) if(vo.getId().equals(id)) return vo;
-		return null;
+		return memberDao.selectOneById(id);
 	}
 
 
@@ -114,12 +76,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean delete(String id) {
 
-		
-		// DAO에 요청
-		
-		
-		return true;
+		int result = memberDao.delete(id);
+		return result == 1;
 	}
-	
+
 	
 }

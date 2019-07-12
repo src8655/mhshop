@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController("adminCategoryAPIController")
-@RequestMapping("/api/admincategory")
+@RequestMapping("/api/admin/category")
 @Api(value = "AdminCategoryController", description = "관리자 카테고리 컨트롤러")
 public class AdminCategoryController {
 
@@ -77,7 +77,7 @@ public class AdminCategoryController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("categoryVo", newCategoryVo);
-		dataMap.put("redirect", "/api/admincategory/category_list");
+		dataMap.put("redirect", "/api/admin/category/category_list");
 		return JSONResult.success(dataMap);
 	}
 	
@@ -126,7 +126,7 @@ public class AdminCategoryController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admincategory/category_list");
+		dataMap.put("redirect", "/api/admin/category/category_list");
 		return JSONResult.success(dataMap);
 	}
 	
@@ -163,7 +163,7 @@ public class AdminCategoryController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admincategory/category_list");
+		dataMap.put("redirect", "/api/admin/category/category_list");
 		return JSONResult.success(dataMap);
 	}
 }
