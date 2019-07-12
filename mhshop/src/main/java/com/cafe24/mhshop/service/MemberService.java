@@ -12,5 +12,6 @@ public interface MemberService {
 	List<MemberVo> getList();					// 회원 리스트
 	MemberVo getById(String id);				// 아이디로 회원조회
 	boolean delete(String id);					// 회원삭제
+	boolean edit(MemberVo memberVo);			// 회원수정
 
 }

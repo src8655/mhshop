@@ -88,6 +88,15 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return (MemberVo)session.selectOne("member.selectonebyno", no);
 	}
+
+
+	// 회원수정
+	@Override
+	public Integer update(MemberVo memberVo) {
+		
+		memberVo.setAesKey(aesKey);
+		return (Integer)session.delete("member.update", memberVo);
+	}
 	
 	
 

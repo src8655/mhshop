@@ -167,6 +167,23 @@ public class MemberDaoTest {
 		
 	}
 	
+
+	// 회원수정
+	@Test
+	public void testGUpdate() throws Exception {
+		
+
+		MemberVo memberVo1 = new MemberVo("test_id3", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key");
+		MemberVo memberVo2 = new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key");
+
+		// 삭제성공
+		assertThat(memberDao.update(memberVo2), is(1));
+		
+		// 삭제실패(없는 id)
+		assertThat(memberDao.update(memberVo1), is(0));
+		
+	}
+	
 	
 	@After
 	public void finish() {

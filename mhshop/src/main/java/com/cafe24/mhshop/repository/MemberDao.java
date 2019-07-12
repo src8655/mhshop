@@ -13,5 +13,6 @@ public interface MemberDao {
 	MemberVo selectOneById(String id);					// 아이디로 회원조회
 	Integer delete(String id);							// 회원삭제
 	MemberVo selectOneByNo(Long no);					// 회원번호로 찾기
+	Integer update(MemberVo memberVo);					// 회원수정
 
 }

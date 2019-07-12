@@ -3,6 +3,7 @@ package com.cafe24.mhshop.controller.api;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.apache.ibatis.session.SqlSession;
@@ -206,7 +207,7 @@ public class MemberControllerTest {
 		
 		
 
-		// 로그인 성공하는 경우
+		// 로그인 실패하는 경우
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "test_id3")
 				.param("password", "testpassword3!")
@@ -240,6 +241,7 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.data.redirect", is("/")));
 		
 	}
+	
 	
 	
 	

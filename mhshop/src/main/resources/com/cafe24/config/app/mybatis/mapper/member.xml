@@ -93,4 +93,21 @@
 		DELETE FROM member where id=AES_ENCRYPT(#{id}, #{aesKey})
 	]]>
 	</select>
+	
+	
+	<!-- 회원수정 -->
+	<update id="update" parameterType="membervo">
+		update member set
+		
+		<if test="password != ''">
+		password=SHA2(#{password}, 512),
+		</if>
+		name=AES_ENCRYPT(#{name}, #{aesKey}),
+		phone=AES_ENCRYPT(#{phone}, #{aesKey}),
+		email=AES_ENCRYPT(#{email}, #{aesKey}),
+		zipcode=AES_ENCRYPT(#{zipcode}, #{aesKey}),
+		addr=AES_ENCRYPT(#{addr}, #{aesKey})
+		
+		where id=AES_ENCRYPT(#{id}, #{aesKey})
+	</update>
 </mapper>

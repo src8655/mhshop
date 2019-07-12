@@ -80,5 +80,13 @@ public class MemberServiceImpl implements MemberService {
 		return result == 1;
 	}
 
+
+	// 회원수정
+	@Override
+	public boolean edit(MemberVo memberVo) {
+		int result = memberDao.update(memberVo);
+		return result == 1;
+	}
+
 	
 }

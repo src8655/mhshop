@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.security.Auth;
+import com.cafe24.mhshop.security.AuthUser;
 import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.vo.MemberVo;
 
@@ -185,6 +187,76 @@ public class MemberController {
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("redirect", "/");
+		return JSONResult.success(dataMap);
+	}
+	
+	
+	
+	@Auth
+	@RequestMapping(value = "/loginupdate", method = RequestMethod.GET)
+	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
+	public JSONResult loginUpdate(
+			@AuthUser MemberVo authUser,
+			HttpSession session
+			) {
+		
+		// 회원정보를 가져옴
+		MemberVo memberVo = memberService.getById(authUser.getId());
+		
+		// JSON 리턴 생성
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("memberVo", memberVo);
+		dataMap.put("forward", "login/update_form");
+		return JSONResult.success(dataMap);
+	}
+	
+	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "name", value = "이름", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "phone", value = "연락처", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
+
+		@ApiImplicitParam(name = "regDate", value = "", paramType = "", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "role", value = "", paramType = "", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = "")
+	})
+	@Auth
+	@RequestMapping(value = "/loginupdate", method = RequestMethod.PUT)
+	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
+	public JSONResult loginUpdate(
+			@ModelAttribute @Valid MemberVo memberVo,
+			@AuthUser MemberVo authUser,
+			HttpSession session,
+			BindingResult result
+			) {
+
+		// 유효성검사
+		if(memberVo.getPassword() != null && !"".equals(memberVo.getPassword()) && !Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword()))
+			return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_PHONE, memberVo.getPhone())) return JSONResult.fail("잘못된 연락처 형식 입니다.");
+		if(!Pattern.matches(MemberVo.REGX_EMAIL, memberVo.getEmail())) return JSONResult.fail("잘못된 이메일 형식 입니다.");
+		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		
+		// 회원정보를 가져옴
+		if(memberVo.getPassword() == null) memberVo.setPassword("");
+		memberVo.setId(authUser.getId());
+		
+		
+		// 수정요청
+		boolean isSuccess = memberService.edit(memberVo);
+		// 회원정보를 받아서
+		MemberVo newMemberVo = memberService.getById(authUser.getId());
+		// 다시 로그인
+		session.setAttribute("authUser", newMemberVo);
+		
+		
+		// JSON 리턴 생성
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("result", isSuccess);
 		dataMap.put("redirect", "/");
 		return JSONResult.success(dataMap);
 	}

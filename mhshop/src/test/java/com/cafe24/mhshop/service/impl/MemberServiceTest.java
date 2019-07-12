@@ -115,11 +115,27 @@ public class MemberServiceTest {
 	}
 	
 	
+
+	
+	
+
+	// 회원수정
+	@Test
+	public void testEUpdate() throws Exception {
+
+		MemberVo memberVo1 = new MemberVo("test_id3", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key");
+		MemberVo memberVo2 = new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key");
+		
+		// 성공했을 때
+		assertThat(memberService.edit(memberVo2), is(true));
+		
+		// 실패했을 때(없는 아이디 삭제)
+		assertThat(memberService.edit(memberVo1), is(false));
+	}
+	
 	
 	@After
 	public void finish() {
 		sqlSession.delete("test_member.deleteall");
 	}
-	
-	
 }
