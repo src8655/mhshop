@@ -307,20 +307,15 @@ public class AdminItemController {
 	@RequestMapping(value = "/itemimg", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에 저장", notes = "관리자 상품 이미지를 DB에 저장 API")
 	public JSONResult additemimg(
-			@ModelAttribute @Valid ItemImgVo itemImgVo,
-			BindingResult result
+			@RequestParam(value = "itemNo", required = true, defaultValue = "-1") Long itemNo,
+			@RequestParam(value = "itemImg", required = true, defaultValue = "") String itemImg
 			) {
 		
 		// 권한 확인
 		
 		
-
-		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
-		
-		
 		// ItemImgService에 상품아이템 추가 요청
-		boolean isSuccess = itemImgService.add(itemImgVo);
+		boolean isSuccess = itemImgService.add(itemNo, itemImg);
 		
 		
 		// JSON 리턴 생성
@@ -377,7 +372,8 @@ public class AdminItemController {
 		
 		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors() || optionDetailVo.getLevel() < 1 || optionDetailVo.getLevel() > 2)
+			return JSONResult.fail("잘못된 입력 입니다.");
 		
 
 		// OptionDetailService에 상품상세옵션 추가 요청
@@ -425,8 +421,8 @@ public class AdminItemController {
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "optionDetailNo2", value = "2차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "optionDetail1", value = "1차상세옵션번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "optionDetail2", value = "2차상세옵션번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "cnt", value = "재고", paramType = "query", required = true, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
@@ -434,15 +430,14 @@ public class AdminItemController {
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 옵션 추가", notes = "관리자 상품 옵션 추가 API")
 	public JSONResult addoption(
-			@ModelAttribute @Valid OptionVo optionVo,
-			BindingResult result
+			@ModelAttribute OptionVo optionVo
 			) {
 		
 		// 권한 확인
 		
-
+		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(optionVo.getCnt() < -1) return JSONResult.fail("잘못된 입력 입니다.");
 		
 
 		// OptionService에 상품옵션 추가 요청

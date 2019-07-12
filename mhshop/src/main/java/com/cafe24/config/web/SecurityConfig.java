@@ -1,4 +1,4 @@
-package com.cafe24.mhshop.config.web;
+package com.cafe24.config.web;
 
 import java.util.List;
 

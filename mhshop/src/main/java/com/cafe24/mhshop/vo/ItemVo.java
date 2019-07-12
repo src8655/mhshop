@@ -1,9 +1,5 @@
 package com.cafe24.mhshop.vo;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class ItemVo {
@@ -11,14 +7,10 @@ public class ItemVo {
 	@NotEmpty
 	private String name;
 	private String description;
-	@NotNull
-	@Min(0)
 	private Long money;
 	@NotEmpty
 	private String thumbnail;
 	private String display;
-	@NotNull
-	@Min(1)
 	private Long categoryNo;
 	
 	private String categoryName;

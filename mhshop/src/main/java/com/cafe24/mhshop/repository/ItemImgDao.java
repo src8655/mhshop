@@ -1,5 +1,5 @@
 package com.cafe24.mhshop.repository;
 
-public interface MemberDao {
+public interface ItemImgDao {
 
 }
