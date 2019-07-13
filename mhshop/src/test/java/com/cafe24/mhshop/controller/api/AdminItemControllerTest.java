@@ -54,7 +54,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품 리스트
 	@Test
-	public void testAItemList() throws Exception {
+	public void testA관리자상품리스트페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/list").contentType(MediaType.APPLICATION_JSON));
 		
@@ -71,7 +71,7 @@ public class AdminItemControllerTest {
 
 	// [관리자 상품 작성 페이지]
 	@Test
-	public void testBItemWriteForm() throws Exception {
+	public void testB상품작성페이지() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/write").contentType(MediaType.APPLICATION_JSON));
@@ -88,7 +88,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 DB에 저장 이름 Valid
 	@Test
-	public void testCItemWriteNameValid() throws Exception {
+	public void testC상품작성_이름_Valid() throws Exception {
 		ResultActions resultActions;
 		
 
@@ -112,7 +112,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품 DB에 저장 금액 Valid
 	@Test
-	public void testCItemWriteMoneyValid() throws Exception {
+	public void testC상품작성_금액_Valid() throws Exception {
 		ResultActions resultActions;
 		
 
@@ -135,7 +135,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 DB에 수정 NO Valid
 	@Test
-	public void testFItemEditNoValid() throws Exception {
+	public void testD상품수정_NO_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
 				.param("no", "")
@@ -156,7 +156,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 DB에 수정 이름 Valid
 	@Test
-	public void testFItemEditNameValid() throws Exception {
+	public void testD상품수정_이름_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
 				.param("no", "1")
@@ -179,7 +179,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품 진열여부 DB에 수정 Valid
 	@Test
-	public void testGItemEditDisplayValid() throws Exception {
+	public void testE상품진열여부수정_진열여부_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
@@ -198,7 +198,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품 이미지를 DB에 저장 상품번호 Valid
 	@Test
-	public void testHAddItemImgNoValid() throws Exception {
+	public void testF상품이미지작성_상품번호_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
@@ -216,7 +216,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 이미지를 DB에 저장 상품이미지 Valid
 	@Test
-	public void testHAddItemImgImgValid() throws Exception {
+	public void testF상품이미지작성_상품이미지_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
@@ -234,7 +234,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 상세옵션 추가 레벨 Valid
 	@Test
-	public void testJAddOptionDetailLevelValid() throws Exception {
+	public void testG상세옵션작성_레벨_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
@@ -253,7 +253,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품 옵션 추가 수량 Valid
 	@Test
-	public void testLAddOptionCntValid() throws Exception {
+	public void testH옵션작성_수량_Valid() throws Exception {
 		ResultActions resultActions;
 
 		resultActions = mockMvc.perform(post("/api/admin/item/option")

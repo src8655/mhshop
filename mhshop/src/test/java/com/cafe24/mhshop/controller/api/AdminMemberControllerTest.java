@@ -54,7 +54,7 @@ public class AdminMemberControllerTest {
 	
 	// 회원 리스트
 	@Test
-	public void testAAdminMemberList() throws Exception {
+	public void testA관리자회원리스트페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/list").contentType(MediaType.APPLICATION_JSON));
 		
@@ -73,7 +73,7 @@ public class AdminMemberControllerTest {
 
 	// 회원 상세보기 ID Valid
 	@Test
-	public void testBAdminMemberViewIdValid() throws Exception {
+	public void testB회원상세보기_아이디_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
 				.contentType(MediaType.APPLICATION_JSON));
@@ -91,7 +91,7 @@ public class AdminMemberControllerTest {
 
 	// 회원 삭제 ID Valid
 	@Test
-	public void testCAdminMemberDeleteIdValid() throws Exception {
+	public void testC회원삭제_아이디_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		

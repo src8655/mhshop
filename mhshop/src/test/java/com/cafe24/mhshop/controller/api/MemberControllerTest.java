@@ -54,7 +54,7 @@ public class MemberControllerTest {
 
 	// [회원약관, 회원가입 페이지]
 	@Test
-	public void testAJoinForm() throws Exception {
+	public void testA회원가입페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/member/join").contentType(MediaType.APPLICATION_JSON));
 		
@@ -68,29 +68,9 @@ public class MemberControllerTest {
 		
 	}
 	
-	
-	// 아이디 중복확인 올바른 아이디
-	@Test
-	public void testBJoinIdCheck() throws Exception {
-		ResultActions resultActions;
-		
-		// 올바른 아이디
-		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 결과 데이터가 있는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data", Matchers.notNullValue()));
-	}
-	
-	
-
 	// 아이디 중복확인 잘못된 아이디 Valid
 	@Test
-	public void testBJoinIdCheckIdValid() throws Exception {
+	public void testB아이디중복확인_아이디_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		// 잘못된 아이디
@@ -106,7 +86,7 @@ public class MemberControllerTest {
 
 	// 회원 등록 아이디 Valid
 	@Test
-	public void testCJoinIdValid() throws Exception {
+	public void testC회원가입_아이디_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "1test_id3")
@@ -129,7 +109,7 @@ public class MemberControllerTest {
 
 	// 회원 등록 비밀번호 Valid
 	@Test
-	public void testCJoinPasswordValid() throws Exception {
+	public void testC회원가입_비밀번호_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id3")
@@ -152,7 +132,7 @@ public class MemberControllerTest {
 	
 	// 회원 등록 전화번호 Valid
 	@Test
-	public void testCJoinPhoneValid() throws Exception {
+	public void testC회원가입_전화번호_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id3")
@@ -175,7 +155,7 @@ public class MemberControllerTest {
 	
 	// [회원가입 결과 페이지]
 	@Test
-	public void testDJoinResult() throws Exception {
+	public void testD회원가입결과페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/member/join/result").contentType(MediaType.APPLICATION_JSON));
 
@@ -191,7 +171,7 @@ public class MemberControllerTest {
 
 	// [로그인 페이지]
 	@Test
-	public void testELoginForm() throws Exception {
+	public void testE로그인페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/member/login").contentType(MediaType.APPLICATION_JSON));
 
@@ -207,7 +187,7 @@ public class MemberControllerTest {
 
 	// 회원 로그인 아이디 Valid
 	@Test
-	public void testFLoginIdValid() throws Exception {
+	public void testF로그인_아이디Valid() throws Exception {
 
 		ResultActions resultActions;
 		
@@ -230,7 +210,7 @@ public class MemberControllerTest {
 
 	// 회원 로그인 비밀번호 Valid
 	@Test
-	public void testFLoginPasswordValid() throws Exception {
+	public void testF로그인_비밀번호Valid() throws Exception {
 
 		ResultActions resultActions;
 		
@@ -251,7 +231,7 @@ public class MemberControllerTest {
 
 	// 회원 로그아웃
 	@Test
-	public void testGLogout() throws Exception {
+	public void testG로그아웃() throws Exception {
 
 		ResultActions resultActions = mockMvc.perform(post("/api/member/logout").contentType(MediaType.APPLICATION_JSON));
 		

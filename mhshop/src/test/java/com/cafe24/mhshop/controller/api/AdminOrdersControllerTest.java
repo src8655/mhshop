@@ -54,7 +54,7 @@ public class AdminOrdersControllerTest {
 	
 	// 주문 리스트
 	@Test
-	public void testAOrdersList() throws Exception {
+	public void testA주문리스트페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/orders/list").contentType(MediaType.APPLICATION_JSON));
 		
@@ -72,7 +72,7 @@ public class AdminOrdersControllerTest {
 
 	// 운송장번호 등록 요청 운송장번호 Valid
 	@Test
-	public void testDOrdersTrackingNumberCheckValid() throws Exception {
+	public void testB운송장번호등록_운송장번호_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(put("/api/admin/orders/trackingnumbercheck/{ordersNo}", "2019-07-11_000257")
 				.param("trackingNum", "")

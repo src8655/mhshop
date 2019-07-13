@@ -52,7 +52,7 @@ public class AdminCategoryControllerTest {
 	
 	// [관리자 카테고리 작성 페이지]
 	@Test
-	public void testACategoryWriteForm() throws Exception {
+	public void testA카테고리작성페이지() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/write").contentType(MediaType.APPLICATION_JSON));
 		
@@ -67,29 +67,10 @@ public class AdminCategoryControllerTest {
 	}
 	
 	
-	// 관리자 카테고리 등록
-	@Test
-	public void testBCategoryWrite() throws Exception {
-		ResultActions resultActions;
-		
-		
-		resultActions = mockMvc.perform(post("/api/admin/category/write")
-				.param("name", "test_category1")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 리다이렉트할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", Matchers.notNullValue()));
-
-	}
-	
 	
 	// 관리자 카테고리 등록 카테고리명 Valid
 	@Test
-	public void testBCategoryWriteNameValid() throws Exception {
+	public void testB카테고리작성_카테고리명_Valid() throws Exception {
 		ResultActions resultActions;
 		
 		
@@ -108,7 +89,7 @@ public class AdminCategoryControllerTest {
 
 	// 카테고리 리스트
 	@Test
-	public void testCCategoryList() throws Exception {
+	public void testC카테고리리스트() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/list").contentType(MediaType.APPLICATION_JSON));
 		
