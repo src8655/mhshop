@@ -6,9 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class ItemImgVo {
 	private Long no;
-	@NotNull
 	private Long itemNo;
-	@NotEmpty
 	private String itemImg;
 	
 	public ItemImgVo() {}

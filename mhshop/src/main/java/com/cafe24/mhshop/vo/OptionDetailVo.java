@@ -8,13 +8,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class OptionDetailVo {
 	private Long no;
-	@NotEmpty
 	private String optionName;
-	@NotNull
-	@Min(1)
-	@Max(2)
 	private Long level;
-	@NotNull
 	private Long itemNo;
 	
 

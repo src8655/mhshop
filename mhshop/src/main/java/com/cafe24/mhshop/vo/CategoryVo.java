@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.Length;
 
 public class CategoryVo {
 	private Long no;
-	@Length(min=1, max=20)
 	private String name;
 	
 	public CategoryVo() {}

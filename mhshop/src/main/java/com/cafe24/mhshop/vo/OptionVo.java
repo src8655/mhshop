@@ -5,12 +5,9 @@ import javax.validation.constraints.NotNull;
 
 public class OptionVo {
 	private Long no;
-	@NotNull
 	private Long itemNo;
 	private Long optionDetailNo1;
 	private Long optionDetailNo2;
-	@NotNull
-	@Min(-1)
 	private Integer cnt;
 	
 
