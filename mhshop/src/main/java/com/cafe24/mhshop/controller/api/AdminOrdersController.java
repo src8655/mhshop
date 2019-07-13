@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestOrdersNoDto;
+import com.cafe24.mhshop.dto.RequestOrdersTrackingDto;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.GuestService;
 import com.cafe24.mhshop.service.ItemImgService;
@@ -87,22 +92,24 @@ public class AdminOrdersController {
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "주문 상세보기", notes = "주문 상세보기 요청 API")
 	public JSONResult view(
-			@PathVariable(value = "ordersNo") String ordersNo
+			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		// OrdersService에 주문상세 요청
-		OrdersVo ordersVo = ordersService.getByOrdersNo(ordersNo);
+		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		
 		// PayBankService와 PayKakaoService에 결제정보 요청
-		PayBankVo payBankVo = payBankService.getByOrdersNo(ordersNo);
-		PayKakaoVo payKakaoVo = payKakaoService.getByOrdersNo(ordersNo);
+		PayBankVo payBankVo = payBankService.getByOrdersNo(dto.getOrdersNo());
+		PayKakaoVo payKakaoVo = payKakaoService.getByOrdersNo(dto.getOrdersNo());
 		
 		// GuestService나 MemberService에 구매자 정보 요청
-		GuestVo guestVo = guestService.getByOrdersNo(ordersNo);
+		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
 		MemberVo memberVo = null;
 		if(ordersVo.getMemberId() != null)
 			memberVo = memberService.getById(ordersVo.getMemberId());
@@ -133,20 +140,24 @@ public class AdminOrdersController {
 	@RequestMapping(value = "/paycheck/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "무통장 결제확인 상태변경 요청", notes = "무통장 결제확인 상태변경 요청 API")
 	public JSONResult paycheck(
-			@PathVariable(value = "ordersNo") String ordersNo
+			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		// OrderService에서 하나 가져와서 상태 확인(입금대기 상태가 아니면 fail)
-		OrdersVo ordersVo = ordersService.getByOrdersNo(ordersNo);
+		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		if(!ordersVo.getStatus().equals("입금대기")) return JSONResult.fail("변경할 수 없는 상태입니다.");
 		
 		// PayBankService에 날짜 갱신 요청
-		payBankService.updateDate(ordersNo);
+		payBankService.updateDate(dto.getOrdersNo());
 		
 		// OrdersService에 상태변경 요청(입금대기 상태가 아니였으면 false가 나온다)
-		boolean isSuccess = ordersService.changeStatus(ordersNo, "결제완료");
+		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "결제완료");
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -165,21 +176,23 @@ public class AdminOrdersController {
 	@RequestMapping(value = "/trackingnumbercheck/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "운송장번호 등록 요청", notes = "운송장번호 등록 요청 API")
 	public JSONResult trackingnumbercheck(
-			@PathVariable(value = "ordersNo") String ordersNo,
-			@RequestParam(value = "trackingNum", required = true, defaultValue = "") String trackingNum
+			@ModelAttribute @Valid RequestOrdersTrackingDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
 
 		// 유효성검사
-		if(trackingNum.equals("")) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+
+		// 유효성검사
+		if(dto.getTrackingNum().equals("")) return JSONResult.fail("잘못된 입력 입니다.");
 		
 		// OrdersService에 운송장번호 수정 요청
-		ordersService.changeTrackingNum(ordersNo, trackingNum);
+		ordersService.changeTrackingNum(dto.getOrdersNo(), dto.getTrackingNum());
 		
 		// OrdersService에 상태변경 요청
-		boolean isSuccess = ordersService.changeStatus(ordersNo, "배송중");
+		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "배송중");
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();

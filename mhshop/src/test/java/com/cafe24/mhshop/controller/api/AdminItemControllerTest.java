@@ -44,50 +44,12 @@ public class AdminItemControllerTest {
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
-	@BeforeClass
-	public static void classSetup() {
-		// DB 초기화
-	}
+
 	
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-
-		// DB 테이블 초기화
-		// DB 테스트용 데이터 insert
-
-		// category insert
-		// insert into category(no, name) values(1, 'test_category1')
-		// insert into category(no, name) values(2, 'test_category2')
-		
-		
-		// item insert
-		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
-		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 2)
-		
-		
-		// itemimg insert
-		// insert into item_img(no, item_no, item_img) values(1, 1, 'test_img1')
-		// insert into item_img(no, item_no, item_img) values(2, 1, 'test_img2')
-		
-		
-		// optiondetail insert
-		// insert into option_detail(no, optionName, level, itemNo) values(1, '파란색', 1, 1)
-		// insert into option_detail(no, optionName, level, itemNo) values(2, 'L', 2, 1)
-		// insert into option_detail(no, optionName, level, itemNo) values(3, 'XL', 2, 1)
-		// insert into option_detail(no, optionName, level, itemNo) values(4, 'XXL', 2, 1)
-		
-		
-		// option insert
-		// insert into option(no, itemNo, optionDetail1, optionDetail2, cnt) values(1, 1, 1, 2, 10)
-		// insert into option(no, itemNo, optionDetail1, optionDetail2, cnt) values(2, 1, 1, 3, -1)
-		
 	}
-	
-	
-	
 	
 
 	// 관리자 상품 리스트
@@ -98,34 +60,10 @@ public class AdminItemControllerTest {
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
-		// 아이템 리스트를 확인
-		// 카테고리 리스트를 확인
 		// 포워드할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-
-		.andExpect(jsonPath("$.data.itemList[0].no", is(1)))
-		.andExpect(jsonPath("$.data.itemList[0].name", is("test_item1")))
-		.andExpect(jsonPath("$.data.itemList[0].description", is("test_description1")))
-		.andExpect(jsonPath("$.data.itemList[0].money", is(10000)))
-		.andExpect(jsonPath("$.data.itemList[0].thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.itemList[0].display", is("FALSE")))
-		.andExpect(jsonPath("$.data.itemList[0].categoryNo", is(1)))
-
-		.andExpect(jsonPath("$.data.itemList[1].no", is(2)))
-		.andExpect(jsonPath("$.data.itemList[1].name", is("test_item2")))
-		.andExpect(jsonPath("$.data.itemList[1].description", is("test_description2")))
-		.andExpect(jsonPath("$.data.itemList[1].money", is(20000)))
-		.andExpect(jsonPath("$.data.itemList[1].thumbnail", is("test_thumbnail2")))
-		.andExpect(jsonPath("$.data.itemList[1].display", is("FALSE")))
-		.andExpect(jsonPath("$.data.itemList[1].categoryNo", is(1)))
-		
-		.andExpect(jsonPath("$.data.categoryList[0].no", is(1)))
-		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category1")))
-		.andExpect(jsonPath("$.data.categoryList[1].no", is(2)))
-		.andExpect(jsonPath("$.data.categoryList[1].name", is("test_category2")))
-		
 		.andExpect(jsonPath("$.data.forward", is("admin/item_list")));
 		
 	}
@@ -140,32 +78,23 @@ public class AdminItemControllerTest {
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
-		// 카테고리가 null이 아니여야함
-		// 카테고리 리스트 데이터 확인
 		// 포워드할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.categoryList", Matchers.notNullValue()))
-		
-		.andExpect(jsonPath("$.data.categoryList[0].no", is(1)))
-		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category1")))
-		.andExpect(jsonPath("$.data.categoryList[1].no", is(2)))
-		.andExpect(jsonPath("$.data.categoryList[1].name", is("test_category2")))
-		
 		.andExpect(jsonPath("$.data.forward", is("admin/item_write_form")));
 		
 	}
 	
-	// 관리자 상품 DB에 저장
+	// 관리자 상품 DB에 저장 이름 Valid
 	@Test
-	public void testCItemWrite() throws Exception {
+	public void testCItemWriteNameValid() throws Exception {
 		ResultActions resultActions;
 		
 
 		// 성공했을 때
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
-				.param("name", "test_item3")
+				.param("name", "")
 				.param("description", "test_description2")
 				.param("money", "30000")
 				.param("thumbnail", "test_thumbnail3")
@@ -173,107 +102,43 @@ public class AdminItemControllerTest {
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공했는지
-		// insert 쿼리가 성공했는지
-		// 리다이렉트할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/item_list")));
-		
+		.andExpect(jsonPath("$.result", is("fail")));
+	}
+	
+	
+
+	// 관리자 상품 DB에 저장 금액 Valid
+	@Test
+	public void testCItemWriteMoneyValid() throws Exception {
+		ResultActions resultActions;
 		
 
-		// 없는 카테고리로 등록했을 때 실패
+		// 성공했을 때
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
-				.param("name", "test_item3")
+				.param("name", "test_name")
 				.param("description", "test_description2")
-				.param("money", "30000")
+				.param("money", "")
 				.param("thumbnail", "test_thumbnail3")
-				.param("categoryNo", "3")
+				.param("categoryNo", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공했는지
-		// insert 쿼리가 성공했는지
-		// 리다이렉트할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail"))).andDo(print());
-		
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
-	
 
 	
-
-	// 관리자 상품 DB에 삭제
+	// 관리자 상품 DB에 수정 NO Valid
 	@Test
-	public void testDItemDelete() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(delete("/api/admin/item/item/{no}", 1L)
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// delete 쿼리가 성공했는지
-		// 리다이렉트할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/list")));
-		
-	}
-	
-	
-
-	// [관리자 상품 수정 페이지]
-	@Test
-	public void testEItemEditForm() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/edit/{no}", 1L)
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 상품 데이터 확인
-		// 상품이미지 데이터 확인
-		// 1차 상세옵션 데이터 확인
-		// 2차 상세옵션 데이터 확인
-		// 옵션 데이터 확인
-		// 카테고리 데이터 확인
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-
-		.andExpect(jsonPath("$.data.itemVo.no", is(1)))
-		.andExpect(jsonPath("$.data.itemVo.name", is("test_item1")))
-		.andExpect(jsonPath("$.data.itemVo.description", is("test_description1")))
-		.andExpect(jsonPath("$.data.itemVo.money", is(10000)))
-		.andExpect(jsonPath("$.data.itemVo.thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.itemVo.display", is("FALSE")))
-		.andExpect(jsonPath("$.data.itemVo.categoryNo", is(1)))
-		
-
-		.andExpect(jsonPath("$.data.itemImgList", Matchers.notNullValue()))
-		.andExpect(jsonPath("$.data.optionDetailList1", Matchers.notNullValue()))
-		.andExpect(jsonPath("$.data.optionDetailList2", Matchers.notNullValue()))
-		.andExpect(jsonPath("$.data.optionList", Matchers.notNullValue()))
-		.andExpect(jsonPath("$.data.categoryList", Matchers.notNullValue()))
-		
-		.andExpect(jsonPath("$.data.forward", is("admin/item_edit_form")));
-		
-	}
-	
-	
-	
-	// 관리자 상품 DB에 수정
-	@Test
-	public void testFItemEdit() throws Exception {
+	public void testFItemEditNoValid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
-				.param("no", "1")
+				.param("no", "")
 				.param("name", "test_item11")
 				.param("description", "test_description11")
 				.param("money", "11000")
@@ -282,52 +147,47 @@ public class AdminItemControllerTest {
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// update 리턴 확인
-		// 분기할 페이지를 리턴하는지
+		// 결과가 실패햇는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
+		.andExpect(jsonPath("$.result", is("fail")));
+		
+	}
+	
+	// 관리자 상품 DB에 수정 이름 Valid
+	@Test
+	public void testFItemEditNameValid() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
+				.param("no", "1")
+				.param("name", "")
+				.param("description", "test_description11")
+				.param("money", "11000")
+				.param("thumbnail", "test_thumbnail11")
+				.param("categoryNo", "2")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패햇는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("fail")));
 		
 	}
 	
 	
 
-	// 관리자 상품 진열여부 DB에 수정
+	// 관리자 상품 진열여부 DB에 수정 Valid
 	@Test
-	public void testGItemEditDisplay() throws Exception {
+	public void testGItemEditDisplayValid() throws Exception {
 		ResultActions resultActions;
 		
-		
-
-		// 성공했을 경우
-		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 1L)
-				.param("display", "TRUE")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// update 리턴 확인
-		// 분기할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
-		
-		
-		
-		
-
-		// 옵션이 존재하지 않아서 진열상태로 변경 못하는 경우
 		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
-				.param("display", "TRUE")
+				.param("display", "")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 실패해야함
+		// 결과가 실패햇는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
@@ -336,184 +196,78 @@ public class AdminItemControllerTest {
 	
 
 
-	// 관리자 상품 이미지를 DB에 저장
+	// 관리자 상품 이미지를 DB에 저장 상품번호 Valid
 	@Test
-	public void testHAddItemImg() throws Exception {
+	public void testHAddItemImgNoValid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
-				.param("itemNo", "1")
+				.param("itemNo", "")
 				.param("itemImg", "test_img3")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// insert 리턴 확인
-		// 분기할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
 	
-	
-
-
-	// 관리자 상품 이미지를 DB에서 삭제
+	// 관리자 상품 이미지를 DB에 저장 상품이미지 Valid
 	@Test
-	public void testIDeleteItemImg() throws Exception {
+	public void testHAddItemImgImgValid() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(delete("/api/admin/item/itemimg/{no}", 1L)
+		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
+				.param("itemNo", "1")
+				.param("itemImg", "")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// delete 리턴 확인
-		// 분기할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
 	
-
-
-	// 관리자 상품 상세옵션 추가
+	// 관리자 상품 상세옵션 추가 레벨 Valid
 	@Test
-	public void testJAddOptionDetail() throws Exception {
+	public void testJAddOptionDetailLevelValid() throws Exception {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
 				.param("optionName", "초록색")
-				.param("level", "1")
+				.param("level", "")
 				.param("itemNo", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// insert 리턴 확인
-		// 분기할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
-	}
-	
-	
-	
-	// 관리자 상품 상세옵션 삭제
-	@Test
-	public void testKDeleteOptionDetail() throws Exception {
-		ResultActions resultActions;
-		
-		
-		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 4L)
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// delete 리턴 확인
-		// 분기할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
-		
-		
-		
-		
-
-		// 상세옵션번호를 가지는 옵션이 존재할 때 실패하는 경우
-		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 1L)
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패해야함
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-
-	
-
-	// 관리자 상품 옵션 추가
-	@Test
-	public void testLAddOption() throws Exception {
-		ResultActions resultActions;
-
-
-		// 성공했을 때
-		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "1")
-				.param("optionDetail1", "1")
-				.param("optionDetail2", "4")
-				.param("cnt", "20")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// insert 리턴 확인
-		// 분기할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
-		
-		
-		
-
-		// 수량이 -1 보다 작아서 실패했을 때
-		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "1")
-				.param("optionDetail1", "1")
-				.param("optionDetail2", "4")
-				.param("cnt", "-2")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패해야함
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
 	
-
-	// 관리자 상품 옵션 삭제
+	// 관리자 상품 옵션 추가 수량 Valid
 	@Test
-	public void testNDeleteOption() throws Exception {
+	public void testLAddOptionCntValid() throws Exception {
 		ResultActions resultActions;
 
-
-		// 성공했을 때
-		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 1L)
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
+				.param("itemNo", "1")
+				.param("optionDetail1", "1")
+				.param("optionDetail2", "4")
+				.param("cnt", "-5")
 				.contentType(MediaType.APPLICATION_JSON));
-		
+
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// delete 리턴 확인
-		// 분기할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.result", is(true)))
-		.andExpect(jsonPath("$.data.redirect", is("/api/admin/item/edit")));
-	}
-	
-	
-	
-	@AfterClass
-	public static void finish() {
-		// DB 초기화
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
 	

@@ -43,22 +43,11 @@ public class MemberControllerTest {
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
-	@Autowired
-	SqlSession sqlSession;
+
 	
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-		// DB Member 테이블 초기화
-		// DB 테스트용 데이터 insert
-		
-		// member insert
-		sqlSession.delete("test_member.deleteall");
-		sqlSession.insert("test_member.insert", new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key"));
-		sqlSession.insert("test_member.insert", new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN", "mhshop_key"));
-	
 	}
 	
 	
@@ -80,42 +69,47 @@ public class MemberControllerTest {
 	}
 	
 	
-	// 아이디 중복확인
+	// 아이디 중복확인 올바른 아이디
 	@Test
 	public void testBJoinIdCheck() throws Exception {
 		ResultActions resultActions;
 		
-		// 중복된 아이디 상황
+		// 올바른 아이디
 		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
-		// 이미 존재해야함
+		// 결과 데이터가 있는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data", is(true)));
+		.andExpect(jsonPath("$.data", Matchers.notNullValue()));
+	}
+	
+	
+
+	// 아이디 중복확인 잘못된 아이디 Valid
+	@Test
+	public void testBJoinIdCheckIdValid() throws Exception {
+		ResultActions resultActions;
 		
-		
-		
-		// 사용가능한 아이디 상황
-		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id3").contentType(MediaType.APPLICATION_JSON));
+		// 잘못된 아이디
+		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "1test_id1").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 존재하지 않아야함
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data", is(false)));
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
+	
 
-	// 회원 등록
+	// 회원 등록 아이디 Valid
 	@Test
-	public void testCJoin() throws Exception {
+	public void testCJoinIdValid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "test_id3")
+				.param("id", "1test_id3")
 				.param("password", "testpassword3!")
 				.param("name", "test3")
 				.param("phone", "01000000003")
@@ -125,16 +119,56 @@ public class MemberControllerTest {
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// DB 입력 성공했는지
-		// 리다이렉트할 페이지를 리턴하는지
+		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-
-		.andExpect(jsonPath("$.data.result", is(true)))
+		.andExpect(jsonPath("$.result", is("fail")));
 		
-		.andExpect(jsonPath("$.data.redirect", is("/api/member/join_result")));
+	}
+	
+
+	// 회원 등록 비밀번호 Valid
+	@Test
+	public void testCJoinPasswordValid() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+				.param("id", "test_id3")
+				.param("password", "testpassword3")
+				.param("name", "test3")
+				.param("phone", "01000000003")
+				.param("email", "test_email3@naver.com")
+				.param("zipcode", "test_zipcode3")
+				.param("addr", "test_addr3")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("fail")));
+		
+	}
+	
+	
+	// 회원 등록 전화번호 Valid
+	@Test
+	public void testCJoinPhoneValid() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+				.param("id", "test_id3")
+				.param("password", "testpassword3!")
+				.param("name", "test3")
+				.param("phone", "test_phone")
+				.param("email", "test_email3@naver.com")
+				.param("zipcode", "test_zipcode3")
+				.param("addr", "test_addr3")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("fail")));
 		
 	}
 	
@@ -162,7 +196,7 @@ public class MemberControllerTest {
 		ResultActions resultActions = mockMvc.perform(get("/api/member/login").contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
-		// 결과가 성공햇는지
+		// 결과가 성공했는지
 		// 포워드할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
@@ -170,48 +204,48 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.data.forward", is("login/login_form")));
 	}
 
-	// 회원 로그인
+
+	// 회원 로그인 아이디 Valid
 	@Test
-	public void testFLogin() throws Exception {
+	public void testFLoginIdValid() throws Exception {
 
 		ResultActions resultActions;
 		
 		
-		// 로그인 성공하는 경우
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
+				.param("id", "1test_id1")
 				.param("password", "testpassword1!")
 				.contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 로그인 정보가 null이 아니어야함
+		// 결과가 실패했는지
 		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.memberVo", Matchers.notNullValue()))
-		.andExpect(jsonPath("$.data.redirect", is("/")));
-		
-		
-		
-		
+		.andExpect(jsonPath("$.result", is("fail")));
+	}
+	
+	
+	
 
-		// 로그인 실패하는 경우
+	// 회원 로그인 비밀번호 Valid
+	@Test
+	public void testFLoginPasswordValid() throws Exception {
+
+		ResultActions resultActions;
+		
+		
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id3")
-				.param("password", "testpassword3!")
+				.param("id", "test_id1")
+				.param("password", "testpassword1")
 				.contentType(MediaType.APPLICATION_JSON));
 
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 로그인 정보가 null이여야함
+		// 결과가 실패했는지
 		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.memberVo", Matchers.nullValue()))
-		.andExpect(jsonPath("$.data.redirect", is("/")));
+		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
 
@@ -232,13 +266,6 @@ public class MemberControllerTest {
 	}
 	
 	
-	
-	
-	
-	@After
-	public void finish() {
-		sqlSession.delete("test_member.deleteall");
-	}
 	
 	
 }

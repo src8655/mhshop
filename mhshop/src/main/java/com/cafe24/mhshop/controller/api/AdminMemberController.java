@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestMemberIdDto;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemImgService;
 import com.cafe24.mhshop.service.ItemService;
@@ -62,14 +66,19 @@ public class AdminMemberController {
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 상세보기", notes = "회원 상세보기 요청 API")
 	public JSONResult view(
-			@PathVariable("id") String id
+			@ModelAttribute @Valid RequestMemberIdDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
 		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		
 		
 		// Service에 회원상세 요청
-		MemberVo memberVo = memberService.getById(id);
+		MemberVo memberVo = memberService.getById(dto.getId());
 		
 		
 		// JSON 리턴 생성
@@ -86,14 +95,17 @@ public class AdminMemberController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "회원 삭제", notes = "회원 삭제 요청 API")
 	public JSONResult delete(
-			@PathVariable("id") String id
+			@ModelAttribute @Valid RequestMemberIdDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		// Service에 회원 삭제 요청
-		boolean isSuccess = memberService.delete(id);
+		boolean isSuccess = memberService.delete(dto.getId());
 		
 		
 		// JSON 리턴 생성

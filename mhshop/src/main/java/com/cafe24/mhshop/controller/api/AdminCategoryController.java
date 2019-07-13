@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestCategoryEditDto;
+import com.cafe24.mhshop.dto.RequestCategoryWriteDto;
+import com.cafe24.mhshop.dto.RequestNoDto;
 import com.cafe24.mhshop.security.Auth;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemService;
@@ -54,29 +57,27 @@ public class AdminCategoryController {
 	
 	
 
-	@Auth(role=Auth.Role.ADMIN)
+	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 카테고리를 DB에 등록", notes = "관리자 카테고리 등록 API")
 	public JSONResult write(
-			@ModelAttribute @Valid CategoryVo categoryVo,
+			@ModelAttribute @Valid RequestCategoryWriteDto dto,
 			BindingResult result
 			) {
 		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		// Service에 등록 요청(이름 중복 시 null)
-		CategoryVo newCategoryVo = categoryService.add(categoryVo);
+		boolean isSuccess = categoryService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("categoryVo", newCategoryVo);
+		dataMap.put("result", isSuccess);
 		dataMap.put("redirect", "/api/admin/category/category_list");
 		return JSONResult.success(dataMap);
 	}
@@ -85,7 +86,7 @@ public class AdminCategoryController {
 
 	
 
-	@Auth(role=Auth.Role.ADMIN)
+	//@Auth(role=Auth.Role.ADMIN)
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 카테고리 리스트", notes = "관리자 카테고리 리스트 요청 API")
 	public JSONResult list() {
@@ -103,7 +104,7 @@ public class AdminCategoryController {
 	
 	
 
-	@Auth(role=Auth.Role.ADMIN)
+	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
@@ -111,16 +112,16 @@ public class AdminCategoryController {
 	@RequestMapping(value = "/{no}/{name}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 수정", notes = "관리자 카테고리 수정 API")
 	public JSONResult edit(
-			@ModelAttribute @Valid CategoryVo categoryVo,
+			@ModelAttribute @Valid RequestCategoryEditDto dto,
 			BindingResult result
 			) {
 		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// Service에 수정 요청
-		boolean isSuccess = categoryService.edit(categoryVo);
+		boolean isSuccess = categoryService.edit(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -133,31 +134,33 @@ public class AdminCategoryController {
 	
 	
 
-	@Auth(role=Auth.Role.ADMIN)
+	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 삭제", notes = "관리자 카테고리 삭제 API")
 	public JSONResult delete(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// @ModelAttribute로 처리
 		CategoryVo cvo = new CategoryVo();
-		cvo.setNo(no);
+		cvo.setNo(dto.getNo());
 		
 		
 		// ItemService 에서 제품이 있는지 확인요청(없어야 삭제)
-		boolean hasItem = itemService.hasItemByCategory(no);
+		boolean hasItem = itemService.hasItemByCategory(dto.getNo());
 		if(hasItem) return JSONResult.fail("제품이 존재합니다.");
 		
 		
 		// Service에 삭제 요청
-		boolean isSuccess = categoryService.delete(no);
+		boolean isSuccess = categoryService.delete(dto.getNo());
 		
 		
 		// JSON 리턴 생성

@@ -40,17 +40,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 	// 카테고리 추가
 	@Override
-	public CategoryVo add(CategoryVo categoryVo) {
+	public boolean add(CategoryVo categoryVo) {
 		
 		
 		// DAO에 요청
 		
 		
-		// 가짜 중복확인
-		List<CategoryVo> categoryTable = getCategoryTable();
-		for(CategoryVo vo : categoryTable) if(vo.getName().equals(categoryVo.getName())) return null;
 		
-		return categoryVo;
+		return true;
 	}
 
 	// 카테고리 수정

@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestItemDisplayDto;
+import com.cafe24.mhshop.dto.RequestItemEditDto;
+import com.cafe24.mhshop.dto.RequestItemImgWriteDto;
+import com.cafe24.mhshop.dto.RequestItemWriteDto;
+import com.cafe24.mhshop.dto.RequestNoDto;
+import com.cafe24.mhshop.dto.RequestOptionDetailWriteDto;
+import com.cafe24.mhshop.dto.RequestOptionWriteDto;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemImgService;
 import com.cafe24.mhshop.service.ItemService;
@@ -106,32 +113,29 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "display", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryName", value = "", paramType = "", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 DB에 저장", notes = "관리자 상품 DB에 저장 API")
 	public JSONResult write(
-			@ModelAttribute @Valid ItemVo itemVo,
+			@ModelAttribute @Valid RequestItemWriteDto dto,
 			BindingResult result
 			) {
 		
 		// 권한 확인
 		
-		
+
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		
 		
 		
 		// 존재하는 카테고리인지 확인
-		if(!categoryService.isExistByNo(itemVo.getCategoryNo())) return JSONResult.fail("존재하지 않는 카테고리 입니다.");
+		if(!categoryService.isExistByNo(dto.toVo().getCategoryNo())) return JSONResult.fail("존재하지 않는 카테고리 입니다.");
 		
 		
 		// Service에 등록
-		boolean isSuccess = itemService.add(itemVo);
+		boolean isSuccess = itemService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -148,23 +152,27 @@ public class AdminItemController {
 	@RequestMapping(value = "/item/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 DB에 삭제", notes = "관리자 상품 DB에 삭제 API")
 	public JSONResult delete(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// ItemImgService 에서 이미지 삭제 요청
-		itemImgService.deleteAllByItemNo(no);
+		itemImgService.deleteAllByItemNo(dto.getNo());
 
 		// OptionService 에서 옵션삭제 요청
-		optionService.deleteAllByItemNo(no);
+		optionService.deleteAllByItemNo(dto.getNo());
 		
 		// OptionDetailService 에서 상세옵션 삭제 요청
-		optionDetailService.deleteAllByItemNo(no);
+		optionDetailService.deleteAllByItemNo(dto.getNo());
 		
 		// Service에 삭제 요청
-		boolean isSuccess = itemService.delete(no);
+		boolean isSuccess = itemService.delete(dto.getNo());
 		
 		
 		// JSON 리턴 생성
@@ -182,30 +190,33 @@ public class AdminItemController {
 	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
 	@ApiOperation(value = "[관리자 상품 수정 페이지]", notes = "관리자 상품 수정 페이지 API")
 	public JSONResult edit_form(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 
 		// ItemService에 상품 정보 요청
-		ItemVo itemVo = itemService.getByNo(no);
+		ItemVo itemVo = itemService.getByNo(dto.getNo());
 		
 		// CategoryService에서 카테고리 리스트 요청
 		List<CategoryVo> categoryList = categoryService.getList();
 		
 		// ItemImgService 에서 이미지 리스트 요청
-		List<ItemImgVo> itemImgList = itemImgService.getListByItemNo(no);
+		List<ItemImgVo> itemImgList = itemImgService.getListByItemNo(dto.getNo());
 
 		// OptionDetailService 에서 1차상세옵션 리스트 요청
-		List<OptionDetailVo> optionDetailList1 = optionDetailService.getListByItemNoAndLevel(no, 1L);
+		List<OptionDetailVo> optionDetailList1 = optionDetailService.getListByItemNoAndLevel(dto.getNo(), 1L);
 		
 		// OptionDetailService 에서 2차상세옵션 리스트 요청
-		List<OptionDetailVo> optionDetailList2 = optionDetailService.getListByItemNoAndLevel(no, 2L);
+		List<OptionDetailVo> optionDetailList2 = optionDetailService.getListByItemNoAndLevel(dto.getNo(), 2L);
 		
 		// OptionService 에서 옵션 리스트 요청
-		List<OptionVo> optionList = optionService.getListByItemNo(no);
+		List<OptionVo> optionList = optionService.getListByItemNo(dto.getNo());
 		
 		
 		// JSON 리턴 생성
@@ -227,27 +238,25 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = ""),
-
-		@ApiImplicitParam(name = "display", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryName", value = "", paramType = "", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 DB에 수정", notes = "관리자 상품 DB에 수정 API")
 	public JSONResult edit(
-			@ModelAttribute @Valid ItemVo itemVo,
+			@ModelAttribute @Valid RequestItemEditDto dto,
 			BindingResult result
 			) {
 		
 		// 권한 확인
 		
-		
+
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		
 		
 
 		// Service에 상품 정보 수정
-		boolean isSuccess = itemService.edit(itemVo);
+		boolean isSuccess = itemService.edit(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -268,27 +277,27 @@ public class AdminItemController {
 	@RequestMapping(value = "/edit/display/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 진열여부 DB에 수정", notes = "관리자 상품 진열여부 DB에 수정 API")
 	public JSONResult edit_display(
-			@PathVariable(value = "no") Long no,
-			@RequestParam(value = "display", required = true, defaultValue = "") String display
+			@ModelAttribute @Valid RequestItemDisplayDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
 		
-		
+
 		// 유효성검사
-		if(!("TRUE".equals(display) || "FALSE".equals(display))) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// TRUE로 바꾸고자 할 때 
 		// OptionService에 상품옵션이 존재하는지 확인 (없으면 실패)
-		if("TRUE".equals(display)) {
-			List<OptionVo> optionList = optionService.getListByItemNo(no);
+		if("TRUE".equals(dto.getDisplay())) {
+			List<OptionVo> optionList = optionService.getListByItemNo(dto.getNo());
 			if(optionList == null) return JSONResult.fail("옵션이 없습니다.");
 		}
 		
 
 		// ItemService에 상품 정보 수정
-		boolean isSuccess = itemService.editDisplay(no, display);
+		boolean isSuccess = itemService.editDisplay(dto.getNo(), dto.getDisplay());
 		
 		
 		// JSON 리턴 생성
@@ -307,20 +316,18 @@ public class AdminItemController {
 	@RequestMapping(value = "/itemimg", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에 저장", notes = "관리자 상품 이미지를 DB에 저장 API")
 	public JSONResult additemimg(
-			@ModelAttribute @Valid ItemImgVo itemImgVo,
+			@ModelAttribute @Valid RequestItemImgWriteDto dto,
 			BindingResult result
 			) {
 		
 		// 권한 확인
-		
-		
 
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// ItemImgService에 상품아이템 추가 요청
-		boolean isSuccess = itemImgService.add(itemImgVo);
+		boolean isSuccess = itemImgService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -339,14 +346,17 @@ public class AdminItemController {
 	@RequestMapping(value = "/itemimg/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에서 삭제", notes = "관리자 상품 이미지를 DB에서 삭제 API")
 	public JSONResult deleteitemimg(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 
 		// ItemImgService에 상품아이템 삭제 요청
-		boolean isSuccess = itemImgService.delete(no);
+		boolean isSuccess = itemImgService.delete(dto.getNo());
 				
 		
 		// JSON 리턴 생성
@@ -362,26 +372,24 @@ public class AdminItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "optionName", value = "옵션상세명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "level", value = "옵션상세레벨", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/optiondetail", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 상세옵션 추가", notes = "관리자 상품 상세옵션 추가 API")
 	public JSONResult addoptiondetail(
-			@ModelAttribute @Valid OptionDetailVo optionDetailVo,
+			@ModelAttribute @Valid RequestOptionDetailWriteDto dto,
 			BindingResult result
 			) {
 		
 		// 권한 확인
 		
-		
+
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 
 		// OptionDetailService에 상품상세옵션 추가 요청
-		boolean isSuccess = optionDetailService.add(optionDetailVo);
+		boolean isSuccess = optionDetailService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -399,18 +407,22 @@ public class AdminItemController {
 	@RequestMapping(value = "/optiondetail/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 상세옵션 삭제", notes = "관리자 상품 상세옵션 삭제 API")
 	public JSONResult deleteoptiondetail(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
+
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		// OptionService 에서 상세옵션번호를 가지는 옵션이 있는지 확인 요청
-		if(optionService.hasOptionDetailNo(no)) return JSONResult.fail("상세옵션번호를 옵션이 사용중입니다.");
+		if(optionService.hasOptionDetailNo(dto.getNo())) return JSONResult.fail("상세옵션번호를 옵션이 사용중입니다.");
 		
 
 		// OptionDetailService에 상품상세옵션 삭제 요청
-		boolean isSuccess = optionDetailService.delete(no);
+		boolean isSuccess = optionDetailService.delete(dto.getNo());
 				
 		
 		// JSON 리턴 생성
@@ -427,14 +439,12 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "optionDetailNo2", value = "2차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "재고", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "", paramType = "", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "cnt", value = "재고", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 옵션 추가", notes = "관리자 상품 옵션 추가 API")
 	public JSONResult addoption(
-			@ModelAttribute @Valid OptionVo optionVo,
+			@ModelAttribute @Valid RequestOptionWriteDto dto,
 			BindingResult result
 			) {
 		
@@ -442,11 +452,11 @@ public class AdminItemController {
 		
 
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 
 		// OptionService에 상품옵션 추가 요청
-		boolean isSuccess = optionService.add(optionVo);
+		boolean isSuccess = optionService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -463,14 +473,17 @@ public class AdminItemController {
 	@RequestMapping(value = "/option/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 옵션 삭제", notes = "관리자 상품 옵션 삭제 API")
 	public JSONResult addoption(
-			@PathVariable(value = "no") Long no
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
 			) {
 		
 		// 권한 확인
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 
 		// OptionService에 상품옵션 삭제 요청
-		boolean isSuccess = optionService.delete(no);
+		boolean isSuccess = optionService.delete(dto.getNo());
 				
 		
 		// JSON 리턴 생성

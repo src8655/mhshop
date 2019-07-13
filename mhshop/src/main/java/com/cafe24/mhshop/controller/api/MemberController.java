@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestMemberIdDto;
+import com.cafe24.mhshop.dto.RequestMemberJoinDto;
+import com.cafe24.mhshop.dto.RequestMemberLoginDto;
 import com.cafe24.mhshop.security.Auth;
 import com.cafe24.mhshop.security.AuthUser;
 import com.cafe24.mhshop.service.MemberService;
@@ -59,12 +62,15 @@ public class MemberController {
 	@RequestMapping(value = "/join/idcheck/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "회원ID 중복여부 확인", notes = "회원ID 중복확인 API")
 	public JSONResult idcheck(
-			@PathVariable(value = "id") String id
+			@ModelAttribute @Valid RequestMemberIdDto dto,
+			BindingResult result
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// Service에 요청
-		boolean isExist = memberService.idCheck(id);
+		boolean isExist = memberService.idCheck(dto.getId());
 		
 		return JSONResult.success(isExist);
 	}
@@ -78,24 +84,20 @@ public class MemberController {
 		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "regDate", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "role", value = "", paramType = "", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	@ApiOperation(value = "회원을 DB에 등록", notes = "회원등록 API")
 	public JSONResult join(
-			@ModelAttribute @Valid MemberVo memberVo,
+			@ModelAttribute @Valid RequestMemberJoinDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
-		if(result.hasErrors())
-			return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		
 		// Service에 등록
-		boolean isSuccess = memberService.add(memberVo);
+		boolean isSuccess = memberService.add(dto.toVo());
 		
 		
 		// JSON 리턴 생성
@@ -142,15 +144,17 @@ public class MemberController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 로그인", notes = "회원 로그인 API")
 	public JSONResult login(
-			@RequestParam(value = "id", required = true, defaultValue = "") String id,
-			@RequestParam(value = "password", required = true, defaultValue = "") String password,
+			@ModelAttribute @Valid RequestMemberLoginDto dto,
+			BindingResult result,
 			HttpSession session
 			) {
-		
+
+		// 유효성검사
+		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		// Service로 회원 확인
-		MemberVo newMemberVo = memberService.login(id, password);
+		MemberVo newMemberVo = memberService.login(dto.getId(), dto.getPassword());
 		
 		
 		// 확인 후 로그인
@@ -211,16 +215,13 @@ public class MemberController {
 		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
-
-		@ApiImplicitParam(name = "regDate", value = "", paramType = "", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "role", value = "", paramType = "", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = "")
 	})
 	@Auth
 	@RequestMapping(value = "/loginupdate", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
 	public JSONResult loginUpdate(
-			@ModelAttribute @Valid MemberVo memberVo,
+			@ModelAttribute @Valid RequestMemberJoinDto dto,
 			@AuthUser MemberVo authUser,
 			HttpSession session,
 			BindingResult result
@@ -230,6 +231,7 @@ public class MemberController {
 		
 		
 		// 회원정보를 가져옴
+		MemberVo memberVo = dto.toVo();
 		if(memberVo.getPassword() == null) memberVo.setPassword("");
 		memberVo.setId(authUser.getId());
 		
