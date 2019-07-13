@@ -62,9 +62,6 @@ public class MemberController {
 			@PathVariable(value = "id") String id
 			) {
 		
-		// 유효성검사
-		if(!Pattern.matches(MemberVo.REGX_ID, id)) return JSONResult.fail("잘못된 아이디 형식 입니다.");
-		
 		
 		// Service에 요청
 		boolean isExist = memberService.idCheck(id);
@@ -92,11 +89,8 @@ public class MemberController {
 			BindingResult result
 			) {
 		// 유효성검사
-		if(!Pattern.matches(MemberVo.REGX_ID, memberVo.getId())) return JSONResult.fail("잘못된 아이디 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword())) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_PHONE, memberVo.getPhone())) return JSONResult.fail("잘못된 연락처 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_EMAIL, memberVo.getEmail())) return JSONResult.fail("잘못된 이메일 형식 입니다.");
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors())
+			return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
 		
 		
 		
@@ -153,9 +147,6 @@ public class MemberController {
 			HttpSession session
 			) {
 		
-		// 유효성검사
-		if(!Pattern.matches(MemberVo.REGX_ID, id)) return JSONResult.fail("잘못된 아이디 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_PASSWORD, password)) return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
 		
 		
 		// Service로 회원 확인
@@ -234,13 +225,9 @@ public class MemberController {
 			HttpSession session,
 			BindingResult result
 			) {
-
-		// 유효성검사
-		if(memberVo.getPassword() != null && !"".equals(memberVo.getPassword()) && !Pattern.matches(MemberVo.REGX_PASSWORD, memberVo.getPassword()))
-			return JSONResult.fail("잘못된 비밀번호 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_PHONE, memberVo.getPhone())) return JSONResult.fail("잘못된 연락처 형식 입니다.");
-		if(!Pattern.matches(MemberVo.REGX_EMAIL, memberVo.getEmail())) return JSONResult.fail("잘못된 이메일 형식 입니다.");
-		if(result.hasErrors()) return JSONResult.fail("잘못된 입력 입니다.");
+		if(result.hasErrors()) 
+			return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		
 		
 		// 회원정보를 가져옴
 		if(memberVo.getPassword() == null) memberVo.setPassword("");

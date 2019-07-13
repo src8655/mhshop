@@ -186,21 +186,11 @@ public class MemberControllerTest {
 		// 응답이 200 인지
 		// 결과가 성공햇는지
 		// 로그인 정보가 null이 아니어야함
-		// 로그인된 정보 비교
 		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.memberVo", Matchers.notNullValue()))
-		
-		.andExpect(jsonPath("$.data.memberVo.id", is("test_id1")))
-		.andExpect(jsonPath("$.data.memberVo.name", is("test1")))
-		.andExpect(jsonPath("$.data.memberVo.phone", is("01000000001")))
-		.andExpect(jsonPath("$.data.memberVo.email", is("test_email1@naver.com")))
-		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode1")))
-		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr1")))
-		.andExpect(jsonPath("$.data.memberVo.role", is("USER")))
-		
 		.andExpect(jsonPath("$.data.redirect", is("/")));
 		
 		
@@ -221,7 +211,6 @@ public class MemberControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.memberVo", Matchers.nullValue()))
-		
 		.andExpect(jsonPath("$.data.redirect", is("/")));
 	}
 	

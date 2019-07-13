@@ -1,26 +1,25 @@
 package com.cafe24.mhshop.vo;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class MemberVo {
-	// 정규식 
-	// (시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하)
-	public static final String REGX_ID = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$";
-	// (최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함)
-	public static final String REGX_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
-	public static final String REGX_PHONE = "^\\d{2,3}\\d{3,4}\\d{4}$";
-	public static final String REGX_EMAIL = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
-
-	
+	@NotEmpty(message = "시작은 영문으로만, '_'를 제외한 특수문자 안되며 영문, 숫자, '_'으로만 이루어진 5 ~ 12자 이하")
+	@Pattern(regexp = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$")
 	private String id;
+	@NotEmpty(message = "최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함")
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$")
 	private String password;
 	@NotEmpty
 	@Length(min=2, max=5)
 	private String name;
 	@NotEmpty
+	@Pattern(regexp = "^\\d{2,3}\\d{3,4}\\d{4}$")
 	private String phone;
+	@Pattern(regexp = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$")
 	private String email;
 	@NotEmpty
 	private String zipcode;
