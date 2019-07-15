@@ -68,11 +68,23 @@ public class AdminOrdersControllerTest {
 		
 	}
 	
+	// 주문 상세보기
+	@Test
+	public void testB주문상세보기() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000256").contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+		
+	}
+	
 	
 
 	// 운송장번호 등록 요청 운송장번호 Valid
 	@Test
-	public void testB운송장번호등록_운송장번호_Valid() throws Exception {
+	public void testC운송장번호등록_운송장번호_Valid() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(put("/api/admin/orders/trackingnumbercheck/{ordersNo}", "2019-07-11_000257")
 				.param("trackingNum", "")
@@ -85,6 +97,41 @@ public class AdminOrdersControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
+		
+	}
+	
+	
+
+	// 운송장번호 등록 요청 완료
+	@Test
+	public void testC운송장번호등록_완료() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/orders/trackingnumbercheck/{ordersNo}", "2019-07-11_000257")
+				.param("trackingNum", "111222333t")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 성공햇는지
+		// update 결과 확인
+		// 분기할 페이지를 리턴하는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")));
+		
+	}
+	
+	
+	
+	//무통장 결제확인 상태변경 요청
+	@Test
+	public void testD무통장결제확인상태변경_Valid() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/orders/paycheck/{ordersNo}", "2019-07-11_000256")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
 		
 	}
 	

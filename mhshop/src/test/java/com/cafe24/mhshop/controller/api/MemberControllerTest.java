@@ -83,6 +83,21 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
+	// 아이디 중복확인 결과
+	@Test
+	public void testB아이디중복확인결과() throws Exception {
+		ResultActions resultActions;
+		
+		// 잘못된 아이디
+		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")));
+	}
+	
 
 	// 회원 등록 아이디 Valid
 	@Test
@@ -149,6 +164,29 @@ public class MemberControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
+		
+	}
+	
+
+	// 회원 등록 완료
+	@Test
+	public void testC회원가입_완료() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+				.param("id", "test_id5")
+				.param("password", "testpassword3!")
+				.param("name", "test3")
+				.param("phone", "01033244343")
+				.param("email", "test_email3@naver.com")
+				.param("zipcode", "test_zipcode3")
+				.param("addr", "test_addr3")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")));
 		
 	}
 	
@@ -228,6 +266,27 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
+	
+	// 회원 로그인 비밀번호 Valid
+	@Test
+	public void testF로그인_결과Valid() throws Exception {
+
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
+				.contentType(MediaType.APPLICATION_JSON));
+
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		// 리다이렉트할 페이지를 리턴하는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")));
+	}
+	
 
 	// 회원 로그아웃
 	@Test
@@ -245,7 +304,21 @@ public class MemberControllerTest {
 		
 	}
 	
-	
+	// [회원수정 페이지]
+	@Test
+	public void testH회원수정페이지() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(get("/api/member/loginupdate").contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 성공햇는지
+		// 포워드할 페이지를 리턴하는지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")))
+		.andExpect(jsonPath("$.data.forward", is("login/update_form")));
+		
+	}
 	
 	
 }

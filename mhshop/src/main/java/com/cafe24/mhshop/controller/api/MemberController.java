@@ -191,7 +191,7 @@ public class MemberController {
 	
 	@Auth
 	@RequestMapping(value = "/loginupdate", method = RequestMethod.GET)
-	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
+	@ApiOperation(value = "[회원수정 페이지]", notes = "회원 수정 페이지 API")
 	public JSONResult loginUpdate(
 			@AuthUser MemberVo authUser,
 			HttpSession session

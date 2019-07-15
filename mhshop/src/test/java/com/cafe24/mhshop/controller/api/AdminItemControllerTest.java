@@ -131,7 +131,41 @@ public class AdminItemControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
+	
 
+	// 관리자 상품 DB에 저장
+	@Test
+	public void testC상품작성() throws Exception {
+		ResultActions resultActions;
+		
+
+		// 성공했을 때
+		resultActions = mockMvc.perform(post("/api/admin/item/write")
+				.param("name", "test_name")
+				.param("description", "test_description2")
+				.param("money", "1000")
+				.param("thumbnail", "test_thumbnail3")
+				.param("categoryNo", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+	}
+
+	
+	// 관리자 상품 DB에 수정 페이지
+	@Test
+	public void testD상품수정_페이지() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/edit/{no}",1L)
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+		
+	}
 	
 	// 관리자 상품 DB에 수정 NO Valid
 	@Test
@@ -174,7 +208,28 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 		
 	}
+
+	// 관리자 상품 DB에 수정
+	@Test
+	public void testD상품수정() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
+				.param("no", "1")
+				.param("name", "test_items")
+				.param("description", "test_description11")
+				.param("money", "11000")
+				.param("thumbnail", "test_thumbnail11")
+				.param("categoryNo", "2")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+		
+	}
 	
+
+
 	
 
 	// 관리자 상품 진열여부 DB에 수정 Valid
@@ -193,6 +248,23 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 		
 	}
+
+	// 관리자 상품 진열여부 DB에 수정
+	@Test
+	public void testE상품진열여부수정() throws Exception {
+		ResultActions resultActions;
+		
+		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
+				.param("display", "FALSE")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패햇는지
+		resultActions
+		.andExpect(status().isOk());
+		
+	}
+	
 	
 
 
@@ -232,6 +304,24 @@ public class AdminItemControllerTest {
 	}
 	
 	
+
+	// 관리자 상품 이미지를 DB에 저장
+	@Test
+	public void testF상품이미지작성() throws Exception {
+		ResultActions resultActions;
+		
+		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
+				.param("itemNo", "1")
+				.param("itemImg", "test_img")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk());
+	}
+	
+	
 	// 관리자 상품 상세옵션 추가 레벨 Valid
 	@Test
 	public void testG상세옵션작성_레벨_Valid() throws Exception {
@@ -248,6 +338,24 @@ public class AdminItemControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
+	}
+	
+
+	// 관리자 상품 상세옵션 추가
+	@Test
+	public void testG상세옵션작성() throws Exception {
+		ResultActions resultActions;
+		
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "초록색")
+				.param("level", "1")
+				.param("itemNo", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk());
 	}
 	
 	
@@ -270,5 +378,23 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 	}
 	
+
+	// 관리자 상품 옵션 추가
+	@Test
+	public void testH옵션작성() throws Exception {
+		ResultActions resultActions;
+
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
+				.param("itemNo", "1")
+				.param("optionDetail1", "1")
+				.param("optionDetail2", "4")
+				.param("cnt", "5")
+				.contentType(MediaType.APPLICATION_JSON));
+
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk());
+	}
 	
 }

@@ -86,6 +86,22 @@ public class AdminCategoryControllerTest {
 
 	}
 	
+	// 관리자 카테고리 등록
+	@Test
+	public void testB카테고리작성() throws Exception {
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(post("/api/admin/category/write")
+				.param("name", "test")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+
+	}
+	
 
 	// 카테고리 리스트
 	@Test
@@ -101,6 +117,36 @@ public class AdminCategoryControllerTest {
 		.andExpect(jsonPath("$.result", is("success")))
 		.andExpect(jsonPath("$.data.forward", is("admin/category_list")));
 		
+	}
+	
+	// 관리자 카테고리 수정
+	@Test
+	public void testD카테고리수정() throws Exception {
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 2L, "test")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+
+	}
+	
+	// 관리자 카테고리 삭제
+	@Test
+	public void testE카테고리삭제() throws Exception {
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+
 	}
 	
 	

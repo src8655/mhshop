@@ -85,6 +85,19 @@ public class AdminMemberControllerTest {
 		.andExpect(jsonPath("$.result", is("fail")));
 		
 	}
+	
+	// 회원 상세보기
+	@Test
+	public void testB회원상세보기() throws Exception {
+		
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id1")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk());
+		
+	}
 
 
 	
@@ -104,6 +117,23 @@ public class AdminMemberControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("fail")));
+	}
+	
+
+	// 회원 삭제
+	@Test
+	public void testC회원삭제() throws Exception {
+		ResultActions resultActions;
+		
+		
+		// 삭제 성공하는 경우
+		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id5")
+				.contentType(MediaType.APPLICATION_JSON));
+		
+		// 응답이 200 인지
+		// 결과가 실패했는지
+		resultActions
+		.andExpect(status().isOk());
 	}
 	
 	
