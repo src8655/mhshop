@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,20 +45,14 @@ public class AdminMemberController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 리스트", notes = "회원 리스트 요청 API")
-	public JSONResult list() {
-		
+	public ResponseEntity<JSONResult> list() {
 		// 권한 확인
-		
 		
 		// Service에 회원리스트 요청
 		List<MemberVo> memberList = memberService.getList();
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("memberList", memberList);
-		dataMap.put("forward", "admin/member_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberList));
 	}
 	
 

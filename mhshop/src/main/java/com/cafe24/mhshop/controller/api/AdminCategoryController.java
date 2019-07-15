@@ -43,21 +43,7 @@ public class AdminCategoryController {
 	ItemService itemService;
 	
 	
-	@Auth(role=Auth.Role.ADMIN)
-	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	@ApiOperation(value = "[관리자 카테고리 작성 페이지]", notes = "관리자 카테고리 작성 페이지 API")
-	public JSONResult write_form() {
-		
-		
-		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("forward", "admin/category_write_form");
-		return JSONResult.success(dataMap);
-	}
 	
-	
-
-	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
 	})
@@ -85,8 +71,6 @@ public class AdminCategoryController {
 	
 
 	
-
-	//@Auth(role=Auth.Role.ADMIN)
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 카테고리 리스트", notes = "관리자 카테고리 리스트 요청 API")
 	public JSONResult list() {
@@ -104,7 +88,6 @@ public class AdminCategoryController {
 	
 	
 
-	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
@@ -134,7 +117,6 @@ public class AdminCategoryController {
 	
 	
 
-	//@Auth(role=Auth.Role.ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
 	})

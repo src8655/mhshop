@@ -43,67 +43,75 @@ public class MemberControllerTest {
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-
+	
+	@Autowired
+	SqlSession sqlSession;
 	
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-	
-	
+		
 
-	// [회원약관, 회원가입 페이지]
-	@Test
-	public void testA회원가입페이지() throws Exception {
+		// DB Member 테이블 초기화
+		// DB 테스트용 데이터 insert
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/join").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("join/join_form")));
-		
+		// member insert
+		sqlSession.delete("test_member.deleteall");
+		sqlSession.insert("test_member.insert", new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key"));
+		sqlSession.insert("test_member.insert", new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN", "mhshop_key"));
+	
 	}
 	
-	// 아이디 중복확인 잘못된 아이디 Valid
+	
+	
+	
+	
+	// 아이디 중복확인
 	@Test
-	public void testB아이디중복확인_아이디_Valid() throws Exception {
+	public void testA아이디중복확인() throws Exception {
 		ResultActions resultActions;
 		
 		// 잘못된 아이디
 		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "1test_id1").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	// 아이디 중복확인 결과
-	@Test
-	public void testB아이디중복확인결과() throws Exception {
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
-		// 잘못된 아이디
+		
+		
+		// 중복된 아이디 상황
 		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id1").contentType(MediaType.APPLICATION_JSON));
-		
 		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 결과가 성공햇는지
+		// 이미 존재해야함
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")));
+		.andExpect(jsonPath("$.result", is("success")))
+		.andExpect(jsonPath("$.data", is(true)));
+		
+		
+		
+		// 사용가능한 아이디 상황
+		resultActions = mockMvc.perform(get("/api/member/join/idcheck/{id}", "test_id3").contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		// 결과가 성공햇는지
+		// 존재하지 않아야함
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.result", is("success")))
+		.andExpect(jsonPath("$.data", is(false)));
 	}
 	
 
-	// 회원 등록 아이디 Valid
+	
+	// 회원 등록 Valid
 	@Test
-	public void testC회원가입_아이디_Valid() throws Exception {
+	public void testB회원가입() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+		
+		// 아이디 Valid
+		resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "1test_id3")
 				.param("password", "testpassword3!")
 				.param("name", "test3")
@@ -112,21 +120,13 @@ public class MemberControllerTest {
 				.param("zipcode", "test_zipcode3")
 				.param("addr", "test_addr3")
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(status().isBadRequest());
 		
-	}
-	
-
-	// 회원 등록 비밀번호 Valid
-	@Test
-	public void testC회원가입_비밀번호_Valid() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+		// 비밀번호 Valid
+		resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id3")
 				.param("password", "testpassword3")
 				.param("name", "test3")
@@ -135,21 +135,13 @@ public class MemberControllerTest {
 				.param("zipcode", "test_zipcode3")
 				.param("addr", "test_addr3")
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(status().isBadRequest());
 		
-	}
-	
-	
-	// 회원 등록 전화번호 Valid
-	@Test
-	public void testC회원가입_전화번호_Valid() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+		// 전화번호 Valid
+		resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id3")
 				.param("password", "testpassword3!")
 				.param("name", "test3")
@@ -158,21 +150,13 @@ public class MemberControllerTest {
 				.param("zipcode", "test_zipcode3")
 				.param("addr", "test_addr3")
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(status().isBadRequest());
 		
-	}
-	
-
-	// 회원 등록 완료
-	@Test
-	public void testC회원가입_완료() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(post("/api/member/join")
+		// 회원가입성공
+		resultActions = mockMvc.perform(post("/api/member/join")
 				.param("id", "test_id5")
 				.param("password", "testpassword3!")
 				.param("name", "test3")
@@ -181,134 +165,81 @@ public class MemberControllerTest {
 				.param("zipcode", "test_zipcode3")
 				.param("addr", "test_addr3")
 				.contentType(MediaType.APPLICATION_JSON));
-		
 		// 응답이 200 인지
-		// 결과가 실패했는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")));
-		
-	}
-	
-	
-	// [회원가입 결과 페이지]
-	@Test
-	public void testD회원가입결과페이지() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/join/result").contentType(MediaType.APPLICATION_JSON));
-
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("join/join_result")));
-		
+		.andExpect(jsonPath("$.data", is(true)));
 	}
+	
 
-	// [로그인 페이지]
+	
+	
+	
+	
+	// 로그인
 	@Test
-	public void testE로그인페이지() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/login").contentType(MediaType.APPLICATION_JSON));
-
-		// 응답이 200 인지
-		// 결과가 성공했는지
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("login/login_form")));
-	}
-
-
-	// 회원 로그인 아이디 Valid
-	@Test
-	public void testF로그인_아이디Valid() throws Exception {
+	public void testC로그인() throws Exception {
 
 		ResultActions resultActions;
 		
-		
+		// 아이디 Valid
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "1test_id1")
 				.param("password", "testpassword1!")
 				.contentType(MediaType.APPLICATION_JSON));
-
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		// 리다이렉트할 페이지를 리턴하는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	
-	
-
-	// 회원 로그인 비밀번호 Valid
-	@Test
-	public void testF로그인_비밀번호Valid() throws Exception {
-
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
+				
 		
-		
+		// 비밀번호 Valid
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "test_id1")
 				.param("password", "testpassword1")
 				.contentType(MediaType.APPLICATION_JSON));
-
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		// 리다이렉트할 페이지를 리턴하는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	
-	// 회원 로그인 비밀번호 Valid
-	@Test
-	public void testF로그인_결과Valid() throws Exception {
-
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
 		
+		// 로그인 실패
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id9")
+				.param("password", "testpassword1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 로그인 성공
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "test_id1")
 				.param("password", "testpassword1!")
 				.contentType(MediaType.APPLICATION_JSON));
-
 		// 응답이 200 인지
-		// 결과가 실패했는지
-		// 리다이렉트할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")));
-	}
-	
-
-	// 회원 로그아웃
-	@Test
-	public void testG로그아웃() throws Exception {
-
-		ResultActions resultActions = mockMvc.perform(post("/api/member/logout").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 리다이렉트할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.redirect", is("/")));
-		
+		.andExpect(jsonPath("$.data", Matchers.notNullValue()));
 	}
 	
-	// [회원수정 페이지]
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	// 회원수정 페이지
 	@Test
 	public void testH회원수정페이지() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/member/loginupdate").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/member/loginupdate").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 결과가 성공햇는지
@@ -319,6 +250,6 @@ public class MemberControllerTest {
 		.andExpect(jsonPath("$.data.forward", is("login/update_form")));
 		
 	}
-	
+	*/
 	
 }

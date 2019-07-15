@@ -45,10 +45,22 @@ public class AdminMemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
+	@Autowired
+	SqlSession sqlSession;
 
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+
+		// DB Member 테이블 초기화
+		// DB 테스트용 데이터 insert
+		
+		// member insert
+		sqlSession.delete("test_member.deleteall");
+		sqlSession.insert("test_member.insert", new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key"));
+		sqlSession.insert("test_member.insert", new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN", "mhshop_key"));
+	
 	}
 	
 	
@@ -59,12 +71,26 @@ public class AdminMemberControllerTest {
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/list").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
+		// 데이터 확인
 		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/member_list")));
+		
+		.andExpect(jsonPath("$.data[0].id", is("test_id2")))
+		.andExpect(jsonPath("$.data[0].name", is("test2")))
+		.andExpect(jsonPath("$.data[0].phone", is("01000000002")))
+		.andExpect(jsonPath("$.data[0].email", is("test_email2@naver.com")))
+		.andExpect(jsonPath("$.data[0].zipcode", is("test_zipcode2")))
+		.andExpect(jsonPath("$.data[0].addr", is("test_addr2")))
+		.andExpect(jsonPath("$.data[0].role", is("ADMIN")))
+		
+		.andExpect(jsonPath("$.data[1].id", is("test_id1")))
+		.andExpect(jsonPath("$.data[1].name", is("test1")))
+		.andExpect(jsonPath("$.data[1].phone", is("01000000001")))
+		.andExpect(jsonPath("$.data[1].email", is("test_email1@naver.com")))
+		.andExpect(jsonPath("$.data[1].zipcode", is("test_zipcode1")))
+		.andExpect(jsonPath("$.data[1].addr", is("test_addr1")))
+		.andExpect(jsonPath("$.data[1].role", is("USER")));
 		
 	}
 	
