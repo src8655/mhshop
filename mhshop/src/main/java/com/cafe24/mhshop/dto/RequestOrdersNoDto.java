@@ -9,7 +9,7 @@ public class RequestOrdersNoDto {
 	private String ordersNo;
 
 	public OrdersVo toVo() {
-		return new OrdersVo(ordersNo, null, null, null, null, null, null, null, null, null, null, null, null);
+		return new OrdersVo(ordersNo, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
 	public String getOrdersNo() {
 		return ordersNo;

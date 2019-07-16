@@ -36,7 +36,7 @@
 	
 	
 	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="membervo">
+	<insert id="test_insert" parameterType="categoryvo">
 	<![CDATA[
 		insert into category(no, name)
 		values(#{no}, #{name})

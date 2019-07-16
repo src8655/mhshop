@@ -5,11 +5,13 @@
 		<typeAlias alias="membervo" type="com.cafe24.mhshop.vo.MemberVo"/>
 		<typeAlias alias="categoryvo" type="com.cafe24.mhshop.vo.CategoryVo"/>
 		<typeAlias alias="itemvo" type="com.cafe24.mhshop.vo.ItemVo"/>
+		<typeAlias alias="ordersvo" type="com.cafe24.mhshop.vo.OrdersVo"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="com/cafe24/config/app/mybatis/mapper/member.xml" />
 		<mapper resource="com/cafe24/config/app/mybatis/mapper/category.xml" />
 		<mapper resource="com/cafe24/config/app/mybatis/mapper/item.xml" />
+		<mapper resource="com/cafe24/config/app/mybatis/mapper/orders.xml" />
 	</mappers>
 </configuration>

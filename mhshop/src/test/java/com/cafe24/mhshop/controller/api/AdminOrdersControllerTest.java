@@ -18,8 +18,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,6 +41,7 @@ import com.cafe24.mhshop.vo.MemberVo;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdminOrdersControllerTest {
 	private MockMvc mockMvc;
 
@@ -55,16 +58,21 @@ public class AdminOrdersControllerTest {
 	// 주문 리스트
 	@Test
 	public void testA주문리스트페이지() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/orders/list").contentType(MediaType.APPLICATION_JSON));
-		
+		resultActions = mockMvc.perform(get("/api/admin/orders/list").contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/orders_list")));
+		
+		.andExpect(jsonPath("$.data[2].status", is("입금대기")))
+		.andExpect(jsonPath("$.data[2].money", is(10000)))
+		.andExpect(jsonPath("$.data[2].trackingNum", Matchers.nullValue()))
+		.andExpect(jsonPath("$.data[2].toName", is("test_name1")))
+		.andExpect(jsonPath("$.data[2].toPhone", is("01000000001")))
+		.andExpect(jsonPath("$.data[2].toZipcode", is("test_zipcode1")))
+		.andExpect(jsonPath("$.data[2].toAddr", is("test_addr1")))
+		.andExpect(jsonPath("$.data[2].memberId", is("test_id1")));
 		
 	}
 	

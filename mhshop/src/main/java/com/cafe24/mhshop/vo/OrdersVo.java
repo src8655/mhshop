@@ -5,7 +5,7 @@ public class OrdersVo {
 	private String regDate;
 	private String status;
 	private String bankName;
-	private String bankNumber;
+	private String bankNum;
 	private String payDate;
 	private Long money;
 	private String trackingNum;
@@ -14,19 +14,20 @@ public class OrdersVo {
 	private String toZipcode;
 	private String toAddr;
 	private String memberId;
+	
+	private String aesKey;
 
 	public OrdersVo() {}
 	
 
-	public OrdersVo(String ordersNo, String regDate, String status, String bankName, String bankNumber, String payDate,
+	public OrdersVo(String ordersNo, String regDate, String status, String bankName, String bankNum, String payDate,
 			Long money, String trackingNum, String toName, String toPhone, String toZipcode, String toAddr,
-			String memberId) {
-		super();
+			String memberId, String aesKey) {
 		this.ordersNo = ordersNo;
 		this.regDate = regDate;
 		this.status = status;
 		this.bankName = bankName;
-		this.bankNumber = bankNumber;
+		this.bankNum = bankNum;
 		this.payDate = payDate;
 		this.money = money;
 		this.trackingNum = trackingNum;
@@ -35,20 +36,26 @@ public class OrdersVo {
 		this.toZipcode = toZipcode;
 		this.toAddr = toAddr;
 		this.memberId = memberId;
+		this.aesKey = aesKey;
 	}
-
-
+	
+	public String getBankNum() {
+		return bankNum;
+	}
+	public void setBankNum(String bankNum) {
+		this.bankNum = bankNum;
+	}
+	public String getAesKey() {
+		return aesKey;
+	}
+	public void setAesKey(String aesKey) {
+		this.aesKey = aesKey;
+	}
 	public String getBankName() {
 		return bankName;
 	}
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
-	}
-	public String getBankNumber() {
-		return bankNumber;
-	}
-	public void setBankNumber(String bankNumber) {
-		this.bankNumber = bankNumber;
 	}
 	public String getPayDate() {
 		return payDate;

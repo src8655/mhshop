@@ -16,7 +16,7 @@
 	
 	
 	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="membervo">
+	<insert id="test_insert" parameterType="itemvo">
 	<![CDATA[
 		insert into item(no, name, description, money, thumbnail, display, category_no)
 		values(#{no}, #{name}, #{description}, #{money}, #{thumbnail}, #{display}, #{categoryNo})

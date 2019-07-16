@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,20 +62,12 @@ public class AdminOrdersController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "주문 리스트", notes = "주문 리스트 요청 API")
-	public JSONResult list() {
-		
-		// 권한 확인
-		
-		
+	public ResponseEntity<JSONResult> list() {
 		// OrdersService에 주문리스트 요청
 		List<OrdersVo> ordersList = ordersService.getList();
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("ordersList", ordersList);
-		dataMap.put("forward", "admin/orders_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
 	}
 	
 	
@@ -124,7 +118,7 @@ public class AdminOrdersController {
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/paycheck/{ordersNo}", method = RequestMethod.PUT)
-	@ApiOperation(value = "무통장 결제확인 상태변경 요청", notes = "무통장 결제확인 상태변경 요청 API")
+	@ApiOperation(value = "결제확인 상태변경 요청", notes = "무통장 결제확인 상태변경 요청 API")
 	public JSONResult paycheck(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result
@@ -156,7 +150,7 @@ public class AdminOrdersController {
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "trackingNum", value = "운송장번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/trackingnumbercheck/{ordersNo}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/tnumcheck/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "운송장번호 등록 요청", notes = "운송장번호 등록 요청 API")
 	public JSONResult trackingnumbercheck(
 			@ModelAttribute @Valid RequestOrdersTrackingDto dto,
@@ -167,9 +161,6 @@ public class AdminOrdersController {
 
 		// 유효성검사
 		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-
-		// 유효성검사
-		if(dto.getTrackingNum().equals("")) return JSONResult.fail("잘못된 입력 입니다.");
 		
 		// OrdersService에 운송장번호 수정 요청
 		ordersService.changeTrackingNum(dto.getOrdersNo(), dto.getTrackingNum());

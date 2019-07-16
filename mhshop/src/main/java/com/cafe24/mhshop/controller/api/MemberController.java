@@ -56,8 +56,7 @@ public class MemberController {
 			BindingResult result
 			) {
 		// 유효성검사
-		if(result.hasErrors()) 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		
 		// Service에 요청

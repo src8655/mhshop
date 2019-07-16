@@ -102,7 +102,7 @@ public class AdminMemberControllerTest {
 		
 
 		// 없는 아이디
-		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id5")
+		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id9999")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -152,7 +152,7 @@ public class AdminMemberControllerTest {
 		
 
 		// 삭제 성공
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id1")
+		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id2")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
