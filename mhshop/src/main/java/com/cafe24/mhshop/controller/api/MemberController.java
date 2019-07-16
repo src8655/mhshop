@@ -96,8 +96,7 @@ public class MemberController {
 	
 	
 	
-	
-	
+
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "id", value = "아이디", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = "")

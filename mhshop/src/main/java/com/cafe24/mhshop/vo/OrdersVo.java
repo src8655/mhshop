@@ -4,7 +4,9 @@ public class OrdersVo {
 	private String ordersNo;
 	private String regDate;
 	private String status;
-	private String pay;
+	private String bankName;
+	private String bankNumber;
+	private String payDate;
 	private Long money;
 	private String trackingNum;
 	private String toName;
@@ -15,12 +17,17 @@ public class OrdersVo {
 
 	public OrdersVo() {}
 	
-	public OrdersVo(String ordersNo, String regDate, String status, String pay, Long money, String trackingNum,
-			String toName, String toPhone, String toZipcode, String toAddr, String memberId) {
+
+	public OrdersVo(String ordersNo, String regDate, String status, String bankName, String bankNumber, String payDate,
+			Long money, String trackingNum, String toName, String toPhone, String toZipcode, String toAddr,
+			String memberId) {
+		super();
 		this.ordersNo = ordersNo;
 		this.regDate = regDate;
 		this.status = status;
-		this.pay = pay;
+		this.bankName = bankName;
+		this.bankNumber = bankNumber;
+		this.payDate = payDate;
 		this.money = money;
 		this.trackingNum = trackingNum;
 		this.toName = toName;
@@ -30,6 +37,25 @@ public class OrdersVo {
 		this.memberId = memberId;
 	}
 
+
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getBankNumber() {
+		return bankNumber;
+	}
+	public void setBankNumber(String bankNumber) {
+		this.bankNumber = bankNumber;
+	}
+	public String getPayDate() {
+		return payDate;
+	}
+	public void setPayDate(String payDate) {
+		this.payDate = payDate;
+	}
 	public String getMemberId() {
 		return memberId;
 	}
@@ -53,12 +79,6 @@ public class OrdersVo {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public String getPay() {
-		return pay;
-	}
-	public void setPay(String pay) {
-		this.pay = pay;
 	}
 	public Long getMoney() {
 		return money;

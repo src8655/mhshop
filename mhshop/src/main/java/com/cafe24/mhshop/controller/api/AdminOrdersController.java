@@ -25,8 +25,6 @@ import com.cafe24.mhshop.service.ItemService;
 import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.service.OrdersItemService;
 import com.cafe24.mhshop.service.OrdersService;
-import com.cafe24.mhshop.service.PayBankService;
-import com.cafe24.mhshop.service.PayKakaoService;
 import com.cafe24.mhshop.vo.GuestVo;
 import com.cafe24.mhshop.vo.ItemImgVo;
 import com.cafe24.mhshop.vo.ItemVo;
@@ -35,8 +33,6 @@ import com.cafe24.mhshop.vo.OptionDetailVo;
 import com.cafe24.mhshop.vo.OptionVo;
 import com.cafe24.mhshop.vo.OrdersItemVo;
 import com.cafe24.mhshop.vo.OrdersVo;
-import com.cafe24.mhshop.vo.PayBankVo;
-import com.cafe24.mhshop.vo.PayKakaoVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -51,11 +47,6 @@ public class AdminOrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
-	@Autowired
-	PayBankService payBankService;
-	
-	@Autowired
-	PayKakaoService payKakaoService;
 	
 	@Autowired
 	GuestService guestService;
@@ -104,9 +95,6 @@ public class AdminOrdersController {
 		// OrdersService에 주문상세 요청
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		
-		// PayBankService와 PayKakaoService에 결제정보 요청
-		PayBankVo payBankVo = payBankService.getByOrdersNo(dto.getOrdersNo());
-		PayKakaoVo payKakaoVo = payKakaoService.getByOrdersNo(dto.getOrdersNo());
 		
 		// GuestService나 MemberService에 구매자 정보 요청
 		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
@@ -124,8 +112,6 @@ public class AdminOrdersController {
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("ordersVo", ordersVo);
-		dataMap.put("payBankVo", payBankVo);
-		dataMap.put("payKakaoVo", payKakaoVo);
 		dataMap.put("guestVo", guestVo);
 		dataMap.put("memberVo", memberVo);
 		dataMap.put("ordersItemList", ordersItemList);
@@ -152,9 +138,6 @@ public class AdminOrdersController {
 		// OrderService에서 하나 가져와서 상태 확인(입금대기 상태가 아니면 fail)
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		if(!ordersVo.getStatus().equals("입금대기")) return JSONResult.fail("변경할 수 없는 상태입니다.");
-		
-		// PayBankService에 날짜 갱신 요청
-		payBankService.updateDate(dto.getOrdersNo());
 		
 		// OrdersService에 상태변경 요청(입금대기 상태가 아니였으면 false가 나온다)
 		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "결제완료");

@@ -15,7 +15,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
+
+		System.out.println("inter!!!");
 		//1. handler종류 확인 HanlderMethod, DefaultHandlerServlet
 		if(handler instanceof HandlerMethod == false) {		// images, css, js
 			return true;
@@ -27,7 +28,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		//3. Method의 @Auth 받아오기
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 
-		
 		//5. @Auth가 안 붇는 경우
 		if(auth == null) {
 			return true;

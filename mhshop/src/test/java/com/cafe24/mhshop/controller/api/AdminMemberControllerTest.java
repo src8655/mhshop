@@ -97,31 +97,42 @@ public class AdminMemberControllerTest {
 	
 	
 
-	// 회원 상세보기 ID Valid
-	@Test
-	public void testB회원상세보기_아이디_Valid() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-		
-	}
-	
 	// 회원 상세보기
 	@Test
 	public void testB회원상세보기() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id1")
+		
+		// 아이디 Valid
+		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
 		
+
+		// 없는 아이디
+		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id5")
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", Matchers.nullValue()));
+		
+		
+		// 있는 아이디
+		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.id", is("test_id1")))
+		.andExpect(jsonPath("$.data.name", is("test1")))
+		.andExpect(jsonPath("$.data.phone", is("01000000001")))
+		.andExpect(jsonPath("$.data.email", is("test_email1@naver.com")))
+		.andExpect(jsonPath("$.data.zipcode", is("test_zipcode1")))
+		.andExpect(jsonPath("$.data.addr", is("test_addr1")))
+		.andExpect(jsonPath("$.data.role", is("USER")));
 		
 	}
 

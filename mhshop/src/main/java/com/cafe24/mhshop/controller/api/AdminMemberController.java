@@ -61,16 +61,13 @@ public class AdminMemberController {
 	})
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 상세보기", notes = "회원 상세보기 요청 API")
-	public JSONResult view(
+	public ResponseEntity<JSONResult> view(
 			@ModelAttribute @Valid RequestMemberIdDto dto,
 			BindingResult result
 			) {
 		
-		// 권한 확인
-		
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		
 		// Service에 회원상세 요청
@@ -78,10 +75,7 @@ public class AdminMemberController {
 		
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("memberVo", memberVo);
-		dataMap.put("forward", "admin/member_view");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberVo));
 	}
 	
 	
