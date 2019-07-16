@@ -102,7 +102,6 @@ public class AdminMemberControllerTest {
 	public void testB회원상세보기() throws Exception {
 		ResultActions resultActions;
 		
-		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
 				.contentType(MediaType.APPLICATION_JSON));
@@ -133,28 +132,9 @@ public class AdminMemberControllerTest {
 		.andExpect(jsonPath("$.data.zipcode", is("test_zipcode1")))
 		.andExpect(jsonPath("$.data.addr", is("test_addr1")))
 		.andExpect(jsonPath("$.data.role", is("USER")));
-		
 	}
 
 
-	
-
-	// 회원 삭제 ID Valid
-	@Test
-	public void testC회원삭제_아이디_Valid() throws Exception {
-		ResultActions resultActions;
-		
-		
-		// 삭제 성공하는 경우
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "1test_id1")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
 	
 
 	// 회원 삭제
@@ -163,16 +143,31 @@ public class AdminMemberControllerTest {
 		ResultActions resultActions;
 		
 		
-		// 삭제 성공하는 경우
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id5")
+		// 아이디 Valid
+		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "1test_id1")
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isBadRequest());
+		
+
+		// 삭제 실패(없는 아이디)
+		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id3")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(false)));
+		
+
+		// 삭제 성공
+		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
-	
 	
 	
 }

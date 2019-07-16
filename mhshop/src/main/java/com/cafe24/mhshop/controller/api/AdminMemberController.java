@@ -65,14 +65,11 @@ public class AdminMemberController {
 			@ModelAttribute @Valid RequestMemberIdDto dto,
 			BindingResult result
 			) {
-		
 		// 유효성검사
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		
 		// Service에 회원상세 요청
 		MemberVo memberVo = memberService.getById(dto.getId());
-		
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberVo));
@@ -84,25 +81,18 @@ public class AdminMemberController {
 	})
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "회원 삭제", notes = "회원 삭제 요청 API")
-	public JSONResult delete(
+	public ResponseEntity<JSONResult> delete(
 			@ModelAttribute @Valid RequestMemberIdDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// Service에 회원 삭제 요청
 		boolean isSuccess = memberService.delete(dto.getId());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/member/list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 }
