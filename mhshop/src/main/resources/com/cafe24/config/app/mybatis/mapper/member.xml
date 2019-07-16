@@ -133,7 +133,7 @@
 		AES_ENCRYPT(#{email}, #{aesKey}),
 		AES_ENCRYPT(#{zipcode}, #{aesKey}),
 		AES_ENCRYPT(#{addr}, #{aesKey}),
-		now(),
+		STR_TO_DATE(#{regDate}, '%Y-%m-%d'),
 		#{role})
 	]]>
 	</insert>

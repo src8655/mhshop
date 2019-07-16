@@ -91,7 +91,7 @@ public class MemberControllerTest {
 	
 
 	
-	// 회원 등록 Valid
+	// 회원가입
 	@Test
 	public void testB회원가입() throws Exception {
 		ResultActions resultActions;
@@ -144,7 +144,7 @@ public class MemberControllerTest {
 		
 		// 회원가입성공
 		resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "test_id5")
+				.param("id", "test_id0")
 				.param("password", "testpassword3!")
 				.param("name", "test3")
 				.param("phone", "01033244343")
