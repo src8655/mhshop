@@ -17,8 +17,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,6 +39,7 @@ import com.cafe24.mhshop.config.TestWebConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdminCategoryControllerTest {
 	private MockMvc mockMvc;
 	
@@ -46,21 +49,27 @@ public class AdminCategoryControllerTest {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		// DB category, item 테이블 초기화
-		// DB 테스트용 데이터 insert
+	}
 
-		// category insert
+
+	// 카테고리 리스트
+	@Test
+	public void testA카테고리리스트() throws Exception {
 		
+		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/list").contentType(MediaType.APPLICATION_JSON));
 		
-		// item insert
-		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
-		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 1)
+		// 응답이 200 인지
+		resultActions.andExpect(status().isOk())
+		
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data[1].no", is(2)))
+		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
 	}
 	
 	// 관리자 카테고리 등록
 	@Test
-	public void testA카테고리작성() throws Exception {
+	public void testB카테고리작성() throws Exception {
 		ResultActions resultActions;
 		
 		// 카테고리명 Valid
@@ -81,21 +90,6 @@ public class AdminCategoryControllerTest {
 		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
-
-	// 카테고리 리스트
-	@Test
-	public void testB카테고리리스트() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/list").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
-		
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
-		.andExpect(jsonPath("$.data[1].no", is(2)))
-		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
-	}
 	
 	// 관리자 카테고리 수정
 	@Test
@@ -127,7 +121,7 @@ public class AdminCategoryControllerTest {
 	
 	// 관리자 카테고리 삭제
 	@Test
-	public void testE카테고리삭제() throws Exception {
+	public void testD카테고리삭제() throws Exception {
 		ResultActions resultActions;
 
 		// 카테고리번호 Valid
@@ -145,16 +139,17 @@ public class AdminCategoryControllerTest {
 		
 		
 		// 없는 카테고리 번호로 실패
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 3L)
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 9999L)
 				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
+		// 응답이 200 인지
+		resultActions.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(false)));
 		
 		
 		// 카테고리 삭제 완료
 		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
 				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
+		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(true)));
 	}

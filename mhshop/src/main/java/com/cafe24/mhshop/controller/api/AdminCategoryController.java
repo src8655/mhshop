@@ -115,9 +115,6 @@ public class AdminCategoryController {
 		// 유효성검사
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// @ModelAttribute로 처리
-		CategoryVo cvo = new CategoryVo();
-		cvo.setNo(dto.getNo());
 		
 		// ItemService 에서 제품이 있는지 확인요청(없어야 삭제)
 		boolean hasItem = itemService.hasItemByCategory(dto.getNo());

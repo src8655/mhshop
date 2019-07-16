@@ -6,14 +6,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cafe24.mhshop.repository.ItemDao;
 import com.cafe24.mhshop.service.ItemService;
 import com.cafe24.mhshop.vo.ItemVo;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 	
-
-	
+	@Autowired
+	ItemDao itemDao;
 	
 	// 가짜DB
 	private List<ItemVo> getItemTable() {
@@ -29,18 +30,8 @@ public class ItemServiceImpl implements ItemService {
 	// 카테고리번호에 해당하는 아이템이 있는지?
 	@Override
 	public boolean hasItemByCategory(Long categoryNo) {
-		
-		// 가짜DB
-		List<ItemVo> itemTable = getItemTable();
-		
-		
-		
-		// DAO에 요청
-		
-		
-		// 가짜
-		for(ItemVo vo : itemTable) if(vo.getCategoryNo() == categoryNo) return true;
-		return false;
+		Integer count = itemDao.countByCategory(categoryNo);
+		return count != 0;
 	}
 
 	

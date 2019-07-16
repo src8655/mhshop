@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="item">
+
+	<!-- 카테고리번호에 해당하는 아이템 개수 -->
+	<select id="countByCategory" parameterType="long" resultType="Integer">
+		select count(*) from item where category_no=#{categoryNo}
+	</select>
+	
+	
+	
+	
+	
+	<!-- 테스트 -->
+	
+	
+	<!-- 테스트 insert -->
+	<insert id="test_insert" parameterType="membervo">
+	<![CDATA[
+		insert into item(no, name, description, money, thumbnail, display, category_no)
+		values(#{no}, #{name}, #{description}, #{money}, #{thumbnail}, #{display}, #{categoryNo})
+	]]>
+	</insert>
+	
+	<!-- 테스트 deleteall -->
+	<delete id="test_deleteall">
+		delete from item
+	</delete>
+	
+</mapper>

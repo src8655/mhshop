@@ -15,8 +15,17 @@
 		insert into category(name) values(#{name})
 	</insert>
 	
+	<!-- 카테고리 수정 -->
+	<update id="update" parameterType="categoryvo">
+		update category set
+		name = #{name}
+		where no=#{no}
+	</update>
 	
-	
+	<!-- 카테고리 삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from category where no=#{no}
+	</delete>
 	
 	
 	

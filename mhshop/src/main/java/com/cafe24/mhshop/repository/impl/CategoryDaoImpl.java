@@ -28,6 +28,20 @@ public class CategoryDaoImpl implements CategoryDao {
 	public Integer insert(CategoryVo categoryVo) {
 		return sqlSession.insert("category.insert", categoryVo);
 	}
+
+
+	// 카테고리 수정
+	@Override
+	public Integer update(CategoryVo categoryVo) {
+		return sqlSession.update("category.update", categoryVo);
+	}
+
+
+	// 카테고리 삭제
+	@Override
+	public Integer delete(Long no) {
+		return sqlSession.update("category.delete", no);
+	}
 	
 	
 }
