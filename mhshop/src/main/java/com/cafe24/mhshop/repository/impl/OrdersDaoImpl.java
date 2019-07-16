@@ -1,6 +1,7 @@
 package com.cafe24.mhshop.repository.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,20 @@ public class OrdersDaoImpl implements OrdersDao {
 	public OrdersVo selectOne(OrdersVo ordersVo) {
 		ordersVo.setAesKey(aesKey);
 		return (OrdersVo)sqlSession.selectOne("orders.selectOne", ordersVo);
+	}
+	
+	
+	// 상태 변경
+	@Override
+	public Integer updateStatus(Map<String, String> map) {
+		return sqlSession.update("orders.updateStatus", map);
+	}
+
+
+	// 운송장번호 변경
+	@Override
+	public Integer updateTrackingNum(Map<String, String> map) {
+		return sqlSession.update("orders.updateTrackingNum", map);
 	}
 	
 	

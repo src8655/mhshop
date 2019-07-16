@@ -110,28 +110,22 @@ public class AdminOrdersController {
 	})
 	@RequestMapping(value = "/paycheck/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "결제확인 상태변경 요청", notes = "무통장 결제확인 상태변경 요청 API")
-	public JSONResult paycheck(
+	public ResponseEntity<JSONResult> paycheck(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// OrderService에서 하나 가져와서 상태 확인(입금대기 상태가 아니면 fail)
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
-		if(!ordersVo.getStatus().equals("입금대기")) return JSONResult.fail("변경할 수 없는 상태입니다.");
+		if(!ordersVo.getStatus().equals("입금대기")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("변경할 수 없는 상태입니다."));
 		
 		// OrdersService에 상태변경 요청(입금대기 상태가 아니였으면 false가 나온다)
 		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "결제완료");
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/orders/view");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
@@ -143,15 +137,12 @@ public class AdminOrdersController {
 	})
 	@RequestMapping(value = "/tnumcheck/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "운송장번호 등록 요청", notes = "운송장번호 등록 요청 API")
-	public JSONResult trackingnumbercheck(
+	public ResponseEntity<JSONResult> trackingnumbercheck(
 			@ModelAttribute @Valid RequestOrdersTrackingDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// OrdersService에 운송장번호 수정 요청
 		ordersService.changeTrackingNum(dto.getOrdersNo(), dto.getTrackingNum());
@@ -160,10 +151,7 @@ public class AdminOrdersController {
 		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "배송중");
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/orders/view");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 }

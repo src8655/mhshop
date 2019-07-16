@@ -1,7 +1,9 @@
 package com.cafe24.mhshop.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,23 +48,23 @@ public class OrdersServiceImpl implements OrdersService {
 
 	// 상태 변경
 	@Override
-	public boolean changeStatus(String ordersNo, String string) {
-
-		// DAO에 요청
-		
-		// 가짜
-		return true;
+	public boolean changeStatus(String ordersNo, String status) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("ordersNo", ordersNo);
+		map.put("status", status);
+		Integer result = ordersDao.updateStatus(map);
+		return result == 1;
 	}
 
 
 	// 운송장번호 변경
 	@Override
 	public boolean changeTrackingNum(String ordersNo, String trackingNum) {
-
-		// DAO에 요청
-		
-		// 가짜
-		return true;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("ordersNo", ordersNo);
+		map.put("trackingNum", trackingNum);
+		Integer result = ordersDao.updateTrackingNum(map);
+		return result == 1;
 	}
 
 }

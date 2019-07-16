@@ -32,6 +32,25 @@
 	</select>
 	
 	
+	<!-- 상태변경 -->
+	<update id="updateStatus" parameterType="java.util.Map">
+		update orders set
+		status=#{status}
+		where orders_no=#{ordersNo}
+	</update>
+	
+	
+	<!-- 운송장번호 입력 -->
+	<update id="updateTrackingNum" parameterType="java.util.Map">
+		update orders set
+		tracking_num=#{trackingNum}
+		where orders_no=#{ordersNo}
+	</update>
+	
+	
+	
+	
+	
 	
 	
 	
