@@ -38,13 +38,9 @@ public class OrdersServiceImpl implements OrdersService {
 	// 주문상세
 	@Override
 	public OrdersVo getByOrdersNo(String ordersNo) {
-		
-		// DAO에 요청
-		
-		// 가짜
-		List<OrdersVo> ordersTable =  getOrdersTable();
-		for(OrdersVo vo : ordersTable) if(ordersNo.equals(vo.getOrdersNo())) return vo;
-		return null;
+		OrdersVo ordersVo = new OrdersVo();
+		ordersVo.setOrdersNo(ordersNo);
+		return ordersDao.selectOne(ordersVo);
 	}
 
 

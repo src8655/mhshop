@@ -76,19 +76,15 @@ public class AdminOrdersController {
 	})
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "주문 상세보기", notes = "주문 상세보기 요청 API")
-	public JSONResult view(
+	public ResponseEntity<JSONResult> view(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// OrdersService에 주문상세 요청
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
-		
 		
 		// GuestService나 MemberService에 구매자 정보 요청
 		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
@@ -97,11 +93,7 @@ public class AdminOrdersController {
 			memberVo = memberService.getById(new RequestMemberIdDto(ordersVo.getMemberId()).toVo());
 		
 		// OrdersItemService에 주문상품리스트 요청
-		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo();
-		
-		
-		
-		
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -109,8 +101,7 @@ public class AdminOrdersController {
 		dataMap.put("guestVo", guestVo);
 		dataMap.put("memberVo", memberVo);
 		dataMap.put("ordersItemList", ordersItemList);
-		dataMap.put("forward", "admin/orders_view");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(dataMap));
 	}
 	
 	

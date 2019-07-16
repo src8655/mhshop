@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ordersitem">
+
+	<!-- 상품상세 리스트 -->
+	<select id="selectList" parameterType="string" resultType="ordersitemvo">
+		select
+			no, 
+			orders_no as ordersNo, 
+			option_no as optionNo, 
+			item_name as itemName, 
+			item_thumbnail as itemThumbnail, 
+			item_option_detail1 as itemOptionDetail1, 
+			item_option_detail2 as itemOptionDetail2, 
+			money, 
+			cnt
+		from orders_item
+		where orders_no=#{ordersNo}
+		order by no asc
+	</select>
+
+
+
+
+	
+	
+	
+	
+	
+	<!-- 테스트 -->
+	
+	
+	<!-- 테스트 insert -->
+	<insert id="test_insert" parameterType="categoryvo">
+	<![CDATA[
+		insert into orders_item(
+			no, 
+			orders_no, 
+			option_no, 
+			item_name, 
+			item_thumbnail, 
+			item_option_detail1, 
+			item_option_detail2, 
+			money, 
+			cnt
+		)
+		values(
+		#{no},
+		#{ordersNo},
+		#{optionNo},
+		#{itemName},
+		#{itemThumbnail},
+		#{itemOptionDetail1},
+		#{itemOptionDetail2},
+		#{money},
+		#{cnt}
+		)
+	]]>
+	</insert>
+	
+	<!-- 테스트 deleteall -->
+	<delete id="test_deleteall">
+		delete from orders_item
+	</delete>
+	
+</mapper>

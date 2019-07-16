@@ -5,13 +5,23 @@ public class GuestVo {
 	private String guestName;
 	private String guestPhone;
 	private String guestPassword;
+	
+	private String aesKey;
 
 	public GuestVo() {}
-	public GuestVo(String ordersNo, String guestName, String guestPhone, String guestPassword) {
+	public GuestVo(String ordersNo, String guestName, String guestPhone, String guestPassword, String aesKey) {
 		this.ordersNo = ordersNo;
 		this.guestName = guestName;
 		this.guestPhone = guestPhone;
 		this.guestPassword = guestPassword;
+		this.aesKey = aesKey;
+	}
+
+	public String getAesKey() {
+		return aesKey;
+	}
+	public void setAesKey(String aesKey) {
+		this.aesKey = aesKey;
 	}
 	public String getOrdersNo() {
 		return ordersNo;

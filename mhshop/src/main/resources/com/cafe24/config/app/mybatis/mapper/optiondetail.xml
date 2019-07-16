@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="optiondetail">
+
+
+	
+	
+	
+	
+	
+	
+	<!-- 테스트 -->
+	
+	
+	<!-- 테스트 insert -->
+	<insert id="test_insert" parameterType="categoryvo">
+	<![CDATA[
+		insert into option_detail(no, option_name, level, item_no)
+		values(#{no}, #{optionName}, #{level}, #{itemNo})
+	]]>
+	</insert>
+	
+	<!-- 테스트 deleteall -->
+	<delete id="test_deleteall">
+		delete from option_detail
+	</delete>
+	
+</mapper>

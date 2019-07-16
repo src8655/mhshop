@@ -17,6 +17,22 @@
 	</select>
 	
 	
+	<!-- 주문상세 -->
+	<select id="selectOne" parameterType="ordersvo" resultType="ordersvo">
+		select orders_no as ordersNo, reg_date as regDate, status, bank_name as bankName, bank_num as bankNum, pay_date as payDate, money, tracking_num as trackingNum,
+
+		cast(AES_DECRYPT(to_name, #{aesKey}) as char) as toName,
+		cast(AES_DECRYPT(to_phone, #{aesKey}) as char) as toPhone,
+		cast(AES_DECRYPT(to_zipcode, #{aesKey}) as char) as toZipcode,
+		cast(AES_DECRYPT(to_addr, #{aesKey}) as char) as toAddr,
+		cast(AES_DECRYPT(member_id, #{aesKey}) as char) as memberId
+		
+		from orders
+		where orders_no=#{ordersNo}
+	</select>
+	
+	
+	
 	
 	
 	<!-- 테스트 -->

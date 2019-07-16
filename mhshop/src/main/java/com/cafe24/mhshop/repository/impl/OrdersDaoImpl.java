@@ -23,6 +23,14 @@ public class OrdersDaoImpl implements OrdersDao {
 	public List<OrdersVo> selectList() {
 		return sqlSession.selectList("orders.selectList", aesKey);
 	}
+
+	
+	// 주문상세
+	@Override
+	public OrdersVo selectOne(OrdersVo ordersVo) {
+		ordersVo.setAesKey(aesKey);
+		return (OrdersVo)sqlSession.selectOne("orders.selectOne", ordersVo);
+	}
 	
 	
 
