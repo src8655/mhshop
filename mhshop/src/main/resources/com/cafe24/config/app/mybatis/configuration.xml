@@ -3,9 +3,11 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="membervo" type="com.cafe24.mhshop.vo.MemberVo"/>
+		<typeAlias alias="categoryvo" type="com.cafe24.mhshop.vo.CategoryVo"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="com/cafe24/config/app/mybatis/mapper/member.xml" />
+		<mapper resource="com/cafe24/config/app/mybatis/mapper/category.xml" />
 	</mappers>
 </configuration>

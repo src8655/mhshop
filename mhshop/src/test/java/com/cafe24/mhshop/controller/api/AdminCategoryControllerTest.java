@@ -51,13 +51,11 @@ public class AdminCategoryControllerTest {
 		// DB 테스트용 데이터 insert
 
 		// category insert
-		// insert into category(no, name) values(1, 'test_category1')
-		// insert into category(no, name) values(2, 'test_category2')
 		
 		
 		// item insert
 		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
-		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 2)
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 1)
 	}
 	
 	// 관리자 카테고리 등록
@@ -132,15 +130,34 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testE카테고리삭제() throws Exception {
 		ResultActions resultActions;
+
+		// 카테고리번호 Valid
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", "aa")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions.andExpect(status().isBadRequest());
+		
+
+		// 카테고리에 속한 상품이 있을 경우
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 1L)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions.andExpect(status().isBadRequest());
 		
 		
+		// 없는 카테고리 번호로 실패
+		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 3L)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions.andExpect(status().isBadRequest());
+		
+		
+		// 카테고리 삭제 완료
 		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk());
-
+		// 응답이 400 인지
+		resultActions.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 	

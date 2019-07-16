@@ -6,13 +6,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cafe24.mhshop.repository.CategoryDao;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.vo.CategoryVo;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 	
-	
+	@Autowired
+	CategoryDao categoryDao;
 	
 	
 	// 가짜DB
@@ -30,12 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 	// 카테고리 리스트 조회
 	@Override
 	public List<CategoryVo> getList() {
-		
-		// DAO에 요청
-		
-		
-		// 가짜
-		return getCategoryTable();
+		return categoryDao.getList();
 	}
 
 	// 카테고리 추가

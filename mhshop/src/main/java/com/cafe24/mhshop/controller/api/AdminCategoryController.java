@@ -108,33 +108,25 @@ public class AdminCategoryController {
 	})
 	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 삭제", notes = "관리자 카테고리 삭제 API")
-	public JSONResult delete(
+	public ResponseEntity<JSONResult> delete(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-		
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// @ModelAttribute로 처리
 		CategoryVo cvo = new CategoryVo();
 		cvo.setNo(dto.getNo());
 		
-		
 		// ItemService 에서 제품이 있는지 확인요청(없어야 삭제)
 		boolean hasItem = itemService.hasItemByCategory(dto.getNo());
-		if(hasItem) return JSONResult.fail("제품이 존재합니다.");
-		
+		if(hasItem) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("제품이 존재합니다."));
 		
 		// Service에 삭제 요청
 		boolean isSuccess = categoryService.delete(dto.getNo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/category/category_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 }

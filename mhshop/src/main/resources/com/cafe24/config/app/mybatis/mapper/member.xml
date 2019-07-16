@@ -110,4 +110,36 @@
 		
 		where id=AES_ENCRYPT(#{id}, #{aesKey})
 	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 테스트 -->
+	
+	
+	<!-- 테스트를 위한 삽입쿼리 -->
+	<insert id="test_insert" parameterType="membervo">
+	<![CDATA[
+		insert into member(id, password, name, phone, email, zipcode, addr, reg_date, role)
+		values(
+		AES_ENCRYPT(#{id}, #{aesKey}),
+		SHA2(#{password}, 512),
+		AES_ENCRYPT(#{name}, #{aesKey}),
+		AES_ENCRYPT(#{phone}, #{aesKey}),
+		AES_ENCRYPT(#{email}, #{aesKey}),
+		AES_ENCRYPT(#{zipcode}, #{aesKey}),
+		AES_ENCRYPT(#{addr}, #{aesKey}),
+		now(),
+		#{role})
+	]]>
+	</insert>
+	
+	<!-- 테스트를 위한 삭제쿼리 -->
+	<delete id="test_deleteall">
+		delete from member
+	</delete>
 </mapper>

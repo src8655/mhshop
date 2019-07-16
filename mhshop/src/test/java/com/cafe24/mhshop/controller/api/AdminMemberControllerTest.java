@@ -45,22 +45,10 @@ public class AdminMemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	@Autowired
-	SqlSession sqlSession;
 
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-
-		// DB Member 테이블 초기화
-		// DB 테스트용 데이터 insert
-		
-		// member insert
-		sqlSession.delete("test_member.deleteall");
-		sqlSession.insert("test_member.insert", new MemberVo("test_id1", "testpassword1!", "test1", "01000000001", "test_email1@naver.com", "test_zipcode1", "test_addr1", "2019-07-11", "USER", "mhshop_key"));
-		sqlSession.insert("test_member.insert", new MemberVo("test_id2", "testpassword2!", "test2", "01000000002", "test_email2@naver.com", "test_zipcode2", "test_addr2", "2019-07-11", "ADMIN", "mhshop_key"));
-	
 	}
 	
 	
