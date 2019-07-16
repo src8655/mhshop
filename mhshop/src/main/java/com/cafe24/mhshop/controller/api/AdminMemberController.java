@@ -69,7 +69,7 @@ public class AdminMemberController {
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// Service에 회원상세 요청
-		MemberVo memberVo = memberService.getById(dto.getId());
+		MemberVo memberVo = memberService.getById(dto.toVo());
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberVo));

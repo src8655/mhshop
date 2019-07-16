@@ -47,59 +47,41 @@ public class AdminCategoryControllerTest {
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-	}
-	
-	
-	// [관리자 카테고리 작성 페이지]
-	@Test
-	public void testA카테고리작성페이지() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/write").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/category_write_form")));
-		
-	}
-	
-	
-	
-	// 관리자 카테고리 등록 카테고리명 Valid
-	@Test
-	public void testB카테고리작성_카테고리명_Valid() throws Exception {
-		ResultActions resultActions;
-		
-		
-		resultActions = mockMvc.perform(post("/api/admin/category/write")
-				.param("name", "")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		// DB category, item 테이블 초기화
+		// DB 테스트용 데이터 insert
 
+		// category insert
+		// insert into category(no, name) values(1, 'test_category1')
+		// insert into category(no, name) values(2, 'test_category2')
+		
+		
+		// item insert
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(1, 'test_item1', 'test_description1', 10000, 'test_thumbnail1', 'FALSE', 1)
+		// insert into item(no, name, description, money, thmbnail, display, category_no) values(2, 'test_item2', 'test_description2', 20000, 'test_thumbnail2', 'FALSE', 2)
 	}
 	
 	// 관리자 카테고리 등록
 	@Test
-	public void testB카테고리작성() throws Exception {
+	public void testA카테고리작성() throws Exception {
 		ResultActions resultActions;
 		
-		
+		// 카테고리명 Valid
 		resultActions = mockMvc.perform(post("/api/admin/category/write")
-				.param("name", "test")
+				.param("name", "")
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+
 		
+		// 작성성공
+		resultActions = mockMvc.perform(post("/api/admin/category/write")
+				.param("name", "category_name3")
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk());
-
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 

@@ -62,10 +62,7 @@ public class MemberDaoImpl implements MemberDao {
 
 	// 아이디로 회원조회
 	@Override
-	public MemberVo selectOneById(String id) {
-
-		MemberVo memberVo = new MemberVo();
-		memberVo.setId(id);
+	public MemberVo selectOneById(MemberVo memberVo) {
 		memberVo.setAesKey(aesKey);
 		return (MemberVo)session.selectOne("member.selectonebyid", memberVo);
 	}

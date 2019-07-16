@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
+import com.cafe24.mhshop.dto.RequestMemberIdDto;
 import com.cafe24.mhshop.dto.RequestOrdersNoDto;
 import com.cafe24.mhshop.dto.RequestOrdersTrackingDto;
 import com.cafe24.mhshop.service.CategoryService;
@@ -46,7 +47,6 @@ public class AdminOrdersController {
 	
 	@Autowired
 	OrdersService ordersService;
-	
 	
 	@Autowired
 	GuestService guestService;
@@ -100,7 +100,7 @@ public class AdminOrdersController {
 		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
 		MemberVo memberVo = null;
 		if(ordersVo.getMemberId() != null)
-			memberVo = memberService.getById(ordersVo.getMemberId());
+			memberVo = memberService.getById(new RequestMemberIdDto(ordersVo.getMemberId()).toVo());
 		
 		// OrdersItemService에 주문상품리스트 요청
 		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo();

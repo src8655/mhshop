@@ -10,7 +10,7 @@ public interface MemberDao {
 	Integer insert(MemberVo memberVo);					// 입력
 	MemberVo selectByIdAndPassword(MemberVo memberVo);	// 로그인
 	List<MemberVo> selectList();						// 회원 리스트
-	MemberVo selectOneById(String id);					// 아이디로 회원조회
+	MemberVo selectOneById(MemberVo memberVo);			// 아이디로 회원조회
 	Integer delete(String id);							// 회원삭제
 	MemberVo selectOneByNo(Long no);					// 회원번호로 찾기
 	Integer update(MemberVo memberVo);					// 회원수정

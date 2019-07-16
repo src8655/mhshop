@@ -113,7 +113,7 @@ public class MemberController {
 		
 		
 		// Service로 회원 확인
-		MemberVo newMemberVo = memberService.login(dto.getId(), dto.getPassword());
+		MemberVo newMemberVo = memberService.login(dto.toVo());
 		
 		
 		// 확인 후 로그인

@@ -46,29 +46,23 @@ public class MemberServiceImpl implements MemberService {
 
 	// 로그인
 	@Override
-	public MemberVo login(String id, String password) {
-		
-		MemberVo vo = new MemberVo();
-		vo.setId(id);
-		vo.setPassword(password);
-		MemberVo memberVo = memberDao.selectByIdAndPassword(vo);
-		return memberVo;
+	public MemberVo login(MemberVo memberVo) {
+		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
+		return newMemberVo;
 	}
 
 
 	// 회원 리스트
 	@Override
 	public List<MemberVo> getList() {
-		
 		return memberDao.selectList();
 	}
 
 
 	// 아이디로 회원조회
 	@Override
-	public MemberVo getById(String id) {
-		
-		return memberDao.selectOneById(id);
+	public MemberVo getById(MemberVo memberVo) {
+		return memberDao.selectOneById(memberVo);
 	}
 
 
