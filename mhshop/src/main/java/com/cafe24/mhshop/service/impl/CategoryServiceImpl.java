@@ -38,13 +38,8 @@ public class CategoryServiceImpl implements CategoryService {
 	// 카테고리 추가
 	@Override
 	public boolean add(CategoryVo categoryVo) {
-		
-		
-		// DAO에 요청
-		
-		
-		
-		return true;
+		Integer result = categoryDao.insert(categoryVo);
+		return result == 1;
 	}
 
 	// 카테고리 수정

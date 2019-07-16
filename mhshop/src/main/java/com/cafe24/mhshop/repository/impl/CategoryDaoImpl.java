@@ -21,6 +21,13 @@ public class CategoryDaoImpl implements CategoryDao {
 	public List<CategoryVo> getList() {
 		return sqlSession.selectList("category.selectList");
 	}
+
+
+	// 카테고리 추가
+	@Override
+	public Integer insert(CategoryVo categoryVo) {
+		return sqlSession.insert("category.insert", categoryVo);
+	}
 	
 	
 }

@@ -95,7 +95,6 @@ public class AdminCategoryControllerTest {
 		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
 		.andExpect(jsonPath("$.data[1].no", is(2)))
 		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
-		
 	}
 	
 	// 관리자 카테고리 수정
@@ -111,7 +110,7 @@ public class AdminCategoryControllerTest {
 		
 		
 		// 카테고리번호가 없는 번호일 때
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 3L, "test")
+		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 999999L, "test")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())

@@ -35,8 +35,6 @@ public class TestMybatisConfig {
 	
 		
 		// category
-		// insert into category(no, name) values(1, 'test_category1')
-		// insert into category(no, name) values(2, 'test_category2')
 		sqlSession.delete("category.test_deleteall");
 		sqlSession.insert("category.test_insert", new CategoryVo(1L, "test_category1"));
 		sqlSession.insert("category.test_insert", new CategoryVo(2L, "test_category2"));
