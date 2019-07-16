@@ -70,8 +70,7 @@ public class AdminCategoryControllerTest {
 				.param("name", "")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
-		resultActions
-		.andExpect(status().isBadRequest());
+		resultActions.andExpect(status().isBadRequest());
 
 		
 		// 작성성공
@@ -87,33 +86,46 @@ public class AdminCategoryControllerTest {
 
 	// 카테고리 리스트
 	@Test
-	public void testC카테고리리스트() throws Exception {
+	public void testB카테고리리스트() throws Exception {
 		
 		ResultActions resultActions = mockMvc.perform(get("/api/admin/category/list").contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/category_list")));
+		resultActions.andExpect(status().isOk())
+		
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data[1].no", is(2)))
+		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
 		
 	}
 	
 	// 관리자 카테고리 수정
 	@Test
-	public void testD카테고리수정() throws Exception {
+	public void testC카테고리수정() throws Exception {
 		ResultActions resultActions;
 		
-		
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 2L, "test")
+		// 카테고리번호 Valid
+		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", "aa", "test")
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions.andExpect(status().isBadRequest());
 		
+		
+		// 카테고리번호가 없는 번호일 때
+		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 3L, "test")
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk());
+		resultActions.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(false)));
+		
 
+		// 카테고리 수정 완료
+		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 1L, "test")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 	// 관리자 카테고리 삭제

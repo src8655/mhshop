@@ -70,17 +70,12 @@ public class AdminCategoryController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 카테고리 리스트", notes = "관리자 카테고리 리스트 요청 API")
-	public JSONResult list() {
-		
+	public ResponseEntity<JSONResult> list() {
 		// Service에 카테고리리스트 요청
 		List<CategoryVo> list = categoryService.getList();
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("categoryList", list);
-		dataMap.put("forward", "admin/category_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
 	
 	
@@ -91,24 +86,18 @@ public class AdminCategoryController {
 	})
 	@RequestMapping(value = "/{no}/{name}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 수정", notes = "관리자 카테고리 수정 API")
-	public JSONResult edit(
+	public ResponseEntity<JSONResult> edit(
 			@ModelAttribute @Valid RequestCategoryEditDto dto,
 			BindingResult result
 			) {
-		
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-		
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// Service에 수정 요청
 		boolean isSuccess = categoryService.edit(dto.toVo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/category/category_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
