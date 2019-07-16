@@ -85,26 +85,7 @@ public class AdminItemController {
 	}
 	
 	
-	
 
-	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	@ApiOperation(value = "[관리자 상품 작성 페이지]", notes = "관리자 상품 작성 페이지 API")
-	public JSONResult write_form() {
-		
-		// 권한 확인
-		
-		
-		// CategoryService에서 카테고리 리스트 요청
-		List<CategoryVo> categoryList = categoryService.getList();
-		
-		
-		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("categoryList", categoryList);
-		dataMap.put("forward", "admin/item_write_form");
-		return JSONResult.success(dataMap);
-	}
-	
 	
 	
 	
@@ -188,7 +169,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
-	@ApiOperation(value = "[관리자 상품 수정 페이지]", notes = "관리자 상품 수정 페이지 API")
+	@ApiOperation(value = "관리자 상품 수정 페이지", notes = "관리자 상품 수정 페이지 API")
 	public JSONResult edit_form(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
