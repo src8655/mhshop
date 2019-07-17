@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,8 @@ import com.cafe24.mhshop.dto.RequestItemWriteDto;
 import com.cafe24.mhshop.dto.RequestNoDto;
 import com.cafe24.mhshop.dto.RequestOptionDetailWriteDto;
 import com.cafe24.mhshop.dto.RequestOptionWriteDto;
+import com.cafe24.mhshop.security.Auth;
+import com.cafe24.mhshop.security.Auth.Role;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemImgService;
 import com.cafe24.mhshop.service.ItemService;
@@ -59,29 +63,25 @@ public class AdminItemController {
 	@Autowired
 	OptionService optionService;
 	
-	
+
+	@Auth(role = Role.ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 상품 리스트", notes = "관리자 상품 리스트 요청 API")
-	public JSONResult list() {
-		
-		// 권한 확인
-		
-		
-
+	public ResponseEntity<JSONResult> list() {
 		// CategoryService에서 카테고리 리스트 요청
 		List<CategoryVo> categoryList = categoryService.getList();
 		
-		
 		// Service에 상품리스트 요청
 		List<ItemVo> itemList = itemService.getList();
-		
 		
 		// JSON 리턴 생성
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("categoryList", categoryList);
 		dataMap.put("itemList", itemList);
-		dataMap.put("forward", "admin/item_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(dataMap));
 	}
 	
 	

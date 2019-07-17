@@ -38,11 +38,7 @@ public class ItemServiceImpl implements ItemService {
 	// 상품 리스트
 	@Override
 	public List<ItemVo> getList() {
-
-		// DAO에 요청
-		
-		// 가짜
-		return getItemTable();
+		return itemDao.selectList();
 	}
 
 

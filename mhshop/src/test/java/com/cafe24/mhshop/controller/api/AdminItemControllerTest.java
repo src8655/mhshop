@@ -28,6 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import io.swagger.annotations.ApiImplicitParam;
 
@@ -61,37 +64,57 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품 리스트
 	@Test
-	public void testA관리자상품리스트페이지() throws Exception {
+	public void testA관리자상품리스트() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/list").contentType(MediaType.APPLICATION_JSON));
-		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/item/list")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/item_list")));
+		.andExpect(jsonPath("$.data.itemList[1].no", is(1)))
+		.andExpect(jsonPath("$.data.itemList[1].name", is("test_item1")))
+		.andExpect(jsonPath("$.data.itemList[1].description", is("test_description1")))
+		.andExpect(jsonPath("$.data.itemList[1].money", is(10000)))
+		.andExpect(jsonPath("$.data.itemList[1].thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data.itemList[1].display", is("FALSE")))
+		.andExpect(jsonPath("$.data.itemList[1].categoryNo", is(1)))
+
+		.andExpect(jsonPath("$.data.itemList[0].no", is(2)))
+		.andExpect(jsonPath("$.data.itemList[0].name", is("test_item2")))
+		.andExpect(jsonPath("$.data.itemList[0].description", is("test_description2")))
+		.andExpect(jsonPath("$.data.itemList[0].money", is(20000)))
+		.andExpect(jsonPath("$.data.itemList[0].thumbnail", is("test_thumbnail2")))
+		.andExpect(jsonPath("$.data.itemList[0].display", is("FALSE")))
+		.andExpect(jsonPath("$.data.itemList[0].categoryNo", is(1)))
+		
+		.andExpect(jsonPath("$.data.categoryList[0].no", is(1)))
+		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data.categoryList[1].no", is(2)))
+		.andExpect(jsonPath("$.data.categoryList[1].name", is("test_category2")));
 		
 	}
 	
-
-	// [관리자 상품 작성 페이지]
-	@Test
-	public void testB상품작성페이지() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/admin/item/write").contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("admin/item_write_form")));
-		
-	}
+	
 	
 	// 관리자 상품 DB에 저장 이름 Valid
 	@Test
