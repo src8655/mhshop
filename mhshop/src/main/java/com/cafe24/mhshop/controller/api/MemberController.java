@@ -149,7 +149,7 @@ public class MemberController {
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 
 		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "phone", value = "연락처", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
@@ -159,6 +159,7 @@ public class MemberController {
 	@RequestMapping(value = "/loginupdate", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
 	public ResponseEntity<JSONResult> loginUpdate(
+			@AuthUser MemberVo authMember,
 			@ModelAttribute @Valid RequestMemberJoinDto dto,
 			BindingResult result
 			) {
@@ -166,7 +167,7 @@ public class MemberController {
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		MemberVo memberVo = dto.toVo();
-		if(memberVo.getPassword() == null) memberVo.setPassword("");
+		memberVo.setId(authMember.getId());
 		
 		// 수정요청
 		boolean isSuccess = memberService.edit(memberVo);

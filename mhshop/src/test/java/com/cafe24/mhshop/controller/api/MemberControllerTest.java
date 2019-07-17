@@ -263,4 +263,50 @@ public class MemberControllerTest {
 	}
 	
 	
+	
+	
+	
+
+	// 회원수정
+	@Test
+	public void testE회원수정() throws Exception {
+		ResultActions resultActions;
+		
+		// 회원 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+		
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		System.out.println(mockToken);
+		
+		// 회원정보 불러오기
+		resultActions = mockMvc.perform(put("/api/member/loginupdate")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
+				.param("name", "cname")
+				.param("phone", "01033244343")
+				.param("email", "test_email3@naver.com")
+				.param("zipcode", "test_zipcode3")
+				.param("addr", "test_addr3")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
+	
 }
