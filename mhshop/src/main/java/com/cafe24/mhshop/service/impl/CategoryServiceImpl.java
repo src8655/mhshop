@@ -48,8 +48,8 @@ public class CategoryServiceImpl implements CategoryService {
 	// 카테고리 No로 존재하는지 확인
 	@Override
 	public boolean isExistByNo(Long categoryNo) {
-		
-		return false;
+		Integer count = categoryDao.countByNo(categoryNo);
+		return count != 0;
 	}
 
 

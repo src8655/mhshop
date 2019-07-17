@@ -116,59 +116,57 @@ public class AdminItemControllerTest {
 	
 	
 	
-	// 관리자 상품 DB에 저장 이름 Valid
+	// 관리자 상품 등록
 	@Test
-	public void testC상품작성_이름_Valid() throws Exception {
+	public void testB상품등록() throws Exception {
 		ResultActions resultActions;
 		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
 
-		// 성공했을 때
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+
+
+		// 상품이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "")
 				.param("description", "test_description2")
 				.param("money", "30000")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	
-
-	// 관리자 상품 DB에 저장 금액 Valid
-	@Test
-	public void testC상품작성_금액_Valid() throws Exception {
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
-
-		// 성공했을 때
+		
+		// 상품금액 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "test_name")
 				.param("description", "test_description2")
 				.param("money", "")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-
-	// 관리자 상품 DB에 저장
-	@Test
-	public void testC상품작성() throws Exception {
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
-
+		
 		// 성공했을 때
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "test_name")
@@ -176,12 +174,15 @@ public class AdminItemControllerTest {
 				.param("money", "1000")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
+	
 
 	
 	// 관리자 상품 DB에 수정 페이지

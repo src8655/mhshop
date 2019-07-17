@@ -42,6 +42,13 @@ public class CategoryDaoImpl implements CategoryDao {
 	public Integer delete(Long no) {
 		return sqlSession.update("category.delete", no);
 	}
+
+
+	// 카테고리 번호별 개수
+	@Override
+	public Integer countByNo(Long categoryNo) {
+		return (Integer)sqlSession.selectOne("category.countbyno", categoryNo);
+	}
 	
 	
 }

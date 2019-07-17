@@ -29,4 +29,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.selectList("item.selectList");
 	}
 
+
+	// 상품 등록
+	@Override
+	public Integer insert(ItemVo itemVo) {
+		return sqlSession.insert("item.insert", itemVo);
+	}
+
 }

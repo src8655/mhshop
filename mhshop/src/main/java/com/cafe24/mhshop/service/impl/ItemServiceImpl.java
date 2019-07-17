@@ -46,11 +46,8 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public boolean add(ItemVo itemVo) {
 		itemVo.setDisplay("FALSE");
-		
-		
-		// DAO에 요청
-		
-		return true;
+		Integer result = itemDao.insert(itemVo);
+		return result == 1;
 	}
 
 

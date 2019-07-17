@@ -20,6 +20,21 @@
 	
 	
 	
+	<!-- 상품 등록 -->
+	<insert id="insert" parameterType="itemvo">
+		insert into item(name, description, money, thumbnail, display, category_no)
+		values(
+		#{name},
+		#{description},
+		#{money},
+		#{thumbnail},
+		#{display},
+		#{categoryNo}
+		)
+	</insert>
+	
+	
+	
 	<!-- 테스트 -->
 	
 	

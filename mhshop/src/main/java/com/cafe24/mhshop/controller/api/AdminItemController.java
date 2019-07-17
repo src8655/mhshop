@@ -88,8 +88,11 @@ public class AdminItemController {
 
 	
 	
-	
+
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
@@ -98,33 +101,25 @@ public class AdminItemController {
 	})
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 DB에 저장", notes = "관리자 상품 DB에 저장 API")
-	public JSONResult write(
+	public ResponseEntity<JSONResult> write(
 			@ModelAttribute @Valid RequestItemWriteDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-		
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-		
-		
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// 존재하는 카테고리인지 확인
-		if(!categoryService.isExistByNo(dto.toVo().getCategoryNo())) return JSONResult.fail("존재하지 않는 카테고리 입니다.");
-		
+		if(!categoryService.isExistByNo(dto.toVo().getCategoryNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 카테고리 입니다."));
 		
 		// Service에 등록
 		boolean isSuccess = itemService.add(dto.toVo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/item_list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
+	
+	
+	
 	
 	
 	@ApiImplicitParams({
