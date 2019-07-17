@@ -29,6 +29,7 @@ public class TestDBConfig {
 		basicDataSeource.setPassword(env.getProperty("jdbc.password"));
 		basicDataSeource.setInitialSize(env.getProperty("jdbc.initialSize", Integer.class));
 		basicDataSeource.setMaxActive(env.getProperty("jdbc.maxActive", Integer.class));
+		basicDataSeource.setDefaultAutoCommit(false);
 		
 		return basicDataSeource;
 	}

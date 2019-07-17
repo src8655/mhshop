@@ -33,7 +33,7 @@ public class TestMybatisConfig {
 	@Bean
 	public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
 		SqlSessionTemplate sqlSession = new SqlSessionTemplate(sqlSessionFactory);
-
+/*
 		sqlSession.delete("ordersitem.test_deleteall");
 		sqlSession.delete("option.test_deleteall");
 		sqlSession.delete("optiondetail.test_deleteall");
@@ -86,7 +86,7 @@ public class TestMybatisConfig {
 		sqlSession.insert("ordersitem.test_insert", new OrdersItemVo(2L, "2019-07-11_000257", 2L, "test_item2", "test_thumbnail2", "파란색", "XL", 20000L, 1L));
 		sqlSession.insert("ordersitem.test_insert", new OrdersItemVo(3L, "2019-07-11_000258", 1L, "test_item1", "test_thumbnail3", "파란색", "L", 10000L, 1L));
 		sqlSession.insert("ordersitem.test_insert", new OrdersItemVo(4L, "2019-07-11_000258", 2L, "test_item2", "test_thumbnail4", "파란색", "XL", 20000L, 1L));
-		
+		*/
 		
 		return sqlSession;
 	}
