@@ -4,13 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.vo.MemberVo;
 
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
+	
+	@Autowired
+	MemberService memberService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -33,20 +38,23 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 		
-		//6. @Auth가 (class 또는 method에) 붙어있기 때문에
+		//6. @Auth가 붙는 경우
 		//   인증 여부 체크
-		HttpSession session = request.getSession();
-		if(session == null) {
-			response.sendRedirect(request.getContextPath()+"/");
-			return false;
-		}
-		MemberVo authUser = (MemberVo)session.getAttribute("authUser");
-		if(authUser == null) {
-			response.sendRedirect(request.getContextPath()+"/");
+		String mockToken = request.getParameter("mockToken");
+		
+		// 인증받을 정보가 없으면 실패
+		if(mockToken == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return false;
 		}
 		
-		request.setAttribute("authUser", authUser);
+		// 회원정보가 없으면 실패
+		MemberVo authMember = memberService.getByMockToken(mockToken);
+		if(authMember == null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			return false;
+		}
+		
 		
 		//7. Role 가져오기
 		Auth.Role role = auth.role();
@@ -59,10 +67,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		//9. Admin Role 권한 체크
 		if(role == Auth.Role.ADMIN) {
-			if(authUser.getRole().equals(Auth.Role.ADMIN.toString())) {
+			if(authMember.getRole().equals(Auth.Role.ADMIN.toString())) {
 				return true;
 			}else {
-				response.sendRedirect(request.getContextPath()+"/");
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				return false;
 			}
 		}

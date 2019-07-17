@@ -82,5 +82,13 @@ public class MemberServiceImpl implements MemberService {
 		return result == 1;
 	}
 
+
+	// 인증
+	@Override
+	public MemberVo getByMockToken(String mockToken) {
+		MemberVo memberVo = memberDao.selectByMockToken(mockToken);
+		return memberVo;
+	}
+
 	
 }

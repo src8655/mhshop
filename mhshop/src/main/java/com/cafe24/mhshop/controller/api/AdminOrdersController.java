@@ -21,6 +21,8 @@ import com.cafe24.mhshop.dto.JSONResult;
 import com.cafe24.mhshop.dto.RequestMemberIdDto;
 import com.cafe24.mhshop.dto.RequestOrdersNoDto;
 import com.cafe24.mhshop.dto.RequestOrdersTrackingDto;
+import com.cafe24.mhshop.security.Auth;
+import com.cafe24.mhshop.security.Auth.Role;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.GuestService;
 import com.cafe24.mhshop.service.ItemImgService;
@@ -59,7 +61,11 @@ public class AdminOrdersController {
 	@Autowired
 	OrdersItemService ordersItemService;
 	
-	
+
+	@Auth(role = Role.ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "주문 리스트", notes = "주문 리스트 요청 API")
 	public ResponseEntity<JSONResult> list() {
@@ -70,8 +76,11 @@ public class AdminOrdersController {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
 	}
 	
-	
+
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
@@ -104,8 +113,11 @@ public class AdminOrdersController {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(dataMap));
 	}
 	
-	
+
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/paycheck/{ordersNo}", method = RequestMethod.PUT)
@@ -131,7 +143,10 @@ public class AdminOrdersController {
 	
 	
 
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "trackingNum", value = "운송장번호", paramType = "query", required = true, defaultValue = "")
 	})

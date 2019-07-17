@@ -29,6 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 import com.cafe24.mhshop.vo.MemberVo;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,7 +67,27 @@ public class AdminOrdersControllerTest {
 	public void testA주문리스트페이지() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/admin/orders/list").contentType(MediaType.APPLICATION_JSON));
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/orders/list")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -85,9 +108,27 @@ public class AdminOrdersControllerTest {
 	public void testB주문상세보기() throws Exception {
 		ResultActions resultActions;
 		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
 		
 		// 회원일 때
-		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000256").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000256")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -124,7 +165,9 @@ public class AdminOrdersControllerTest {
 		
 		
 		// 비회원일 때
-		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000257").contentType(MediaType.APPLICATION_JSON));
+		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000257")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -140,9 +183,29 @@ public class AdminOrdersControllerTest {
 	@Test
 	public void testC무통장결제확인상태변경() throws Exception {
 		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
 
 		// 입금대기 상태가 아닐 때 실패
 		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck/{ordersNo}", "2019-07-11_000258")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -151,6 +214,7 @@ public class AdminOrdersControllerTest {
 		
 		// 입금대기 상태일 때 성공
 		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck/{ordersNo}", "2019-07-11_000256")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -165,9 +229,28 @@ public class AdminOrdersControllerTest {
 	public void testD운송장번호등록() throws Exception {
 		ResultActions resultActions;
 		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
 		// 운송장번호 Valid
 		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck/{ordersNo}", "2019-07-11_000257")
 				.param("trackingNum", "")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -177,6 +260,7 @@ public class AdminOrdersControllerTest {
 		// 운송장번호등록 성공
 		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck/{ordersNo}", "2019-07-11_000257")
 				.param("trackingNum", "999988887777")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

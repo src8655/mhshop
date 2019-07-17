@@ -41,7 +41,10 @@
 		cast(AES_DECRYPT(zipcode, #{aesKey}) as char) as zipcode,
 		cast(AES_DECRYPT(addr, #{aesKey}) as char) as addr,
 		reg_date as regDate,
-		role
+		role,
+		
+		SHA2(concat(cast(AES_DECRYPT(id, #{aesKey}) as char), password), 512) as mockToken
+		
 		FROM member
 		where id=AES_ENCRYPT(#{id}, #{aesKey})
 		and password=SHA2(#{password}, 512)
@@ -113,6 +116,26 @@
 	
 	
 	
+	<!-- 인증 -->
+	<select id="selectbymocktoken" parameterType="membervo" resultType="membervo">
+	<![CDATA[
+		SELECT 
+		cast(AES_DECRYPT(id, #{aesKey}) as char) as id,
+		password,
+		cast(AES_DECRYPT(name, #{aesKey}) as char) as name,
+		cast(AES_DECRYPT(phone, #{aesKey}) as char) as phone,
+		cast(AES_DECRYPT(email, #{aesKey}) as char) as email,
+		cast(AES_DECRYPT(zipcode, #{aesKey}) as char) as zipcode,
+		cast(AES_DECRYPT(addr, #{aesKey}) as char) as addr,
+		reg_date as regDate,
+		role,
+		
+		SHA2(concat(cast(AES_DECRYPT(id, #{aesKey}) as char), password), 512) as mockToken
+		
+		FROM member
+		where SHA2(concat(cast(AES_DECRYPT(id, #{aesKey}) as char), password), 512)=#{mockToken}
+	]]>
+	</select>
 	
 	
 	

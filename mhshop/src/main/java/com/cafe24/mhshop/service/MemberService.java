@@ -13,5 +13,6 @@ public interface MemberService {
 	MemberVo getById(MemberVo memberVo);		// 아이디로 회원조회
 	boolean delete(String id);					// 회원삭제
 	boolean edit(MemberVo memberVo);			// 회원수정
+	MemberVo getByMockToken(String mockToken);	// 인증
 
 }

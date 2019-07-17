@@ -29,6 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 import com.cafe24.mhshop.vo.MemberVo;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,8 +65,29 @@ public class AdminMemberControllerTest {
 	// 회원 리스트
 	@Test
 	public void testA관리자회원리스트페이지() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/member/list").contentType(MediaType.APPLICATION_JSON));
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/member/list")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
 		// 데이터 확인
@@ -97,8 +121,28 @@ public class AdminMemberControllerTest {
 	public void testB회원상세보기() throws Exception {
 		ResultActions resultActions;
 		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -107,6 +151,7 @@ public class AdminMemberControllerTest {
 
 		// 없는 아이디
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id9999")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -116,6 +161,7 @@ public class AdminMemberControllerTest {
 		
 		// 있는 아이디
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -137,9 +183,27 @@ public class AdminMemberControllerTest {
 	public void testC회원삭제() throws Exception {
 		ResultActions resultActions;
 		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "1test_id1")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -148,6 +212,7 @@ public class AdminMemberControllerTest {
 
 		// 삭제 실패(없는 아이디)
 		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id3")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -157,6 +222,7 @@ public class AdminMemberControllerTest {
 
 		// 삭제 성공
 		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id2")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

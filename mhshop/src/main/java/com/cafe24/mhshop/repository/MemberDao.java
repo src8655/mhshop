@@ -14,5 +14,6 @@ public interface MemberDao {
 	Integer delete(String id);							// 회원삭제
 	MemberVo selectOneByNo(Long no);					// 회원번호로 찾기
 	Integer update(MemberVo memberVo);					// 회원수정
+	MemberVo selectByMockToken(String mockToken);		// 인증
 
 }

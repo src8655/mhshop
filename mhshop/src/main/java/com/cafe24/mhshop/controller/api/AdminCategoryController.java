@@ -23,6 +23,7 @@ import com.cafe24.mhshop.dto.RequestCategoryEditDto;
 import com.cafe24.mhshop.dto.RequestCategoryWriteDto;
 import com.cafe24.mhshop.dto.RequestNoDto;
 import com.cafe24.mhshop.security.Auth;
+import com.cafe24.mhshop.security.Auth.Role;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemService;
 import com.cafe24.mhshop.vo.CategoryVo;
@@ -46,7 +47,10 @@ public class AdminCategoryController {
 	
 	
 	
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
@@ -66,8 +70,10 @@ public class AdminCategoryController {
 	}
 	
 	
-
-	
+	@Auth(role = Role.ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 카테고리 리스트", notes = "관리자 카테고리 리스트 요청 API")
 	public ResponseEntity<JSONResult> list() {
@@ -79,8 +85,10 @@ public class AdminCategoryController {
 	}
 	
 	
-
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
 	})
@@ -102,8 +110,10 @@ public class AdminCategoryController {
 	
 	
 	
-
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)

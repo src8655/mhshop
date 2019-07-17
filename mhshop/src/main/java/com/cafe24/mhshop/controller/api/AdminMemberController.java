@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhshop.dto.JSONResult;
 import com.cafe24.mhshop.dto.RequestMemberIdDto;
+import com.cafe24.mhshop.security.Auth;
+import com.cafe24.mhshop.security.Auth.Role;
 import com.cafe24.mhshop.service.CategoryService;
 import com.cafe24.mhshop.service.ItemImgService;
 import com.cafe24.mhshop.service.ItemService;
@@ -42,7 +44,11 @@ public class AdminMemberController {
 	@Autowired
 	MemberService memberService;
 	
-	
+
+	@Auth(role = Role.ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 리스트", notes = "회원 리스트 요청 API")
 	public ResponseEntity<JSONResult> list() {
@@ -56,7 +62,10 @@ public class AdminMemberController {
 	}
 	
 
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "id", value = "회원아이디", paramType = "path", required = true, defaultValue = ""),
 	})
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
@@ -75,8 +84,11 @@ public class AdminMemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberVo));
 	}
 	
-	
+
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "id", value = "회원아이디", paramType = "path", required = true, defaultValue = ""),
 	})
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

@@ -94,6 +94,16 @@ public class MemberDaoImpl implements MemberDao {
 		memberVo.setAesKey(aesKey);
 		return (Integer)session.delete("member.update", memberVo);
 	}
+
+
+	// 인증
+	@Override
+	public MemberVo selectByMockToken(String mockToken) {
+		MemberVo memberVo = new MemberVo();
+		memberVo.setMockToken(mockToken);
+		memberVo.setAesKey(aesKey);
+		return (MemberVo)session.selectOne("member.selectbymocktoken", memberVo);
+	}
 	
 	
 

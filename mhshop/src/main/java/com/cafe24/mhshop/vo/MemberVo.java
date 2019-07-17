@@ -18,6 +18,7 @@ public class MemberVo {
 	private String role;
 	
 	private String aesKey;
+	private String mockToken;
 
 	public MemberVo() {}
 	
@@ -35,6 +36,14 @@ public class MemberVo {
 		this.aesKey = aesKey;
 	}
 
+
+	public String getMockToken() {
+		return mockToken;
+	}
+
+	public void setMockToken(String mockToken) {
+		this.mockToken = mockToken;
+	}
 
 	public String getAesKey() {
 		return aesKey;
