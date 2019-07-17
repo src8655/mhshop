@@ -29,6 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,8 @@ import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 import com.cafe24.mhshop.vo.MemberVo;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -226,23 +229,38 @@ public class MemberControllerTest {
 	
 	
 	
-	/*
 	// 회원수정 페이지
 	@Test
-	public void testH회원수정페이지() throws Exception {
+	public void testD회원수정페이지() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/member/loginupdate").contentType(MediaType.APPLICATION_JSON));
-		
+		// 회원 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		// 결과가 성공햇는지
-		// 포워드할 페이지를 리턴하는지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		System.out.println(mockToken);
+		
+		// 회원정보 불러오기
+		resultActions = mockMvc.perform(get("/api/member/loginupdate")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-		.andExpect(jsonPath("$.data.forward", is("login/update_form")));
+		.andExpect(jsonPath("$.data", Matchers.notNullValue()));
 		
 	}
-	*/
+	
 	
 }

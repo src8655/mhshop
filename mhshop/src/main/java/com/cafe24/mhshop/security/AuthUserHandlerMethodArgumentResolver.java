@@ -1,8 +1,10 @@
 package com.cafe24.mhshop.security;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -10,11 +12,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.vo.MemberVo;
 
 
 public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
+	@Autowired
+	MemberService memberService;
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
@@ -24,14 +29,20 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 			return WebArgumentResolver.UNRESOLVED;
 		}
 		
+		// @AuthUser가 붙어있음
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-		HttpSession session = request.getSession();
 		
-		if(session == null) {
+		
+		String mockToken = request.getParameter("mockToken");
+		
+		// 인증받을 정보가 없으면 실패
+		if(mockToken == null) {
 			return null;
 		}
 		
-		return session.getAttribute("authUser");
+		// 회원정보
+		MemberVo authMember = memberService.getByMockToken(mockToken);
+		return authMember;
 	}
 
 	@Override

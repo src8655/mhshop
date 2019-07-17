@@ -17,8 +17,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
@@ -41,6 +43,7 @@ import io.swagger.annotations.ApiImplicitParam;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Rollback(value = true)
 @Transactional
 public class AdminItemControllerTest {

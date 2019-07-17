@@ -28,6 +28,7 @@ import com.cafe24.mhshop.dto.RequestMemberJoinDto;
 import com.cafe24.mhshop.dto.RequestMemberLoginDto;
 import com.cafe24.mhshop.security.Auth;
 import com.cafe24.mhshop.security.AuthUser;
+import com.cafe24.mhshop.security.Auth.Role;
 import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.vo.MemberVo;
 
@@ -123,28 +124,30 @@ public class MemberController {
 	}
 	
 	
-	/*
-	@RequestMapping(value = "/loginupdate", method = RequestMethod.POST)
+	
+	
+	
+
+	@Auth
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+	})
+	@RequestMapping(value = "/loginupdate", method = RequestMethod.GET)
 	@ApiOperation(value = "회원수정 페이지", notes = "회원 수정 페이지 API")
 	public ResponseEntity<JSONResult> loginUpdate(
-			@ModelAttribute @Valid RequestMemberLoginDto dto,
-			BindingResult result
+			@AuthUser MemberVo authMember
 			) {
-
-		// 유효성검사
-		if(result.hasErrors()) 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
-		
-		
 		// 회원정보를 가져옴
-		MemberVo memberVo = memberService.getById(dto.getId());
-		
+		MemberVo memberVo = memberService.getById(authMember);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberVo));
 	}
 	
-	
+
+	@Auth
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+
 		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "이름", paramType = "query", required = true, defaultValue = ""),
@@ -160,17 +163,14 @@ public class MemberController {
 			BindingResult result
 			) {
 		// 유효성검사
-		if(result.hasErrors()) 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
-		
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		MemberVo memberVo = dto.toVo();
 		if(memberVo.getPassword() == null) memberVo.setPassword("");
-		
 		
 		// 수정요청
 		boolean isSuccess = memberService.edit(memberVo);
 
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
-	}*/
+	}
 }
