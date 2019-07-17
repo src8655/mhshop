@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.cafe24.mhshop.config.web.MVCConfig;
+import com.cafe24.mhshop.config.web.SecurityConfig;
 import com.cafe24.mhshop.config.web.SwaggerConfig;
 import com.cafe24.mhshop.config.web.TestMVCConfig;
 
@@ -20,7 +21,7 @@ import com.cafe24.mhshop.config.web.TestMVCConfig;
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @ComponentScan({"com.cafe24.mhshop.controller"})
-@Import({SwaggerConfig.class, TestMVCConfig.class})
+@Import({SecurityConfig.class, SwaggerConfig.class, TestMVCConfig.class})
 public class TestWebConfig{
 	
 	

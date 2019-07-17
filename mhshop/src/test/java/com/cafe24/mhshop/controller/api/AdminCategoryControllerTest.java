@@ -34,12 +34,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.TestAppConfig;
+import com.cafe24.mhshop.config.AppConfig;
 import com.cafe24.mhshop.config.TestWebConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestAppConfig.class, TestWebConfig.class})
+@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 @Rollback(value = true)
 @Transactional
