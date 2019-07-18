@@ -3,5 +3,16 @@
 
 <mapper namespace="option">
 
+	<select id="selectList" parameterType="long" resultType="optionvo">
+		select
+		no,
+		item_no as itemNo,
+		option_detail1 as optionDetailNo1,
+		option_detail2 as optionDetailNo2,
+		cnt
+		from option
+		where item_no=#{itemNo}
+		order by no asc
+	</select>
 
 </mapper>

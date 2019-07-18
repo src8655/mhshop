@@ -39,5 +39,12 @@
 	</insert>
 	
 	
+	<!-- 상품 상세 -->
+	<select id="selectByNo" parameterType="long" resultType="itemvo">
+		select no, name, description, money, thumbnail, display, category_no as categoryNo
+		from item
+		where no=#{no}
+	</select>
+	
 	
 </mapper>

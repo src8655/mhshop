@@ -15,37 +15,14 @@ public class OptionDetailServiceImpl implements OptionDetailService {
 
 	@Autowired
 	OptionDetailDao optionDetailDao;
-	
-	
-	// 가짜DB
-	private List<OptionDetailVo> getOptionDetailTable() {
-		List<OptionDetailVo> optionDetailTable = new ArrayList<OptionDetailVo>();
-		optionDetailTable.add(new OptionDetailVo(1L, "파란색", 1L, 1L));
-		optionDetailTable.add(new OptionDetailVo(2L, "L", 2L, 1L));
-		optionDetailTable.add(new OptionDetailVo(3L, "XL", 2L, 1L));
-		optionDetailTable.add(new OptionDetailVo(4L, "XXL", 2L, 1L));
 		
-		return optionDetailTable;
-	}
-	
-	
-	
-	
 
 
 	// 상품번호에 속하고 레벨에 따른 상세옵션 리스트
 	@Override
 	public List<OptionDetailVo> getListByItemNoAndLevel(Long itemNo, Long level) {
-
-		// DAO에 요청
-		
-		
-		// 가짜
-		List<OptionDetailVo> optionDetailTable = getOptionDetailTable();
-		List<OptionDetailVo> newOptionDetailList = new ArrayList<OptionDetailVo>();
-		for(OptionDetailVo vo : optionDetailTable) if(vo.getItemNo() == itemNo && vo.getLevel() == level) newOptionDetailList.add(vo);
-		if(newOptionDetailList.size() == 0) return null;
-		return newOptionDetailList;
+		OptionDetailVo optionDetailVo = new OptionDetailVo(null, null, level, itemNo);
+		return optionDetailDao.selectList(optionDetailVo);
 	}
 
 	

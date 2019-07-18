@@ -10,5 +10,6 @@ public interface ItemDao {
 	List<ItemVo> selectList();					// 상품 리스트
 	Integer insert(ItemVo itemVo);				// 상품 등록
 	Integer delete(Long no);					// 상품 삭제
+	ItemVo selectOne(Long no);					// 상품번호로 상품정보
 
 }

@@ -43,4 +43,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.delete("item.delete", no);
 	}
 
+
+	// 상품번호로 상품정보
+	@Override
+	public ItemVo selectOne(Long no) {
+		return (ItemVo)sqlSession.selectOne("item.selectByNo", no);
+	}
+
 }

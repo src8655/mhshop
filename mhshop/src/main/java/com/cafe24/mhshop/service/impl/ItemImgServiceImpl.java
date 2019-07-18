@@ -17,32 +17,11 @@ public class ItemImgServiceImpl implements ItemImgService {
 	@Autowired
 	ItemImgDao itemImgDao;
 	
-	
-	// 가짜DB
-	private List<ItemImgVo> getItemImgTable() {
-		List<ItemImgVo> itemImgTable = new ArrayList<ItemImgVo>();
-		itemImgTable.add(new ItemImgVo(1L, 1L, "test_img1"));
-		itemImgTable.add(new ItemImgVo(2L, 1L, "test_img2"));
-		
-		return itemImgTable;
-	}
-	
-
-
 
 	// 상품번호에 속한 상품이미지 리스트
 	@Override
 	public List<ItemImgVo> getListByItemNo(Long itemNo) {
-		
-		// DAO에 요청
-		
-		
-		// 가짜
-		List<ItemImgVo> itemImgTable = getItemImgTable();
-		List<ItemImgVo> itemImgList = new ArrayList<ItemImgVo>();
-		for(ItemImgVo vo : itemImgTable) if(vo.getItemNo() == itemNo) itemImgList.add(vo);
-		if(itemImgList.size() == 0) return null;
-		return itemImgList;
+		return itemImgDao.selectList(itemNo);
 	}
 
 

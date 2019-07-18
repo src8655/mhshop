@@ -3,5 +3,14 @@
 
 <mapper namespace="itemimg">
 
+
+	<!-- 상품이미지 리스트 -->
+	<select id="selectList" parameterType="long" resultType="itemimgvo">
+		select no, item_no as itemNo, item_img as itemImg
+		from item_img
+		where item_no=#{itemNo}
+		order by no asc
+	</select>
+	
 	
 </mapper>

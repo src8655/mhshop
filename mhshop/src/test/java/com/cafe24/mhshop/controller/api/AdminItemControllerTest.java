@@ -47,8 +47,8 @@ import io.swagger.annotations.ApiImplicitParam;
 @ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-//@Rollback(value = true)
-//@Transactional
+@Rollback(value = true)
+@Transactional
 public class AdminItemControllerTest {
 	private MockMvc mockMvc;
 	
@@ -215,19 +215,184 @@ public class AdminItemControllerTest {
 		
 	}
 
-	
-	// 관리자 상품 DB에 수정 페이지
+
+	// 관리자 상품 상세
 	@Test
-	public void testD상품수정_페이지() throws Exception {
+	public void testD상품상세() throws Exception {
+		ResultActions resultActions;
 		
-		ResultActions resultActions = mockMvc.perform(get("/api/admin/item/edit/{no}",1L)
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
 		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/item/{no}",1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.no", is(1)))
+		.andExpect(jsonPath("$.data.name", is("test_item1")))
+		.andExpect(jsonPath("$.data.description", is("test_description1")))
+		.andExpect(jsonPath("$.data.money", is(10000)))
+		.andExpect(jsonPath("$.data.thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data.display", is("FALSE")))
+		.andExpect(jsonPath("$.data.categoryNo", is(1)));
 		
 	}
+	
+	
+	
+
+	// 관리자 상품이미지 리스트
+	@Test
+	public void testE상품이미지리스트() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/item/img/{itemNo}",1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
+		.andExpect(jsonPath("$.data[0].itemImg", is("test_img1")))
+
+		.andExpect(jsonPath("$.data[1].no", is(2)))
+		.andExpect(jsonPath("$.data[1].itemNo", is(1)))
+		.andExpect(jsonPath("$.data[1].itemImg", is("test_img2")));
+		
+	}
+	
+	
+	
+
+
+	// 관리자 상세옵션리스트
+	@Test
+	public void testF상세옵션리스트() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		// 옵션레벨 Valid
+		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
+				.param("level", "3")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
+				.param("level", "1")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].optionName", is("파란색")))
+		.andExpect(jsonPath("$.data[0].level", is(1)))
+		.andExpect(jsonPath("$.data[0].itemNo", is(1)));
+		
+	}
+	
+	
+	
+	
+
+	// 관리자 옵션리스트
+	@Test
+	public void testG옵션리스트() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		resultActions = mockMvc.perform(get("/api/admin/item/option/{itemNo}", 1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
+		.andExpect(jsonPath("$.data[0].optionDetailNo1", is(1)))
+		.andExpect(jsonPath("$.data[0].optionDetailNo2", is(2)))
+		.andExpect(jsonPath("$.data[0].cnt", is(10)));
+		
+	}
+	
+	
+	
+	
 	
 	// 관리자 상품 DB에 수정 NO Valid
 	@Test

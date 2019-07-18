@@ -21,8 +21,10 @@ import com.cafe24.mhshop.dto.JSONResult;
 import com.cafe24.mhshop.dto.RequestItemDisplayDto;
 import com.cafe24.mhshop.dto.RequestItemEditDto;
 import com.cafe24.mhshop.dto.RequestItemImgWriteDto;
+import com.cafe24.mhshop.dto.RequestItemNoDto;
 import com.cafe24.mhshop.dto.RequestItemWriteDto;
 import com.cafe24.mhshop.dto.RequestNoDto;
+import com.cafe24.mhshop.dto.RequestOptionDetailViewDto;
 import com.cafe24.mhshop.dto.RequestOptionDetailWriteDto;
 import com.cafe24.mhshop.dto.RequestOptionWriteDto;
 import com.cafe24.mhshop.security.Auth;
@@ -140,63 +142,116 @@ public class AdminItemController {
 	
 	
 
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
-	@ApiOperation(value = "관리자 상품 수정 페이지", notes = "관리자 상품 수정 페이지 API")
-	public JSONResult edit_form(
+	@RequestMapping(value = "/{no}", method = RequestMethod.GET)
+	@ApiOperation(value = "관리자 상품 상세", notes = "관리자 상품 상세 API")
+	public ResponseEntity<JSONResult> view(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-
 		// ItemService에 상품 정보 요청
 		ItemVo itemVo = itemService.getByNo(dto.getNo());
 		
-		// CategoryService에서 카테고리 리스트 요청
-		List<CategoryVo> categoryList = categoryService.getList();
-		
-		// ItemImgService 에서 이미지 리스트 요청
-		List<ItemImgVo> itemImgList = itemImgService.getListByItemNo(dto.getNo());
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemVo));
+	}
+	
+	
+	
 
-		// OptionDetailService 에서 1차상세옵션 리스트 요청
-		List<OptionDetailVo> optionDetailList1 = optionDetailService.getListByItemNoAndLevel(dto.getNo(), 1L);
+	@Auth(role = Role.ROLE_ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
-		// OptionDetailService 에서 2차상세옵션 리스트 요청
-		List<OptionDetailVo> optionDetailList2 = optionDetailService.getListByItemNoAndLevel(dto.getNo(), 2L);
-		
-		// OptionService 에서 옵션 리스트 요청
-		List<OptionVo> optionList = optionService.getListByItemNo(dto.getNo());
-		
+		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/img/{itemNo}", method = RequestMethod.GET)
+	@ApiOperation(value = "관리자 상품이미지 리스트", notes = "관리자  상품이미지 리스트 API")
+	public ResponseEntity<JSONResult> imglist(
+			@ModelAttribute @Valid RequestItemNoDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+				
+		// ItemImgService 에서 이미지 리스트 요청
+		List<ItemImgVo> itemImgList = itemImgService.getListByItemNo(dto.getItemNo());
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("itemVo", itemVo);
-		dataMap.put("categoryList", categoryList);
-		dataMap.put("itemImgList", itemImgList);
-		dataMap.put("optionDetailList1", optionDetailList1);
-		dataMap.put("optionDetailList2", optionDetailList2);
-		dataMap.put("optionList", optionList);
-		dataMap.put("forward", "admin/item_edit_form");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemImgList));
 	}
+	
+	
+	
+	
+
+	@Auth(role = Role.ROLE_ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "level", value = "옵션레벨", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/optiondetail/{itemNo}", method = RequestMethod.GET)
+	@ApiOperation(value = "관리자 옵션상세 리스트", notes = "관리자 옵션상세 리스트 API")
+	public ResponseEntity<JSONResult> optionDetailList(
+			@ModelAttribute @Valid RequestOptionDetailViewDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// OptionDetailService 에서 상세옵션 리스트 요청
+		List<OptionDetailVo> optionDetailList = optionDetailService.getListByItemNoAndLevel(dto.getItemNo(), dto.getLevel());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionDetailList));
+	}
+	
+	
+	
 	
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/option/{itemNo}", method = RequestMethod.GET)
+	@ApiOperation(value = "관리자 옵션 리스트", notes = "관리자 옵션 리스트 API")
+	public ResponseEntity<JSONResult> optionList(
+			@ModelAttribute @Valid RequestItemNoDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// OptionService 에서 옵션 리스트 요청
+		List<OptionVo> optionList = optionService.getListByItemNo(dto.getItemNo());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionList));
+	}
+	
+	
+	
+	
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 DB에 수정", notes = "관리자 상품 DB에 수정 API")
 	public JSONResult edit(
 			@ModelAttribute @Valid RequestItemEditDto dto,
@@ -269,7 +324,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "itemImg", value = "상품이미지", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/itemimg", method = RequestMethod.POST)
+	@RequestMapping(value = "/img", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에 저장", notes = "관리자 상품 이미지를 DB에 저장 API")
 	public JSONResult additemimg(
 			@ModelAttribute @Valid RequestItemImgWriteDto dto,
@@ -299,7 +354,7 @@ public class AdminItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "상품이미지번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/itemimg/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/img/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에서 삭제", notes = "관리자 상품 이미지를 DB에서 삭제 API")
 	public JSONResult deleteitemimg(
 			@ModelAttribute @Valid RequestNoDto dto,

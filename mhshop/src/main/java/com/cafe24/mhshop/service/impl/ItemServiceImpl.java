@@ -62,14 +62,7 @@ public class ItemServiceImpl implements ItemService {
 	// 상품번호로 상품정보
 	@Override
 	public ItemVo getByNo(Long no) {
-
-		// DAO에 요청
-		
-		// 가짜
-		List<ItemVo> itemTable = getItemTable();
-		for(ItemVo vo : itemTable) if(vo.getNo() == no) return vo;
-		
-		return null;
+		return itemDao.selectOne(no);
 	}
 
 

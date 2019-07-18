@@ -125,7 +125,7 @@ public class AdminOrdersControllerTest {
 		String mockToken = jsonObj.get("data").getAsString();
 		
 		
-		// 회원일 때
+		
 		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000256")
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
@@ -296,7 +296,7 @@ public class AdminOrdersControllerTest {
 		String mockToken = jsonObj.get("data").getAsString();
 		
 		
-		// 회원일 때
+
 		resultActions = mockMvc.perform(get("/api/admin/orders/item/{ordersNo}", "2019-07-11_000256")
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
