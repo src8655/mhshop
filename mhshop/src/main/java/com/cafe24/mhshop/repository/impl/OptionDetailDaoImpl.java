@@ -29,6 +29,13 @@ public class OptionDetailDaoImpl implements OptionDetailDao {
 		return sqlSession.insert("optiondetail.insert", optionDetailVo);
 	}
 
+
+	// 상세옵션 삭제
+	@Override
+	public Integer delete(Long no) {
+		return sqlSession.delete("optiondetail.delete", no);
+	}
+
 	
 	
 	

@@ -37,10 +37,8 @@ public class OptionDetailServiceImpl implements OptionDetailService {
 	// 상세옵션 삭제
 	@Override
 	public boolean delete(Long no) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = optionDetailDao.delete(no);
+		return result == 1;
 	}
 
 }

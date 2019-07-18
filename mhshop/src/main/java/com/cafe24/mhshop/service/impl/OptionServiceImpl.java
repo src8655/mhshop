@@ -26,14 +26,6 @@ public class OptionServiceImpl implements OptionService {
 	}
 
 
-	// 상세옵션번호를 가지는 옵션이 있는지 확인
-	@Override
-	public boolean hasOptionDetailNo(Long optionDetailNo) {
-
-		return false;
-	}
-
-
 	// 옵션추가
 	@Override
 	public boolean add(OptionVo optionVo) {
@@ -52,5 +44,14 @@ public class OptionServiceImpl implements OptionService {
 		
 		return true;
 	}
+
+
+	// 상세옵션번호를 가지는 옵션이 있는지 확인 요청
+	@Override
+	public boolean hasOptionDetailNo(Long no) {
+		Integer count = optionDao.countByOptionDetailNo(no);
+		return count != 0;
+	}
+
 
 }

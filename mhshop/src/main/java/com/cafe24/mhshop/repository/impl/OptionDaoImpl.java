@@ -22,6 +22,13 @@ public class OptionDaoImpl implements OptionDao {
 		return sqlSession.selectList("option.selectList", itemNo);
 	}
 
+
+	// 상세옵션번호를 가지는 옵션이 있는지 확인 요청
+	@Override
+	public Integer countByOptionDetailNo(Long no) {
+		return (Integer)sqlSession.selectOne("option.countByOptionDetailNo", no);
+	}
+
 	
 	
 	

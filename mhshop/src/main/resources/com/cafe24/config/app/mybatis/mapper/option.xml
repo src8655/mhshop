@@ -14,5 +14,11 @@
 		where item_no=#{itemNo}
 		order by no asc
 	</select>
+	
+	
+	<!-- 상세옵션을 가지는 옵션 개수 -->
+	<select id="countByOptionDetailNo" parameterType="long" resultType="Integer">
+		select count(*) from option where option_detail1=#{no} or option_detail2=#{no}
+	</select>
 
 </mapper>

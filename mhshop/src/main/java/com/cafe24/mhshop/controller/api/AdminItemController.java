@@ -399,36 +399,30 @@ public class AdminItemController {
 	}
 	
 	
-	
+
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "상세옵션번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/optiondetail/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 상세옵션 삭제", notes = "관리자 상품 상세옵션 삭제 API")
-	public JSONResult deleteoptiondetail(
+	public ResponseEntity<JSONResult> deleteoptiondetail(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// OptionService 에서 상세옵션번호를 가지는 옵션이 있는지 확인 요청
-		if(optionService.hasOptionDetailNo(dto.getNo())) return JSONResult.fail("상세옵션번호를 옵션이 사용중입니다.");
+		if(optionService.hasOptionDetailNo(dto.getNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("상세옵션번호를 옵션이 사용중입니다."));
 		
-
 		// OptionDetailService에 상품상세옵션 삭제 요청
 		boolean isSuccess = optionDetailService.delete(dto.getNo());
-				
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/edit");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	

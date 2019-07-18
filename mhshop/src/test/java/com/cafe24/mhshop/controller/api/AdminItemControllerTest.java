@@ -458,7 +458,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상세옵션 저장
 	@Test
-	public void testG상세옵션저장() throws Exception {
+	public void testL상세옵션저장() throws Exception {
 		ResultActions resultActions;
 
 		// 옵션이름 Valid
@@ -523,29 +523,48 @@ public class AdminItemControllerTest {
 	
 
 	
-	// 관리자 상품 옵션 추가 수량 Valid
+	// 관리자 상세옵션 삭제
 	@Test
-	public void testH옵션작성_수량_Valid() throws Exception {
+	public void testM상세옵션삭제() throws Exception {
 		ResultActions resultActions;
 
-		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "1")
-				.param("optionDetail1", "1")
-				.param("optionDetail2", "4")
-				.param("cnt", "-5")
+		// 옵션에 이미 사용중인 상세옵션 실패
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 1L)
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
 
+
+		// 없는 상세옵션번호
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 99L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(jsonPath("$.data", is(false)));
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 4L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
+	
+	
+	
+	
 	
 
 	// 관리자 상품 옵션 추가
 	@Test
-	public void testH옵션작성() throws Exception {
+	public void testN옵션작성() throws Exception {
 		ResultActions resultActions;
 
 		resultActions = mockMvc.perform(post("/api/admin/item/option")

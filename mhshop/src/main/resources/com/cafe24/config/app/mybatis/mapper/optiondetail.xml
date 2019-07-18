@@ -16,5 +16,11 @@
 		insert into option_detail(option_name, level, item_no)
 		values(#{optionName}, #{level}, #{itemNo})
 	</insert>
+	
+	
+	<!-- 상세옵션 삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from option_detail where no=#{no}
+	</delete>
 
 </mapper>
