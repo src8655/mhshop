@@ -47,8 +47,8 @@ import io.swagger.annotations.ApiImplicitParam;
 @ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Rollback(value = true)
-@Transactional
+//@Rollback(value = true)
+//@Transactional
 public class AdminItemControllerTest {
 	private MockMvc mockMvc;
 	
@@ -183,6 +183,42 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
+	
+	
+
+	// 관리자 상품 삭제
+	@Test
+	public void testC상품삭제() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		
+		// 상품삭제
+		resultActions = mockMvc.perform(delete("/api/admin/item/{no}", 1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
 
 	
 	// 관리자 상품 DB에 수정 페이지

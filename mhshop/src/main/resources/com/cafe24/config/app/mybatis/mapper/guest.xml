@@ -16,25 +16,5 @@
 
 	
 	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="guestvo">
-	<![CDATA[
-		insert into guest(orders_no, guest_name, guest_phone, guest_password)
-		values(
-		#{ordersNo},
-		AES_ENCRYPT(#{guestName}, #{aesKey}),
-		AES_ENCRYPT(#{guestPhone}, #{aesKey}),
-		SHA2(#{guestPassword}, 512)
-		)
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from guest
-	</delete>
 	
 </mapper>

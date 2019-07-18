@@ -9,5 +9,6 @@ public interface ItemDao {
 	Integer countByCategory(Long categoryNo);	// 카테고리번호에 해당하는 아이템 개수
 	List<ItemVo> selectList();					// 상품 리스트
 	Integer insert(ItemVo itemVo);				// 상품 등록
+	Integer delete(Long no);					// 상품 삭제
 
 }

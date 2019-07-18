@@ -54,10 +54,8 @@ public class ItemServiceImpl implements ItemService {
 	// 상품 삭제
 	@Override
 	public boolean delete(Long no) {
-		
-		// DAO에 요청
-		
-		return true;
+		Integer result = itemDao.delete(no);
+		return result == 1;
 	}
 
 

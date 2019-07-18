@@ -25,43 +25,4 @@
 
 	
 	
-	
-	
-	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="categoryvo">
-	<![CDATA[
-		insert into orders_item(
-			no, 
-			orders_no, 
-			option_no, 
-			item_name, 
-			item_thumbnail, 
-			item_option_detail1, 
-			item_option_detail2, 
-			money, 
-			cnt
-		)
-		values(
-		#{no},
-		#{ordersNo},
-		#{optionNo},
-		#{itemName},
-		#{itemThumbnail},
-		#{itemOptionDetail1},
-		#{itemOptionDetail2},
-		#{money},
-		#{cnt}
-		)
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from orders_item
-	</delete>
-	
 </mapper>

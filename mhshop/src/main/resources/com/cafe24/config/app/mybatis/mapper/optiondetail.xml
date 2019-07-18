@@ -4,26 +4,6 @@
 <mapper namespace="optiondetail">
 
 
-	
-	
-	
-	
-	
-	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="categoryvo">
-	<![CDATA[
-		insert into option_detail(no, option_name, level, item_no)
-		values(#{no}, #{optionName}, #{level}, #{itemNo})
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from option_detail
-	</delete>
-	
+
+
 </mapper>

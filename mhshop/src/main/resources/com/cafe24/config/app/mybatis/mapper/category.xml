@@ -34,21 +34,4 @@
 	</select>
 	
 	
-	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="categoryvo">
-	<![CDATA[
-		insert into category(no, name)
-		values(#{no}, #{name})
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from category
-	</delete>
-	
 </mapper>

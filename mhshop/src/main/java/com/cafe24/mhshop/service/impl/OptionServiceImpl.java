@@ -3,14 +3,18 @@ package com.cafe24.mhshop.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cafe24.mhshop.repository.OptionDao;
 import com.cafe24.mhshop.service.OptionService;
 import com.cafe24.mhshop.vo.OptionVo;
 
 @Service
 public class OptionServiceImpl implements OptionService {
 	
+	@Autowired
+	OptionDao optionDao;
 	
 	
 	// 가짜DB
@@ -25,16 +29,6 @@ public class OptionServiceImpl implements OptionService {
 	
 	
 	
-	
-	// 상품번호에 속한 옵션 삭제
-	@Override
-	public boolean deleteAllByItemNo(Long itemNo) {
-		
-		// DAO에 요청
-		
-		return true;
-	}
-
 
 	// 상품번호에 속한 옵션 리스트
 	@Override

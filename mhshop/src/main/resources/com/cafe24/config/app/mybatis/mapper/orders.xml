@@ -54,25 +54,4 @@
 	
 	
 	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="ordersvo">
-	<![CDATA[
-		insert into orders(orders_no, reg_date, status, bank_name, bank_num, money, tracking_num, to_name, to_phone, to_zipcode, to_addr, member_id)
-		values(#{ordersNo}, now(), #{status}, #{bankName}, #{bankNum}, #{money}, #{trackingNum},
-		AES_ENCRYPT(#{toName}, #{aesKey}),
-		AES_ENCRYPT(#{toPhone}, #{aesKey}),
-		AES_ENCRYPT(#{toZipcode}, #{aesKey}),
-		AES_ENCRYPT(#{toAddr}, #{aesKey}),
-		AES_ENCRYPT(#{memberId}, #{aesKey}))
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from orders
-	</delete>
-	
 </mapper>

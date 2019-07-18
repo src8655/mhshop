@@ -19,6 +19,11 @@
 	</select>
 	
 	
+	<!-- 상품 삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from item where no=#{no}
+	</delete>
+	
 	
 	<!-- 상품 등록 -->
 	<insert id="insert" parameterType="itemvo">
@@ -34,21 +39,5 @@
 	</insert>
 	
 	
-	
-	<!-- 테스트 -->
-	
-	
-	<!-- 테스트 insert -->
-	<insert id="test_insert" parameterType="itemvo">
-	<![CDATA[
-		insert into item(no, name, description, money, thumbnail, display, category_no)
-		values(#{no}, #{name}, #{description}, #{money}, #{thumbnail}, #{display}, #{categoryNo})
-	]]>
-	</insert>
-	
-	<!-- 테스트 deleteall -->
-	<delete id="test_deleteall">
-		delete from item
-	</delete>
 	
 </mapper>

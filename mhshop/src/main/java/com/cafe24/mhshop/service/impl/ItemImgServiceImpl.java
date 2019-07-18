@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cafe24.mhshop.repository.ItemImgDao;
 import com.cafe24.mhshop.service.ItemImgService;
 import com.cafe24.mhshop.vo.CategoryVo;
 import com.cafe24.mhshop.vo.ItemImgVo;
@@ -14,7 +15,7 @@ import com.cafe24.mhshop.vo.ItemImgVo;
 public class ItemImgServiceImpl implements ItemImgService {
 
 	@Autowired
-	ItemImgService itemImgService;
+	ItemImgDao itemImgDao;
 	
 	
 	// 가짜DB
@@ -27,14 +28,6 @@ public class ItemImgServiceImpl implements ItemImgService {
 	}
 	
 
-	// 상품번호에 속한 상품이미지 모두 삭제
-	@Override
-	public boolean deleteAllByItemNo(Long itemNo) {
-		
-		// DAO에 요청
-		
-		return true;
-	}
 
 
 	// 상품번호에 속한 상품이미지 리스트

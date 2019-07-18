@@ -120,42 +120,27 @@ public class AdminItemController {
 	
 	
 	
-	
-	
+
+	@Auth(role = Role.ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/item/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 DB에 삭제", notes = "관리자 상품 DB에 삭제 API")
-	public JSONResult delete(
+	public ResponseEntity<JSONResult> delete(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-		
-		
-		// ItemImgService 에서 이미지 삭제 요청
-		itemImgService.deleteAllByItemNo(dto.getNo());
-
-		// OptionService 에서 옵션삭제 요청
-		optionService.deleteAllByItemNo(dto.getNo());
-		
-		// OptionDetailService 에서 상세옵션 삭제 요청
-		optionDetailService.deleteAllByItemNo(dto.getNo());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// Service에 삭제 요청
 		boolean isSuccess = itemService.delete(dto.getNo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/list");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	

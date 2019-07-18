@@ -36,4 +36,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.insert("item.insert", itemVo);
 	}
 
+
+	// 상품 삭제
+	@Override
+	public Integer delete(Long no) {
+		return sqlSession.delete("item.delete", no);
+	}
+
 }
