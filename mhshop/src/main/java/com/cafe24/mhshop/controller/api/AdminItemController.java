@@ -71,17 +71,12 @@ public class AdminItemController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 상품 리스트", notes = "관리자 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> list() {
-		// CategoryService에서 카테고리 리스트 요청
-		List<CategoryVo> categoryList = categoryService.getList();
 		
 		// Service에 상품리스트 요청
 		List<ItemVo> itemList = itemService.getList();
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("categoryList", categoryList);
-		dataMap.put("itemList", itemList);
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(dataMap));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));
 	}
 	
 	

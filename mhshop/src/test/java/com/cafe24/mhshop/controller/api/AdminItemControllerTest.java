@@ -91,26 +91,21 @@ public class AdminItemControllerTest {
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data.itemList[1].no", is(1)))
-		.andExpect(jsonPath("$.data.itemList[1].name", is("test_item1")))
-		.andExpect(jsonPath("$.data.itemList[1].description", is("test_description1")))
-		.andExpect(jsonPath("$.data.itemList[1].money", is(10000)))
-		.andExpect(jsonPath("$.data.itemList[1].thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.itemList[1].display", is("FALSE")))
-		.andExpect(jsonPath("$.data.itemList[1].categoryNo", is(1)))
+		.andExpect(jsonPath("$.data[1].no", is(1)))
+		.andExpect(jsonPath("$.data[1].name", is("test_item1")))
+		.andExpect(jsonPath("$.data[1].description", is("test_description1")))
+		.andExpect(jsonPath("$.data[1].money", is(10000)))
+		.andExpect(jsonPath("$.data[1].thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data[1].display", is("FALSE")))
+		.andExpect(jsonPath("$.data[1].categoryNo", is(1)))
 
-		.andExpect(jsonPath("$.data.itemList[0].no", is(2)))
-		.andExpect(jsonPath("$.data.itemList[0].name", is("test_item2")))
-		.andExpect(jsonPath("$.data.itemList[0].description", is("test_description2")))
-		.andExpect(jsonPath("$.data.itemList[0].money", is(20000)))
-		.andExpect(jsonPath("$.data.itemList[0].thumbnail", is("test_thumbnail2")))
-		.andExpect(jsonPath("$.data.itemList[0].display", is("FALSE")))
-		.andExpect(jsonPath("$.data.itemList[0].categoryNo", is(1)))
-		
-		.andExpect(jsonPath("$.data.categoryList[0].no", is(1)))
-		.andExpect(jsonPath("$.data.categoryList[0].name", is("test_category1")))
-		.andExpect(jsonPath("$.data.categoryList[1].no", is(2)))
-		.andExpect(jsonPath("$.data.categoryList[1].name", is("test_category2")));
+		.andExpect(jsonPath("$.data[0].no", is(2)))
+		.andExpect(jsonPath("$.data[0].name", is("test_item2")))
+		.andExpect(jsonPath("$.data[0].description", is("test_description2")))
+		.andExpect(jsonPath("$.data[0].money", is(20000)))
+		.andExpect(jsonPath("$.data[0].thumbnail", is("test_thumbnail2")))
+		.andExpect(jsonPath("$.data[0].display", is("FALSE")))
+		.andExpect(jsonPath("$.data[0].categoryNo", is(1)));
 		
 	}
 	
