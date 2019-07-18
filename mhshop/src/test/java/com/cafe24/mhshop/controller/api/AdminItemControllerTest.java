@@ -375,57 +375,43 @@ public class AdminItemControllerTest {
 	
 	
 	
-	// 관리자 상품 이미지를 DB에 저장 상품번호 Valid
+	// 관리자 상품이미지저장
 	@Test
-	public void testF상품이미지작성_상품번호_Valid() throws Exception {
+	public void testJ상품이미지저장() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
+		// 상품번호 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "")
-				.param("itemImg", "test_img3")
+				.param("itemImg", "test_img")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	
-	// 관리자 상품 이미지를 DB에 저장 상품이미지 Valid
-	@Test
-	public void testF상품이미지작성_상품이미지_Valid() throws Exception {
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
-		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
+		
+		// 상품이미지 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "1")
 				.param("itemImg", "")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-	}
-	
-	
-
-	// 관리자 상품 이미지를 DB에 저장
-	@Test
-	public void testF상품이미지작성() throws Exception {
-		ResultActions resultActions;
+		.andExpect(status().isBadRequest());
 		
-		resultActions = mockMvc.perform(post("/api/admin/item/itemimg")
+		
+		// 성공
+		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "1")
 				.param("itemImg", "test_img")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
 		// 응답이 200 인지
-		// 결과가 실패했는지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 	

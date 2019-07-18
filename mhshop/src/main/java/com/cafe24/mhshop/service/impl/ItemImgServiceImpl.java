@@ -28,10 +28,8 @@ public class ItemImgServiceImpl implements ItemImgService {
 	// 상품이미지 추가
 	@Override
 	public boolean add(ItemImgVo itemImgVo) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = itemImgDao.insert(itemImgVo);
+		return result == 1;
 	}
 
 

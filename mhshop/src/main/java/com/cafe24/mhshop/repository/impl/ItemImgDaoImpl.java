@@ -23,6 +23,13 @@ public class ItemImgDaoImpl implements ItemImgDao {
 	}
 
 
+	// 상품이미지 추가
+	@Override
+	public Integer insert(ItemImgVo itemImgVo) {
+		return sqlSession.insert("itemimg.insert", itemImgVo);
+	}
+
+
 	
 	
 }
