@@ -101,7 +101,7 @@ public class AdminMemberControllerTest {
 		.andExpect(jsonPath("$.data[0].email", is("test_email2@naver.com")))
 		.andExpect(jsonPath("$.data[0].zipcode", is("test_zipcode2")))
 		.andExpect(jsonPath("$.data[0].addr", is("test_addr2")))
-		.andExpect(jsonPath("$.data[0].role", is("ADMIN")))
+		.andExpect(jsonPath("$.data[0].role", is("ROLE_ADMIN")))
 		
 		.andExpect(jsonPath("$.data[1].id", is("test_id1")))
 		.andExpect(jsonPath("$.data[1].name", is("test1")))
@@ -109,7 +109,7 @@ public class AdminMemberControllerTest {
 		.andExpect(jsonPath("$.data[1].email", is("test_email1@naver.com")))
 		.andExpect(jsonPath("$.data[1].zipcode", is("test_zipcode1")))
 		.andExpect(jsonPath("$.data[1].addr", is("test_addr1")))
-		.andExpect(jsonPath("$.data[1].role", is("USER")));
+		.andExpect(jsonPath("$.data[1].role", is("ROLE_USER")));
 		
 	}
 	
@@ -172,7 +172,7 @@ public class AdminMemberControllerTest {
 		.andExpect(jsonPath("$.data.email", is("test_email1@naver.com")))
 		.andExpect(jsonPath("$.data.zipcode", is("test_zipcode1")))
 		.andExpect(jsonPath("$.data.addr", is("test_addr1")))
-		.andExpect(jsonPath("$.data.role", is("USER")));
+		.andExpect(jsonPath("$.data.role", is("ROLE_USER")));
 	}
 
 
