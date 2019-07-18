@@ -29,20 +29,16 @@ public class OptionServiceImpl implements OptionService {
 	// 옵션추가
 	@Override
 	public boolean add(OptionVo optionVo) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = optionDao.insert(optionVo);
+		return result == 1;
 	}
 
 	
 	// 옵션 삭제
 	@Override
 	public boolean delete(Long no) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = optionDao.delete(no);
+		return result == 1;
 	}
 
 

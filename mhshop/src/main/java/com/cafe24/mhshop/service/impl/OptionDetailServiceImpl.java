@@ -41,4 +41,20 @@ public class OptionDetailServiceImpl implements OptionDetailService {
 		return result == 1;
 	}
 
+
+	// 존재하는 상세옵션인지 확인
+	@Override
+	public boolean hasOptionDetail(Long optionDetailNo1, Long optionDetailNo2) {
+		Integer count = 0;
+		if(optionDetailNo1 != null) {
+			count = optionDetailDao.count(optionDetailNo1);
+			if(count == 0) return false;
+		}
+		if(optionDetailNo2 != null) {
+			count = optionDetailDao.count(optionDetailNo2);
+			if(count == 0) return false;
+		}
+		return true;
+	}
+
 }

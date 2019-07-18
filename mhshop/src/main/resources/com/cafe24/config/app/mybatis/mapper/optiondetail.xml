@@ -22,5 +22,11 @@
 	<delete id="delete" parameterType="long">
 		delete from option_detail where no=#{no}
 	</delete>
+	
+	
+	<!-- 상세옵션 개수 -->
+	<select id="count" parameterType="long" resultType="Integer">
+		select count(*) from option_detail where no=#{no}
+	</select>
 
 </mapper>

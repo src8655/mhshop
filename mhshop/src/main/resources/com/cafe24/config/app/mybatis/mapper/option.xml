@@ -3,6 +3,7 @@
 
 <mapper namespace="option">
 
+	<!-- 옵션 리스트 -->
 	<select id="selectList" parameterType="long" resultType="optionvo">
 		select
 		no,
@@ -20,5 +21,23 @@
 	<select id="countByOptionDetailNo" parameterType="long" resultType="Integer">
 		select count(*) from option where option_detail1=#{no} or option_detail2=#{no}
 	</select>
+
+	
+	<!-- 옵션추가 -->
+	<insert id="insert" parameterType="optionvo">
+		insert into option(item_no, option_detail1, option_detail2, cnt)
+		values(
+		#{itemNo},
+		#{optionDetailNo1},
+		#{optionDetailNo2},
+		#{cnt}
+		)
+	</insert>
+	
+	
+	<!-- 옵션삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from option where no=#{no}
+	</delete>
 
 </mapper>

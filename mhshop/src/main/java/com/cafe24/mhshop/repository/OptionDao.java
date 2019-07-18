@@ -8,5 +8,7 @@ public interface OptionDao {
 
 	List<OptionVo> selectList(Long itemNo);			// 상품번호에 속한 옵션 리스트
 	Integer countByOptionDetailNo(Long no);			// 상세옵션번호를 가지는 옵션이 있는지 확인 요청
+	Integer insert(OptionVo optionVo);				// 옵션추가
+	Integer delete(Long no);						// 옵션 삭제
 
 }

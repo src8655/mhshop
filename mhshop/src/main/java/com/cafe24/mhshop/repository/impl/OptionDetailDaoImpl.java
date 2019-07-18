@@ -36,6 +36,13 @@ public class OptionDetailDaoImpl implements OptionDetailDao {
 		return sqlSession.delete("optiondetail.delete", no);
 	}
 
+
+	// 존재하는 상세옵션인지 확인
+	@Override
+	public Integer count(Long no) {
+		return (Integer)sqlSession.selectOne("optiondetail.count", no);
+	}
+
 	
 	
 	

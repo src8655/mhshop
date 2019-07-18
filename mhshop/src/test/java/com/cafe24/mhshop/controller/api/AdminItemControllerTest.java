@@ -562,22 +562,89 @@ public class AdminItemControllerTest {
 	
 	
 
-	// 관리자 상품 옵션 추가
+	// 관리자 옵션저장
 	@Test
-	public void testN옵션작성() throws Exception {
+	public void testN옵션저장() throws Exception {
 		ResultActions resultActions;
 
+		// 수량 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
 				.param("itemNo", "1")
-				.param("optionDetail1", "1")
-				.param("optionDetail2", "4")
-				.param("cnt", "5")
+				.param("optionDetailNo1", "1")
+				.param("optionDetailNo2", "4")
+				.param("cnt", "-5")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-
-		// 응답이 200 인지
-		// 결과가 실패했는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isBadRequest());
+		
+		
+		// 존재하지 않는 상품번호 실패
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
+				.param("itemNo", "99")
+				.param("optionDetailNo1", "1")
+				.param("optionDetailNo2", "4")
+				.param("cnt", "5")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 존재하지 않은 상세옵션번호 실패
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
+				.param("itemNo", "1")
+				.param("optionDetailNo1", "99")
+				.param("cnt", "5")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(post("/api/admin/item/option")
+				.param("itemNo", "1")
+				.param("optionDetailNo1", "1")
+				.param("optionDetailNo2", "4")
+				.param("cnt", "5")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+	}
+	
+	
+	
+
+	// 관리자 옵션삭제
+	@Test
+	public void testO옵션삭제() throws Exception {
+		ResultActions resultActions;
+
+		// 없는 옵션 삭제
+		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 99L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(false)));
+		
+
+		// 성공
+		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 }

@@ -428,7 +428,10 @@ public class AdminItemController {
 	
 	
 
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "optionDetailNo2", value = "2차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
@@ -436,54 +439,48 @@ public class AdminItemController {
 	})
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 옵션 추가", notes = "관리자 상품 옵션 추가 API")
-	public JSONResult addoption(
+	public ResponseEntity<JSONResult> addoption(
 			@ModelAttribute @Valid RequestOptionWriteDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-		
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+
+		// 없는 상품번호일 때
+		if(itemService.getByNo(dto.getItemNo()) == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("없는 상품입니다."));
 		
+		// 존재하는 상세옵션인지 확인
+		if(!optionDetailService.hasOptionDetail(dto.getOptionDetailNo1(), dto.getOptionDetailNo2()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("없는 상세옵션 입니다."));
 
 		// OptionService에 상품옵션 추가 요청
 		boolean isSuccess = optionService.add(dto.toVo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/edit");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
-	
+
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/option/{no}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 옵션 삭제", notes = "관리자 상품 옵션 삭제 API")
-	public JSONResult addoption(
+	public ResponseEntity<JSONResult> addoption(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// OptionService에 상품옵션 삭제 요청
 		boolean isSuccess = optionService.delete(dto.getNo());
-				
 		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/edit");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 
 }

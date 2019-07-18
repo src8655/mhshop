@@ -29,6 +29,20 @@ public class OptionDaoImpl implements OptionDao {
 		return (Integer)sqlSession.selectOne("option.countByOptionDetailNo", no);
 	}
 
+
+	// 옵션추가
+	@Override
+	public Integer insert(OptionVo optionVo) {
+		return sqlSession.insert("option.insert", optionVo);
+	}
+
+
+	// 옵션 삭제
+	@Override
+	public Integer delete(Long no) {
+		return (Integer)sqlSession.delete("option.delete", no);
+	}
+
 	
 	
 	
