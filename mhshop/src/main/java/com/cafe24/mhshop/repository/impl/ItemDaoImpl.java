@@ -50,4 +50,11 @@ public class ItemDaoImpl implements ItemDao {
 		return (ItemVo)sqlSession.selectOne("item.selectByNo", no);
 	}
 
+
+	// 상품 수정
+	@Override
+	public Integer update(ItemVo itemVo) {
+		return sqlSession.update("item.update", itemVo);
+	}
+
 }

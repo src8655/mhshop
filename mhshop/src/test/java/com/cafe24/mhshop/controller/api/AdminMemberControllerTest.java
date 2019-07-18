@@ -51,20 +51,17 @@ import com.google.gson.JsonParser;
 @Transactional
 public class AdminMemberControllerTest {
 	private MockMvc mockMvc;
+	private String mockToken;
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-
+	
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-	
-	
-	// 회원 리스트
-	@Test
-	public void testA관리자회원리스트페이지() throws Exception {
+		
+
 		ResultActions resultActions;
 		
 		// 관리자 로그인
@@ -81,9 +78,14 @@ public class AdminMemberControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
+		mockToken = jsonObj.get("data").getAsString();
+	}
+	
+	
+	// 회원 리스트
+	@Test
+	public void testA관리자회원리스트페이지() throws Exception {
+		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(get("/api/admin/member/list")
 				.param("mockToken", mockToken)
@@ -120,25 +122,6 @@ public class AdminMemberControllerTest {
 	@Test
 	public void testB회원상세보기() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
-		
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
@@ -182,24 +165,6 @@ public class AdminMemberControllerTest {
 	@Test
 	public void testC회원삭제() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "1test_id1")

@@ -52,13 +52,33 @@ import com.google.gson.JsonParser;
 @Transactional
 public class MemberControllerTest {
 	private MockMvc mockMvc;
+	private String mockToken;
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+
+		ResultActions resultActions;
+		
+		// 사용자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		mockToken = jsonObj.get("data").getAsString();
 	}
 	
 	
@@ -234,23 +254,6 @@ public class MemberControllerTest {
 	public void testD회원수정페이지() throws Exception {
 		ResultActions resultActions;
 		
-		// 회원 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		System.out.println(mockToken);
-		
 		// 회원정보 불러오기
 		resultActions = mockMvc.perform(get("/api/member/loginupdate")
 				.param("mockToken", mockToken)
@@ -271,24 +274,6 @@ public class MemberControllerTest {
 	@Test
 	public void testE회원수정() throws Exception {
 		ResultActions resultActions;
-		
-		// 회원 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-		
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		System.out.println(mockToken);
 		
 		// 회원정보 불러오기
 		resultActions = mockMvc.perform(put("/api/member/loginupdate")

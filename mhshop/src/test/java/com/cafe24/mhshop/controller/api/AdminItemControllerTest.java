@@ -51,20 +51,17 @@ import io.swagger.annotations.ApiImplicitParam;
 @Transactional
 public class AdminItemControllerTest {
 	private MockMvc mockMvc;
+	private String mockToken;
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-	
+		
 
-	// 관리자 상품 리스트
-	@Test
-	public void testA관리자상품리스트() throws Exception {
 		ResultActions resultActions;
 		
 		// 관리자 로그인
@@ -81,8 +78,14 @@ public class AdminItemControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
+		mockToken = jsonObj.get("data").getAsString();
+	}
+	
+
+	// 관리자 상품 리스트
+	@Test
+	public void testA관리자상품리스트() throws Exception {
+		ResultActions resultActions;
 		
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/list")
@@ -116,24 +119,6 @@ public class AdminItemControllerTest {
 	public void testB상품등록() throws Exception {
 		ResultActions resultActions;
 		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-
-
 		// 상품이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/write")
 				.param("name", "")
@@ -186,24 +171,6 @@ public class AdminItemControllerTest {
 	public void testC상품삭제() throws Exception {
 		ResultActions resultActions;
 		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
-		
 		// 상품삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/{no}", 1L)
 				.param("mockToken", mockToken)
@@ -220,24 +187,6 @@ public class AdminItemControllerTest {
 	@Test
 	public void testD상품상세() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/{no}",1L)
 				.param("mockToken", mockToken)
@@ -263,24 +212,6 @@ public class AdminItemControllerTest {
 	public void testE상품이미지리스트() throws Exception {
 		ResultActions resultActions;
 		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
-		
 		resultActions = mockMvc.perform(get("/api/admin/item/img/{itemNo}",1L)
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
@@ -305,24 +236,6 @@ public class AdminItemControllerTest {
 	@Test
 	public void testF상세옵션리스트() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
 		
 		// 옵션레벨 Valid
 		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
@@ -358,24 +271,6 @@ public class AdminItemControllerTest {
 	public void testG옵션리스트() throws Exception {
 		ResultActions resultActions;
 		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
-		
 		resultActions = mockMvc.perform(get("/api/admin/item/option/{itemNo}", 1L)
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
@@ -394,64 +289,55 @@ public class AdminItemControllerTest {
 	
 	
 	
-	// 관리자 상품 DB에 수정 NO Valid
+
+	// 관리자 상품수정
 	@Test
-	public void testD상품수정_NO_Valid() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
-				.param("no", "")
-				.param("name", "test_item11")
-				.param("description", "test_description11")
-				.param("money", "11000")
-				.param("thumbnail", "test_thumbnail11")
-				.param("categoryNo", "2")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패햇는지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-		
-	}
-	
-	// 관리자 상품 DB에 수정 이름 Valid
-	@Test
-	public void testD상품수정_이름_Valid() throws Exception {
-		
-		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
-				.param("no", "1")
+	public void testH상품수정() throws Exception {
+		ResultActions resultActions;
+
+		// 상품명 Valid
+		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
 				.param("name", "")
 				.param("description", "test_description11")
 				.param("money", "11000")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패햇는지
+		// 응답이 400 인지
 		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(status().isBadRequest());
 		
-	}
-
-	// 관리자 상품 DB에 수정
-	@Test
-	public void testD상품수정() throws Exception {
 		
-		ResultActions resultActions = mockMvc.perform(put("/api/admin/item/edit")
+		// 상품금액 Valid
+		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
 				.param("no", "1")
-				.param("name", "test_items")
+				.param("name", "change!!")
+				.param("description", "test_description11")
+				.param("money", "-1")
+				.param("thumbnail", "test_thumbnail11")
+				.param("categoryNo", "2")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
+				.param("no", "1")
+				.param("name", "change!!")
 				.param("description", "test_description11")
 				.param("money", "11000")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 		
 	}
 	

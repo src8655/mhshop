@@ -47,4 +47,16 @@
 	</select>
 	
 	
+	<!-- 상품 수정 -->
+	<update id="update" parameterType="itemvo">
+		update item set
+		name=#{name},
+		description=#{description},
+		money=#{money},
+		thumbnail=#{thumbnail},
+		category_no=#{categoryNo}
+		where no=#{no}
+	</update>
+	
+	
 </mapper>

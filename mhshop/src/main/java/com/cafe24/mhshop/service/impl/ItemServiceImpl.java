@@ -69,10 +69,8 @@ public class ItemServiceImpl implements ItemService {
 	// 상품 수정
 	@Override
 	public boolean edit(ItemVo itemVo) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = itemDao.update(itemVo);
+		return result == 1;
 	}
 
 

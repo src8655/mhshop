@@ -49,19 +49,17 @@ import com.google.gson.JsonParser;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdminCategoryControllerTest {
 	private MockMvc mockMvc;
+	private String mockToken;
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
+	
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
+		
 
-
-	// 카테고리 리스트
-	@Test
-	public void testA카테고리리스트() throws Exception {
 		ResultActions resultActions;
 		
 		// 관리자 로그인
@@ -78,9 +76,14 @@ public class AdminCategoryControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
+		mockToken = jsonObj.get("data").getAsString();
+	}
 
-		
+
+	// 카테고리 리스트
+	@Test
+	public void testA카테고리리스트() throws Exception {
+		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(get("/api/admin/category/list")
 				.param("mockToken", mockToken)
@@ -99,24 +102,6 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testB카테고리작성() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
 		
 		// 카테고리명 Valid
 		resultActions = mockMvc.perform(post("/api/admin/category/write")
@@ -143,24 +128,6 @@ public class AdminCategoryControllerTest {
 	@Test
 	public void testC카테고리수정() throws Exception {
 		ResultActions resultActions;
-		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
 		
 		// 카테고리번호 Valid
 		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", "aa", "test")
@@ -193,24 +160,6 @@ public class AdminCategoryControllerTest {
 	public void testD카테고리삭제() throws Exception {
 		ResultActions resultActions;
 		
-		// 관리자 로그인
-		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
-		.andExpect(status().isOk())
-		.andReturn();
-
-		// 로그인키 가져오기
-		String content = mvcResult.getResponse().getContentAsString();
-		JsonParser Parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		String mockToken = jsonObj.get("data").getAsString();
-		
-		
-
 		// 카테고리번호 Valid
 		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", "aa")
 				.param("mockToken", mockToken)

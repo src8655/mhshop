@@ -220,7 +220,10 @@ public class AdminItemController {
 	
 	
 
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/option/{itemNo}", method = RequestMethod.GET)
@@ -243,7 +246,10 @@ public class AdminItemController {
 	
 	
 
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
@@ -253,28 +259,18 @@ public class AdminItemController {
 	})
 	@RequestMapping(value = "/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 DB에 수정", notes = "관리자 상품 DB에 수정 API")
-	public JSONResult edit(
+	public ResponseEntity<JSONResult> edit(
 			@ModelAttribute @Valid RequestItemEditDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-		
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		
-
 		// Service에 상품 정보 수정
 		boolean isSuccess = itemService.edit(dto.toVo());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/edit");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
@@ -285,7 +281,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "display", value = "상품진열여부", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/edit/display/{no}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/display/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 진열여부 DB에 수정", notes = "관리자 상품 진열여부 DB에 수정 API")
 	public JSONResult edit_display(
 			@ModelAttribute @Valid RequestItemDisplayDto dto,
