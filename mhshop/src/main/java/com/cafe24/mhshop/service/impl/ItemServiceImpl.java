@@ -77,10 +77,11 @@ public class ItemServiceImpl implements ItemService {
 	// 상품진열여부 수정
 	@Override
 	public boolean editDisplay(Long no, String display) {
-
-		// DAO에 요청
-		
-		return true;
+		ItemVo itemVo = new ItemVo();
+		itemVo.setNo(no);
+		itemVo.setDisplay(display);
+		Integer result = itemDao.updateDisplay(itemVo);
+		return result == 1;
 	}
 
 

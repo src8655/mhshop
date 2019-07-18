@@ -277,41 +277,36 @@ public class AdminItemController {
 	
 	
 	
+	
+
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "display", value = "상품진열여부", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/display/{no}", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 진열여부 DB에 수정", notes = "관리자 상품 진열여부 DB에 수정 API")
-	public JSONResult edit_display(
+	public ResponseEntity<JSONResult> edit_display(
 			@ModelAttribute @Valid RequestItemDisplayDto dto,
 			BindingResult result
 			) {
-		
-		// 권한 확인
-		
-
 		// 유효성검사
-		if(result.hasErrors()) return JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage());
-		
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// TRUE로 바꾸고자 할 때 
 		// OptionService에 상품옵션이 존재하는지 확인 (없으면 실패)
 		if("TRUE".equals(dto.getDisplay())) {
 			List<OptionVo> optionList = optionService.getListByItemNo(dto.getNo());
-			if(optionList == null) return JSONResult.fail("옵션이 없습니다.");
+			if(optionList == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("옵션이 없습니다."));
 		}
 		
-
 		// ItemService에 상품 정보 수정
 		boolean isSuccess = itemService.editDisplay(dto.getNo(), dto.getDisplay());
 		
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", isSuccess);
-		dataMap.put("redirect", "/api/admin/item/edit");
-		return JSONResult.success(dataMap);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.cafe24.mhshop.dto;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,6 +12,7 @@ public class RequestItemDisplayDto {
 	@NotNull
 	private Long no;
 	@NotEmpty
+	@Pattern(regexp = "TRUE|FALSE")
 	private String display;
 	
 	public ItemVo toVo() {

@@ -12,5 +12,6 @@ public interface ItemDao {
 	Integer delete(Long no);					// 상품 삭제
 	ItemVo selectOne(Long no);					// 상품번호로 상품정보
 	Integer update(ItemVo itemVo);				// 상품 수정
+	Integer updateDisplay(ItemVo itemVo);		// 상품진열여부 수정
 
 }

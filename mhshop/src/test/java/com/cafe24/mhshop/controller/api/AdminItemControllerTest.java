@@ -345,42 +345,36 @@ public class AdminItemControllerTest {
 
 	
 
-	// 관리자 상품 진열여부 DB에 수정 Valid
+	// 관리자 상품진열여부정
 	@Test
-	public void testE상품진열여부수정_진열여부_Valid() throws Exception {
+	public void testI상품진열여부수정() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
-				.param("display", "")
+		// 진열상태 Valid
+		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 2L)
+				.param("display", "ttttrue")
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
 		
+		
+		// 성공
+		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 1L)
+				.param("display", "TRUE")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		// 결과가 실패햇는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
-		
-	}
-
-	// 관리자 상품 진열여부 DB에 수정
-	@Test
-	public void testE상품진열여부수정() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(put("/api/admin/item/edit/display/{no}", 2L)
-				.param("display", "FALSE")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패햇는지
-		resultActions
-		.andExpect(status().isOk());
-		
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 	
-
-
+	
+	
+	
 	// 관리자 상품 이미지를 DB에 저장 상품번호 Valid
 	@Test
 	public void testF상품이미지작성_상품번호_Valid() throws Exception {

@@ -59,4 +59,11 @@
 	</update>
 	
 	
+	<!-- 상품진열여부 수정 -->
+	<update id="updateDisplay" parameterType="itemvo">
+		update item set
+		display=#{display}
+		where no=#{no}
+	</update>
+	
 </mapper>

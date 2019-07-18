@@ -57,4 +57,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.update("item.update", itemVo);
 	}
 
+
+	// 상품진열여부 수정
+	@Override
+	public Integer updateDisplay(ItemVo itemVo) {
+		return sqlSession.update("item.updateDisplay", itemVo);
+	}
+
 }
