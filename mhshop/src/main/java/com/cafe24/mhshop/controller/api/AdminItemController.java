@@ -64,7 +64,7 @@ public class AdminItemController {
 	OptionService optionService;
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
@@ -89,7 +89,7 @@ public class AdminItemController {
 	
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
@@ -121,7 +121,7 @@ public class AdminItemController {
 	
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		

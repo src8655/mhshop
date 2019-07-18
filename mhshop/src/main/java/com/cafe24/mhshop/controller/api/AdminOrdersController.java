@@ -62,7 +62,7 @@ public class AdminOrdersController {
 	OrdersItemService ordersItemService;
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
@@ -77,7 +77,7 @@ public class AdminOrdersController {
 	}
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
@@ -114,7 +114,7 @@ public class AdminOrdersController {
 	}
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
@@ -143,7 +143,7 @@ public class AdminOrdersController {
 	
 	
 
-	@Auth(role = Role.ADMIN)
+	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		

@@ -61,13 +61,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		//8. role이 Auth.Role.USER라면
 		//   인증된 모든 사용자는 접근
-		if(role == Auth.Role.USER) {
+		if(role == Auth.Role.ROLE_USER) {
 			return true;
 		}
 		
 		//9. Admin Role 권한 체크
-		if(role == Auth.Role.ADMIN) {
-			if(authMember.getRole().equals(Auth.Role.ADMIN.toString())) {
+		if(role == Auth.Role.ROLE_ADMIN) {
+			if(authMember.getRole().equals(Auth.Role.ROLE_ADMIN.toString())) {
 				return true;
 			}else {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);

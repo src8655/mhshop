@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mhshop.repository.MemberDao;
+import com.cafe24.mhshop.security.Auth;
 import com.cafe24.mhshop.service.MemberService;
 import com.cafe24.mhshop.vo.MemberVo;
 
@@ -33,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Boolean add(MemberVo memberVo) {
 
-		memberVo.setRole("USER");
+		memberVo.setRole(Auth.Role.ROLE_USER.toString());
 		
 		// 중복확인
 		int cnt = memberDao.countById(memberVo.getId());
