@@ -84,7 +84,7 @@ public class AdminOrdersController {
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
-	@ApiOperation(value = "주문 상세보기", notes = "주문 상세보기 요청 API")
+	@ApiOperation(value = "주문 상세", notes = "주문 상세 요청 API")
 	public ResponseEntity<JSONResult> view(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result
@@ -95,22 +95,8 @@ public class AdminOrdersController {
 		// OrdersService에 주문상세 요청
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		
-		// GuestService나 MemberService에 구매자 정보 요청
-		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
-		MemberVo memberVo = null;
-		if(ordersVo.getMemberId() != null)
-			memberVo = memberService.getById(new RequestMemberIdDto(ordersVo.getMemberId()).toVo());
-		
-		// OrdersItemService에 주문상품리스트 요청
-		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
-		
 		// JSON 리턴 생성
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("ordersVo", ordersVo);
-		dataMap.put("guestVo", guestVo);
-		dataMap.put("memberVo", memberVo);
-		dataMap.put("ordersItemList", ordersItemList);
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(dataMap));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 	
 
@@ -169,4 +155,53 @@ public class AdminOrdersController {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
+	
+	
+	
+	@Auth(role = Role.ROLE_ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/guest/{ordersNo}", method = RequestMethod.GET)
+	@ApiOperation(value = "비회원 상세", notes = "비회원 상세 요청 API")
+	public ResponseEntity<JSONResult> guest(
+			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// GuestService나 MemberService에 구매자 정보 요청
+		GuestVo guestVo = guestService.getByOrdersNo(dto.getOrdersNo());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(guestVo));
+	}
+	
+	
+	
+	
+	@Auth(role = Role.ROLE_ADMIN)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/item/{ordersNo}", method = RequestMethod.GET)
+	@ApiOperation(value = "주문 상품 리스트", notes = "주문 상품 리스트 요청 API")
+	public ResponseEntity<JSONResult> item(
+			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+
+		// OrdersItemService에 주문상품리스트 요청
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersItemList));
+	}
 }

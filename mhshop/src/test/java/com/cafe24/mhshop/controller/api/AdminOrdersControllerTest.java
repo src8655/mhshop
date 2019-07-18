@@ -103,9 +103,9 @@ public class AdminOrdersControllerTest {
 		
 	}
 	
-	// 주문 상세보기
+	// 주문 상세
 	@Test
-	public void testB주문상세보기() throws Exception {
+	public void testB주문상세() throws Exception {
 		ResultActions resultActions;
 		
 		// 관리자 로그인
@@ -133,49 +133,16 @@ public class AdminOrdersControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		
-		.andExpect(jsonPath("$.data.ordersVo.status", is("입금대기")))
-		.andExpect(jsonPath("$.data.ordersVo.money", is(10000)))
-		.andExpect(jsonPath("$.data.ordersVo.trackingNum", Matchers.nullValue()))
-		.andExpect(jsonPath("$.data.ordersVo.toName", is("test_name1")))
-		.andExpect(jsonPath("$.data.ordersVo.toPhone", is("01000000001")))
-		.andExpect(jsonPath("$.data.ordersVo.toZipcode", is("test_zipcode1")))
-		.andExpect(jsonPath("$.data.ordersVo.toAddr", is("test_addr1")))
-		.andExpect(jsonPath("$.data.ordersVo.memberId", is("test_id1")))
-		.andExpect(jsonPath("$.data.ordersVo.bankName", is("국민")))
-		.andExpect(jsonPath("$.data.ordersVo.bankNum", is("123456789")))
-		
-		.andExpect(jsonPath("$.data.guestVo", Matchers.nullValue()))
-		
-		.andExpect(jsonPath("$.data.memberVo.id", is("test_id1")))
-		.andExpect(jsonPath("$.data.memberVo.name", is("test1")))
-		.andExpect(jsonPath("$.data.memberVo.phone", is("01000000001")))
-		.andExpect(jsonPath("$.data.memberVo.email", is("test_email1@naver.com")))
-		.andExpect(jsonPath("$.data.memberVo.zipcode", is("test_zipcode1")))
-		.andExpect(jsonPath("$.data.memberVo.addr", is("test_addr1")))
-		.andExpect(jsonPath("$.data.memberVo.role", is("USER")))
-
-		.andExpect(jsonPath("$.data.ordersItemList[0].no", is(1)))
-		.andExpect(jsonPath("$.data.ordersItemList[0].optionNo", is(1)))
-		.andExpect(jsonPath("$.data.ordersItemList[0].itemName", is("test_item1")))
-		.andExpect(jsonPath("$.data.ordersItemList[0].itemThumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.ordersItemList[0].itemOptionDetail1", is("파란색")))
-		.andExpect(jsonPath("$.data.ordersItemList[0].itemOptionDetail2", is("L")))
-		.andExpect(jsonPath("$.data.ordersItemList[0].money", is(10000)))
-		.andExpect(jsonPath("$.data.ordersItemList[0].cnt", is(1)));
-		
-		
-		// 비회원일 때
-		resultActions = mockMvc.perform(get("/api/admin/orders/view/{ordersNo}", "2019-07-11_000257")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("success")))
-
-		.andExpect(jsonPath("$.data.guestVo.guestName", is("test_guest1")))
-		.andExpect(jsonPath("$.data.guestVo.guestPhone", is("01000000001")));
-		
+		.andExpect(jsonPath("$.data.status", is("입금대기")))
+		.andExpect(jsonPath("$.data.money", is(10000)))
+		.andExpect(jsonPath("$.data.trackingNum", Matchers.nullValue()))
+		.andExpect(jsonPath("$.data.toName", is("test_name1")))
+		.andExpect(jsonPath("$.data.toPhone", is("01000000001")))
+		.andExpect(jsonPath("$.data.toZipcode", is("test_zipcode1")))
+		.andExpect(jsonPath("$.data.toAddr", is("test_addr1")))
+		.andExpect(jsonPath("$.data.memberId", is("test_id1")))
+		.andExpect(jsonPath("$.data.bankName", is("국민")))
+		.andExpect(jsonPath("$.data.bankNum", is("123456789")));
 	}
 	
 
@@ -268,5 +235,82 @@ public class AdminOrdersControllerTest {
 		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
+	
+	
+	
+	// 비회원상세
+	@Test
+	public void testE비회원상세() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+
+		resultActions = mockMvc.perform(get("/api/admin/orders/guest/{ordersNo}", "2019-07-11_000257")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.guestName", is("test_guest1")))
+		.andExpect(jsonPath("$.data.guestPhone", is("01000000001")));
+		
+	}
+	
+	
+
+	// 주문상품리스트
+	@Test
+	public void testF주문상품리스트() throws Exception {
+		ResultActions resultActions;
+		
+		// 관리자 로그인
+		resultActions = mockMvc.perform(post("/api/member/login")
+				.param("id", "test_id2")
+				.param("password", "testpassword2!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		MvcResult mvcResult = resultActions
+		.andExpect(status().isOk())
+		.andReturn();
+
+		// 로그인키 가져오기
+		String content = mvcResult.getResponse().getContentAsString();
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(content);
+		String mockToken = jsonObj.get("data").getAsString();
+		
+		
+		// 회원일 때
+		resultActions = mockMvc.perform(get("/api/admin/orders/item/{ordersNo}", "2019-07-11_000256")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].optionNo", is(1)))
+		.andExpect(jsonPath("$.data[0].itemName", is("test_item1")))
+		.andExpect(jsonPath("$.data[0].itemThumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data[0].itemOptionDetail1", is("파란색")))
+		.andExpect(jsonPath("$.data[0].itemOptionDetail2", is("L")))
+		.andExpect(jsonPath("$.data[0].money", is(10000)))
+		.andExpect(jsonPath("$.data[0].cnt", is(1)));
+	}
 	
 }
