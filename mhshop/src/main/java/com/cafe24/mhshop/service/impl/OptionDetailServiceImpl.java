@@ -29,10 +29,8 @@ public class OptionDetailServiceImpl implements OptionDetailService {
 	// 상세옵션 추가
 	@Override
 	public boolean add(OptionDetailVo optionDetailVo) {
-
-		// DAO에 요청
-		
-		return true;
+		Integer result = optionDetailDao.insert(optionDetailVo);
+		return result == 1;
 	}
 
 

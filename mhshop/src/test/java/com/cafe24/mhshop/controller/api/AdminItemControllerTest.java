@@ -379,7 +379,7 @@ public class AdminItemControllerTest {
 	@Test
 	public void testJ상품이미지저장() throws Exception {
 		ResultActions resultActions;
-		
+
 		// 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "")
@@ -390,7 +390,18 @@ public class AdminItemControllerTest {
 		resultActions
 		.andExpect(status().isBadRequest());
 		
+
+		// 없는 상품번호 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/img")
+				.param("itemNo", "99")
+				.param("itemImg", "test_img")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
 		
+
 		// 상품이미지 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "1")
@@ -415,42 +426,102 @@ public class AdminItemControllerTest {
 	}
 	
 	
-	// 관리자 상품 상세옵션 추가 레벨 Valid
+
+	// 관리자 상품이미지 삭제
 	@Test
-	public void testG상세옵션작성_레벨_Valid() throws Exception {
+	public void testK상품이미지삭제() throws Exception {
 		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "초록색")
-				.param("level", "")
-				.param("itemNo", "1")
+
+		// 없는 이미지 삭제
+		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 99L)
+				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
-		
 		// 응답이 200 인지
-		// 결과가 실패했는지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.result", is("fail")));
+		.andExpect(jsonPath("$.data", is(false)));
+		
+
+		// 성공
+		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 1L)
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+	}
+	
+	
+	
+	
+	
+	// 관리자 상세옵션 저장
+	@Test
+	public void testG상세옵션저장() throws Exception {
+		ResultActions resultActions;
+
+		// 옵션이름 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "")
+				.param("level", "1")
+				.param("itemNo", "1")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 옵션레벨 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "option_name")
+				.param("level", "3")
+				.param("itemNo", "1")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 상품번호 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "option_name")
+				.param("level", "3")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 없는 상품번호 Valid
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "option_name")
+				.param("level", "3")
+				.param("itemNo", "99")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
+				.param("optionName", "option_name")
+				.param("level", "1")
+				.param("itemNo", "1")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 	}
 	
 
-	// 관리자 상품 상세옵션 추가
-	@Test
-	public void testG상세옵션작성() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "초록색")
-				.param("level", "1")
-				.param("itemNo", "1")
-				.contentType(MediaType.APPLICATION_JSON));
-		
-		// 응답이 200 인지
-		// 결과가 실패했는지
-		resultActions
-		.andExpect(status().isOk());
-	}
-	
 	
 	// 관리자 상품 옵션 추가 수량 Valid
 	@Test

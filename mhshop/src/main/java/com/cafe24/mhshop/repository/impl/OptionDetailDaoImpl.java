@@ -22,6 +22,13 @@ public class OptionDetailDaoImpl implements OptionDetailDao {
 		return sqlSession.selectList("optiondetail.selectList", optionDetailVo);
 	}
 
+
+	// 상세옵션 추가
+	@Override
+	public Integer insert(OptionDetailVo optionDetailVo) {
+		return sqlSession.insert("optiondetail.insert", optionDetailVo);
+	}
+
 	
 	
 	

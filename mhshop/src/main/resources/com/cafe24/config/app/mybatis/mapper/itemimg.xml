@@ -19,4 +19,10 @@
 		values(#{itemNo}, #{itemImg})
 	</insert>
 	
+	
+	<!-- 상품이미지 삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from item_img where no=#{no}
+	</delete>
+	
 </mapper>

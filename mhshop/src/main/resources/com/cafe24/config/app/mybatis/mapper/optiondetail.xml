@@ -9,5 +9,12 @@
 		from option_detail
 		where item_no=#{itemNo} and level=#{level}
 	</select>
+	
+	
+	<!-- 상세옵션 추가 -->
+	<insert id="insert" parameterType="optiondetailvo">
+		insert into option_detail(option_name, level, item_no)
+		values(#{optionName}, #{level}, #{itemNo})
+	</insert>
 
 </mapper>

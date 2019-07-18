@@ -30,6 +30,13 @@ public class ItemImgDaoImpl implements ItemImgDao {
 	}
 
 
+	// 상품이미지 삭제
+	@Override
+	public Integer delete(Long no) {
+		return sqlSession.delete("itemimg.delete", no);
+	}
+
+
 	
 	
 }
