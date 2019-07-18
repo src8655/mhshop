@@ -96,7 +96,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 DB에 저장", notes = "관리자 상품 DB에 저장 API")
 	public ResponseEntity<JSONResult> write(
 			@ModelAttribute @Valid RequestItemWriteDto dto,

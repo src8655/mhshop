@@ -53,7 +53,7 @@ public class AdminCategoryController {
 		
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 카테고리를 DB에 등록", notes = "관리자 카테고리 등록 API")
 	public ResponseEntity<JSONResult> write(
 			@ModelAttribute @Valid RequestCategoryWriteDto dto,

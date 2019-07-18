@@ -120,7 +120,7 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 		
 		// 상품이름 Valid
-		resultActions = mockMvc.perform(post("/api/admin/item/write")
+		resultActions = mockMvc.perform(post("/api/admin/item")
 				.param("name", "")
 				.param("description", "test_description2")
 				.param("money", "30000")
@@ -134,7 +134,7 @@ public class AdminItemControllerTest {
 		
 		
 		// 상품금액 Valid
-		resultActions = mockMvc.perform(post("/api/admin/item/write")
+		resultActions = mockMvc.perform(post("/api/admin/item")
 				.param("name", "test_name")
 				.param("description", "test_description2")
 				.param("money", "")
@@ -148,7 +148,7 @@ public class AdminItemControllerTest {
 		
 		
 		// 성공했을 때
-		resultActions = mockMvc.perform(post("/api/admin/item/write")
+		resultActions = mockMvc.perform(post("/api/admin/item")
 				.param("name", "test_name")
 				.param("description", "test_description2")
 				.param("money", "1000")

@@ -104,7 +104,7 @@ public class AdminCategoryControllerTest {
 		ResultActions resultActions;
 		
 		// 카테고리명 Valid
-		resultActions = mockMvc.perform(post("/api/admin/category/write")
+		resultActions = mockMvc.perform(post("/api/admin/category")
 				.param("name", "")
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
@@ -113,7 +113,7 @@ public class AdminCategoryControllerTest {
 
 		
 		// 작성성공
-		resultActions = mockMvc.perform(post("/api/admin/category/write")
+		resultActions = mockMvc.perform(post("/api/admin/category")
 				.param("name", "category_name3")
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
