@@ -9,16 +9,24 @@ public class OptionVo {
 	private Long optionDetailNo1;
 	private Long optionDetailNo2;
 	private Integer cnt;
+
+	private String optionDetailName1;
+	private String optionDetailName2;
 	
 
 	public OptionVo() {}
-	public OptionVo(Long no, Long itemNo, Long optionDetailNo1, Long optionDetailNo2, Integer cnt) {
+
+	public OptionVo(Long no, Long itemNo, Long optionDetailNo1, Long optionDetailNo2, Integer cnt,
+			String optionDetailName1, String optionDetailName2) {
 		this.no = no;
 		this.itemNo = itemNo;
 		this.optionDetailNo1 = optionDetailNo1;
 		this.optionDetailNo2 = optionDetailNo2;
 		this.cnt = cnt;
+		this.optionDetailName1 = optionDetailName1;
+		this.optionDetailName2 = optionDetailName2;
 	}
+
 	public Long getNo() {
 		return no;
 	}
@@ -48,6 +56,18 @@ public class OptionVo {
 	}
 	public void setCnt(Integer cnt) {
 		this.cnt = cnt;
+	}
+	public String getOptionDetailName1() {
+		return optionDetailName1;
+	}
+	public void setOptionDetailName1(String optionDetailName1) {
+		this.optionDetailName1 = optionDetailName1;
+	}
+	public String getOptionDetailName2() {
+		return optionDetailName2;
+	}
+	public void setOptionDetailName2(String optionDetailName2) {
+		this.optionDetailName2 = optionDetailName2;
 	}
 
 }

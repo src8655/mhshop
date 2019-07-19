@@ -110,5 +110,26 @@ public class ItemController {
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionList));
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
+	public ResponseEntity<JSONResult> list() {
+		return null;
+	}
+	
+	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "path", required = true, defaultValue = ""),
+	})
+	@RequestMapping(value = "/option/{no}", method = RequestMethod.GET)
+	@ApiOperation(value = "옵션 상세", notes = "옵션 상세 요청 API")
+	public ResponseEntity<JSONResult> optionView(
+			@ModelAttribute @Valid RequestNoDto dto,
+			BindingResult result
+			) {
+		return null;
+	}
 
 }

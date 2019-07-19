@@ -11,7 +11,7 @@ public class RequestOptionListDto {
 	private Long optionDetailNo1;
 	
 	public OptionVo toVo() {
-		return new OptionVo(null, itemNo, optionDetailNo1, null, null);
+		return new OptionVo(null, itemNo, optionDetailNo1, null, null, null, null);
 	}
 	public Long getItemNo() {
 		return itemNo;

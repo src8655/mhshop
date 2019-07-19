@@ -15,7 +15,7 @@ public class RequestOptionWriteDto {
 	private Integer cnt;
 	
 	public OptionVo toVo() {
-		return new OptionVo(null, itemNo, optionDetailNo1, optionDetailNo2, cnt);
+		return new OptionVo(null, itemNo, optionDetailNo1, optionDetailNo2, cnt, null, null);
 	}
 	public Long getItemNo() {
 		return itemNo;
