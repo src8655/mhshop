@@ -86,7 +86,7 @@ public class OrdersController {
 		
 		// 주문내역 일괄 추가
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -106,7 +106,7 @@ public class OrdersController {
 			@ModelAttribute @Valid RequestOrdersWriteDto OrdersDto,
 			BindingResult result,
 			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
-			@AuthUser MemberVo AuthMember
+			@AuthUser MemberVo authMember
 			) {
 		
 		// valid 체크
@@ -117,7 +117,7 @@ public class OrdersController {
 		
 		// 주문내역 일괄 추가(주문한만큼 옵션 재고 조정)
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -139,7 +139,7 @@ public class OrdersController {
 		
 		// 주문내역 리스트
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -148,12 +148,12 @@ public class OrdersController {
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 주문 리스트", notes = "회원 주문 리스트 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersList(
-			@AuthUser MemberVo AuthMember
+			@AuthUser MemberVo authMember
 			) {
 		
 		// 주문 리스트
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -176,7 +176,7 @@ public class OrdersController {
 		
 		// 주문내역 리스트
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -198,7 +198,7 @@ public class OrdersController {
 		
 		// 상태를 취소상태로 변경
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 
@@ -211,7 +211,7 @@ public class OrdersController {
 	public ResponseEntity<JSONResult> memberOrdersCancel(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result,
-			@AuthUser MemberVo AuthMember
+			@AuthUser MemberVo authMember
 			) {
 		
 		// valid 체크
@@ -220,7 +220,7 @@ public class OrdersController {
 
 		// 상태를 취소상태로 변경
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 
 	

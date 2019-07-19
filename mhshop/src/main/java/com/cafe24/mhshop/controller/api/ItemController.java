@@ -56,7 +56,7 @@ public class ItemController {
 	})
 	@RequestMapping(value = "/{no}", method = RequestMethod.GET)
 	@ApiOperation(value = "상품 상세", notes = "상품 상세 API")
-	public ResponseEntity<JSONResult> view(
+	public ResponseEntity<JSONResult> itemview(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
@@ -76,7 +76,7 @@ public class ItemController {
 	})
 	@RequestMapping(value = "/img/{itemNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "상품이미지 리스트", notes = " 상품이미지 리스트 API")
-	public ResponseEntity<JSONResult> imglist(
+	public ResponseEntity<JSONResult> itemimglist(
 			@ModelAttribute @Valid RequestItemNoDto dto,
 			BindingResult result
 			) {
@@ -97,7 +97,7 @@ public class ItemController {
 	})
 	@RequestMapping(value = "/option/{itemNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "옵션 리스트", notes = "옵션 리스트 API")
-	public ResponseEntity<JSONResult> optionList(
+	public ResponseEntity<JSONResult> itemoptionList(
 			@ModelAttribute @Valid RequestOptionListDto dto,
 			BindingResult result
 			) {
@@ -115,8 +115,8 @@ public class ItemController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
-	public ResponseEntity<JSONResult> list() {
-		return null;
+	public ResponseEntity<JSONResult> itemlist() {
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -125,11 +125,11 @@ public class ItemController {
 	})
 	@RequestMapping(value = "/option/{no}", method = RequestMethod.GET)
 	@ApiOperation(value = "옵션 상세", notes = "옵션 상세 요청 API")
-	public ResponseEntity<JSONResult> optionView(
+	public ResponseEntity<JSONResult> itemoptionView(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 
 }

@@ -67,7 +67,7 @@ public class BasketController {
 	})
 	@RequestMapping(value = "/guest", method = RequestMethod.GET)
 	@ApiOperation(value = "비회원 장바구니 리스트", notes = "비회원 장바구니 리스트 요청 API")
-	public ResponseEntity<JSONResult> guestList(
+	public ResponseEntity<JSONResult> basketguestList(
 			@ModelAttribute @Valid RequestBasketGuestDto guestDto,
 			BindingResult result
 			) {
@@ -78,10 +78,10 @@ public class BasketController {
 		
 		// 장바구니 리스트
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
-	
+
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "optionNo", value = "옵션번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
@@ -89,7 +89,7 @@ public class BasketController {
 	})
 	@RequestMapping(value = "/guest", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 장바구니 추가", notes = "비회원 장바구니 추가 요청 API")
-	public ResponseEntity<JSONResult> guestAdd(
+	public ResponseEntity<JSONResult> basketguestAdd(
 			@ModelAttribute @Valid RequestBasketAddGuestDto dto,
 			BindingResult result
 			) {
@@ -100,17 +100,17 @@ public class BasketController {
 		
 		// 장바구니 추가
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
-	
+
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/guest", method = RequestMethod.DELETE)
 	@ApiOperation(value = "비회원 장바구니 삭제", notes = "비회원 장바구니 삭제 요청 API")
-	public ResponseEntity<JSONResult> guestDelete(
+	public ResponseEntity<JSONResult> basketguestDelete(
 			@ModelAttribute @Valid RequestBasketDelGuestDto dto,
 			BindingResult result
 			) {
@@ -121,11 +121,11 @@ public class BasketController {
 		
 		// 장바구니 추가
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
-	
+
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
@@ -133,7 +133,7 @@ public class BasketController {
 	})
 	@RequestMapping(value = "/guest", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 장바구니 수정", notes = "비회원 장바구니 수정 요청 API")
-	public ResponseEntity<JSONResult> guestEdit(
+	public ResponseEntity<JSONResult> basketguestEdit(
 			@ModelAttribute @Valid RequestBasketEditGuestDto dto,
 			BindingResult result
 			) {
@@ -144,9 +144,9 @@ public class BasketController {
 		
 		// 장바구니 수정
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
-	
+
 	
 	
 	
@@ -158,11 +158,9 @@ public class BasketController {
 	
 
 	@Auth
-	@RequestMapping(value = "/guest", method = RequestMethod.GET)
+	@RequestMapping(value = "/member", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 장바구니 리스트", notes = "회원 장바구니 리스트 요청 API")
-	public ResponseEntity<JSONResult> memberList(
-			@ModelAttribute @Valid RequestBasketGuestDto guestDto,
-			BindingResult result,
+	public ResponseEntity<JSONResult> basketmemberList(
 			@AuthUser MemberVo authMember
 			) {
 		
@@ -172,7 +170,7 @@ public class BasketController {
 		
 		// 장바구니 리스트
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -183,7 +181,7 @@ public class BasketController {
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 장바구니 추가", notes = "회원 장바구니 추가 요청 API")
-	public ResponseEntity<JSONResult> memberAdd(
+	public ResponseEntity<JSONResult> basketmemberAdd(
 			@ModelAttribute @Valid RequestBasketAddDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
@@ -195,17 +193,17 @@ public class BasketController {
 		
 		// 장바구니 추가
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.DELETE)
 	@ApiOperation(value = "회원 장바구니 삭제", notes = "회원 장바구니 삭제 요청 API")
-	public ResponseEntity<JSONResult> memberDelete(
+	public ResponseEntity<JSONResult> basketmemberDelete(
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
@@ -217,7 +215,7 @@ public class BasketController {
 		
 		// 장바구니 추가
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
@@ -228,7 +226,7 @@ public class BasketController {
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원 장바구니 수정", notes = "회원 장바구니 수정 요청 API")
-	public ResponseEntity<JSONResult> memberEdit(
+	public ResponseEntity<JSONResult> basketmemberEdit(
 			@ModelAttribute @Valid RequestBasketEditDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
@@ -240,7 +238,7 @@ public class BasketController {
 		
 		// 장바구니 수정
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	
