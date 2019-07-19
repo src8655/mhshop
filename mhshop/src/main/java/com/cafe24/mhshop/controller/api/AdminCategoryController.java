@@ -73,21 +73,6 @@ public class AdminCategoryController {
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-	})
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	@ApiOperation(value = "관리자 카테고리 리스트", notes = "관리자 카테고리 리스트 요청 API")
-	public ResponseEntity<JSONResult> list() {
-		// Service에 카테고리리스트 요청
-		List<CategoryVo> list = categoryService.getList();
-		
-		// JSON 리턴 생성
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
-	}
-	
-	
-	@Auth(role = Role.ROLE_ADMIN)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")

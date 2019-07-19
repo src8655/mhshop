@@ -181,60 +181,12 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.data", is(true)));
 		
 	}
-
-
-	// 관리자 상품 상세
-	@Test
-	public void testD상품상세() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/admin/item/{no}",1L)
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data.no", is(1)))
-		.andExpect(jsonPath("$.data.name", is("test_item1")))
-		.andExpect(jsonPath("$.data.description", is("test_description1")))
-		.andExpect(jsonPath("$.data.money", is(10000)))
-		.andExpect(jsonPath("$.data.thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.display", is("FALSE")))
-		.andExpect(jsonPath("$.data.categoryNo", is(1)));
-		
-	}
-	
-	
-	
-
-	// 관리자 상품이미지 리스트
-	@Test
-	public void testE상품이미지리스트() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/admin/item/img/{itemNo}",1L)
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[0].itemImg", is("test_img1")))
-
-		.andExpect(jsonPath("$.data[1].no", is(2)))
-		.andExpect(jsonPath("$.data[1].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[1].itemImg", is("test_img2")));
-		
-	}
-	
-	
 	
 
 
 	// 관리자 상세옵션리스트
 	@Test
-	public void testF상세옵션리스트() throws Exception {
+	public void testD상세옵션리스트() throws Exception {
 		ResultActions resultActions;
 		
 		// 옵션레벨 Valid
@@ -265,35 +217,12 @@ public class AdminItemControllerTest {
 	
 	
 	
-
-	// 관리자 옵션리스트
-	@Test
-	public void testG옵션리스트() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/admin/item/option/{itemNo}", 1L)
-				.param("optionDetailNo1", "")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[0].optionDetailNo1", is(1)))
-		.andExpect(jsonPath("$.data[0].optionDetailNo2", is(2)))
-		.andExpect(jsonPath("$.data[0].cnt", is(10)));
-		
-	}
-	
-	
-	
 	
 	
 
 	// 관리자 상품수정
 	@Test
-	public void testH상품수정() throws Exception {
+	public void testE상품수정() throws Exception {
 		ResultActions resultActions;
 
 		// 상품명 Valid
@@ -348,7 +277,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품진열여부정
 	@Test
-	public void testI상품진열여부수정() throws Exception {
+	public void testF상품진열여부수정() throws Exception {
 		ResultActions resultActions;
 		
 		// 진열상태 Valid
@@ -378,7 +307,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상품이미지저장
 	@Test
-	public void testJ상품이미지저장() throws Exception {
+	public void testG상품이미지저장() throws Exception {
 		ResultActions resultActions;
 
 		// 상품번호 Valid
@@ -430,7 +359,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 상품이미지 삭제
 	@Test
-	public void testK상품이미지삭제() throws Exception {
+	public void testH상품이미지삭제() throws Exception {
 		ResultActions resultActions;
 
 		// 없는 이미지 삭제
@@ -459,7 +388,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상세옵션 저장
 	@Test
-	public void testL상세옵션저장() throws Exception {
+	public void testI상세옵션저장() throws Exception {
 		ResultActions resultActions;
 
 		// 옵션이름 Valid
@@ -526,7 +455,7 @@ public class AdminItemControllerTest {
 	
 	// 관리자 상세옵션 삭제
 	@Test
-	public void testM상세옵션삭제() throws Exception {
+	public void testJ상세옵션삭제() throws Exception {
 		ResultActions resultActions;
 
 		// 옵션에 이미 사용중인 상세옵션 실패
@@ -565,7 +494,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 옵션저장
 	@Test
-	public void testN옵션저장() throws Exception {
+	public void testK옵션저장() throws Exception {
 		ResultActions resultActions;
 
 		// 수량 Valid
@@ -625,7 +554,7 @@ public class AdminItemControllerTest {
 
 	// 관리자 옵션삭제
 	@Test
-	public void testO옵션삭제() throws Exception {
+	public void testL옵션삭제() throws Exception {
 		ResultActions resultActions;
 
 		// 없는 옵션 삭제

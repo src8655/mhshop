@@ -47,7 +47,7 @@ import com.google.gson.JsonParser;
 @Rollback(value = true)
 @Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AdminCategoryControllerTest {
+public class CategoryControllerTest {
 	private MockMvc mockMvc;
 	private String mockToken;
 	
@@ -62,10 +62,10 @@ public class AdminCategoryControllerTest {
 
 		ResultActions resultActions;
 		
-		// 관리자 로그인
+		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
+				.param("id", "test_id1")
+				.param("password", "testpassword1!")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
@@ -79,104 +79,22 @@ public class AdminCategoryControllerTest {
 		mockToken = jsonObj.get("data").getAsString();
 	}
 
-	
-	// 관리자 카테고리 등록
+
+	// 카테고리 리스트
 	@Test
-	public void testA카테고리작성() throws Exception {
+	public void testA카테고리리스트() throws Exception {
 		ResultActions resultActions;
 		
-		// 카테고리명 Valid
-		resultActions = mockMvc.perform(post("/api/admin/category")
-				.param("name", "")
-				.param("mockToken", mockToken)
+		resultActions = mockMvc.perform(get("/api/category/list")
 				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
-
 		
-		// 작성성공
-		resultActions = mockMvc.perform(post("/api/admin/category")
-				.param("name", "category_name3")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data", is(true)));
+		resultActions.andExpect(status().isOk())
+		
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data[1].no", is(2)))
+		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
 	}
-	
-	
-	// 관리자 카테고리 수정
-	@Test
-	public void testB카테고리수정() throws Exception {
-		ResultActions resultActions;
-		
-		// 카테고리번호 Valid
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", "aa", "test")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
-		
-		
-		// 카테고리번호가 없는 번호일 때
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 999999L, "test")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data", is(false)));
-		
-
-		// 카테고리 수정 완료
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 1L, "test")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data", is(true)));
-	}
-	
-	// 관리자 카테고리 삭제
-	@Test
-	public void testC카테고리삭제() throws Exception {
-		ResultActions resultActions;
-		
-		// 카테고리번호 Valid
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", "aa")
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
-		
-
-		// 카테고리에 속한 상품이 있을 경우
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 1L)
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
-		
-		
-		// 없는 카테고리 번호로 실패
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 9999L)
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data", is(false)));
-		
-		
-		// 카테고리 삭제 완료
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
-				.param("mockToken", mockToken)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data", is(true)));
-	}
-	
-	
-	
 	
 }
