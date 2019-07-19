@@ -3,6 +3,26 @@
 
 <mapper namespace="option">
 
+	<!-- 레벨별 옵션 리스트 -->
+	<select id="selectListLevel" parameterType="optionvo" resultType="optionvo">
+		select
+		no,
+		item_no as itemNo,
+		option_detail1 as optionDetailNo1,
+		option_detail2 as optionDetailNo2,
+		cnt
+		from option
+		where item_no=#{itemNo}
+		<if test="optionDetailNo1 == null">
+		group by option_detail1
+		</if>
+		<if test="optionDetailNo1 != null">
+		and option_detail1=#{optionDetailNo1}
+		</if>
+		order by no asc
+	</select>
+	
+	
 	<!-- 옵션 리스트 -->
 	<select id="selectList" parameterType="long" resultType="optionvo">
 		select

@@ -18,8 +18,8 @@ public class OptionDaoImpl implements OptionDao {
 	
 	// 상품번호에 속한 옵션 리스트
 	@Override
-	public List<OptionVo> selectList(Long itemNo) {
-		return sqlSession.selectList("option.selectList", itemNo);
+	public List<OptionVo> selectListLevel(OptionVo optionVo) {
+		return sqlSession.selectList("option.selectListLevel", optionVo);
 	}
 
 
@@ -41,6 +41,13 @@ public class OptionDaoImpl implements OptionDao {
 	@Override
 	public Integer delete(Long no) {
 		return (Integer)sqlSession.delete("option.delete", no);
+	}
+
+
+	// 상품번호에 속한 옵션 리스트
+	@Override
+	public List<OptionVo> selectList(Long no) {
+		return sqlSession.selectList("option.selectList", no);
 	}
 
 	
