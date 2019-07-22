@@ -132,10 +132,15 @@ public class OrdersController {
 		// 존재하는 주문이고 상태가 "주문대기"인지 확인
 		if(!ordersService.isExistAndValid(guestDto.toVo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
 		
-		// 주문 상태를 "입금대기"로 변경
+		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
+		if(!ordersService.ordersPost(guestDto.getOrdersNo(), ordersDto.toVo()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
+		
+		// 주문을 불러온다.
+		OrdersVo ordersVo = ordersService.getByOrdersNo(guestDto.getOrdersNo());
 		
 		// 주문번호, 가상계좌은행, 가상계좌번호, 결제해야할 금액을 리턴 
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 	
 

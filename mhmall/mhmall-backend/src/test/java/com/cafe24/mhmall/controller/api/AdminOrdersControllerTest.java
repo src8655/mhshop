@@ -97,14 +97,14 @@ public class AdminOrdersControllerTest {
 		resultActions
 		.andExpect(status().isOk())
 		
-		.andExpect(jsonPath("$.data[2].status", is("입금대기")))
-		.andExpect(jsonPath("$.data[2].money", is(10000)))
-		.andExpect(jsonPath("$.data[2].trackingNum", Matchers.nullValue()))
-		.andExpect(jsonPath("$.data[2].toName", is("test_name1")))
-		.andExpect(jsonPath("$.data[2].toPhone", is("01000000001")))
-		.andExpect(jsonPath("$.data[2].toZipcode", is("test_zipcode1")))
-		.andExpect(jsonPath("$.data[2].toAddr", is("test_addr1")))
-		.andExpect(jsonPath("$.data[2].memberId", is("test_id1")));
+		.andExpect(jsonPath("$.data[3].status", is("입금대기")))
+		.andExpect(jsonPath("$.data[3].money", is(10000)))
+		.andExpect(jsonPath("$.data[3].trackingNum", Matchers.nullValue()))
+		.andExpect(jsonPath("$.data[3].toName", is("test_name1")))
+		.andExpect(jsonPath("$.data[3].toPhone", is("01000000001")))
+		.andExpect(jsonPath("$.data[3].toZipcode", is("test_zipcode1")))
+		.andExpect(jsonPath("$.data[3].toAddr", is("test_addr1")))
+		.andExpect(jsonPath("$.data[3].memberId", is("test_id1")));
 		
 	}
 	

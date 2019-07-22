@@ -87,4 +87,16 @@
 	</select>
 	
 	
+	<!-- 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경 -->
+	<update id="orderUpdate" parameterType="ordersvo">
+		update orders set
+		status=#{status},
+		to_name=AES_ENCRYPT(#{toName}, #{aesKey}),
+		to_phone=AES_ENCRYPT(#{toPhone}, #{aesKey}),
+		to_zipcode=AES_ENCRYPT(#{toZipcode}, #{aesKey}),
+		to_addr=AES_ENCRYPT(#{toAddr}, #{aesKey})
+		where orders_no=#{ordersNo}
+	</update>
+	
+	
 </mapper>

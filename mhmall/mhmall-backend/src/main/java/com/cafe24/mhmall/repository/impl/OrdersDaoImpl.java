@@ -61,6 +61,14 @@ public class OrdersDaoImpl implements OrdersDao {
 	public Integer isExistAndValid(GuestVo vo) {
 		return (Integer)sqlSession.selectOne("orders.isExistAndValid", vo);
 	}
+
+
+	// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
+	@Override
+	public Integer orderUpdate(OrdersVo vo) {
+		vo.setAesKey(aesKey);
+		return sqlSession.update("orders.orderUpdate", vo);
+	}
 	
 	
 

@@ -14,5 +14,6 @@ public interface OrdersDao {
 	Integer updateTrackingNum(Map<String, String> map);	// 운송장번호 변경
 	String insert(OrdersVo ordersVo);					// 주문작성
 	Integer isExistAndValid(GuestVo vo);				// 존재하는 주문이고 상태가 "주문대기"인지 확인
+	Integer orderUpdate(OrdersVo vo);					// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
 
 }

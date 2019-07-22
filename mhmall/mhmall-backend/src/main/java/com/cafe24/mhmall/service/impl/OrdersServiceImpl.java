@@ -81,5 +81,15 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 
+	// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
+	@Override
+	public boolean ordersPost(String ordersNo, OrdersVo vo) {
+		vo.setOrdersNo(ordersNo);
+		vo.setStatus("입금대기");
+		Integer result = ordersDao.orderUpdate(vo);
+		return result == 1;
+	}
+
+
 
 }

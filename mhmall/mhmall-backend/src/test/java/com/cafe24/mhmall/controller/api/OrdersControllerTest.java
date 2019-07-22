@@ -142,8 +142,69 @@ public class OrdersControllerTest {
 	@Test
 	public void testB비회원주문완료() throws Exception {
 		ResultActions resultActions;
+		
 
-		// 
+		// 주문번호 Valid
+		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+				.param("ordersNo", "")
+				.param("guestPassword", "guestpw3!")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 비밀번호 Valid
+		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+				.param("ordersNo", "2019-07-11_000259")
+				.param("guestPassword", "guestpw3")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 존재하지 않는 주문
+		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+				.param("ordersNo", "2019-07-11_999999")
+				.param("guestPassword", "guestpw3!")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 주문은 존재하지만 비회원 비밀번호가 틀린 경우
+		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+				.param("ordersNo", "2019-07-11_000259")
+				.param("guestPassword", "guestpw123!")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
 		resultActions = mockMvc.perform(post("/api/orders/guest/post")
 				.param("ordersNo", "2019-07-11_000259")
 				.param("guestPassword", "guestpw3!")
@@ -153,9 +214,13 @@ public class OrdersControllerTest {
 				.param("toZipcode", "12345")
 				.param("toAddr", "addraddr")
 				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions.andDo(print())
-		.andExpect(status().isBadRequest());
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.toName", is("guest")))
+		.andExpect(jsonPath("$.data.toPhone", is("01000000001")))
+		.andExpect(jsonPath("$.data.toZipcode", is("12345")))
+		.andExpect(jsonPath("$.data.toAddr", is("addraddr")));
 		
 	}
 	
