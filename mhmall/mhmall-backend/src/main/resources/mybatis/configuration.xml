@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="membervo" type="com.cafe24.mhmall.vo.MemberVo"/>
+		<typeAlias alias="categoryvo" type="com.cafe24.mhmall.vo.CategoryVo"/>
+		<typeAlias alias="itemvo" type="com.cafe24.mhmall.vo.ItemVo"/>
+		<typeAlias alias="ordersvo" type="com.cafe24.mhmall.vo.OrdersVo"/>
+		<typeAlias alias="guestvo" type="com.cafe24.mhmall.vo.GuestVo"/>
+		<typeAlias alias="optiondetailvo" type="com.cafe24.mhmall.vo.OptionDetailVo"/>
+		<typeAlias alias="optionvo" type="com.cafe24.mhmall.vo.OptionVo"/>
+		<typeAlias alias="ordersitemvo" type="com.cafe24.mhmall.vo.OrdersItemVo"/>
+		<typeAlias alias="itemimgvo" type="com.cafe24.mhmall.vo.ItemImgVo"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/mapper/member.xml" />
+		<mapper resource="mybatis/mapper/category.xml" />
+		<mapper resource="mybatis/mapper/item.xml" />
+		<mapper resource="mybatis/mapper/orders.xml" />
+		<mapper resource="mybatis/mapper/guest.xml" />
+		<mapper resource="mybatis/mapper/optiondetail.xml" />
+		<mapper resource="mybatis/mapper/option.xml" />
+		<mapper resource="mybatis/mapper/ordersitem.xml" />
+		<mapper resource="mybatis/mapper/itemimg.xml" />
+	</mappers>
+</configuration>

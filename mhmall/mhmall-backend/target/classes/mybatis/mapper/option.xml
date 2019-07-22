@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="option">
+
+	<!-- 레벨별 옵션 리스트 -->
+	<select id="selectListLevel" parameterType="optionvo" resultType="optionvo">
+		select aa.no,
+		aa.item_no as itemNo,
+		aa.option_detail1 as optionDetailNo1,
+		aa.option_detail2 as optionDetailNo2,
+		aa.cnt,
+		aa.option_name as optionName1,
+		bb.option_name as optionName2
+		from (SELECT a.no, a.item_no, a.option_detail1, a.option_detail2, a.cnt, b.option_name
+		FROM option a, option_detail b
+		where
+		a.option_detail1 = b.no
+		and a.item_no=#{itemNo}
+		
+		<if test="optionDetailNo1 == null">
+		group by option_detail1
+		</if>
+		<if test="optionDetailNo1 != null">
+		and option_detail1=#{optionDetailNo1}
+		</if>
+		
+		) aa, option_detail bb
+		where aa.option_detail2 = bb.no
+		order by aa.no asc
+	</select>
+	
+	
+	<!-- 옵션 리스트 -->
+	<select id="selectList" parameterType="long" resultType="optionvo">
+		select aa.no,
+		aa.item_no as itemNo,
+		aa.option_detail1 as optionDetail1,
+		aa.option_detail2 as optionDetail2,
+		aa.cnt,
+		aa.option_name as optionName1,
+		bb.option_name as optionName2
+		from (SELECT a.no, a.item_no, a.option_detail1, a.option_detail2, a.cnt, b.option_name
+		FROM option a, option_detail b
+		where
+		a.option_detail1 = b.no
+		and a.item_no=#{itemNo}
+		
+		) aa, option_detail bb
+		where aa.option_detail2 = bb.no
+		order by aa.no asc
+	</select>
+	
+	
+	<!-- 상세옵션을 가지는 옵션 개수 -->
+	<select id="countByOptionDetailNo" parameterType="long" resultType="Integer">
+		select count(*) from option where option_detail1=#{no} or option_detail2=#{no}
+	</select>
+
+	
+	<!-- 옵션추가 -->
+	<insert id="insert" parameterType="optionvo">
+		insert into option(item_no, option_detail1, option_detail2, cnt)
+		values(
+		#{itemNo},
+		#{optionDetailNo1},
+		#{optionDetailNo2},
+		#{cnt}
+		)
+	</insert>
+	
+	
+	<!-- 옵션삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from option where no=#{no}
+	</delete>
+
+</mapper>
