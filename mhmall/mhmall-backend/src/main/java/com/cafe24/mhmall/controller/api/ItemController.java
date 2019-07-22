@@ -116,7 +116,12 @@ public class ItemController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> itemlist() {
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+
+		// Service에 사용자 상품리스트 요청
+		List<ItemVo> itemList = itemService.getListU();
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));
 	}
 	
 	
@@ -129,7 +134,15 @@ public class ItemController {
 			@ModelAttribute @Valid RequestNoDto dto,
 			BindingResult result
 			) {
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// 옵션번호로 옵션하나 받아오기
+		OptionVo optionVo = optionService.getByNo(dto.getNo());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionVo));
 	}
 
 }

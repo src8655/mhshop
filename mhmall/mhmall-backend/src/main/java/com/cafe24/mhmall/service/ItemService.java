@@ -13,5 +13,6 @@ public interface ItemService {
 	ItemVo getByNo(Long no);						// 상품번호로 상품정보
 	boolean edit(ItemVo itemVo);					// 상품 수정
 	boolean editDisplay(Long no, String display);	// 상품진열여부 수정
+	List<ItemVo> getListU();						// 사용자 상품리스트
 
 }

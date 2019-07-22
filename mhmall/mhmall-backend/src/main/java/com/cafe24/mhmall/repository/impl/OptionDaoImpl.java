@@ -50,9 +50,10 @@ public class OptionDaoImpl implements OptionDao {
 		return sqlSession.selectList("option.selectList", no);
 	}
 
-	
-	
-	
-	
-	
+
+	// 옵션번호로 옵션하나 받아오기
+	@Override
+	public OptionVo selectOne(Long no) {
+		return (OptionVo)sqlSession.selectOne("option.selectOne", no);
+	}
 }

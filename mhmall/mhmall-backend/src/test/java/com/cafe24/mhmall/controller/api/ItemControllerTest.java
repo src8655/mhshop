@@ -143,7 +143,62 @@ public class ItemControllerTest {
 		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
 		.andExpect(jsonPath("$.data[0].optionDetailNo1", is(1)))
 		.andExpect(jsonPath("$.data[0].optionDetailNo2", is(2)))
-		.andExpect(jsonPath("$.data[0].cnt", is(10)));
+		.andExpect(jsonPath("$.data[0].cnt", is(10)))
+		.andExpect(jsonPath("$.data[0].optionDetailName1", is("파란색")))
+		.andExpect(jsonPath("$.data[0].optionDetailName2", is("L")));
+		
+	}
+	
+	
+	// 사용자 상품 리스트
+	@Test
+	public void testD사용자상품리스트() throws Exception {
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(get("/api/item/list")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[1].no", is(1)))
+		.andExpect(jsonPath("$.data[1].name", is("test_item1")))
+		.andExpect(jsonPath("$.data[1].description", is("test_description1")))
+		.andExpect(jsonPath("$.data[1].money", is(10000)))
+		.andExpect(jsonPath("$.data[1].thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data[1].display", is("FALSE")))
+		.andExpect(jsonPath("$.data[1].categoryNo", is(1)))
+
+		.andExpect(jsonPath("$.data[0].no", is(2)))
+		.andExpect(jsonPath("$.data[0].name", is("test_item2")))
+		.andExpect(jsonPath("$.data[0].description", is("test_description2")))
+		.andExpect(jsonPath("$.data[0].money", is(20000)))
+		.andExpect(jsonPath("$.data[0].thumbnail", is("test_thumbnail2")))
+		.andExpect(jsonPath("$.data[0].display", is("FALSE")))
+		.andExpect(jsonPath("$.data[0].categoryNo", is(1)));
+		
+	}
+	
+	
+
+	// 옵션상세
+	@Test
+	public void testE옵션상세() throws Exception {
+		ResultActions resultActions;
+		
+		resultActions = mockMvc.perform(get("/api/item/option/{no}", 1L)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk()).andDo(print())
+		.andExpect(jsonPath("$.data.no", is(1)))
+		.andExpect(jsonPath("$.data.itemNo", is(1)))
+		.andExpect(jsonPath("$.data.optionDetailNo1", is(1)))
+		.andExpect(jsonPath("$.data.optionDetailNo2", is(2)))
+		.andExpect(jsonPath("$.data.cnt", is(10)))
+		.andExpect(jsonPath("$.data.optionDetailName1", is("파란색")))
+		.andExpect(jsonPath("$.data.optionDetailName2", is("L")));
 		
 	}
 	

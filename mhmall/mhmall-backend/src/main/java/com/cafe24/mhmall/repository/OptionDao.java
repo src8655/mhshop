@@ -11,5 +11,6 @@ public interface OptionDao {
 	Integer insert(OptionVo optionVo);					// 옵션추가
 	Integer delete(Long no);							// 옵션 삭제
 	List<OptionVo> selectList(Long no);					// 상품번호에 속한 옵션 리스트
+	OptionVo selectOne(Long no);						// 옵션번호로 옵션하나 받아오기
 
 }

@@ -13,5 +13,6 @@ public interface ItemDao {
 	ItemVo selectOne(Long no);					// 상품번호로 상품정보
 	Integer update(ItemVo itemVo);				// 상품 수정
 	Integer updateDisplay(ItemVo itemVo);		// 상품진열여부 수정
+	List<ItemVo> selectListU();					// 사용자 상품리스트
 
 }

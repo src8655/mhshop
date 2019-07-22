@@ -10,8 +10,8 @@
 		aa.option_detail1 as optionDetailNo1,
 		aa.option_detail2 as optionDetailNo2,
 		aa.cnt,
-		aa.option_name as optionName1,
-		bb.option_name as optionName2
+		aa.option_name as optionDetailName1,
+		bb.option_name as optionDetailName2
 		from (SELECT a.no, a.item_no, a.option_detail1, a.option_detail2, a.cnt, b.option_name
 		FROM option a, option_detail b
 		where
@@ -35,11 +35,11 @@
 	<select id="selectList" parameterType="long" resultType="optionvo">
 		select aa.no,
 		aa.item_no as itemNo,
-		aa.option_detail1 as optionDetail1,
-		aa.option_detail2 as optionDetail2,
+		aa.option_detail1 as optionDetailNo1,
+		aa.option_detail2 as optionDetailNo2,
 		aa.cnt,
-		aa.option_name as optionName1,
-		bb.option_name as optionName2
+		aa.option_name as optionDetailName1,
+		bb.option_name as optionDetailName2
 		from (SELECT a.no, a.item_no, a.option_detail1, a.option_detail2, a.cnt, b.option_name
 		FROM option a, option_detail b
 		where
@@ -74,5 +74,26 @@
 	<delete id="delete" parameterType="long">
 		delete from option where no=#{no}
 	</delete>
+	
+	
+	
+	<!-- 옵션상세 -->
+	<select id="selectOne" parameterType="long" resultType="optionvo">
+		select aa.no,
+		aa.item_no as itemNo,
+		aa.option_detail1 as optionDetailNo1,
+		aa.option_detail2 as optionDetailNo2,
+		aa.cnt,
+		aa.option_name as optionDetailName1,
+		bb.option_name as optionDetailName2
+		from (SELECT a.no, a.item_no, a.option_detail1, a.option_detail2, a.cnt, b.option_name
+		FROM option a, option_detail b
+		where
+		a.option_detail1 = b.no
+		and a.no=#{no}
+		
+		) aa, option_detail bb
+		where aa.option_detail2 = bb.no
+	</select>
 
 </mapper>

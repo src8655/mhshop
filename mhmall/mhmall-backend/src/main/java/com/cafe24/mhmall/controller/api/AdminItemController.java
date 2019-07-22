@@ -157,7 +157,7 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "level", value = "옵션레벨", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/optiondetail/{itemNo}", method = RequestMethod.GET)
-	@ApiOperation(value = "관리자 옵션상세 리스트", notes = "관리자 옵션상세 리스트 API")
+	@ApiOperation(value = "관리자 상세옵션 리스트", notes = "관리자 상세옵션 리스트 API")
 	public ResponseEntity<JSONResult> optionDetailList(
 			@ModelAttribute @Valid RequestOptionDetailViewDto dto,
 			BindingResult result

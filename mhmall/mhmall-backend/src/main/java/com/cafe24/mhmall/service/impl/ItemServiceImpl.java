@@ -85,4 +85,11 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 
+	// 사용자 상품리스트
+	@Override
+	public List<ItemVo> getListU() {
+		return itemDao.selectListU();
+	}
+
+
 }

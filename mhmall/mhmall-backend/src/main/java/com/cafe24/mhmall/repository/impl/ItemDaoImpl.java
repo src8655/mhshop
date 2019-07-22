@@ -64,4 +64,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.update("item.updateDisplay", itemVo);
 	}
 
+
+	// 사용자 상품리스트
+	@Override
+	public List<ItemVo> selectListU() {
+		return sqlSession.selectList("item.selectListU");
+	}
+
 }

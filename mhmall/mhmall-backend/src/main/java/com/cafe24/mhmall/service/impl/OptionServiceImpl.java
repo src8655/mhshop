@@ -57,4 +57,13 @@ public class OptionServiceImpl implements OptionService {
 	}
 
 
+	// 옵션번호로 옵션하나 받아오기
+	@Override
+	public OptionVo getByNo(Long no) {
+		return optionDao.selectOne(no);
+	}
+
+
+
+
 }
