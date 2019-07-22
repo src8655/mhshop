@@ -1,0 +1,30 @@
+server:
+       port: 8080
+       servlet:
+               context-path: /mhmall
+
+
+spring:
+       profiles:
+                active: dev
+       devtools:
+                livereload:
+                           enabled: true
+       http:
+            encoding:
+                     charset: UTF-8
+                     enabled: true
+                     forced: true
+                     forced-request: true
+                     forced-response: true
+       aop:
+           auto: true
+       aop-proxy-target-class: true
+       datasource:
+              driverClassName: org.mariadb.jdbc.Driver
+              url: jdbc:mariadb://192.168.0.10:3307/test_mshop?allowMultiQueries=true&amp;sql_safe_updates=0
+              username: test_mshop
+              password: test_mshop
+mybatis:
+       config-location: classpath:mybatis/configuration.xml
+

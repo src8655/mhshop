@@ -29,7 +29,7 @@
 	
 	
 	<!-- 카테고리 개수 -->
-	<select id="countbyno" parameterType="string" resultType="Integer">
+	<select id="countbyno" parameterType="long" resultType="Integer">
 		select count(*) from category where no=#{categoryNo}
 	</select>
 	

@@ -1,4 +1,4 @@
-package com.cafe24.mhshop.controller.api;
+package com.cafe24.mhmall.controller.api;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,10 +22,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,26 +38,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.AppConfig;
-import com.cafe24.mhshop.config.TestWebConfig;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.swagger.annotations.ApiImplicitParam;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
-@WebAppConfiguration
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @Rollback(value = true)
 @Transactional
-public class ItemControllerTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class CategoryControllerTest {
+	@Autowired
 	private MockMvc mockMvc;
-	private String mockToken;
-	
+
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+
+	private String mockToken;
 
 	
 	@Before
@@ -80,70 +81,23 @@ public class ItemControllerTest {
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
 		mockToken = jsonObj.get("data").getAsString();
 	}
-	
-	
-	// 상품 상세
-	@Test
-	public void testA상품상세() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/item/{no}",1L)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data.no", is(1)))
-		.andExpect(jsonPath("$.data.name", is("test_item1")))
-		.andExpect(jsonPath("$.data.description", is("test_description1")))
-		.andExpect(jsonPath("$.data.money", is(10000)))
-		.andExpect(jsonPath("$.data.thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data.display", is("FALSE")))
-		.andExpect(jsonPath("$.data.categoryNo", is(1)));
-		
-	}
-	
-	
-	// 상품이미지 리스트
-	@Test
-	public void testB상품이미지리스트() throws Exception {
-		ResultActions resultActions;
-		
-		resultActions = mockMvc.perform(get("/api/item/img/{itemNo}",1L)
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[0].itemImg", is("test_img1")))
 
-		.andExpect(jsonPath("$.data[1].no", is(2)))
-		.andExpect(jsonPath("$.data[1].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[1].itemImg", is("test_img2")));
-		
-	}
-	
-	
-	// 옵션리스트
+
+	// 카테고리 리스트
 	@Test
-	public void testC옵션리스트() throws Exception {
+	public void testA카테고리리스트() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/item/option/list/{itemNo}", 1L)
-				.param("optionDetailNo1", "")
+		resultActions = mockMvc.perform(get("/api/category/list")
 				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 200 인지
-		resultActions
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].itemNo", is(1)))
-		.andExpect(jsonPath("$.data[0].optionDetailNo1", is(1)))
-		.andExpect(jsonPath("$.data[0].optionDetailNo2", is(2)))
-		.andExpect(jsonPath("$.data[0].cnt", is(10)));
 		
+		// 응답이 200 인지
+		resultActions.andExpect(status().isOk())
+		
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
+		.andExpect(jsonPath("$.data[1].no", is(2)))
+		.andExpect(jsonPath("$.data[1].name", is("test_category2")));
 	}
-	
-	
-	
 	
 }

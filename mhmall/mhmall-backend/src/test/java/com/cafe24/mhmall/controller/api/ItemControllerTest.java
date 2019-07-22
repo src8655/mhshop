@@ -1,4 +1,4 @@
-package com.cafe24.mhshop.controller.api;
+package com.cafe24.mhmall.controller.api;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,10 +22,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,26 +38,27 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.cafe24.mhshop.config.AppConfig;
-import com.cafe24.mhshop.config.TestWebConfig;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.swagger.annotations.ApiImplicitParam;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
-@WebAppConfiguration
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @Rollback(value = true)
 @Transactional
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ItemControllerTest {
+	@Autowired
 	private MockMvc mockMvc;
-	private String mockToken;
-	
+
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+
+	private String mockToken;
 
 	
 	@Before
