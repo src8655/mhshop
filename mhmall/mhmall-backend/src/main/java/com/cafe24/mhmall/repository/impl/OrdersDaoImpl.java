@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.OrdersDao;
+import com.cafe24.mhmall.vo.GuestVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
 @Repository
@@ -52,6 +53,13 @@ public class OrdersDaoImpl implements OrdersDao {
 	@Override
 	public String insert(OrdersVo ordersVo) {
 		return (String)sqlSession.selectOne("orders.insert", ordersVo);
+	}
+
+
+	// 존재하는 주문이고 상태가 "주문대기"인지 확인
+	@Override
+	public Integer isExistAndValid(GuestVo vo) {
+		return (Integer)sqlSession.selectOne("orders.isExistAndValid", vo);
 	}
 	
 	

@@ -137,4 +137,28 @@ public class OrdersControllerTest {
 	
 	
 	
+
+	// 비회원 주문 완료
+	@Test
+	public void testB비회원주문완료() throws Exception {
+		ResultActions resultActions;
+
+		// 
+		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+				.param("ordersNo", "2019-07-11_000259")
+				.param("guestPassword", "guestpw3!")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions.andDo(print())
+		.andExpect(status().isBadRequest());
+		
+	}
+	
+	
+	
 }

@@ -124,14 +124,13 @@ public class OrdersController {
 	public ResponseEntity<JSONResult> guestOrdersPost(
 			@ModelAttribute @Valid RequestGuestOrdersViewDto guestDto,
 			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
-			BindingResult result,
-			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
-			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts
+			BindingResult result
 			) {
 		// 유효성검사
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// 존재하는 주문이고 상태가 "주문대기"인지 확인
+		if(!ordersService.isExistAndValid(guestDto.toVo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
 		
 		// 주문 상태를 "입금대기"로 변경
 		

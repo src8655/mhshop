@@ -76,7 +76,15 @@
 	</select>
 	
 	
-	
+	<!-- 존재하는 주문이고 상태가 "주문대기"인지 확인 -->
+	<select id="isExistAndValid" parameterType="guestvo" resultType="Integer">
+		select count(*)
+		from orders a, guest b
+		where a.orders_no = b.orders_no
+		and a.orders_no = #{ordersNo}
+		and b.guest_password=SHA2(#{guestPassword}, 512)
+		and a.status='주문대기'
+	</select>
 	
 	
 </mapper>
