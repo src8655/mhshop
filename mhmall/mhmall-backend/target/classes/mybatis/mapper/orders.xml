@@ -48,7 +48,32 @@
 	</update>
 	
 	
-	
+	<!-- 주문 작성 -->
+	<select id="insert" parameterType="ordersvo" resultType="String">
+		select (select concat(DATE_FORMAT(now(),'%Y%m%d'), '_', LPAD(count(a.reg_date)+1, 5, 0))
+			from orders a
+			where DATE_FORMAT(a.reg_date,'%Y%m%d') = DATE_FORMAT(now(),'%Y%m%d')) as ordersNo;
+			
+		insert into orders values(
+		(
+			select concat(DATE_FORMAT(now(),'%Y%m%d'), '_', LPAD(count(a.reg_date)+1, 5, 0))
+			from orders a
+			where DATE_FORMAT(a.reg_date,'%Y%m%d') = DATE_FORMAT(now(),'%Y%m%d')
+		),
+		now(),
+		#{status},
+		#{bankName},
+		#{bankNum},
+		null,
+		#{money},
+		null,
+		null,
+		null,
+		null,
+		null,
+		null
+		)
+	</select>
 	
 	
 	

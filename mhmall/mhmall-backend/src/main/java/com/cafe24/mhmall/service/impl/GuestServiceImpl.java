@@ -27,4 +27,14 @@ public class GuestServiceImpl implements GuestService {
 		return guestDao.selectOne(guestVo);
 	}
 
+
+	// 비회원 데이터 추가
+	@Override
+	public boolean add(String ordersNo, GuestVo vo) {
+		vo.setOrdersNo(ordersNo);
+		Integer result = guestDao.insert(vo);
+		return result == 1;
+	}
+
+	
 }

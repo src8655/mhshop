@@ -95,5 +95,34 @@
 		) aa, option_detail bb
 		where aa.option_detail2 = bb.no
 	</select>
+	
+	
+	<!-- 옵션 재고 -->
+	<select id="countCnt" parameterType="long" resultType="Integer">
+		select cnt from option where no=#{no}
+	</select>
+	
+	
+	<!-- 옵션번호에 해당하는 옵션개수 -->
+	<select id="countByNo" parameterType="long" resultType="Integer">
+		select count(*) from option where no=#{no}
+	</select>
+	
+	
+	<!-- 재고 수량 줄이기 -->
+	<update id="updateCnt" parameterType="java.util.Map">
+		update option set
+		cnt=cnt-#{cnt}
+		where no=#{no}
+	</update>
+	
+	
+	<!-- 금액 계산 -->
+	<select id="selectSumMoney" parameterType="java.util.Map" resultType="long">
+		select b.money*#{cnt}
+		from option a, item b
+		where a.item_no = b.no
+		and a.no=#{no}
+	</select>
 
 </mapper>

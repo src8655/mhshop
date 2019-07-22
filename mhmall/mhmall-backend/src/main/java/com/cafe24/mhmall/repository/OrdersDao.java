@@ -11,5 +11,6 @@ public interface OrdersDao {
 	OrdersVo selectOne(OrdersVo ordersVo);				// 주문상세
 	Integer updateStatus(Map<String, String> map);		// 상태 변경
 	Integer updateTrackingNum(Map<String, String> map);	// 운송장번호 변경
+	String insert(OrdersVo ordersVo);					// 주문작성
 
 }

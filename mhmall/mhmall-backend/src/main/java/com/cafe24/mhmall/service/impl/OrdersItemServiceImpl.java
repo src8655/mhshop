@@ -22,4 +22,21 @@ public class OrdersItemServiceImpl implements OrdersItemService {
 		return ordersItemDao.selectListByOrdersNo(ordersNo);
 	}
 
+	
+	// 주문내역 일괄 추가
+	@Override
+	public boolean add(String ordersNo, Long[] optionNos, Integer[] optionCnts) {
+		for(int i=0;i<optionNos.length;i++) {
+			OrdersItemVo ordersItemVo = new OrdersItemVo();
+			ordersItemVo.setOrdersNo(ordersNo);
+			ordersItemVo.setOptionNo(optionNos[i]);
+			ordersItemVo.setCnt(optionCnts[i].longValue());
+			
+			Integer result = ordersItemDao.insert(ordersItemVo);
+			if(result != 1) return false;
+		}
+		
+		return true;
+	}
+
 }

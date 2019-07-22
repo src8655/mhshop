@@ -23,6 +23,14 @@ public class GuestDaoImpl implements GuestDao {
 		guestVo.setAesKey(aesKey);
 		return (GuestVo)sqlSession.selectOne("guest.selectOne", guestVo);
 	}
+
+
+	// 비회원 데이터 추가
+	@Override
+	public Integer insert(GuestVo vo) {
+		vo.setAesKey(aesKey);
+		return sqlSession.insert("guest.insert", vo);
+	}
 	
 	
 	

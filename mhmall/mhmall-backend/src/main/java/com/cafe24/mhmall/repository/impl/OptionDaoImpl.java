@@ -1,6 +1,7 @@
 package com.cafe24.mhmall.repository.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,33 @@ public class OptionDaoImpl implements OptionDao {
 	@Override
 	public OptionVo selectOne(Long no) {
 		return (OptionVo)sqlSession.selectOne("option.selectOne", no);
+	}
+
+
+	// 옵션의 재고 가져오기
+	@Override
+	public Integer selectCnt(Long no) {
+		return (Integer)sqlSession.selectOne("option.countCnt", no);
+	}
+
+
+	// 옵션번호에 해당하는 옵션개수
+	@Override
+	public Integer countByNo(Long no) {
+		return (Integer)sqlSession.selectOne("option.countByNo", no);
+	}
+
+
+	// 옵션 재고량 줄이기
+	@Override
+	public Integer updateCnt(Map<String, Object> map) {
+		return sqlSession.update("option.updateCnt", map);
+	}
+
+
+	// 금액계산
+	@Override
+	public Long selectSumMoney(Map<String, Object> map) {
+		return (Long)sqlSession.selectOne("option.selectSumMoney", map);
 	}
 }

@@ -21,7 +21,50 @@
 	</select>
 
 
-
+	<!-- 주문내역 일괄 추가 -->
+	<insert id="insert" parameterType="ordersitemvo">
+		insert into orders_item(
+			no,
+			orders_no,
+		    option_no,
+			item_name,
+			item_thumbnail,
+			item_option_detail1,
+			item_option_detail2,
+			money,
+			cnt
+		)
+		values(
+			null,
+		    #{ordersNo},
+			#{optionNo},
+			(
+				select name from item where
+		        no=(select distinct item_no from option where no=#{optionNo})
+			),
+			(
+				select thumbnail from item where
+		        no=(select distinct item_no from option where no=#{optionNo})
+			),
+		    (
+				select b.option_name
+		        from option a, option_detail b
+		        where a.option_detail1=b.no
+		        and a.no=#{optionNo}
+		    ),
+		    (
+				select b.option_name
+		        from option a, option_detail b
+		        where a.option_detail2=b.no
+		        and a.no=#{optionNo}
+		    ),
+			(
+				select money from item where
+		        no=(select item_no from option where no=#{optionNo})
+			),
+		    #{cnt}
+		);
+	</insert>
 
 	
 	

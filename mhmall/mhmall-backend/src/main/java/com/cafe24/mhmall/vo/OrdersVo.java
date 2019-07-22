@@ -1,6 +1,8 @@
 package com.cafe24.mhmall.vo;
 
 public class OrdersVo {
+	private Long no;
+	private String orders_no;
 	private String ordersNo;
 	private String regDate;
 	private String status;
@@ -39,6 +41,23 @@ public class OrdersVo {
 		this.aesKey = aesKey;
 	}
 	
+
+	public String getOrders_no() {
+		return orders_no;
+	}
+
+
+	public void setOrders_no(String orders_no) {
+		this.orders_no = orders_no;
+	}
+
+
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+	}
 	public String getBankNum() {
 		return bankNum;
 	}

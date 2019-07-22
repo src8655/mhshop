@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cafe24.mhmall.repository.OrdersDao;
 import com.cafe24.mhmall.service.OrdersService;
+import com.cafe24.mhmall.vo.GuestVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
 @Service
@@ -66,5 +67,22 @@ public class OrdersServiceImpl implements OrdersService {
 		Integer result = ordersDao.updateTrackingNum(map);
 		return result == 1;
 	}
+
+
+	// 비회원 주문 데이터 추가
+	@Override
+	public String guestOrdersAdd(Long money) {
+		OrdersVo ordersVo = new OrdersVo();
+		ordersVo.setMoney(money);
+		
+		// 가상계좌정보 랜덤생성
+		ordersVo.setBankName("국민");
+		ordersVo.setBankNum("123-45-678910");
+		ordersVo.setStatus("주문대기");
+		
+		return ordersDao.insert(ordersVo);
+	}
+
+
 
 }

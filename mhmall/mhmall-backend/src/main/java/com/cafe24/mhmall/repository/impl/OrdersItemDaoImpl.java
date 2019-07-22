@@ -15,9 +15,18 @@ public class OrdersItemDaoImpl implements OrdersItemDao {
 	@Autowired
 	SqlSession sqlSession;
 
+	
+	// 주문내역 리스트
 	@Override
 	public List<OrdersItemVo> selectListByOrdersNo(String ordersNo) {
 		return sqlSession.selectList("ordersitem.selectList", ordersNo);
+	}
+
+	
+	// 주문내역 일괄 추가
+	@Override
+	public Integer insert(OrdersItemVo ordersItemVo) {
+		return sqlSession.insert("ordersitem.insert", ordersItemVo);
 	}
 	
 	

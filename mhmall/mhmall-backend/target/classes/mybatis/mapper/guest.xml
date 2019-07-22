@@ -14,7 +14,15 @@
 	</select>
 
 
-	
-	
+	<!-- 비회원 등록 -->
+	<insert id="insert" parameterType="guestvo">
+		insert into guest(orders_no, guest_name, guest_phone, guest_password)
+		values(
+		#{ordersNo},
+		AES_ENCRYPT(#{guestName}, #{aesKey}),
+		AES_ENCRYPT(#{guestPhone}, #{aesKey}),
+		SHA2(#{guestPassword}, 512)
+		)
+	</insert>
 	
 </mapper>

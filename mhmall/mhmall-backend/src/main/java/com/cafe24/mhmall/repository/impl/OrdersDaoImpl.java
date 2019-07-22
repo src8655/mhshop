@@ -46,6 +46,13 @@ public class OrdersDaoImpl implements OrdersDao {
 	public Integer updateTrackingNum(Map<String, String> map) {
 		return sqlSession.update("orders.updateTrackingNum", map);
 	}
+
+
+	// 주문작성
+	@Override
+	public String insert(OrdersVo ordersVo) {
+		return (String)sqlSession.selectOne("orders.insert", ordersVo);
+	}
 	
 	
 

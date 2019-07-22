@@ -186,12 +186,12 @@ public class ItemControllerTest {
 	@Test
 	public void testE옵션상세() throws Exception {
 		ResultActions resultActions;
-		
+
 		resultActions = mockMvc.perform(get("/api/item/option/{no}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk()).andDo(print())
+		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data.no", is(1)))
 		.andExpect(jsonPath("$.data.itemNo", is(1)))
 		.andExpect(jsonPath("$.data.optionDetailNo1", is(1)))
