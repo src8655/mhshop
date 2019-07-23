@@ -111,5 +111,23 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 
+	// 회원 주문 리스트
+	@Override
+	public List<OrdersVo> getListByMemberId(String id) {
+		OrdersVo ordersVo = new OrdersVo();
+		ordersVo.setMemberId(id);
+		return ordersDao.selectListById(ordersVo);
+	}
+
+
+	// 존재하고 주문대기 상태가 아닌 것(회원)
+	@Override
+	public boolean isExistAndEnableMember(OrdersVo vo, String id) {
+		vo.setMemberId(id);
+		Integer count = ordersDao.isExistAndEnableMember(vo);
+		return count != 0;
+	}
+
+
 
 }

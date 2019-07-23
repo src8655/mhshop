@@ -263,41 +263,51 @@ public class OrdersController {
 	
 	
 	@Auth
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+	})
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 주문 리스트", notes = "회원 주문 리스트 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersList(
 			@AuthUser MemberVo authMember
 			) {
 		
-		// 주문 리스트
+		// 회원 주문 리스트
+		List<OrdersVo> ordersList = ordersService.getListByMemberId(authMember.getId());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
 	}
 	
 	
-	
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
-	})
+
 	@Auth
-	@RequestMapping(value = "/member/list/{ordersNo}", method = RequestMethod.GET)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/member/view", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 주문 상세", notes = "회원 주문 상세 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersView(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 존재하고 주문대기 상태가 아닌 것(회원)
+		if(!ordersService.isExistAndEnableMember(dto.toVo(), authMember.getId()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 주문입니다."));
 		
-		// 존재하고 주문대기 상태가 아닌 것
+		// 비회원 주문 상세 조회
+		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		
-		// 주문 상세 조회
-		
-		// 주문상품 리스트
-		
+		// 비회원 주문상품 리스트
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
+
 		// 주문상세와 주문상품리스트를 리턴
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(Arrays.asList(ordersVo, ordersItemList)));
 	}
 	
 	

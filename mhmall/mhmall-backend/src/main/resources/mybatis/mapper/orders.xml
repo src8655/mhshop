@@ -105,7 +105,7 @@
 		from orders
 		where orders_no = #{ordersNo}
 		and member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
-		and status='주문대기';
+		and status='주문대기'
 	</select>
 	
 	
@@ -117,6 +117,33 @@
 		and a.orders_no = #{ordersNo}
 		and b.guest_password=SHA2(#{guestPassword}, 512)
 		and a.status!='주문대기'
+	</select>
+	
+	
+	<!-- 회원 주문 리스트 -->
+	<select id="selectListById" parameterType="ordersvo" resultType="ordersvo">
+		select orders_no as ordersNo, reg_date as regDate, status, bank_name as bankName, bank_num as bankNum, pay_date as payDate, money, tracking_num as trackingNum,
+
+		cast(AES_DECRYPT(to_name, #{aesKey}) as char) as toName,
+		cast(AES_DECRYPT(to_phone, #{aesKey}) as char) as toPhone,
+		cast(AES_DECRYPT(to_zipcode, #{aesKey}) as char) as toZipcode,
+		cast(AES_DECRYPT(to_addr, #{aesKey}) as char) as toAddr,
+		cast(AES_DECRYPT(member_id, #{aesKey}) as char) as memberId
+		
+		from orders
+		where member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+		and status!='주문대기'
+		order by orders_no desc
+	</select>
+	
+	
+	<!-- 존재하고 주문대기 상태가 아닌 것이 존재하는지(회원) -->
+	<select id="isExistAndEnableMember" parameterType="ordersvo" resultType="Integer">
+		select count(*)
+		from orders
+		where orders_no = #{ordersNo}
+		and member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+		and status!='주문대기'
 	</select>
 	
 	

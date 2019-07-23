@@ -84,6 +84,22 @@ public class OrdersDaoImpl implements OrdersDao {
 	public Integer isExistAndEnable(GuestVo vo) {
 		return (Integer)sqlSession.selectOne("orders.isExistAndEnable", vo);
 	}
+
+
+	// 회원 주문 리스트
+	@Override
+	public List<OrdersVo> selectListById(OrdersVo ordersVo) {
+		ordersVo.setAesKey(aesKey);
+		return sqlSession.selectList("orders.selectListById", ordersVo);
+	}
+
+
+	// 존재하고 주문대기 상태가 아닌 것(회원)
+	@Override
+	public Integer isExistAndEnableMember(OrdersVo vo) {
+		vo.setAesKey(aesKey);
+		return (Integer)sqlSession.selectOne("orders.isExistAndEnableMember", vo);
+	}
 	
 	
 

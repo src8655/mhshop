@@ -341,7 +341,7 @@ public class OrdersControllerTest {
 				.param("toAddr", "addraddr")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions.andDo(print())
+		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data.toName", is("memb")))
 		.andExpect(jsonPath("$.data.toPhone", is("01000000005")))
@@ -375,10 +375,72 @@ public class OrdersControllerTest {
 				.param("guestPassword", "guestpw1!")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions.andDo(print())
+		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data[0].ordersNo", is("2019-07-11_000257")))
 		.andExpect(jsonPath("$.data[1][0].ordersNo", is("2019-07-11_000257")));
+		
+	}
+	
+	
+	
+	
+
+	// 회원 주문 리스트
+	@Test
+	public void testF회원주문리스트() throws Exception {
+		ResultActions resultActions;
+
+		// 성공
+		resultActions = mockMvc.perform(get("/api/orders/member/list")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].ordersNo", is("2019-07-11_000256")))
+		.andExpect(jsonPath("$.data[0].status", is("입금대기")))
+		.andExpect(jsonPath("$.data[0].memberId", is("test_id1")));
+		
+	}
+	
+	
+
+	// 회원 주문 상세
+	@Test
+	public void testG회원주문상세() throws Exception {
+		ResultActions resultActions;
+
+		// 주문번호 Valid
+		resultActions = mockMvc.perform(get("/api/orders/member/view")
+				.param("mockToken", mockToken)
+				.param("ordersNo", "")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 존재하지 않거나 잘못된 주문
+		resultActions = mockMvc.perform(get("/api/orders/member/view")
+				.param("mockToken", mockToken)
+				.param("ordersNo", "2019-07-11_0002596")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(get("/api/orders/member/view")
+				.param("mockToken", mockToken)
+				.param("ordersNo", "2019-07-11_000256")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].ordersNo", is("2019-07-11_000256")))
+		.andExpect(jsonPath("$.data[1][0].ordersNo", is("2019-07-11_000256")));
 		
 	}
 	
