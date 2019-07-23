@@ -132,8 +132,8 @@ public class OrdersServiceImpl implements OrdersService {
 
 	// 상태가 입금 대기중인지 확인
 	@Override
-	public boolean equalsStatus(GuestVo vo, String string) {
-		String nowStatus = ordersDao.getStatus(vo.getOrdersNo());
+	public boolean equalsStatus(String ordersNo, String string) {
+		String nowStatus = ordersDao.getStatus(ordersNo);
 		return string.equals(nowStatus);
 	}
 

@@ -331,7 +331,7 @@ public class OrdersController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 주문입니다."));
 		
 		// 상태가 입금 대기중인지 확인
-		if(!ordersService.equalsStatus(dto.toVo(), "입금대기"))
+		if(!ordersService.equalsStatus(dto.getOrdersNo(), "입금대기"))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("취소할 수 없는 상태입니다."));
 		
 		// 상태를 취소상태로 변경
@@ -348,27 +348,37 @@ public class OrdersController {
 
 	@Auth
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/member/cancel/{ordersNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/cancel/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원 주문 취소", notes = "회원 주문 취소 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersCancel(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
-		
-		// 회원 본인의 것인지 확인
+		// 존재하고 주문대기 상태가 아닌 것(회원)
+		if(!ordersService.isExistAndEnableMember(dto.toVo(), authMember.getId()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 주문입니다."));
 
 		// 상태가 입금 대기중인지 확인
-
+		if(!ordersService.equalsStatus(dto.getOrdersNo(), "입금대기"))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("취소할 수 없는 상태입니다."));
+		
 		// 상태를 취소상태로 변경
+		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "취소");
 		
-		// 주문상품리스트에서 구매한 수량만큼 재고량 복구
+		// 주문상품리스트를 받아와서 구매한 수량만큼 재고량 복구
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
+		if(isSuccess) isSuccess = optionService.restoreCnt(ordersItemList);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 결과 성공여부를 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 
 	

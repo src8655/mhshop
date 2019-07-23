@@ -493,5 +493,42 @@ public class OrdersControllerTest {
 	
 	
 	
+
+	// 회원 주문 취소
+	@Test
+	public void testI회원주문취소() throws Exception {
+		ResultActions resultActions;
+
+		// 존재하지 않는 주문
+		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_99999")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 회원 본인의 것이 아닐 때
+		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_000258")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_000256")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
+	
+	
 	
 }
