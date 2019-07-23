@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -68,7 +69,10 @@ public class OrdersController {
 	OrdersItemService ordersItemService;
 	
 
-	@Transactional(rollbackFor=Exception.class)
+	// sqlException 발생 시 롤백
+	// 격리수준을 REPEATABLE_READ로 한다
+	//     => 재고량 동시 수정 오류 방지
+	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
