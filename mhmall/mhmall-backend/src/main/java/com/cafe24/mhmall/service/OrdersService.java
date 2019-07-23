@@ -19,6 +19,7 @@ public interface OrdersService {
 	boolean isExistAndEnable(GuestVo vo);										// 존재하고 주문대기 상태가 아닌 것이 존재하는지
 	List<OrdersVo> getListByMemberId(String id);								// 회원 주문 리스트
 	boolean isExistAndEnableMember(OrdersVo vo, String id);						// 존재하고 주문대기 상태가 아닌 것(회원)
-	boolean equalsStatus(String ordersNo, String string);							// 상태가 입금 대기중인지 확인
+	boolean equalsStatus(String ordersNo, String string);						// 상태가 입금 대기중인지 확인
+	boolean isExistTimeOverOrders(Long ordersTime);								// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
 	
 }

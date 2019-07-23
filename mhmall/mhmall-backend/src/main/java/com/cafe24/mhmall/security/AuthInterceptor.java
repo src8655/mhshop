@@ -9,6 +9,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.cafe24.mhmall.service.MemberService;
+import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.vo.MemberVo;
 
 
@@ -21,7 +22,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		System.out.println("inter!!!");
+		
 		//1. handler종류 확인 HanlderMethod, DefaultHandlerServlet
 		if(handler instanceof HandlerMethod == false) {		// images, css, js
 			return true;

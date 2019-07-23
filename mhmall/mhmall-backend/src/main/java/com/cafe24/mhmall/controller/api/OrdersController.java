@@ -181,7 +181,7 @@ public class OrdersController {
 		// 금액계산
 		Long money = optionService.moneySum(optionNos, optionCnts);
 		
-		// 비회원 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
+		// 회원 주문 데이터 추가(상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, authMember.getId());
 		
 		// 주문내역 일괄 추가 <= 주문번호

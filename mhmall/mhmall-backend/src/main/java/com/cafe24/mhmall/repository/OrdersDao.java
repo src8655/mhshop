@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cafe24.mhmall.vo.GuestVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
 public interface OrdersDao {
@@ -20,5 +21,6 @@ public interface OrdersDao {
 	List<OrdersVo> selectListById(OrdersVo ordersVo);	// 회원 주문 리스트
 	Integer isExistAndEnableMember(OrdersVo vo);		// 존재하고 주문대기 상태가 아닌 것(회원)
 	String getStatus(String ordersNo);					// 주문번호로 현재상태 받기
+	Integer isExistTimeOverOrders(Long ordersTime);		// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
 
 }

@@ -49,8 +49,8 @@ import io.swagger.annotations.ApiImplicitParams;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Rollback(value = true)
-@Transactional
+//@Rollback(value = true)
+//@Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OrdersControllerTest {
 	@Autowired

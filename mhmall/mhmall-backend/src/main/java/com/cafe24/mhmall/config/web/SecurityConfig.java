@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.cafe24.mhmall.security.AuthInterceptor;
 import com.cafe24.mhmall.security.AuthUserHandlerMethodArgumentResolver;
+import com.cafe24.mhmall.security.BasicInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -36,6 +37,10 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 	public AuthInterceptor authInterceptor() {
 		return new AuthInterceptor();
 	}
+	@Bean
+	public BasicInterceptor basicInterceptor() {
+		return new BasicInterceptor();
+	}
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry
@@ -45,6 +50,9 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 		.excludePathPatterns("/member/login")
 		.excludePathPatterns("/member/logout")
 		.excludePathPatterns("/assets/**");
+
+		registry
+		.addInterceptor(basicInterceptor());
 		
 	}
 }

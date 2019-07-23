@@ -65,6 +65,22 @@
 		    #{cnt}
 		);
 	</insert>
+	
+	
+	<!-- 초과된 주문의 번호에 해당하는 옵션번호와 수량 리스트를 받음 -->
+	<select id="getTimeOverList" parameterType="long" resultType="ordersitemvo">
+		<![CDATA[
+		select a.orders_no as ordersNo, b.cnt as cnt, b.option_no as optionNo
+		from
+		(
+		select orders_no
+		from orders
+		where DATE_ADD(reg_date, INTERVAL #{ordersTime} SECOND)  < now()
+		and status='주문대기'
+		) a, orders_item b
+		where a.orders_no=b.orders_no
+		]]>
+	</select>
 
 	
 	

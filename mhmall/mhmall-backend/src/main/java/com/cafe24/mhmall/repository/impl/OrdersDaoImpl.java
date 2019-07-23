@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.OrdersDao;
 import com.cafe24.mhmall.vo.GuestVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
 @Repository
@@ -106,6 +107,13 @@ public class OrdersDaoImpl implements OrdersDao {
 	@Override
 	public String getStatus(String ordersNo) {
 		return (String)sqlSession.selectOne("orders.getStatus", ordersNo);
+	}
+
+
+	// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
+	@Override
+	public Integer isExistTimeOverOrders(Long ordersTime) {
+		return (Integer)sqlSession.selectOne("orders.countTimeOver", ordersTime);
 	}
 	
 	

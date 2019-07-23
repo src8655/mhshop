@@ -138,10 +138,12 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 
-
-
-
-
+	// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
+	@Override
+	public boolean isExistTimeOverOrders(Long ordersTime) {
+		Integer count = ordersDao.isExistTimeOverOrders(ordersTime);
+		return count != 0; 
+	}
 
 
 }

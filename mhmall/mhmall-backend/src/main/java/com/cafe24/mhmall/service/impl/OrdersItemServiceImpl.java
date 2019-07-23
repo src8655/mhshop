@@ -38,6 +38,13 @@ public class OrdersItemServiceImpl implements OrdersItemService {
 		
 		return true;
 	}
+	
+
+	// 초과된 주문의 번호에 해당하는 옵션번호와 수량 리스트를 받음
+	@Override
+	public List<OrdersItemVo> getTimeOverList(Long ordersTime) {
+		return ordersItemDao.getTimeOverList(ordersTime);
+	}
 
 
 }

@@ -1,0 +1,66 @@
+package com.cafe24.mhmall.security;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.cafe24.mhmall.service.MemberService;
+import com.cafe24.mhmall.service.OptionService;
+import com.cafe24.mhmall.service.OrdersItemService;
+import com.cafe24.mhmall.service.OrdersService;
+import com.cafe24.mhmall.vo.MemberVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
+
+
+public class BasicInterceptor extends HandlerInterceptorAdapter {
+	private final static Long ORDERS_TIME = 10L;
+	
+	@Autowired
+	OptionService optionService;
+	
+	@Autowired
+	OrdersService ordersService;
+
+	@Autowired
+	OrdersItemService ordersItemService;
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		System.out.println("inter!!!");
+		
+		
+		// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
+		timeOverOrders();
+		
+		
+		return true;
+	}
+
+	
+	@Transactional(rollbackFor=Exception.class)
+	// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
+	public void timeOverOrders() {
+		// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
+		if(ordersService.isExistTimeOverOrders(ORDERS_TIME)) {
+			// 초과된 주문의 번호에 해당하는 옵션번호와 수량 리스트를 받음
+			List<OrdersItemVo> ordersItemList = ordersItemService.getTimeOverList(ORDERS_TIME);
+
+			// 옵션의 상품수량 복구
+			optionService.restoreCnt(ordersItemList);
+			
+			// 상태를 취소로 변경
+			for(OrdersItemVo ordersItemVo : ordersItemList) {
+				ordersService.changeStatus(ordersItemVo.getOrdersNo(), "취소");
+				System.out.println("초과된 주문 처리 + " + ordersItemVo.getOrdersNo());
+			}
+		}
+	}
+}
