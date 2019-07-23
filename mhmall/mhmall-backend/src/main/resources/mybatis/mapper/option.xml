@@ -124,5 +124,14 @@
 		where a.item_no = b.no
 		and a.no=#{no}
 	</select>
+	
+	
+	<!-- 구매한 수량만큼 재고량 복구 -->
+	<update id="updateRestore" parameterType="ordersitemvo">
+		update option set
+		cnt = cnt+#{cnt}
+		where no=#{optionNo}
+		and cnt != -1
+	</update>
 
 </mapper>

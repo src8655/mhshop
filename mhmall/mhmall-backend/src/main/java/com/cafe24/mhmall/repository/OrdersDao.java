@@ -19,5 +19,6 @@ public interface OrdersDao {
 	Integer isExistAndEnable(GuestVo vo);				// 존재하고 주문대기 상태가 아닌 것이 존재하는지
 	List<OrdersVo> selectListById(OrdersVo ordersVo);	// 회원 주문 리스트
 	Integer isExistAndEnableMember(OrdersVo vo);		// 존재하고 주문대기 상태가 아닌 것(회원)
+	String getStatus(String ordersNo);					// 주문번호로 현재상태 받기
 
 }

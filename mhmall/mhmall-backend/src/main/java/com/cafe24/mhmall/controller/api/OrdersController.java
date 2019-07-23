@@ -312,6 +312,7 @@ public class OrdersController {
 	
 	
 	
+	@Transactional(rollbackFor=Exception.class)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = "")
@@ -319,17 +320,29 @@ public class OrdersController {
 	@RequestMapping(value = "/guest/cancel/{ordersNo}", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 주문취소", notes = "비회원 주문취소 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersCancel(
-			@ModelAttribute @Valid RequestGuestOrdersViewDto OrdersDto,
+			@ModelAttribute @Valid RequestGuestOrdersViewDto dto,
 			BindingResult result
 			) {
-		
-		// valid 체크
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+
+		// 존재하고 주문대기 상태가 아닌 것이 존재하는지
+		if(!ordersService.isExistAndEnable(dto.toVo()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 주문입니다."));
 		
 		// 상태가 입금 대기중인지 확인
+		if(!ordersService.equalsStatus(dto.toVo(), "입금대기"))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("취소할 수 없는 상태입니다."));
 		
 		// 상태를 취소상태로 변경
+		boolean isSuccess = ordersService.changeStatus(dto.getOrdersNo(), "취소");
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 주문상품리스트를 받아와서 구매한 수량만큼 재고량 복구
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
+		if(isSuccess) isSuccess = optionService.restoreCnt(ordersItemList);
+		
+		// 결과 성공여부를 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 
@@ -346,10 +359,14 @@ public class OrdersController {
 			) {
 		
 		// valid 체크
+		
+		// 회원 본인의 것인지 확인
 
 		// 상태가 입금 대기중인지 확인
 
 		// 상태를 취소상태로 변경
+		
+		// 주문상품리스트에서 구매한 수량만큼 재고량 복구
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}

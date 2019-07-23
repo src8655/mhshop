@@ -446,4 +446,52 @@ public class OrdersControllerTest {
 	
 	
 	
+	
+
+	// 비회원 주문 취소
+	@Test
+	public void testH비회원주문취소() throws Exception {
+		ResultActions resultActions;
+
+		// 존재하지 않는 주문
+		resultActions = mockMvc.perform(put("/api/orders/guest/cancel/{ordersNo}", "2019-07-11_99999")
+				.param("guestPassword", "guestpw1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 잘못된 비회원 비밀번호
+		resultActions = mockMvc.perform(put("/api/orders/guest/cancel/{ordersNo}", "2019-07-11_000257")
+				.param("guestPassword", "guestpw12!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 취소할 수 없는 상태
+		resultActions = mockMvc.perform(put("/api/orders/guest/cancel/{ordersNo}", "2019-07-11_000257")
+				.param("guestPassword", "guestpw1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 성공
+		resultActions = mockMvc.perform(put("/api/orders/guest/cancel/{ordersNo}", "2019-07-11_000261")
+				.param("guestPassword", "guestpw4!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
+	
+	
+	
 }

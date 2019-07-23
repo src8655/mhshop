@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.OptionDao;
 import com.cafe24.mhmall.vo.OptionVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 
 @Repository
 public class OptionDaoImpl implements OptionDao {
@@ -84,5 +85,12 @@ public class OptionDaoImpl implements OptionDao {
 	@Override
 	public Long selectSumMoney(Map<String, Object> map) {
 		return (Long)sqlSession.selectOne("option.selectSumMoney", map);
+	}
+
+
+	// 구매한 수량만큼 재고량 복구
+	@Override
+	public Integer updateRestore(OrdersItemVo ordersItemVo) {
+		return sqlSession.update("option.updateRestore", ordersItemVo);
 	}
 }

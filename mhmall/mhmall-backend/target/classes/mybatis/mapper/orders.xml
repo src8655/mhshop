@@ -147,4 +147,10 @@
 	</select>
 	
 	
+	<!-- 주문번호로 현재상태 받기 -->
+	<select id="getStatus" parameterType="String" resultType="String">
+		select status from orders where orders_no=#{ordersNo}
+	</select>
+	
+	
 </mapper>

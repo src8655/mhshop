@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cafe24.mhmall.repository.OptionDao;
 import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.vo.OptionVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 
 @Service
 public class OptionServiceImpl implements OptionService {
@@ -121,6 +122,19 @@ public class OptionServiceImpl implements OptionService {
 		}
 		
 		return moneySum;
+	}
+	
+	
+	// 구매한 수량만큼 재고량 복구
+	@Override
+	public boolean restoreCnt(List<OrdersItemVo> ordersItemList) {
+		for(OrdersItemVo ordersItemVo : ordersItemList) {
+			// 옵션이 현재 삭제된(null) 옵션이라면 지나감
+			if(ordersItemVo.getOptionNo() == null) continue;
+			optionDao.updateRestore(ordersItemVo);
+		}
+		
+		return true;
 	}
 
 

@@ -100,6 +100,13 @@ public class OrdersDaoImpl implements OrdersDao {
 		vo.setAesKey(aesKey);
 		return (Integer)sqlSession.selectOne("orders.isExistAndEnableMember", vo);
 	}
+
+
+	// 주문번호로 현재상태 받기
+	@Override
+	public String getStatus(String ordersNo) {
+		return (String)sqlSession.selectOne("orders.getStatus", ordersNo);
+	}
 	
 	
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cafe24.mhmall.repository.OrdersDao;
 import com.cafe24.mhmall.service.OrdersService;
 import com.cafe24.mhmall.vo.GuestVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
 @Service
@@ -127,6 +128,19 @@ public class OrdersServiceImpl implements OrdersService {
 		Integer count = ordersDao.isExistAndEnableMember(vo);
 		return count != 0;
 	}
+
+
+	// 상태가 입금 대기중인지 확인
+	@Override
+	public boolean equalsStatus(GuestVo vo, String string) {
+		String nowStatus = ordersDao.getStatus(vo.getOrdersNo());
+		return string.equals(nowStatus);
+	}
+
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cafe24.mhmall.vo.OptionVo;
+import com.cafe24.mhmall.vo.OrdersItemVo;
 
 public interface OptionDao {
 
@@ -17,5 +18,6 @@ public interface OptionDao {
 	Integer countByNo(Long no);							// 옵션번호에 해당하는 옵션개수
 	Integer updateCnt(Map<String, Object> map);			// 옵션 재고량 줄이기
 	Long selectSumMoney(Map<String, Object> map);		// 금액계산
+	Integer updateRestore(OrdersItemVo ordersItemVo);	// 구매한 수량만큼 재고량 복구
 
 }
