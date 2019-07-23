@@ -58,11 +58,12 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 
-	// 비회원 주문 데이터 추가
+	// 주문 데이터 추가
 	@Override
-	public String guestOrdersAdd(Long money) {
+	public String guestOrdersAdd(Long money, String memberId) {
 		OrdersVo ordersVo = new OrdersVo();
 		ordersVo.setMoney(money);
+		ordersVo.setMemberId(memberId);
 		
 		// 가상계좌정보 랜덤생성
 		ordersVo.setBankName("국민");
@@ -88,6 +89,25 @@ public class OrdersServiceImpl implements OrdersService {
 		vo.setStatus("입금대기");
 		Integer result = ordersDao.orderUpdate(vo);
 		return result == 1;
+	}
+
+
+	// 존재하는 주문이고 상태가 "주문대기"인지 확인(회원)
+	@Override
+	public boolean isExistAndValidMember(String ordersNo, String id) {
+		OrdersVo ordersVo = new OrdersVo();
+		ordersVo.setOrdersNo(ordersNo);
+		ordersVo.setMemberId(id);
+		Integer count = ordersDao.isExistAndValidMember(ordersVo);
+		return count != 0;
+	}
+
+	
+	// 존재하고 주문대기 상태가 아닌 것이 존재하는지
+	@Override
+	public boolean isExistAndEnable(GuestVo vo) {
+		Integer count = ordersDao.isExistAndEnable(vo);
+		return count != 0;
 	}
 
 

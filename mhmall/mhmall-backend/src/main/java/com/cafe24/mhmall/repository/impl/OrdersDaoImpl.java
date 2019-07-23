@@ -69,6 +69,21 @@ public class OrdersDaoImpl implements OrdersDao {
 		vo.setAesKey(aesKey);
 		return sqlSession.update("orders.orderUpdate", vo);
 	}
+
+
+	// 존재하는 주문이고 상태가 "주문대기"인지 확인(회원)
+	@Override
+	public Integer isExistAndValidMember(OrdersVo ordersVo) {
+		ordersVo.setAesKey(aesKey);
+		return (Integer)sqlSession.selectOne("orders.isExistAndValidMember", ordersVo);
+	}
+
+
+	// 존재하고 주문대기 상태가 아닌 것이 존재하는지
+	@Override
+	public Integer isExistAndEnable(GuestVo vo) {
+		return (Integer)sqlSession.selectOne("orders.isExistAndEnable", vo);
+	}
 	
 	
 

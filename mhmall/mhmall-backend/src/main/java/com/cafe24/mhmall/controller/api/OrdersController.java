@@ -1,5 +1,6 @@
 package com.cafe24.mhmall.controller.api;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,8 +102,8 @@ public class OrdersController {
 		// 금액계산
 		Long money = optionService.moneySum(optionNos, optionCnts);
 		
-		// 비회원 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
-		String ordersNo = ordersService.guestOrdersAdd(money);
+		// 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
+		String ordersNo = ordersService.guestOrdersAdd(money, null);
 		
 		// 비회원 데이터 추가 <= 주문번호
 		guestService.add(ordersNo, guestDto.toVo());
@@ -125,7 +126,7 @@ public class OrdersController {
 		@ApiImplicitParam(name = "toZipcode", value = "받는사람우편번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "toAddr", value = "받는사람주소", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/guest/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/guest", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 주문 완료", notes = "비회원 주문 완료 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersPost(
 			@ModelAttribute @Valid RequestGuestOrdersViewDto guestDto,
@@ -149,34 +150,86 @@ public class OrdersController {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 	
-
+	
+	
+	
+	
+	// sqlException 발생 시 롤백
+	// 격리수준을 REPEATABLE_READ로 한다
+	//     => 재고량 동시 수정 오류 방지
+	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toZipcode", value = "받는사람우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toAddr", value = "받는사람주소", paramType = "query", required = true, defaultValue = ""),
-
-		@ApiImplicitParam(name = "optionNos", value = "주문상품들", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "optionNos", value = "주문상품들", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "optionCnts", value = "주문수량들", paramType = "query", required = true, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 주문", notes = "회원 주문 요청 API")
 	public ResponseEntity<JSONResult> memberOrders(
-			@ModelAttribute @Valid RequestOrdersWriteDto OrdersDto,
-			BindingResult result,
 			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
+			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts,
 			@AuthUser MemberVo authMember
 			) {
+		// 존재하는 옵션들인지 확인
+		if(!optionService.isExistAllOption(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
-		// valid 체크
+		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
+		if(!optionService.isExistAllCnt(optionNos, optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
+
+		// 금액계산
+		Long money = optionService.moneySum(optionNos, optionCnts);
 		
-		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소)
+		// 비회원 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
+		String ordersNo = ordersService.guestOrdersAdd(money, authMember.getId());
 		
-		// 주문 데이터 추가 => 주문번호 받기
+		// 주문내역 일괄 추가 <= 주문번호
+		ordersItemService.add(ordersNo, optionNos, optionCnts);
 		
-		// 주문내역 일괄 추가(주문한만큼 옵션 재고 조정)
+		// 주문번호 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersNo));
+	}
+	
+	
+	
+
+	@Transactional(rollbackFor=Exception.class)
+	@Auth
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
+		
+		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "toZipcode", value = "받는사람우편번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "toAddr", value = "받는사람주소", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/member", method = RequestMethod.PUT)
+	@ApiOperation(value = "회원 주문 완료", notes = "회원 주문 완료 요청 API")
+	public ResponseEntity<JSONResult> memberOrdersPost(
+			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
+			BindingResult result,
+			@AuthUser MemberVo authMember
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+
+		// 존재하는 주문이고 상태가 "주문대기"인지 확인(회원)
+		if(!ordersService.isExistAndValidMember(dto.getOrdersNo(), authMember.getId()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
+		
+		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
+		if(!ordersService.ordersPost(dto.getOrdersNo(), ordersDto.toVo()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
+		
+		// 주문을 불러온다.
+		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
+		
+		// 주문번호, 가상계좌은행, 가상계좌번호, 결제해야할 금액을 리턴 
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 	
 	
@@ -188,19 +241,25 @@ public class OrdersController {
 	@RequestMapping(value = "/guest/view", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 주문상세", notes = "비회원 주문상세 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersView(
-			@ModelAttribute @Valid RequestGuestOrdersViewDto OrdersDto,
+			@ModelAttribute @Valid RequestGuestOrdersViewDto dto,
 			BindingResult result
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 존재하고 주문대기 상태가 아닌 것이 존재하는지
+		if(!ordersService.isExistAndEnable(dto.toVo()))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 주문입니다."));
 		
-		// 주문 상세 조회
+		// 비회원 주문 상세 조회
+		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
 		
-		// 주문내역 리스트
+		// 비회원 주문상품 리스트
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 주문상세와 주문상품리스트를 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(Arrays.asList(ordersVo, ordersItemList)));
 	}
-	
 	
 	
 	@Auth
@@ -231,10 +290,13 @@ public class OrdersController {
 		
 		// valid 체크
 		
+		// 존재하고 주문대기 상태가 아닌 것
+		
 		// 주문 상세 조회
 		
-		// 주문내역 리스트
+		// 주문상품 리스트
 		
+		// 주문상세와 주문상품리스트를 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	

@@ -71,7 +71,7 @@
 		null,
 		null,
 		null,
-		null
+		AES_ENCRYPT(#{memberId}, #{aesKey})
 		)
 	</select>
 	
@@ -97,6 +97,27 @@
 		to_addr=AES_ENCRYPT(#{toAddr}, #{aesKey})
 		where orders_no=#{ordersNo}
 	</update>
+	
+	
+	<!-- 존재하는 주문이고 상태가 "주문대기"인지 확인(회원) -->
+	<select id="isExistAndValidMember" parameterType="ordersvo" resultType="Integer">
+		select count(*)
+		from orders
+		where orders_no = #{ordersNo}
+		and member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+		and status='주문대기';
+	</select>
+	
+	
+	<!-- 존재하고 주문대기 상태가 아닌 것이 존재하는지 -->
+	<select id="isExistAndEnable" parameterType="guestvo" resultType="Integer">
+		select count(*)
+		from orders a, guest b
+		where a.orders_no = b.orders_no
+		and a.orders_no = #{ordersNo}
+		and b.guest_password=SHA2(#{guestPassword}, 512)
+		and a.status!='주문대기'
+	</select>
 	
 	
 </mapper>

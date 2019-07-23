@@ -145,7 +145,7 @@ public class OrdersControllerTest {
 		
 
 		// 주문번호 Valid
-		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+		resultActions = mockMvc.perform(put("/api/orders/guest")
 				.param("ordersNo", "")
 				.param("guestPassword", "guestpw3!")
 				
@@ -160,7 +160,7 @@ public class OrdersControllerTest {
 		
 
 		// 비밀번호 Valid
-		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+		resultActions = mockMvc.perform(put("/api/orders/guest")
 				.param("ordersNo", "2019-07-11_000259")
 				.param("guestPassword", "guestpw3")
 				
@@ -175,7 +175,7 @@ public class OrdersControllerTest {
 		
 
 		// 존재하지 않는 주문
-		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+		resultActions = mockMvc.perform(put("/api/orders/guest")
 				.param("ordersNo", "2019-07-11_999999")
 				.param("guestPassword", "guestpw3!")
 				
@@ -190,7 +190,7 @@ public class OrdersControllerTest {
 		
 		
 		// 주문은 존재하지만 비회원 비밀번호가 틀린 경우
-		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+		resultActions = mockMvc.perform(put("/api/orders/guest")
 				.param("ordersNo", "2019-07-11_000259")
 				.param("guestPassword", "guestpw123!")
 				
@@ -205,7 +205,7 @@ public class OrdersControllerTest {
 		
 		
 		// 성공
-		resultActions = mockMvc.perform(post("/api/orders/guest/post")
+		resultActions = mockMvc.perform(put("/api/orders/guest")
 				.param("ordersNo", "2019-07-11_000259")
 				.param("guestPassword", "guestpw3!")
 				
@@ -221,6 +221,164 @@ public class OrdersControllerTest {
 		.andExpect(jsonPath("$.data.toPhone", is("01000000001")))
 		.andExpect(jsonPath("$.data.toZipcode", is("12345")))
 		.andExpect(jsonPath("$.data.toAddr", is("addraddr")));
+		
+	}
+	
+	
+	
+	
+	
+
+	// 회원 주문
+	@Test
+	public void testC회원주문() throws Exception {
+		ResultActions resultActions;
+
+		// 없는 옵션일 때
+		resultActions = mockMvc.perform(post("/api/orders/member")
+				.param("mockToken", mockToken)
+				
+				.param("optionNos", "999")
+				.param("optionCnts", "5")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 재고가 부족할 때
+		resultActions = mockMvc.perform(post("/api/orders/member")
+				.param("mockToken", mockToken)
+
+				.param("optionNos", "1")
+				.param("optionCnts", "11")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공, 주문번호를 리턴하는지
+		resultActions = mockMvc.perform(post("/api/orders/member")
+				.param("mockToken", mockToken)
+
+				.param("optionNos", "1")
+				.param("optionCnts", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", Matchers.notNullValue()));
+		
+	}
+	
+	
+	
+
+	// 회원 주문 완료
+	@Test
+	public void testD회원주문완료() throws Exception {
+		ResultActions resultActions;
+		
+
+		// 주문번호 Valid
+		resultActions = mockMvc.perform(put("/api/orders/member")
+				.param("mockToken", mockToken)
+				
+				.param("ordersNo", "")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 존재하지 않는 주문
+		resultActions = mockMvc.perform(put("/api/orders/member")
+				.param("mockToken", mockToken)
+				
+				.param("ordersNo", "2019-07-11_999999")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 주문은 존재하지만 본인의 주문이 아닌 경우
+		resultActions = mockMvc.perform(put("/api/orders/member")
+				.param("mockToken", mockToken)
+				
+				.param("ordersNo", "2019-07-11_000259")
+				
+				.param("toName", "guest")
+				.param("toPhone", "01000000001")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(put("/api/orders/member")
+				.param("mockToken", mockToken)
+				
+				.param("ordersNo", "2019-07-11_000260")
+				
+				.param("toName", "memb")
+				.param("toPhone", "01000000005")
+				.param("toZipcode", "12345")
+				.param("toAddr", "addraddr")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.toName", is("memb")))
+		.andExpect(jsonPath("$.data.toPhone", is("01000000005")))
+		.andExpect(jsonPath("$.data.toZipcode", is("12345")))
+		.andExpect(jsonPath("$.data.toAddr", is("addraddr")));
+		
+	}
+	
+	
+	
+	
+
+	// 비회원 주문 상세
+	@Test
+	public void testE비회원주문상세() throws Exception {
+		ResultActions resultActions;
+
+		// 존재하지 않거나 비회원 비밀번호가 다른 경우
+		resultActions = mockMvc.perform(post("/api/orders/guest/view")
+				.param("ordersNo", "2019-07-11_000257")
+				.param("guestPassword", "guestpw12!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(post("/api/orders/guest/view")
+				.param("ordersNo", "2019-07-11_000257")
+				.param("guestPassword", "guestpw1!")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].ordersNo", is("2019-07-11_000257")))
+		.andExpect(jsonPath("$.data[1][0].ordersNo", is("2019-07-11_000257")));
 		
 	}
 	
