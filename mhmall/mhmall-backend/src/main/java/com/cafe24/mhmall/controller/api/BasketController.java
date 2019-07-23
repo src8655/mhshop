@@ -34,6 +34,7 @@ import com.cafe24.mhmall.dto.RequestOrdersWriteDto;
 import com.cafe24.mhmall.security.Auth;
 import com.cafe24.mhmall.security.AuthUser;
 import com.cafe24.mhmall.security.Auth.Role;
+import com.cafe24.mhmall.service.BasketService;
 import com.cafe24.mhmall.service.CategoryService;
 import com.cafe24.mhmall.service.GuestService;
 import com.cafe24.mhmall.service.ItemImgService;
@@ -41,6 +42,7 @@ import com.cafe24.mhmall.service.ItemService;
 import com.cafe24.mhmall.service.MemberService;
 import com.cafe24.mhmall.service.OrdersItemService;
 import com.cafe24.mhmall.service.OrdersService;
+import com.cafe24.mhmall.vo.BasketVo;
 import com.cafe24.mhmall.vo.GuestVo;
 import com.cafe24.mhmall.vo.ItemImgVo;
 import com.cafe24.mhmall.vo.ItemVo;
@@ -60,6 +62,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "BasketController", description = "장바구니 컨트롤러")
 public class BasketController {
 	
+	@Autowired
+	BasketService basketService;
 	
 
 	@ApiImplicitParams({
@@ -71,14 +75,19 @@ public class BasketController {
 			@ModelAttribute @Valid RequestBasketGuestDto guestDto,
 			BindingResult result
 			) {
-		
-		// valid 체크
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제
+		basketService.guestDeleteByCnt(guestDto.getGuestSession());
+		
+		// 입력 시간을 현재로 갱신(비회원의 장바구니는 30개월간만 유지된다)
+		basketService.guestNewTime(guestDto.getGuestSession());
 		
 		// 장바구니 리스트
+		List<BasketVo> basketList = basketService.getListByGuest(guestDto.getGuestSession());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(basketList));
 	}
 	
 

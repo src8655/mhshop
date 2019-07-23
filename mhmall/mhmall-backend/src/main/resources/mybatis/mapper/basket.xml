@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="basket">
+
+	<!-- 수량보다 재고가 없는 리스트 받기 -->
+	<select id="getGuestListByCnt" parameterType="String" resultType="basketvo">
+		select a.no as no
+		from basket a, option b
+		where a.guest_session=#{guestSession}
+		and a.option_no=b.no
+		and b.cnt != -1
+		and a.cnt > b.cnt
+	</select>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteByNo" parameterType="long">
+		delete from basket where no=#{no}
+	</delete>
+	
+	
+	<!-- 입력 시간을 현재로 갱신 -->
+	<update id="guestNewTime" parameterType="String">
+		update basket set
+		reg_date=now()
+		where guest_session=#{guestSession}
+	</update>
+	
+	
+	<!-- 장바구니 리스트 -->
+	<select id="getListByGuest" parameterType="String" resultType="basketvo">
+		select
+		no,
+		option_no as optionNo,
+		guest_session as guestSession,
+		reg_date as regDate,
+		cnt
+		from basket
+		where guest_session=#{guestSession}
+		order by no desc
+	</select>
+	
+</mapper>
