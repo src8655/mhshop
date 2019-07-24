@@ -147,5 +147,13 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 회원 장바구니 정보가 존재하는지 확인하고 가져오기
+	@Override
+	public BasketVo getByNoMember(BasketVo vo, String id) {
+		vo.setMemberId(id);
+		return basketDao.getByNoMember(vo);
+	}
+
+
 
 }

@@ -20,5 +20,6 @@ public interface BasketDao {
 	Integer deleteByOptionMember(BasketVo basketVo);		// 현재 장바구니에 같은 옵션 삭제(회원)
 	Integer insertMember(BasketVo vo);						// 회원 장바구니 추가
 	Integer deleteMemberByNo(BasketVo basketVo);			// 회원 장바구니 삭제
+	BasketVo getByNoMember(BasketVo vo);					// 회원 장바구니 정보가 존재하는지 확인하고 가져오기
 
 }

@@ -347,4 +347,56 @@ public class BasketControllerTest {
 		
 	}
 	
+	
+
+	// 회원 장바구니 수정
+	@Test
+	public void testH회원장바구니수정() throws Exception {
+		ResultActions resultActions;
+
+		// 장바구니번호 Valid
+		resultActions = mockMvc.perform(put("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "")
+				.param("cnt", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 없는 장바구니
+		resultActions = mockMvc.perform(put("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "99")
+				.param("cnt", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 재고가 부족할 때
+		resultActions = mockMvc.perform(put("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "3")
+				.param("cnt", "99")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(put("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "3")
+				.param("cnt", "6")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
 }
