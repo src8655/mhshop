@@ -17,5 +17,7 @@ public interface OptionService {
 	boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts);	// 옵션의 재고가 있는지 확인
 	Long moneySum(Long[] optionNos, Integer[] optionCnts);			// 금액계산
 	boolean restoreCnt(List<OrdersItemVo> ordersItemList);			// 구매한 수량만큼 재고량 복구
+	boolean isExistOption(Long optionNo);							// 존재하는 옵션인지 확인
+	boolean isExistCnt(Long optionNo, Long cnt);					// 옵션의 재고가 수량만큼 존재하는지 확인
 
 }

@@ -45,7 +45,39 @@ public class BasketDaoImpl implements BasketDao {
 	}
 
 
+	// 현재 장바구니에 같은 옵션 삭제
+	@Override
+	public Integer deleteByOptionGuest(BasketVo vo) {
+		return sqlSession.delete("basket.deleteByOptionGuest", vo);
+	}
 
-	
+
+	// 비회원 장바구니 추가
+	@Override
+	public Integer insertGuest(BasketVo vo) {
+		return sqlSession.insert("basket.insertGuest", vo);
+	}
+
+
+	// 비회원 장바구니 삭제
+	@Override
+	public Integer deleteGuestByNo(BasketVo vo) {
+		return sqlSession.insert("basket.deleteGuestByNo", vo);
+	}
+
+
+	// 비회원 장바구니 정보가 존재하는지 확인하고 가져오기
+	@Override
+	public BasketVo getByNoGuest(BasketVo vo) {
+		return (BasketVo)sqlSession.selectOne("basket.selectByNoGuest", vo);
+	}
+
+
+	// 장바구니 수정
+	@Override
+	public Integer updateCnt(BasketVo basketVo) {
+		return sqlSession.update("basket.updateCnt", basketVo);
+	}
+
 	
 }

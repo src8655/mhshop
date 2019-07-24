@@ -4,7 +4,7 @@ public class BasketVo {
 	private Long no;
 	private Long optionNo;
 	private String memberId;
-	private String guestSesstion;
+	private String guestSession;
 	private String regDate;
 	private Long cnt;
 
@@ -12,18 +12,16 @@ public class BasketVo {
 	private String optionNames;
 	private String itemName;
 	private String thumbnail;
-	private String money;
+	private Long money;
 	
 
 	public BasketVo() {}
-
-
-	public BasketVo(Long no, Long optionNo, String memberId, String guestSesstion, String regDate, Long cnt,
-			Long itemNo, String optionNames, String itemName, String thumbnail, String money) {
+	public BasketVo(Long no, Long optionNo, String memberId, String guestSession, String regDate, Long cnt, Long itemNo,
+			String optionNames, String itemName, String thumbnail, Long money) {
 		this.no = no;
 		this.optionNo = optionNo;
 		this.memberId = memberId;
-		this.guestSesstion = guestSesstion;
+		this.guestSession = guestSession;
 		this.regDate = regDate;
 		this.cnt = cnt;
 		this.itemNo = itemNo;
@@ -34,10 +32,10 @@ public class BasketVo {
 	}
 
 
-	public String getMoney() {
+	public Long getMoney() {
 		return money;
 	}
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 	public Long getItemNo() {
@@ -90,12 +88,6 @@ public class BasketVo {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	public String getGuestSesstion() {
-		return guestSesstion;
-	}
-	public void setGuestSesstion(String guestSesstion) {
-		this.guestSesstion = guestSesstion;
-	}
 	public String getRegDate() {
 		return regDate;
 	}
@@ -107,6 +99,16 @@ public class BasketVo {
 	}
 	public void setCnt(Long cnt) {
 		this.cnt = cnt;
+	}
+
+
+	public String getGuestSession() {
+		return guestSession;
+	}
+
+
+	public void setGuestSession(String guestSession) {
+		this.guestSession = guestSession;
 	}
 	
 	

@@ -11,10 +11,10 @@ public class RequestBasketDelGuestDto {
 	@NotNull
 	private Long no;
 	@NotEmpty
-	private String guestSesstion;
+	private String guestSession;
 
 	public BasketVo toVo() {
-		return new BasketVo(no, null, null, guestSesstion, null, null, null, null, null, null, null);
+		return new BasketVo(no, null, null, guestSession, null, null, null, null, null, null, null);
 	}
 	public Long getNo() {
 		return no;
@@ -22,12 +22,12 @@ public class RequestBasketDelGuestDto {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public String getGuestSesstion() {
-		return guestSesstion;
+	public String getGuestSession() {
+		return guestSession;
 	}
-	public void setGuestSesstion(String guestSesstion) {
-		this.guestSesstion = guestSesstion;
+	public void setGuestSession(String guestSession) {
+		this.guestSession = guestSession;
 	}
-
+	
 	
 }

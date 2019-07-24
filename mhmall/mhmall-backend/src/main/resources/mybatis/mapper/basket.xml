@@ -31,14 +31,85 @@
 	<!-- 장바구니 리스트 -->
 	<select id="getListByGuest" parameterType="String" resultType="basketvo">
 		select
-		no,
-		option_no as optionNo,
-		guest_session as guestSession,
-		reg_date as regDate,
-		cnt
-		from basket
-		where guest_session=#{guestSession}
-		order by no desc
+		qa.no,
+		qa.option_no as optionNo,
+		qa.guest_session as guestSession,
+		qa.reg_date as regDate,
+		qa.cnt,
+		qa.item_no as itemNo,
+		qa.option_names as optionNames,
+		qb.name as itemName,
+		qb.thumbnail,
+		qb.money*qa.cnt as money
+		from
+		(
+			select a.no, a.option_no, a.guest_session, a.reg_date, a.cnt, b.item_no, b.option_names
+			from
+			(
+			select
+			no, option_no, guest_session, reg_date, cnt
+			from basket
+			where guest_session=#{guestSession}
+			order by no desc
+			) a,
+			(
+				select aaa.no, aaa.item_no, concat(aaa.option_name, " ", bbb.option_name) as option_names
+				from
+				(
+				select aa.no, aa.item_no, bb.option_name, aa.option_detail2
+				from
+				option aa, option_detail bb
+				where aa.option_detail1=bb.no
+				) aaa, option_detail bbb
+				where aaa.option_detail2=bbb.no
+			) b
+			where a.option_no=b.no
+		) qa,
+		item qb
+		where qa.item_no=qb.no;
 	</select>
+	
+	
+	<!-- 현재 장바구니에 같은 옵션 삭제 -->
+	<delete id="deleteByOptionGuest" parameterType="basketvo">
+		delete from basket where option_no=#{optionNo} and guest_session=#{guestSession}
+	</delete>
+	
+	
+	<!-- 비회원 장바구니 추가 -->
+	<insert id="insertGuest" parameterType="basketvo">
+		insert into basket(no, option_no, member_id, guest_session, reg_date, cnt)
+		values(
+		null,
+		#{optionNo},
+		null,
+		#{guestSession},
+		now(),
+		#{cnt}
+		)
+	</insert>
+	
+	
+	<!-- 비회원 장바구니 삭제 -->
+	<delete id="deleteGuestByNo" parameterType="basketvo">
+		delete from basket where no=#{no} and guest_session=#{guestSession}
+	</delete>
+	
+	
+	<!-- 비회원 장바구니 정보가 존재하는지 확인하고 가져오기 -->
+	<select id="selectByNoGuest" parameterType="basketvo" resultType="basketvo">
+		select no, option_no as optionNo, guest_session as guestSession, reg_date as regDate, cnt
+		from basket
+		where no=#{no}
+		and guest_session=#{guestSession}
+	</select>
+	
+	
+	<!-- 장바구니 수정 -->
+	<update id="updateCnt" parameterType="basketvo">
+		update basket set
+		cnt=#{cnt}
+		where no=#{no}
+	</update>
 	
 </mapper>

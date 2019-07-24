@@ -96,7 +96,7 @@ public class BasketControllerTest {
 				.param("guestSession", "")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
-		resultActions.andDo(print())
+		resultActions
 		.andExpect(status().isBadRequest());
 		
 
@@ -105,9 +105,143 @@ public class BasketControllerTest {
 				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions.andDo(print())
-		.andExpect(status().isOk());
-		//.andExpect(jsonPath("$.data[0].", is()));
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].optionNo", is(1)))
+		.andExpect(jsonPath("$.data[0].memberId", Matchers.nullValue()))
+		.andExpect(jsonPath("$.data[0].guestSession", is("ODIJOSAIDPBV132012ID9V823V")))
+		.andExpect(jsonPath("$.data[0].cnt", is(5)))
+		.andExpect(jsonPath("$.data[0].optionNames", is("파란색 L")))
+		.andExpect(jsonPath("$.data[0].itemName", is("test_item1")))
+		.andExpect(jsonPath("$.data[0].money", is(50000)));
+		
+	}
+	
+	
+	
+	
+
+	// 비회원 장바구니 추가
+	@Test
+	public void testB비회원장바구니추가() throws Exception {
+		ResultActions resultActions;
+
+		// 세션 Valid
+		resultActions = mockMvc.perform(post("/api/basket/guest")
+				.param("guestSession", "")
+				.param("optionNo", "1")
+				.param("cnt", "7")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 없는 옵션일 때 실패
+		resultActions = mockMvc.perform(post("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("optionNo", "99")
+				.param("cnt", "7")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 재고가 부족할 때 실패
+		resultActions = mockMvc.perform(post("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("optionNo", "1")
+				.param("cnt", "99")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(post("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("optionNo", "1")
+				.param("cnt", "7")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
+	
+
+
+	// 비회원 장바구니 삭제
+	@Test
+	public void testC비회원장바구니삭제() throws Exception {
+		ResultActions resultActions;
+
+		// 세션 Valid
+		resultActions = mockMvc.perform(delete("/api/basket/guest")
+				.param("guestSession", "")
+				.param("no", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(delete("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("no", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
+	
+	
+	// 비회원 장바구니 수정
+	@Test
+	public void testD비회원장바구니수정() throws Exception {
+		ResultActions resultActions;
+
+		// 세션 Valid
+		resultActions = mockMvc.perform(put("/api/basket/guest")
+				.param("guestSession", "")
+				.param("no", "1")
+				.param("cnt", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 없는 장바구니
+		resultActions = mockMvc.perform(put("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("no", "99")
+				.param("cnt", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(put("/api/basket/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
+				.param("no", "1")
+				.param("cnt", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 		
 	}
 	

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ import com.cafe24.mhmall.service.GuestService;
 import com.cafe24.mhmall.service.ItemImgService;
 import com.cafe24.mhmall.service.ItemService;
 import com.cafe24.mhmall.service.MemberService;
+import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.service.OrdersItemService;
 import com.cafe24.mhmall.service.OrdersService;
 import com.cafe24.mhmall.vo.BasketVo;
@@ -65,6 +67,9 @@ public class BasketController {
 	@Autowired
 	BasketService basketService;
 	
+	@Autowired
+	OptionService optionService;
+	
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = "")
@@ -87,10 +92,12 @@ public class BasketController {
 		// 장바구니 리스트
 		List<BasketVo> basketList = basketService.getListByGuest(guestDto.getGuestSession());
 		
+		// 랑바구니 리스트 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(basketList));
 	}
 	
-
+	
+	@Transactional(rollbackFor=Exception.class)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "optionNo", value = "옵션번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
@@ -102,17 +109,27 @@ public class BasketController {
 			@ModelAttribute @Valid RequestBasketAddGuestDto dto,
 			BindingResult result
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 존재하는 옵션인지 확인
+		if(!optionService.isExistOption(dto.getOptionNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
+		if(!optionService.isExistCnt(dto.getOptionNo(), dto.getCnt())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
-		// 장바구니 추가
+		// 현재 장바구니에 같은 옵션 삭제
+		basketService.deleteByOptionGuest(dto.toVo());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 비회원 장바구니 추가
+		boolean isSuccess = basketService.addGuest(dto.toVo());
+		
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 
+	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = "")
@@ -123,18 +140,18 @@ public class BasketController {
 			@ModelAttribute @Valid RequestBasketDelGuestDto dto,
 			BindingResult result
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 비회원 장바구니 삭제
+		boolean isSuccess = basketService.deleteGuest(dto.toVo());
 		
-		// 옵션의 재고가 수량만큼 존재하는지 확인
-		
-		// 장바구니 추가
-		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
-
+	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
@@ -146,14 +163,21 @@ public class BasketController {
 			@ModelAttribute @Valid RequestBasketEditGuestDto dto,
 			BindingResult result
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 비회원 장바구니 정보가 존재하는지 확인하고 가져오기
+		BasketVo basketVo = basketService.getByNoGuest(dto.toVo());
+		if(basketVo == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 장바구니 입니다."));
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
+		if(!optionService.isExistCnt(basketVo.getOptionNo(), dto.getCnt())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
 		// 장바구니 수정
+		boolean isSuccess = basketService.updateCnt(dto.getNo(), dto.getCnt());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 
 	
@@ -199,6 +223,8 @@ public class BasketController {
 		// valid 체크
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
+		
+		// 현재 장바구니에 같은 옵션 삭제
 		
 		// 장바구니 추가
 		

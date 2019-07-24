@@ -46,4 +46,48 @@ public class BasketServiceImpl implements BasketService {
 		return basketDao.getListByGuest(guestSession);
 	}
 
+
+	// 현재 장바구니에 같은 옵션 삭제
+	@Override
+	public boolean deleteByOptionGuest(BasketVo vo) {
+		Integer result = basketDao.deleteByOptionGuest(vo);
+		return result != 0;
+	}
+
+
+	// 비회원 장바구니 추가
+	@Override
+	public boolean addGuest(BasketVo vo) {
+		Integer result = basketDao.insertGuest(vo);
+		return result != 0;
+	}
+
+
+	// 비회원 장바구니 삭제
+	@Override
+	public boolean deleteGuest(BasketVo vo) {
+		Integer result = basketDao.deleteGuestByNo(vo);
+		return result == 1;
+	}
+
+
+	// 비회원 장바구니 정보가 존재하는지 확인하고 가져오기
+	@Override
+	public BasketVo getByNoGuest(BasketVo vo) {
+		return basketDao.getByNoGuest(vo);
+	}
+
+
+	// 장바구니 수정
+	@Override
+	public boolean updateCnt(Long no, Long cnt) {
+		BasketVo basketVo = new BasketVo();
+		basketVo.setNo(no);
+		basketVo.setCnt(cnt);
+		Integer result = basketDao.updateCnt(basketVo);
+		return result != 0;
+	}
+
+
+
 }

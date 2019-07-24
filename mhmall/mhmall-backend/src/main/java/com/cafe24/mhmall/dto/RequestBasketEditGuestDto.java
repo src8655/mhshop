@@ -11,13 +11,13 @@ public class RequestBasketEditGuestDto {
 	@NotNull
 	private Long no;
 	@NotEmpty
-	private String guestSesstion;
+	private String guestSession;
 	@NotNull
 	@Min(1)
 	private Long cnt;
 
 	public BasketVo toVo() {
-		return new BasketVo(no, null, null, guestSesstion, null, cnt, null, null, null, null, null);
+		return new BasketVo(no, null, null, guestSession, null, cnt, null, null, null, null, null);
 	}
 	public Long getNo() {
 		return no;
@@ -25,17 +25,17 @@ public class RequestBasketEditGuestDto {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public String getGuestSesstion() {
-		return guestSesstion;
-	}
-	public void setGuestSesstion(String guestSesstion) {
-		this.guestSesstion = guestSesstion;
-	}
 	public Long getCnt() {
 		return cnt;
 	}
 	public void setCnt(Long cnt) {
 		this.cnt = cnt;
+	}
+	public String getGuestSession() {
+		return guestSession;
+	}
+	public void setGuestSession(String guestSession) {
+		this.guestSession = guestSession;
 	}
 
 	

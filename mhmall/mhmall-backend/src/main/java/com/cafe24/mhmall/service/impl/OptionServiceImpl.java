@@ -139,4 +139,23 @@ public class OptionServiceImpl implements OptionService {
 	}
 
 
+	// 존재하는 옵션인지 확인
+	@Override
+	public boolean isExistOption(Long optionNo) {
+		Integer count = optionDao.countByNo(optionNo);
+		return count != 0;
+	}
+
+
+	// 옵션의 재고가 수량만큼 존재하는지 확인
+	@Override
+	public boolean isExistCnt(Long optionNo, Long cnt) {
+		Integer count = optionDao.selectCnt(optionNo);
+		
+		// 비 재고상품이 아닐 때
+		if(count != -1) if(count < cnt) return false;
+		return true;
+	}
+
+
 }

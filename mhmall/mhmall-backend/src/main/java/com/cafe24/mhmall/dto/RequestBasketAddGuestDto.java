@@ -11,13 +11,13 @@ public class RequestBasketAddGuestDto {
 	@NotNull
 	private Long optionNo;
 	@NotEmpty
-	private String guestSesstion;
+	private String guestSession;
 	@NotNull
 	@Min(1)
 	private Long cnt;
 
 	public BasketVo toVo() {
-		return new BasketVo(null, optionNo, null, guestSesstion, null, cnt, null, null, null, null, null);
+		return new BasketVo(null, optionNo, null, guestSession, null, cnt, null, null, null, null, null);
 	}
 	public Long getOptionNo() {
 		return optionNo;
@@ -25,11 +25,12 @@ public class RequestBasketAddGuestDto {
 	public void setOptionNo(Long optionNo) {
 		this.optionNo = optionNo;
 	}
-	public String getGuestSesstion() {
-		return guestSesstion;
+
+	public String getGuestSession() {
+		return guestSession;
 	}
-	public void setGuestSesstion(String guestSesstion) {
-		this.guestSesstion = guestSesstion;
+	public void setGuestSession(String guestSession) {
+		this.guestSession = guestSession;
 	}
 	public Long getCnt() {
 		return cnt;
