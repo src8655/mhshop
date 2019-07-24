@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 
 @Configuration
@@ -46,7 +45,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	//
 	// MessageConverter
 	//
-	@Bean
+/*	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
 			.indentOutput( true )
@@ -69,7 +68,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(mappingJackson2HttpMessageConverter());
 		converters.add(stringHttpMessageConverter());
-	}
+	}*/
 	
 	
 	
