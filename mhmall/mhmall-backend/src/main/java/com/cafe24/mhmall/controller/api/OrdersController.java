@@ -96,6 +96,9 @@ public class OrdersController {
 		// 존재하는 옵션들인지 확인
 		if(!optionService.isExistAllOption(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
+		// 판매중인 상품들인지 확인
+		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
+		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
 		if(!optionService.isExistAllCnt(optionNos, optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
 
@@ -174,6 +177,9 @@ public class OrdersController {
 			) {
 		// 존재하는 옵션들인지 확인
 		if(!optionService.isExistAllOption(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
+		
+		// 판매중인 상품들인지 확인
+		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
 		if(!optionService.isExistAllCnt(optionNos, optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));

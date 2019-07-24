@@ -19,5 +19,6 @@ public interface OptionDao {
 	Integer updateCnt(Map<String, Object> map);			// 옵션 재고량 줄이기
 	Long selectSumMoney(Map<String, Object> map);		// 금액계산
 	Integer updateRestore(OrdersItemVo ordersItemVo);	// 구매한 수량만큼 재고량 복구
+	String getItemDisplay(Long optionNo);				// 판매중인 상품인지 확인
 
 }

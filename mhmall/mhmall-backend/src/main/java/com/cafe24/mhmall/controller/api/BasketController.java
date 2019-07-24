@@ -210,6 +210,8 @@ public class BasketController {
 	}
 	
 	
+	
+	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),

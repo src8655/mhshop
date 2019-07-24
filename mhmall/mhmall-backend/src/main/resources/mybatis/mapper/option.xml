@@ -133,5 +133,13 @@
 		where no=#{optionNo}
 		and cnt != -1
 	</update>
+	
+	
+	<!-- 판매중인 상품인지 확인 -->
+	<select id="selectItemDisplay" parameterType="long" resultType="String">
+		select display
+		from item
+		where no=(select item_no from option where no=#{optionNo})
+	</select>
 
 </mapper>

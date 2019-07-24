@@ -102,7 +102,7 @@ public class AdminItemControllerTest {
 		.andExpect(jsonPath("$.data[1].description", is("test_description1")))
 		.andExpect(jsonPath("$.data[1].money", is(10000)))
 		.andExpect(jsonPath("$.data[1].thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data[1].display", is("FALSE")))
+		.andExpect(jsonPath("$.data[1].display", is("TRUE")))
 		.andExpect(jsonPath("$.data[1].categoryNo", is(1)))
 
 		.andExpect(jsonPath("$.data[0].no", is(2)))

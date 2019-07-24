@@ -93,4 +93,11 @@ public class OptionDaoImpl implements OptionDao {
 	public Integer updateRestore(OrdersItemVo ordersItemVo) {
 		return sqlSession.update("option.updateRestore", ordersItemVo);
 	}
+
+
+	// 판매중인 상품인지 확인
+	@Override
+	public String getItemDisplay(Long optionNo) {
+		return (String)sqlSession.selectOne("option.selectItemDisplay", optionNo);
+	}
 }

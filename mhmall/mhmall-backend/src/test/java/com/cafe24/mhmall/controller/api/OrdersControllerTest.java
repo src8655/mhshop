@@ -119,6 +119,20 @@ public class OrdersControllerTest {
 		.andExpect(status().isBadRequest());
 		
 		
+		// 판매중인 상품이 아닐 때
+		resultActions = mockMvc.perform(post("/api/orders/guest")
+				.param("guestName", "guest")
+				.param("guestPhone", "01000000001")
+				.param("guestPassword", "snrnsnrn1!")
+
+				.param("optionNos", "3")
+				.param("optionCnts", "2")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
 		// 성공, 주문번호를 리턴하는지
 		resultActions = mockMvc.perform(post("/api/orders/guest")
 				.param("guestName", "guest")
@@ -240,6 +254,18 @@ public class OrdersControllerTest {
 				
 				.param("optionNos", "999")
 				.param("optionCnts", "5")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 판매중인 상품이 아닐 때
+		resultActions = mockMvc.perform(post("/api/orders/member")
+				.param("mockToken", mockToken)
+
+				.param("optionNos", "3")
+				.param("optionCnts", "2")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions

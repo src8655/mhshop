@@ -158,4 +158,17 @@ public class OptionServiceImpl implements OptionService {
 	}
 
 
+	// 판매중인 상품인지 확인
+	@Override
+	public boolean isOnSaleAll(Long[] optionNos) {
+		if(optionNos.length == 0) return false;
+		for(Long optionNo : optionNos) {
+			String display = optionDao.getItemDisplay(optionNo);
+			if("FALSE".equals(display)) return false;
+		}
+		
+		return true;
+	}
+
+
 }
