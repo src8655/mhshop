@@ -165,4 +165,26 @@
 		where qa.item_no=qb.no;
 	</select>
 	
+	
+	<!-- 현재 장바구니에 같은 옵션 삭제(회원) -->
+	<delete id="deleteByOptionMember" parameterType="basketvo">
+		delete from basket where option_no=#{optionNo} and member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+	</delete>
+	
+	
+	<!-- 회원 장바구니 추가 -->
+	<insert id="insertMember" parameterType="basketvo">
+		insert into basket(no, option_no, member_id, guest_session, reg_date, cnt)
+		values(
+		null,
+		#{optionNo},
+		AES_ENCRYPT(#{memberId}, #{aesKey}),
+		null,
+		now(),
+		#{cnt}
+		)
+	</insert>
+	
+	
+	
 </mapper>

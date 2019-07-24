@@ -97,5 +97,21 @@ public class BasketDaoImpl implements BasketDao {
 		return sqlSession.selectList("basket.getListByMember", vo);
 	}
 
+
+	// 현재 장바구니에 같은 옵션 삭제(회원)
+	@Override
+	public Integer deleteByOptionMember(BasketVo basketVo) {
+		basketVo.setAesKey(aesKey);
+		return sqlSession.delete("basket.deleteByOptionMember", basketVo);
+	}
+
+
+	// 회원 장바구니 추가
+	@Override
+	public Integer insertMember(BasketVo vo) {
+		vo.setAesKey(aesKey);
+		return sqlSession.insert("basket.insertMember", vo);
+	}
+
 	
 }

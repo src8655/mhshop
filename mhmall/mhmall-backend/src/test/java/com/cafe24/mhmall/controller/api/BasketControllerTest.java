@@ -259,7 +259,7 @@ public class BasketControllerTest {
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions.andDo(print())
+		resultActions
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data[0].no", is(3)))
 		.andExpect(jsonPath("$.data[0].optionNo", is(1)))
@@ -269,6 +269,50 @@ public class BasketControllerTest {
 		.andExpect(jsonPath("$.data[0].optionNames", is("파란색 L")))
 		.andExpect(jsonPath("$.data[0].itemName", is("test_item1")))
 		.andExpect(jsonPath("$.data[0].money", is(20000)));
+		
+	}
+	
+	
+	
+	
+
+	// 회원 장바구니 추가
+	@Test
+	public void testF회원장바구니추가() throws Exception {
+		ResultActions resultActions;
+		
+		// 없는 옵션일 때 실패
+		resultActions = mockMvc.perform(post("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("optionNo", "99")
+				.param("cnt", "7")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+
+		// 재고가 부족할 때 실패
+		resultActions = mockMvc.perform(post("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("optionNo", "1")
+				.param("cnt", "99")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(post("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("optionNo", "1")
+				.param("cnt", "7")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
 		
 	}
 	

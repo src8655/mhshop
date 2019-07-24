@@ -116,5 +116,25 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 현재 장바구니에 같은 옵션 삭제(회원)
+	@Override
+	public boolean deleteByOptionMember(String id, Long optionNo) {
+		BasketVo basketVo = new BasketVo();
+		basketVo.setMemberId(id);
+		basketVo.setOptionNo(optionNo);
+		Integer result = basketDao.deleteByOptionMember(basketVo);
+		return result != 0;
+	}
+
+
+	// 회원 장바구니 추가
+	@Override
+	public boolean addMember(BasketVo vo, String id) {
+		vo.setMemberId(id);
+		Integer result = basketDao.insertMember(vo);
+		return result == 1;
+	}
+
+
 
 }

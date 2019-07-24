@@ -219,16 +219,23 @@ public class BasketController {
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 존재하는 옵션인지 확인
+		if(!optionService.isExistOption(dto.getOptionNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
+		if(!optionService.isExistCnt(dto.getOptionNo(), dto.getCnt())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
-		// 현재 장바구니에 같은 옵션 삭제
+		// 현재 장바구니에 같은 옵션 삭제(회원)
+		basketService.deleteByOptionMember(authMember.getId(), dto.getOptionNo());
 		
-		// 장바구니 추가
+		// 회원 장바구니 추가
+		boolean isSuccess = basketService.addMember(dto.toVo(), authMember.getId());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
