@@ -317,4 +317,34 @@ public class BasketControllerTest {
 	}
 	
 	
+	
+	
+
+	// 회원 장바구니 삭제
+	@Test
+	public void testG회원장바구니삭제() throws Exception {
+		ResultActions resultActions;
+
+		// 장바구니 번호 Valid
+		resultActions = mockMvc.perform(delete("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isBadRequest());
+		
+		
+		// 성공
+		resultActions = mockMvc.perform(delete("/api/basket/member")
+				.param("mockToken", mockToken)
+				.param("no", "3")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 400 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data", is(true)));
+		
+	}
+	
 }

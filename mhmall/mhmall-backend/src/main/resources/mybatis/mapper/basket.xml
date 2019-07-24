@@ -186,5 +186,11 @@
 	</insert>
 	
 	
+	<!-- 회원 장바구니 삭제 -->
+	<delete id="deleteMemberByNo" parameterType="basketvo">
+		delete from basket where no=#{no} and member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+	</delete>
+	
+	
 	
 </mapper>

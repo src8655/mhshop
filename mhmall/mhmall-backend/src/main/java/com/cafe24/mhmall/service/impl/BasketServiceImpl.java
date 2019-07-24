@@ -136,5 +136,16 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 회원 장바구니 삭제
+	@Override
+	public boolean deleteMember(Long no, String id) {
+		BasketVo basketVo = new BasketVo();
+		basketVo.setNo(no);
+		basketVo.setMemberId(id);
+		Integer result = basketDao.deleteMemberByNo(basketVo);
+		return result == 1;
+	}
+
+
 
 }

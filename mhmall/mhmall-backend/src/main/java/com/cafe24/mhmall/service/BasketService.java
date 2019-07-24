@@ -18,5 +18,6 @@ public interface BasketService {
 	List<BasketVo> getListByMember(String id);					// 회원 장바구니 리스트
 	boolean deleteByOptionMember(String id, Long optionNo);		// 현재 장바구니에 같은 옵션 삭제(회원)
 	boolean addMember(BasketVo vo, String id);					// 회원 장바구니 추가
+	boolean deleteMember(Long no, String id);					// 회원 장바구니 삭제
 
 }

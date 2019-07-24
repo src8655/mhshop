@@ -250,14 +250,14 @@ public class BasketController {
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
-		// valid 체크
+		// 회원 장바구니 삭제
+		boolean isSuccess = basketService.deleteMember(dto.getNo(), authMember.getId());
 		
-		// 옵션의 재고가 수량만큼 존재하는지 확인
-		
-		// 장바구니 추가
-		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
 	
