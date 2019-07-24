@@ -15,6 +15,8 @@ public class BasketDaoImpl implements BasketDao {
 	@Autowired
 	SqlSession sqlSession;
 
+	// AES키 관리
+	private final String aesKey = "mhshop_key";
 	
 
 	// 수량보다 재고가 없는 리스트 받기
@@ -77,6 +79,22 @@ public class BasketDaoImpl implements BasketDao {
 	@Override
 	public Integer updateCnt(BasketVo basketVo) {
 		return sqlSession.update("basket.updateCnt", basketVo);
+	}
+
+
+	// 수량보다 재고가 없는 리스트 받기(회원)
+	@Override
+	public List<BasketVo> getMemberListByCnt(BasketVo vo) {
+		vo.setAesKey(aesKey);
+		return sqlSession.selectList("basket.getMemberListByCnt", vo);
+	}
+
+
+	// 회원 장바구니 리스트
+	@Override
+	public List<BasketVo> getListByMember(BasketVo vo) {
+		vo.setAesKey(aesKey);
+		return sqlSession.selectList("basket.getListByMember", vo);
 	}
 
 	

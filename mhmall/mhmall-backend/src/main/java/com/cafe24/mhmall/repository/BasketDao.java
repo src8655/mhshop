@@ -15,5 +15,7 @@ public interface BasketDao {
 	Integer deleteGuestByNo(BasketVo vo);					// 비회원 장바구니 삭제
 	BasketVo getByNoGuest(BasketVo vo);						// 비회원 장바구니 정보가 존재하는지 확인하고 가져오기
 	Integer updateCnt(BasketVo basketVo);					// 장바구니 수정
+	List<BasketVo> getMemberListByCnt(BasketVo vo);			// 수량보다 재고가 없는 리스트 받기(회원)
+	List<BasketVo> getListByMember(BasketVo vo);			// 회원 장바구니 리스트
 
 }

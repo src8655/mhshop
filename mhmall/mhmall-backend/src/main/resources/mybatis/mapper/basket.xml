@@ -112,4 +112,57 @@
 		where no=#{no}
 	</update>
 	
+	
+	<!-- 수량보다 재고가 없는 리스트 받기(회원) -->
+	<select id="getMemberListByCnt" parameterType="basketvo" resultType="basketvo">
+		select a.no as no
+		from basket a, option b
+		where member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+		and a.option_no=b.no
+		and b.cnt != -1
+		and a.cnt > b.cnt
+	</select>
+	
+	
+	<!-- 회원 장바구니 리스트 -->
+	<select id="getListByMember" parameterType="basketvo" resultType="basketvo">
+		select
+		qa.no,
+		qa.option_no as optionNo,
+		qa.member_id as memberId,
+		qa.reg_date as regDate,
+		qa.cnt,
+		qa.item_no as itemNo,
+		qa.option_names as optionNames,
+		qb.name as itemName,
+		qb.thumbnail,
+		qb.money*qa.cnt as money
+		from
+		(
+			select a.no, a.option_no, cast(AES_DECRYPT(a.member_id, #{aesKey}) as char) as member_id, a.reg_date, a.cnt, b.item_no, b.option_names
+			from
+			(
+			select
+			no, option_no, member_id, reg_date, cnt
+			from basket
+			where member_id=AES_ENCRYPT(#{memberId}, #{aesKey})
+			order by no desc
+			) a,
+			(
+				select aaa.no, aaa.item_no, concat(aaa.option_name, " ", bbb.option_name) as option_names
+				from
+				(
+				select aa.no, aa.item_no, bb.option_name, aa.option_detail2
+				from
+				option aa, option_detail bb
+				where aa.option_detail1=bb.no
+				) aaa, option_detail bbb
+				where aaa.option_detail2=bbb.no
+			) b
+			where a.option_no=b.no
+		) qa,
+		item qb
+		where qa.item_no=qb.no;
+	</select>
+	
 </mapper>

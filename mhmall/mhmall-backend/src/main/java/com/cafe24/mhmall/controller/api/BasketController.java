@@ -196,14 +196,14 @@ public class BasketController {
 	public ResponseEntity<JSONResult> basketmemberList(
 			@AuthUser MemberVo authMember
 			) {
+		// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제(회원)
+		basketService.memberDeleteByCnt(authMember.getId());
 		
-		// valid 체크
+		// 회원 장바구니 리스트
+		List<BasketVo> basketList = basketService.getListByMember(authMember.getId());
 		
-		// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제
-		
-		// 장바구니 리스트
-		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		// 장바구니 리스트 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(basketList));
 	}
 	
 	

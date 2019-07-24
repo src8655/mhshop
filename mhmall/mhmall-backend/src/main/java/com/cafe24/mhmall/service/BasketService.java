@@ -14,5 +14,7 @@ public interface BasketService {
 	boolean deleteGuest(BasketVo vo);							// 비회원 장바구니 삭제
 	BasketVo getByNoGuest(BasketVo vo);							// 비회원 장바구니 정보가 존재하는지 확인하고 가져오기
 	boolean updateCnt(Long no, Long cnt);						// 장바구니 수정
+	boolean memberDeleteByCnt(String id);						// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제(회원)
+	List<BasketVo> getListByMember(String id);					// 회원 장바구니 리스트
 
 }

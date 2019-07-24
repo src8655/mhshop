@@ -89,5 +89,32 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제(회원)
+	@Override
+	public boolean memberDeleteByCnt(String id) {
+		// 수량보다 재고가 없는 리스트 받기(회원)
+		BasketVo vo = new BasketVo();
+		vo.setMemberId(id);
+		List<BasketVo> basketList = basketDao.getMemberListByCnt(vo);
+		
+		// 삭제
+		for(BasketVo basketVo : basketList) {
+			Integer result = basketDao.deleteByNo(basketVo.getNo());
+			if(result != 1) return false;
+		}
+		
+		return true;
+	}
+
+
+	// 회원 장바구니 리스트
+	@Override
+	public List<BasketVo> getListByMember(String id) {
+		BasketVo vo = new BasketVo();
+		vo.setMemberId(id);
+		return basketDao.getListByMember(vo);
+	}
+
+
 
 }

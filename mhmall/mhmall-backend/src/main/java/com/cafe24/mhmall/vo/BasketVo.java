@@ -13,6 +13,8 @@ public class BasketVo {
 	private String itemName;
 	private String thumbnail;
 	private Long money;
+
+	private String aesKey;
 	
 
 	public BasketVo() {}
@@ -100,16 +102,19 @@ public class BasketVo {
 	public void setCnt(Long cnt) {
 		this.cnt = cnt;
 	}
-
-
 	public String getGuestSession() {
 		return guestSession;
 	}
-
-
 	public void setGuestSession(String guestSession) {
 		this.guestSession = guestSession;
 	}
+	public String getAesKey() {
+		return aesKey;
+	}
+	public void setAesKey(String aesKey) {
+		this.aesKey = aesKey;
+	}
+	
 	
 	
 }

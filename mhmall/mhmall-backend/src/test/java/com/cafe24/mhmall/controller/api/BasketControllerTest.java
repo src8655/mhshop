@@ -246,4 +246,31 @@ public class BasketControllerTest {
 	}
 	
 	
+	
+
+	// 회원 장바구니 리스트
+	@Test
+	public void testE회원장바구니리스트() throws Exception {
+		ResultActions resultActions;
+
+
+		// 성공
+		resultActions = mockMvc.perform(get("/api/basket/member")
+				.param("mockToken", mockToken)
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(3)))
+		.andExpect(jsonPath("$.data[0].optionNo", is(1)))
+		.andExpect(jsonPath("$.data[0].memberId", is("test_id1")))
+		.andExpect(jsonPath("$.data[0].guestSession", Matchers.nullValue()))
+		.andExpect(jsonPath("$.data[0].cnt", is(2)))
+		.andExpect(jsonPath("$.data[0].optionNames", is("파란색 L")))
+		.andExpect(jsonPath("$.data[0].itemName", is("test_item1")))
+		.andExpect(jsonPath("$.data[0].money", is(20000)));
+		
+	}
+	
+	
 }
