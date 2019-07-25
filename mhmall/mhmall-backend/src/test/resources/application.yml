@@ -23,9 +23,9 @@ spring:
        aop-proxy-target-class: true
        datasource:
               driverClassName: org.mariadb.jdbc.Driver
-              url: jdbc:mariadb://192.168.0.10:3307/test_mshop?allowMultiQueries=true&amp;sql_safe_updates=0
-              username: test_mshop
-              password: test_mshop
+              url: jdbc:mariadb://192.168.0.11:3307/mshop?allowMultiQueries=true&amp;sql_safe_updates=0
+              username: mshop
+              password: mshop
 mybatis:
        config-location: classpath:mybatis/configuration.xml
 
