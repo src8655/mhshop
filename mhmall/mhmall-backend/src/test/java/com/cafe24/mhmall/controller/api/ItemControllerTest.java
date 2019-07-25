@@ -158,6 +158,7 @@ public class ItemControllerTest {
 		
 		resultActions = mockMvc.perform(get("/api/item/list")
 				.param("mockToken", mockToken)
+				.param("categoryNo", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

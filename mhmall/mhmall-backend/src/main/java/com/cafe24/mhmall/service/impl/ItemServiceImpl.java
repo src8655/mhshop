@@ -37,8 +37,8 @@ public class ItemServiceImpl implements ItemService {
 	
 	// 상품 리스트
 	@Override
-	public List<ItemVo> getList() {
-		return itemDao.selectList();
+	public List<ItemVo> getList(ItemVo itemVo) {
+		return itemDao.selectList(itemVo);
 	}
 
 
@@ -87,9 +87,8 @@ public class ItemServiceImpl implements ItemService {
 
 	// 사용자 상품리스트
 	@Override
-	public List<ItemVo> getListU() {
-		return itemDao.selectListU();
+	public List<ItemVo> getListU(ItemVo itemVo) {
+		return itemDao.selectListU(itemVo);
 	}
-
 
 }

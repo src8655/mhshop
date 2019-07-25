@@ -25,8 +25,8 @@ public class ItemDaoImpl implements ItemDao {
 	
 	// 상품 리스트
 	@Override
-	public List<ItemVo> selectList() {
-		return sqlSession.selectList("item.selectList");
+	public List<ItemVo> selectList(ItemVo itemVo) {
+		return sqlSession.selectList("item.selectList", itemVo);
 	}
 
 
@@ -67,8 +67,8 @@ public class ItemDaoImpl implements ItemDao {
 
 	// 사용자 상품리스트
 	@Override
-	public List<ItemVo> selectListU() {
-		return sqlSession.selectList("item.selectListU");
+	public List<ItemVo> selectListU(ItemVo itemVo) {
+		return sqlSession.selectList("item.selectListU", itemVo);
 	}
 
 }

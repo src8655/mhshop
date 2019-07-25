@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
+import com.cafe24.mhmall.dto.RequestItemCategoryDto;
 import com.cafe24.mhmall.dto.RequestItemNoDto;
 import com.cafe24.mhmall.dto.RequestNoDto;
 import com.cafe24.mhmall.dto.RequestOptionListDto;
@@ -113,12 +114,18 @@ public class ItemController {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = "")
+	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
-	public ResponseEntity<JSONResult> itemlist() {
+	public ResponseEntity<JSONResult> itemlist(
+			@ModelAttribute @Valid RequestItemCategoryDto dto,
+			BindingResult result
+			) {
 
 		// Service에 사용자 상품리스트 요청
-		List<ItemVo> itemList = itemService.getListU();
+		List<ItemVo> itemList = itemService.getListU(dto.toVo());
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));

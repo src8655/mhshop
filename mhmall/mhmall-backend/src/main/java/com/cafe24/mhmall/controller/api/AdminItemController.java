@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
+import com.cafe24.mhmall.dto.RequestItemCategoryDto;
 import com.cafe24.mhmall.dto.RequestItemDisplayDto;
 import com.cafe24.mhmall.dto.RequestItemEditDto;
 import com.cafe24.mhmall.dto.RequestItemImgWriteDto;
@@ -69,14 +70,19 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 상품 리스트", notes = "관리자 상품 리스트 요청 API")
-	public ResponseEntity<JSONResult> list() {
+	public ResponseEntity<JSONResult> list(
+			@ModelAttribute @Valid RequestItemCategoryDto dto,
+			BindingResult result
+			) {
 		
 		// Service에 상품리스트 요청
-		List<ItemVo> itemList = itemService.getList();
+		List<ItemVo> itemList = itemService.getList(dto.toVo());
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));

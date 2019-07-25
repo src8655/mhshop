@@ -92,6 +92,7 @@ public class AdminItemControllerTest {
 		
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/list")
+				.param("categoryNo", "1")
 				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
