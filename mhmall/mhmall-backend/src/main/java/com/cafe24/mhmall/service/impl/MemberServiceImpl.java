@@ -36,10 +36,6 @@ public class MemberServiceImpl implements MemberService {
 
 		memberVo.setRole(Auth.Role.ROLE_USER.toString());
 		
-		// 중복확인
-		int cnt = memberDao.countById(memberVo.getId());
-		if(cnt != 0) return false;
-		
 		int result = memberDao.insert(memberVo);
 		return result == 1;
 	}

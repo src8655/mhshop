@@ -86,7 +86,7 @@ public class BasketController {
 		// 장바구니 리스트 중에 수량보다 재고가 없는 것 일괄삭제
 		basketService.guestDeleteByCnt(guestDto.getGuestSession());
 		
-		// 입력 시간을 현재로 갱신(비회원의 장바구니는 30개월간만 유지된다)
+		// 입력 시간을 현재로 갱신(비회원의 장바구니는 30일간만 유지된다)
 		basketService.guestNewTime(guestDto.getGuestSession());
 		
 		// 장바구니 리스트

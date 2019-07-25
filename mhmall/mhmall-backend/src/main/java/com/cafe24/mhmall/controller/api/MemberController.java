@@ -57,12 +57,13 @@ public class MemberController {
 			BindingResult result
 			) {
 		// 유효성검사
-		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
-		
+		if(result.hasErrors()) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// Service에 요청
 		boolean isExist = memberService.idCheck(dto.getId());
 		
+		// 중복하면 True 아니면 False
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isExist));
 	}
 	
@@ -86,11 +87,14 @@ public class MemberController {
 		if(result.hasErrors()) 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
+		// Service에 요청
+		if(memberService.idCheck(dto.getId())) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("중복된 아이디 입니다."));
+		
 		// Service에 등록
 		boolean isSuccess = memberService.add(dto.toVo());
 		
-		
-		// JSON 리턴 생성
+		// 성공여부 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 	
