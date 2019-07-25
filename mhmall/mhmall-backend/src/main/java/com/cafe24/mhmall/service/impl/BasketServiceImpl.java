@@ -162,5 +162,33 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 옵션으로 비회원 장바구니 삭제
+	@Override
+	public boolean deleteAllByOptionNoG(Long[] optionNos, BasketVo basketVo) {
+		// 삭제
+		for(Long optionNo : optionNos) {
+			basketVo.setOptionNo(optionNo);
+			Integer result = basketDao.deleteAllByOptionNoG(basketVo);
+			if(result != 0) return false;
+		}
+		return true;
+	}
+
+
+	// 옵션으로 회원 장바구니 삭제
+	@Override
+	public boolean deleteAllByOptionNoM(Long[] optionNos, String id) {
+		BasketVo basketVo = new BasketVo();
+		basketVo.setMemberId(id);
+		// 삭제
+		for(Long optionNo : optionNos) {
+			basketVo.setOptionNo(optionNo);
+			Integer result = basketDao.deleteAllByOptionNoM(basketVo);
+			if(result != 0) return false;
+		}
+		return true;
+	}
+
+
 
 }

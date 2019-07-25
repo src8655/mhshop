@@ -93,6 +93,7 @@ public class OrdersControllerTest {
 
 		// 없는 옵션일 때
 		resultActions = mockMvc.perform(post("/api/orders/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.param("guestName", "guest")
 				.param("guestPhone", "01000000001")
 				.param("guestPassword", "snrnsnrn1!")
@@ -107,6 +108,7 @@ public class OrdersControllerTest {
 		
 		// 재고가 부족할 때
 		resultActions = mockMvc.perform(post("/api/orders/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.param("guestName", "guest")
 				.param("guestPhone", "01000000001")
 				.param("guestPassword", "snrnsnrn1!")
@@ -121,6 +123,7 @@ public class OrdersControllerTest {
 		
 		// 판매중인 상품이 아닐 때
 		resultActions = mockMvc.perform(post("/api/orders/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.param("guestName", "guest")
 				.param("guestPhone", "01000000001")
 				.param("guestPassword", "snrnsnrn1!")
@@ -135,6 +138,7 @@ public class OrdersControllerTest {
 		
 		// 성공, 주문번호를 리턴하는지
 		resultActions = mockMvc.perform(post("/api/orders/guest")
+				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.param("guestName", "guest")
 				.param("guestPhone", "01000000001")
 				.param("guestPassword", "snrnsnrn1!")

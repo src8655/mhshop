@@ -31,6 +31,7 @@ import com.cafe24.mhmall.dto.RequestOrdersWriteDto;
 import com.cafe24.mhmall.security.Auth;
 import com.cafe24.mhmall.security.AuthUser;
 import com.cafe24.mhmall.security.Auth.Role;
+import com.cafe24.mhmall.service.BasketService;
 import com.cafe24.mhmall.service.CategoryService;
 import com.cafe24.mhmall.service.GuestService;
 import com.cafe24.mhmall.service.ItemImgService;
@@ -70,12 +71,17 @@ public class OrdersController {
 	@Autowired
 	OrdersItemService ordersItemService;
 	
+	@Autowired
+	BasketService basketService;
+	
 
 	// sqlException 발생 시 롤백
 	// 격리수준을 REPEATABLE_READ로 한다
 	//     => 재고량 동시 수정 오류 방지
 	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
 	@ApiImplicitParams({
+		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
+		
 		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
@@ -87,6 +93,7 @@ public class OrdersController {
 	@ApiOperation(value = "비회원 주문", notes = "비회원 주문 요청 API")
 	public ResponseEntity<JSONResult> guestOrders(
 			@ModelAttribute @Valid RequestGuestOrdersDto guestDto,
+			@ModelAttribute @Valid RequestBasketGuestDto basketDto,
 			BindingResult result,
 			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
 			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts
@@ -109,6 +116,9 @@ public class OrdersController {
 		// 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, null);
 		
+		// 옵션으로 비회원 장바구니 삭제
+		basketService.deleteAllByOptionNoG(optionNos, basketDto.toVo());
+		
 		// 비회원 데이터 추가 <= 주문번호
 		guestService.add(ordersNo, guestDto.toVo());
 		
@@ -124,7 +134,6 @@ public class OrdersController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
 
 		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
@@ -136,7 +145,6 @@ public class OrdersController {
 	public ResponseEntity<JSONResult> guestOrdersPost(
 			@ModelAttribute @Valid RequestGuestOrdersViewDto guestDto,
 			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
-			@ModelAttribute @Valid RequestBasketGuestDto basketDto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -148,7 +156,6 @@ public class OrdersController {
 		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
 		if(!ordersService.ordersPost(guestDto.getOrdersNo(), ordersDto.toVo()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
-		
 		
 		// 주문을 불러온다.
 		OrdersVo ordersVo = ordersService.getByOrdersNo(guestDto.getOrdersNo());
@@ -193,6 +200,9 @@ public class OrdersController {
 		
 		// 회원 주문 데이터 추가(상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, authMember.getId());
+
+		// 옵션으로 회원 장바구니 삭제
+		basketService.deleteAllByOptionNoM(optionNos, authMember.getId());
 		
 		// 주문내역 일괄 추가 <= 주문번호
 		ordersItemService.add(ordersNo, optionNos, optionCnts);

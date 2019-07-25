@@ -210,4 +210,18 @@
 		]]>
 	</delete>
 	
+	
+	<!-- 옵션으로 비회원 장바구니 삭제 -->
+	<delete id="deleteAllByOptionNoG" parameterType="basketvo">
+		delete from basket
+		where guest_session=#{guestSession} and option_no=#{optionNo}
+	</delete>
+	
+	
+	<!-- 옵션으로 회원 장바구니 삭제 -->
+	<delete id="deleteAllByOptionNoM" parameterType="basketvo">
+		delete from basket
+		where member_id=#{memberId} and option_no=#{optionNo}
+	</delete>
+	
 </mapper>

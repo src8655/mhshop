@@ -16,16 +16,6 @@ public class ItemServiceImpl implements ItemService {
 	@Autowired
 	ItemDao itemDao;
 	
-	// 가짜DB
-	private List<ItemVo> getItemTable() {
-		List<ItemVo> itemTable = new ArrayList<ItemVo>();
-		itemTable.add(new ItemVo(1L, "test_item1", "test_description1", 10000L, "test_thumbnail1", "FALSE", 1L, ""));
-		itemTable.add(new ItemVo(2L, "test_item2", "test_description2", 20000L, "test_thumbnail2", "FALSE", 1L, ""));
-		
-		return itemTable;
-	}
-	
-
 	
 	// 카테고리번호에 해당하는 아이템이 있는지?
 	@Override
