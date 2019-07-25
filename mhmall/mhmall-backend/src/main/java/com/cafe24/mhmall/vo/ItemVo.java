@@ -16,10 +16,13 @@ public class ItemVo {
 	private Long categoryNo;
 	
 	private String categoryName;
+	private Integer showCnt;
 
 	public ItemVo() {}
+
+
 	public ItemVo(Long no, String name, String description, Long money, String thumbnail, String display,
-			Long categoryNo, String categoryName) {
+			Long categoryNo, String categoryName, Integer showCnt) {
 		this.no = no;
 		this.name = name;
 		this.description = description;
@@ -28,8 +31,16 @@ public class ItemVo {
 		this.display = display;
 		this.categoryNo = categoryNo;
 		this.categoryName = categoryName;
+		this.showCnt = showCnt;
 	}
 
+
+	public Integer getShowCnt() {
+		return showCnt;
+	}
+	public void setShowCnt(Integer showCnt) {
+		this.showCnt = showCnt;
+	}
 	public Long getNo() {
 		return no;
 	}

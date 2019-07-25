@@ -71,4 +71,11 @@ public class ItemDaoImpl implements ItemDao {
 		return sqlSession.selectList("item.selectListU", itemVo);
 	}
 
+
+	// 최근 상품리스트
+	@Override
+	public List<ItemVo> selectNewList(ItemVo vo) {
+		return sqlSession.selectList("item.selectNewList", vo);
+	}
+
 }

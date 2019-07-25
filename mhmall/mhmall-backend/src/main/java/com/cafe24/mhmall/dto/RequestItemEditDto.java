@@ -23,7 +23,7 @@ public class RequestItemEditDto {
 	private Long categoryNo;
 	
 	public ItemVo toVo() {
-		return new ItemVo(no, name, description, money, thumbnail, null, categoryNo, null);
+		return new ItemVo(no, name, description, money, thumbnail, null, categoryNo, null, null);
 	}
 	
 	public Long getNo() {

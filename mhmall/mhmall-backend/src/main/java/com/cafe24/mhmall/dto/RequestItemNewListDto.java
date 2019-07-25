@@ -4,12 +4,23 @@ import javax.validation.constraints.NotNull;
 
 import com.cafe24.mhmall.vo.ItemVo;
 
-public class RequestItemCategoryDto {
+public class RequestItemNewListDto {
+	@NotNull
+	private Integer showCnt;
 	private Long categoryNo;
-
+	
 	public ItemVo toVo() {
-		return new ItemVo(null, null, null, null, null, null, categoryNo, null, null);
+		return new ItemVo(null, null, null, null, null, null, categoryNo, null, showCnt);
 	}
+
+	public Integer getShowCnt() {
+		return showCnt;
+	}
+
+	public void setShowCnt(Integer showCnt) {
+		this.showCnt = showCnt;
+	}
+
 	public Long getCategoryNo() {
 		return categoryNo;
 	}
@@ -17,6 +28,7 @@ public class RequestItemCategoryDto {
 	public void setCategoryNo(Long categoryNo) {
 		this.categoryNo = categoryNo;
 	}
+
 
 
 }

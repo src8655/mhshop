@@ -16,7 +16,7 @@ public class RequestItemDisplayDto {
 	private String display;
 	
 	public ItemVo toVo() {
-		return new ItemVo(no, null, null, null, null, display, null, null);
+		return new ItemVo(no, null, null, null, null, display, null, null, null);
 	}
 	public Long getNo() {
 		return no;

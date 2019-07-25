@@ -157,7 +157,6 @@ public class ItemControllerTest {
 		
 		
 		resultActions = mockMvc.perform(get("/api/item/list")
-				.param("mockToken", mockToken)
 				.param("categoryNo", "1")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
@@ -192,6 +191,31 @@ public class ItemControllerTest {
 		.andExpect(jsonPath("$.data.cnt", is(10)))
 		.andExpect(jsonPath("$.data.optionDetailName1", is("파란색")))
 		.andExpect(jsonPath("$.data.optionDetailName2", is("L")));
+		
+	}
+	
+	
+
+	// 최근 상품 리스트
+	@Test
+	public void testF최근상품리스트() throws Exception {
+		ResultActions resultActions;
+		
+		
+		resultActions = mockMvc.perform(get("/api/item/list/new")
+				.param("showCnt", "5")
+				.param("categoryNo", "1")
+				.contentType(MediaType.APPLICATION_JSON));
+		// 응답이 200 인지
+		resultActions
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].no", is(1)))
+		.andExpect(jsonPath("$.data[0].name", is("test_item1")))
+		.andExpect(jsonPath("$.data[0].description", is("test_description1")))
+		.andExpect(jsonPath("$.data[0].money", is(10000)))
+		.andExpect(jsonPath("$.data[0].thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data[0].display", is("TRUE")))
+		.andExpect(jsonPath("$.data[0].categoryNo", is(1)));
 		
 	}
 	

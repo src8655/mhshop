@@ -21,7 +21,7 @@ public class RequestItemWriteDto {
 	private Long categoryNo;
 	
 	public ItemVo toVo() {
-		return new ItemVo(null, name, description, money, thumbnail, null, categoryNo, null);
+		return new ItemVo(null, name, description, money, thumbnail, null, categoryNo, null, null);
 	}
 	public String getName() {
 		return name;

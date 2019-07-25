@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
 import com.cafe24.mhmall.dto.RequestItemCategoryDto;
+import com.cafe24.mhmall.dto.RequestItemNewListDto;
 import com.cafe24.mhmall.dto.RequestItemNoDto;
 import com.cafe24.mhmall.dto.RequestNoDto;
 import com.cafe24.mhmall.dto.RequestOptionListDto;
@@ -150,6 +151,25 @@ public class ItemController {
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionVo));
+	}
+	
+	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "showCnt", value = "보여질 개수", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/list/new", method = RequestMethod.GET)
+	@ApiOperation(value = "최근 상품 리스트", notes = "최근 상품 리스트 요청 API")
+	public ResponseEntity<JSONResult> newitemlist(
+			@ModelAttribute @Valid RequestItemNewListDto dto,
+			BindingResult result
+			) {
+
+		// Service에 최근 상품리스트 요청
+		List<ItemVo> itemList = itemService.getNewList(dto.toVo());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));
 	}
 
 }

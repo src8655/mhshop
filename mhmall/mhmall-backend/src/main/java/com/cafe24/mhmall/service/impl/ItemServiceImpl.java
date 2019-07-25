@@ -81,4 +81,11 @@ public class ItemServiceImpl implements ItemService {
 		return itemDao.selectListU(itemVo);
 	}
 
+
+	// 최근 상품리스트
+	@Override
+	public List<ItemVo> getNewList(ItemVo vo) {
+		return itemDao.selectNewList(vo);
+	}
+
 }

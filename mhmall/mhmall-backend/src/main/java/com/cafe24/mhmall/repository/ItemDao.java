@@ -14,5 +14,6 @@ public interface ItemDao {
 	Integer update(ItemVo itemVo);				// 상품 수정
 	Integer updateDisplay(ItemVo itemVo);		// 상품진열여부 수정
 	List<ItemVo> selectListU(ItemVo itemVo);	// 사용자 상품리스트
+	List<ItemVo> selectNewList(ItemVo vo);		// 최근 상품리스트
 
 }
