@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
 import com.cafe24.mhmall.dto.RequestBasketGuestDto;
+import com.cafe24.mhmall.dto.RequestGuestChangePwDto;
+import com.cafe24.mhmall.dto.RequestGuestFindPwDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersViewDto;
 import com.cafe24.mhmall.dto.RequestMemberIdDto;
@@ -400,6 +402,82 @@ public class OrdersController {
 		if(isSuccess) isSuccess = optionService.restoreCnt(ordersItemList);
 		
 		// 결과 성공여부를 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
+	}
+	
+	
+	
+	
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/guest/ordersno", method = RequestMethod.POST)
+	@ApiOperation(value = "주문번호 찾기", notes = "주문번호 찾기 요청 API")
+	public ResponseEntity<JSONResult> guestFindOrdersNo(
+			@ModelAttribute @Valid RequestGuestOrdersDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// 비회원의 주문리스트 찾기(주문번호, 주문일, 상태)
+		List<OrdersVo> ordersList = guestService.findOrdersNo(dto.toVo());
+		
+		// 결과 성공여부를 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
+	}
+	
+	
+	
+	
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/guest/password", method = RequestMethod.POST)
+	@ApiOperation(value = "비회원 주문 비밀번호 찾기", notes = "비회원 주문 비밀번호 찾기 요청 API")
+	public ResponseEntity<JSONResult> guestFindPw(
+			@ModelAttribute @Valid RequestGuestFindPwDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// 조건에 맞는 주문번호가 존재하는지?
+		boolean isExistOrdersNo = guestService.findPw(dto.toVo());
+		
+		// 존재여부만 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isExistOrdersNo));
+	}
+	
+	
+	
+	
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestPassword", value = "변경할 비회원비밀번호", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/guest/password", method = RequestMethod.PUT)
+	@ApiOperation(value = "비회원 주문 비밀번호 변경", notes = "비회원 주문 비밀번호 변경 요청 API")
+	public ResponseEntity<JSONResult> guestChangePw(
+			@ModelAttribute @Valid RequestGuestChangePwDto dto,
+			BindingResult result
+			) {
+		// 유효성검사
+		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		
+		// 비회원 주문 비밀번호 변경
+		boolean isSuccess = guestService.changePw(dto.toVo());
+		
+		// 성공여부 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
 	}
 

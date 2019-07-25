@@ -25,4 +25,42 @@
 		)
 	</insert>
 	
+	
+	<!-- 비회원의 주문리스트 찾기(주문번호, 주문일, 상태) -->
+	<select id="findOrdersNo" parameterType="guestvo" resultType="ordersvo">
+		select
+		a.orders_no as ordersNo,
+		b.reg_date as regDate,
+		b.status
+		from
+		(
+			select orders_no
+			from guest
+			where guest_name=AES_ENCRYPT(#{guestName}, #{aesKey})
+			and guest_phone=AES_ENCRYPT(#{guestPhone}, #{aesKey})
+			and guest_password=SHA2(#{guestPassword}, 512)
+		) a, orders b
+		where a.orders_no=b.orders_no
+	</select>
+	
+	
+	<!-- 조건에 맞는 주문번호가 존재하는지? -->
+	<select id="findPw" parameterType="guestvo" resultType="Integer">
+		select count(*)
+		from guest
+		where orders_no=#{ordersNo}
+		and guest_name=AES_ENCRYPT(#{guestName}, #{aesKey})
+		and guest_phone=AES_ENCRYPT(#{guestPhone}, #{aesKey})
+	</select>
+	
+	
+	<!-- 비회원 주문 비밀번호 변경 -->
+	<update id="updatePw" parameterType="guestvo">
+		update guest set
+		guest_password=SHA2(#{guestPassword}, 512)
+		where orders_no=#{ordersNo}
+		and guest_name=AES_ENCRYPT(#{guestName}, #{aesKey})
+		and guest_phone=AES_ENCRYPT(#{guestPhone}, #{aesKey})
+	</update>
+	
 </mapper>

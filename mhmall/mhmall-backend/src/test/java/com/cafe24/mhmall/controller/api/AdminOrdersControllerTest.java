@@ -199,7 +199,7 @@ public class AdminOrdersControllerTest {
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data.guestName", is("test_guest1")))
+		.andExpect(jsonPath("$.data.guestName", is("test1")))
 		.andExpect(jsonPath("$.data.guestPhone", is("01000000001")));
 		
 	}
