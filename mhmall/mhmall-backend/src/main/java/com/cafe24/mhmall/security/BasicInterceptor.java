@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.cafe24.mhmall.service.BasketService;
 import com.cafe24.mhmall.service.MemberService;
 import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.service.OrdersItemService;
@@ -21,6 +22,7 @@ import com.cafe24.mhmall.vo.OrdersItemVo;
 
 public class BasicInterceptor extends HandlerInterceptorAdapter {
 	private final static Long ORDERS_TIME = 259200L;	// 1개월
+	private final static Long BASKET_TIME = 259200L;	// 1개월
 	
 	@Autowired
 	OptionService optionService;
@@ -30,6 +32,9 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
 	OrdersItemService ordersItemService;
+	
+	@Autowired
+	BasketService basketService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -39,14 +44,16 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 		
 		// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
 		timeOverOrders();
+		// 시간이 초과된 비회원 장바구니들은 삭제
+		timeOverBasket();
 		
 		
 		return true;
 	}
 
-	
-	@Transactional(rollbackFor=Exception.class)
+
 	// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
+	@Transactional(rollbackFor=Exception.class)
 	public void timeOverOrders() {
 		// 시간이 초과된 주문대기 상태의 주문이 있는지 확인
 		if(ordersService.isExistTimeOverOrders(ORDERS_TIME)) {
@@ -59,8 +66,14 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 			// 상태를 취소로 변경
 			for(OrdersItemVo ordersItemVo : ordersItemList) {
 				ordersService.changeStatus(ordersItemVo.getOrdersNo(), "취소");
-				System.out.println("초과된 주문 처리 + " + ordersItemVo.getOrdersNo());
+				System.out.println("초과된 주문 처리 : " + ordersItemVo.getOrdersNo());
 			}
 		}
+	}
+	
+	// 시간이 초과된 비회원 장바구니들은 삭제
+	public void timeOverBasket() {
+		Integer count = basketService.deleteTimeOver(BASKET_TIME);
+		if(count != 0) System.out.println("초과된 비회원 장바구니 처리 : " + count);
 	}
 }

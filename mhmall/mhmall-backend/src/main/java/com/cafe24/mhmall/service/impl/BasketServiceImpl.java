@@ -155,5 +155,12 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 
+	// 시간이 초과된 비회원 장바구니들은 삭제
+	@Override
+	public Integer deleteTimeOver(Long basketTime) {
+		return basketDao.deleteTimeOver(basketTime);
+	}
+
+
 
 }

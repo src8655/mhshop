@@ -20,5 +20,6 @@ public interface BasketService {
 	boolean addMember(BasketVo vo, String id);					// 회원 장바구니 추가
 	boolean deleteMember(Long no, String id);					// 회원 장바구니 삭제
 	BasketVo getByNoMember(BasketVo vo, String id);				// 회원 장바구니 정보가 존재하는지 확인하고 가져오기
+	Integer deleteTimeOver(Long basketTime);					// 시간이 초과된 비회원 장바구니들은 삭제
 
 }

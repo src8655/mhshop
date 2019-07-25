@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
+import com.cafe24.mhmall.dto.RequestBasketGuestDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersViewDto;
 import com.cafe24.mhmall.dto.RequestMemberIdDto;
@@ -123,6 +124,7 @@ public class OrdersController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
+		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
 
 		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
@@ -134,6 +136,7 @@ public class OrdersController {
 	public ResponseEntity<JSONResult> guestOrdersPost(
 			@ModelAttribute @Valid RequestGuestOrdersViewDto guestDto,
 			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
+			@ModelAttribute @Valid RequestBasketGuestDto basketDto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -145,6 +148,7 @@ public class OrdersController {
 		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
 		if(!ordersService.ordersPost(guestDto.getOrdersNo(), ordersDto.toVo()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
+		
 		
 		// 주문을 불러온다.
 		OrdersVo ordersVo = ordersService.getByOrdersNo(guestDto.getOrdersNo());
