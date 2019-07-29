@@ -82,7 +82,6 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
-		
 		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
@@ -100,13 +99,16 @@ public class OrdersController {
 			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts
 			) {
 		// 유효성검사
-		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
+		if(result.hasErrors())
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// 존재하는 옵션들인지 확인
-		if(!optionService.isExistAllOption(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
+		if(!optionService.isExistAllOption(optionNos))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
 		// 판매중인 상품들인지 확인
-		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
+		if(!optionService.isOnSaleAll(optionNos))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
 		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
@@ -188,10 +190,12 @@ public class OrdersController {
 			@AuthUser MemberVo authMember
 			) {
 		// 존재하는 옵션들인지 확인
-		if(!optionService.isExistAllOption(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
+		if(!optionService.isExistAllOption(optionNos))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
 		// 판매중인 상품들인지 확인
-		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
+		if(!optionService.isOnSaleAll(optionNos))
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
 		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
