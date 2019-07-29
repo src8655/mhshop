@@ -59,7 +59,7 @@ public class OrdersControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String mockToken;
+	private String authorization;
 
 	
 	@Before
@@ -83,7 +83,7 @@ public class OrdersControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		mockToken = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsString();
 	}
 	
 	// 비회원 주문
@@ -254,7 +254,7 @@ public class OrdersControllerTest {
 
 		// 없는 옵션일 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				
 				.param("optionNos", "999")
 				.param("optionCnts", "5")
@@ -266,7 +266,7 @@ public class OrdersControllerTest {
 		
 		// 판매중인 상품이 아닐 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 
 				.param("optionNos", "3")
 				.param("optionCnts", "2")
@@ -278,7 +278,7 @@ public class OrdersControllerTest {
 		
 		// 재고가 부족할 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 
 				.param("optionNos", "1")
 				.param("optionCnts", "11")
@@ -290,7 +290,7 @@ public class OrdersControllerTest {
 		
 		// 성공, 주문번호를 리턴하는지
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 
 				.param("optionNos", "1")
 				.param("optionCnts", "1")
@@ -313,7 +313,7 @@ public class OrdersControllerTest {
 
 		// 주문번호 Valid
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				
 				.param("ordersNo", "")
 				
@@ -329,7 +329,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않는 주문
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				
 				.param("ordersNo", "2019-07-11_999999")
 				
@@ -345,7 +345,7 @@ public class OrdersControllerTest {
 		
 		// 주문은 존재하지만 본인의 주문이 아닌 경우
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				
 				.param("ordersNo", "2019-07-11_000259")
 				
@@ -361,7 +361,7 @@ public class OrdersControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				
 				.param("ordersNo", "2019-07-11_000260")
 				
@@ -423,7 +423,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(get("/api/orders/member/list")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -443,7 +443,7 @@ public class OrdersControllerTest {
 
 		// 주문번호 Valid
 		resultActions = mockMvc.perform(get("/api/orders/member/view")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.param("ordersNo", "")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
@@ -453,7 +453,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않거나 잘못된 주문
 		resultActions = mockMvc.perform(get("/api/orders/member/view")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.param("ordersNo", "2019-07-11_0002596")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
@@ -463,7 +463,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(get("/api/orders/member/view")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.param("ordersNo", "2019-07-11_000256")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
@@ -531,7 +531,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않는 주문
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_99999")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -540,7 +540,7 @@ public class OrdersControllerTest {
 
 		// 회원 본인의 것이 아닐 때
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_000258")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -549,7 +549,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel/{ordersNo}", "2019-07-11_000256")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

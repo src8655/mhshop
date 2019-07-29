@@ -57,7 +57,7 @@ public class AdminItemControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String mockToken;
+	private String authorization;
 
 	
 	@Before
@@ -73,7 +73,7 @@ public class AdminItemControllerTest {
 				.param("password", "testpassword2!")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
+		MvcResult mvcResult = resultActions.andDo(print())
 		.andExpect(status().isOk())
 		.andReturn();
 
@@ -81,7 +81,7 @@ public class AdminItemControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		mockToken = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsString();
 	}
 	
 
@@ -92,11 +92,11 @@ public class AdminItemControllerTest {
 		
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/list")
+				.header("Authorization", "Basic " + authorization)
 				.param("categoryNo", "1")
-				.param("mockToken", mockToken)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions
+		resultActions.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data[1].no", is(1)))
 		.andExpect(jsonPath("$.data[1].name", is("test_item1")))
@@ -130,7 +130,7 @@ public class AdminItemControllerTest {
 				.param("money", "30000")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -144,7 +144,7 @@ public class AdminItemControllerTest {
 				.param("money", "")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -158,7 +158,7 @@ public class AdminItemControllerTest {
 				.param("money", "1000")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -177,7 +177,7 @@ public class AdminItemControllerTest {
 		
 		// 상품삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/{no}", 1L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions.andDo(print())
@@ -196,7 +196,7 @@ public class AdminItemControllerTest {
 		// 옵션레벨 Valid
 		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
 				.param("level", "3")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -206,7 +206,7 @@ public class AdminItemControllerTest {
 		// 성공
 		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
 				.param("level", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -236,7 +236,7 @@ public class AdminItemControllerTest {
 				.param("money", "11000")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -251,7 +251,7 @@ public class AdminItemControllerTest {
 				.param("money", "-1")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -266,7 +266,7 @@ public class AdminItemControllerTest {
 				.param("money", "11000")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -287,7 +287,7 @@ public class AdminItemControllerTest {
 		// 진열상태 Valid
 		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 2L)
 				.param("display", "ttttrue")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -297,7 +297,7 @@ public class AdminItemControllerTest {
 		// 성공
 		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 1L)
 				.param("display", "TRUE")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -318,7 +318,7 @@ public class AdminItemControllerTest {
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "")
 				.param("itemImg", "test_img")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -329,7 +329,7 @@ public class AdminItemControllerTest {
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "99")
 				.param("itemImg", "test_img")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -340,7 +340,7 @@ public class AdminItemControllerTest {
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "1")
 				.param("itemImg", "")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -351,7 +351,7 @@ public class AdminItemControllerTest {
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
 				.param("itemNo", "1")
 				.param("itemImg", "test_img")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -368,7 +368,7 @@ public class AdminItemControllerTest {
 
 		// 없는 이미지 삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 99L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -378,7 +378,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 1L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -400,7 +400,7 @@ public class AdminItemControllerTest {
 				.param("optionName", "")
 				.param("level", "1")
 				.param("itemNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -412,7 +412,7 @@ public class AdminItemControllerTest {
 				.param("optionName", "option_name")
 				.param("level", "3")
 				.param("itemNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -423,7 +423,7 @@ public class AdminItemControllerTest {
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
 				.param("optionName", "option_name")
 				.param("level", "3")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -435,7 +435,7 @@ public class AdminItemControllerTest {
 				.param("optionName", "option_name")
 				.param("level", "3")
 				.param("itemNo", "99")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -447,7 +447,7 @@ public class AdminItemControllerTest {
 				.param("optionName", "option_name")
 				.param("level", "1")
 				.param("itemNo", "1")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -464,7 +464,7 @@ public class AdminItemControllerTest {
 
 		// 옵션에 이미 사용중인 상세옵션 실패
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 1L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -473,7 +473,7 @@ public class AdminItemControllerTest {
 
 		// 없는 상세옵션번호
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 99L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -483,7 +483,7 @@ public class AdminItemControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 4L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -507,7 +507,7 @@ public class AdminItemControllerTest {
 				.param("optionDetailNo1", "1")
 				.param("optionDetailNo2", "4")
 				.param("cnt", "-5")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -520,7 +520,7 @@ public class AdminItemControllerTest {
 				.param("optionDetailNo1", "1")
 				.param("optionDetailNo2", "4")
 				.param("cnt", "5")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이400 인지
 		resultActions
@@ -532,7 +532,7 @@ public class AdminItemControllerTest {
 				.param("itemNo", "1")
 				.param("optionDetailNo1", "99")
 				.param("cnt", "5")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -545,7 +545,7 @@ public class AdminItemControllerTest {
 				.param("optionDetailNo1", "1")
 				.param("optionDetailNo2", "4")
 				.param("cnt", "5")
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -563,7 +563,7 @@ public class AdminItemControllerTest {
 
 		// 없는 옵션 삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 99L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -573,7 +573,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 1L)
-				.param("mockToken", mockToken)
+				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

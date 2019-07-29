@@ -50,7 +50,7 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
 	})
@@ -73,7 +73,7 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
@@ -98,7 +98,7 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
 	})

@@ -47,7 +47,7 @@ public class AdminMemberController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 리스트", notes = "회원 리스트 요청 API")
@@ -64,7 +64,7 @@ public class AdminMemberController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "id", value = "회원아이디", paramType = "path", required = true, defaultValue = ""),
 	})
@@ -87,7 +87,7 @@ public class AdminMemberController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "id", value = "회원아이디", paramType = "path", required = true, defaultValue = ""),
 	})

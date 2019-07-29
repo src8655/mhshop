@@ -55,7 +55,7 @@ public class CategoryControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String mockToken;
+	private String authorization;
 
 	
 	@Before
@@ -79,7 +79,7 @@ public class CategoryControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		mockToken = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsString();
 	}
 
 

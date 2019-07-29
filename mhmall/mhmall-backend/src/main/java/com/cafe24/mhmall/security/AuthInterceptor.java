@@ -1,5 +1,7 @@
 package com.cafe24.mhmall.security;
 
+import java.util.Base64;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,18 +43,41 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		//6. @Auth가 붙는 경우
 		//   인증 여부 체크
-		String mockToken = request.getParameter("mockToken");
+		// 헤더정보
+		String authorization = request.getHeader("Authorization");
 		
 		// 인증받을 정보가 없으면 실패
-		if(mockToken == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		if(authorization == null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
+			return false;
+		}
+
+		// 잘못된 인증 정보일 때
+		String[] basic_split = authorization.split(" ");
+		if(basic_split.length != 2) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
+			return false;
+		}
+		String auth_decode = new String(Base64.getDecoder().decode(basic_split[1]));
+		String[] auth_split = auth_decode.split(":");
+		if(auth_split.length != 2) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
 			return false;
 		}
 		
+		// 헤더로 입력받은 id와 비밀번호
+		MemberVo memberVo = new MemberVo();
+		memberVo.setId(auth_split[0]);
+		memberVo.setPassword(auth_split[1]);
+		
 		// 회원정보가 없으면 실패
-		MemberVo authMember = memberService.getByMockToken(mockToken);
+		MemberVo authMember = memberService.login(memberVo);
 		if(authMember == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
 			return false;
 		}
 		

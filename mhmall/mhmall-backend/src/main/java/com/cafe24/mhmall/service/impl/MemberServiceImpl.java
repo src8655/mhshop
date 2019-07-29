@@ -1,6 +1,7 @@
 package com.cafe24.mhmall.service.impl;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVo login(MemberVo memberVo) {
 		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
+		
+		if(newMemberVo != null) {
+			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
+		}
+		
 		return newMemberVo;
 	}
 

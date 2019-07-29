@@ -70,7 +70,7 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = "")
 	})
@@ -95,7 +95,7 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),

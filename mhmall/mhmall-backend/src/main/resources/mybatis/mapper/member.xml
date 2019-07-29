@@ -41,9 +41,7 @@
 		cast(AES_DECRYPT(zipcode, #{aesKey}) as char) as zipcode,
 		cast(AES_DECRYPT(addr, #{aesKey}) as char) as addr,
 		reg_date as regDate,
-		role,
-		
-		SHA2(concat(cast(AES_DECRYPT(id, #{aesKey}) as char), password), 512) as mockToken
+		role
 		
 		FROM member
 		where id=AES_ENCRYPT(#{id}, #{aesKey})

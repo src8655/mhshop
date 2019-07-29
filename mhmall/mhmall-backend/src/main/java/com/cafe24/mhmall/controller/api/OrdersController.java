@@ -177,7 +177,7 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "optionNos", value = "주문상품들", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "optionCnts", value = "주문수량들", paramType = "query", required = true, defaultValue = "")
@@ -224,7 +224,7 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
 		
@@ -291,7 +291,7 @@ public class OrdersController {
 	
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 주문 리스트", notes = "회원 주문 리스트 요청 API")
@@ -309,7 +309,7 @@ public class OrdersController {
 
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = "")
 	})
@@ -376,7 +376,7 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})

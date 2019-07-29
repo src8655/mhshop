@@ -134,7 +134,7 @@ public class MemberController {
 
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/loginupdate", method = RequestMethod.GET)
 	@ApiOperation(value = "회원수정 페이지", notes = "회원 수정 페이지 API")
@@ -150,7 +150,7 @@ public class MemberController {
 
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 
 		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = ""),
 		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = ""),
