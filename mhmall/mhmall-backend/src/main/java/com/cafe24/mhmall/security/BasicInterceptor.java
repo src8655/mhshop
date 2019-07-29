@@ -21,8 +21,8 @@ import com.cafe24.mhmall.vo.OrdersItemVo;
 
 
 public class BasicInterceptor extends HandlerInterceptorAdapter {
-	private final static Long ORDERS_TIME = 259200L;	// 1개월
-	private final static Long BASKET_TIME = 259200L;	// 1개월
+	private final static Long ORDERS_TIME = 2592000L;	// 1개월
+	private final static Long BASKET_TIME = 2592000L;	// 1개월
 	
 	@Autowired
 	OptionService optionService;
