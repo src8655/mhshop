@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cafe24.mhmall.repository.OptionDao;
@@ -82,29 +83,33 @@ public class OptionServiceImpl implements OptionService {
 		return true;
 	}
 
+
 	
 	// 옵션의 재고가 있는지 확인
+	// sqlException 발생 시 롤백
+	@Transactional(rollbackFor=Exception.class, isolation = Isolation.SERIALIZABLE)
 	@Override
-	public boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) {
+	public boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) throws Exception {
 		// 잘못된 접근은 무조건 없는 재고
 		if(optionNos.length == 0) return false;
 		if(optionNos.length != optionCnts.length) return false;
-		
+		// 옵션 재고량 줄이기
 		for(int i=0;i<optionNos.length;i++) {
 			Integer count = optionDao.selectCnt(optionNos[i]);
 			
 			// 비 재고상품이 아닐 때
-			if(count != -1) if(count < optionCnts[i]) return false;
-		}
-		
-		// 옵션 재고량 줄이기
-		for(int i=0;i<optionNos.length;i++) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("no", optionNos[i]);
-			map.put("cnt", optionCnts[i]);
-			Integer result = optionDao.updateCnt(map);
-			
-			if(result != 1) return false;
+			if(count != -1) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("no", optionNos[i]);
+				map.put("cnt", optionCnts[i]);
+				Integer result = 0;
+				result = optionDao.updateCnt(map);
+				
+				if(result != 1) {
+					// Exception을 발생시켜 롤백시키기
+					throw new Exception();
+				}
+			}
 		}
 		
 		return true;
@@ -127,6 +132,8 @@ public class OptionServiceImpl implements OptionService {
 	
 	
 	// 구매한 수량만큼 재고량 복구
+	// sqlException 발생 시 롤백
+	@Transactional(rollbackFor=Exception.class, isolation = Isolation.SERIALIZABLE)
 	@Override
 	public boolean restoreCnt(List<OrdersItemVo> ordersItemList) {
 		for(OrdersItemVo ordersItemVo : ordersItemList) {

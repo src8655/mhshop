@@ -114,6 +114,8 @@
 		update option set
 		cnt=cnt-#{cnt}
 		where no=#{no}
+		and cnt != -1
+		and cnt-#{cnt}>=0
 	</update>
 	
 	

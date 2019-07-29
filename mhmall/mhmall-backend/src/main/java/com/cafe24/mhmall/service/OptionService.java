@@ -14,7 +14,7 @@ public interface OptionService {
 	List<OptionVo> getListByItemNo(Long no);						// 상품번호에 속한 옵션 리스트
 	OptionVo getByNo(Long no);										// 옵션번호로 옵션하나 받아오기
 	boolean isExistAllOption(Long[] optionNos);						// 존재하는 옵션들인지 확인
-	boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts);	// 옵션의 재고가 있는지 확인
+	boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) throws Exception;	// 옵션의 재고가 있는지 확인
 	Long moneySum(Long[] optionNos, Integer[] optionCnts);			// 금액계산
 	boolean restoreCnt(List<OrdersItemVo> ordersItemList);			// 구매한 수량만큼 재고량 복구
 	boolean isExistOption(Long optionNo);							// 존재하는 옵션인지 확인

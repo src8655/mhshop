@@ -79,7 +79,7 @@ public class OrdersController {
 	
 
 	// sqlException 발생 시 롤백
-	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
+	@Transactional(rollbackFor=Exception.class)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
 		
@@ -109,7 +109,9 @@ public class OrdersController {
 		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		if(!optionService.isExistAllCnt(optionNos, optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
+		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
+		}
 
 		// 금액계산
 		Long money = optionService.moneySum(optionNos, optionCnts);
@@ -170,7 +172,7 @@ public class OrdersController {
 	
 	
 	// sqlException 발생 시 롤백
-	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
+	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
@@ -192,7 +194,9 @@ public class OrdersController {
 		if(!optionService.isOnSaleAll(optionNos)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		if(!optionService.isExistAllCnt(optionNos, optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
+		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
+		}
 
 		// 금액계산
 		Long money = optionService.moneySum(optionNos, optionCnts);

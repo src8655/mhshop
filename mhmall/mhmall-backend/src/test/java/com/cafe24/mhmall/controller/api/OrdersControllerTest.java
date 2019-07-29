@@ -143,8 +143,8 @@ public class OrdersControllerTest {
 				.param("guestPhone", "01000000001")
 				.param("guestPassword", "snrnsnrn1!")
 
-				.param("optionNos", "1")
-				.param("optionCnts", "1")
+				.param("optionNos", "1,2")
+				.param("optionCnts", "1,22")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
