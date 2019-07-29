@@ -79,8 +79,6 @@ public class OrdersController {
 	
 
 	// sqlException 발생 시 롤백
-	// 격리수준을 REPEATABLE_READ로 한다
-	//     => 재고량 동시 수정 오류 방지
 	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
@@ -172,8 +170,6 @@ public class OrdersController {
 	
 	
 	// sqlException 발생 시 롤백
-	// 격리수준을 REPEATABLE_READ로 한다
-	//     => 재고량 동시 수정 오류 방지
 	@Transactional(rollbackFor=Exception.class, isolation = Isolation.REPEATABLE_READ)
 	@Auth
 	@ApiImplicitParams({
