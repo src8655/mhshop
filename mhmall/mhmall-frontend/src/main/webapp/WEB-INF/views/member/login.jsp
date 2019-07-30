@@ -37,6 +37,7 @@ $(function(){
     <li><a href="#">장바구니</a></li>
     <li><a href="#">회원가입</a></li>
     <li><a href="#" style="border:0px;">로그인</a></li>
+    <li></li>
   </ul>
 </div>
 <div id="header_bg">
@@ -100,15 +101,15 @@ $(function(){
 	
 	
 	
-<form action="login_post.o" method="post" name="login">
+<form action="login" method="post" name="login">
 <div class="login_bg">
 	<h1>12번가<span style="color:#333333;">로그인</span></h1>
 	<div class="login">
 		<div class="login_box">
 			<div class="login_box_t">
 				<div class="login_box_t_l">
-					<input type="text" name="user_id" value="${user_id}" placeholder="12번가 아이디 입력" />
-					<input type="password" name="user_pw" style="margin-top:3px;" placeholder="비밀번호 입력" />
+					<input type="text" name="id" value="${user_id}" placeholder="12번가 아이디 입력" />
+					<input type="password" name="password" style="margin-top:3px;" placeholder="비밀번호 입력" />
 				</div>
 				<a href="#10" onclick="login.submit();">로그인</a>
 			</div>
@@ -125,7 +126,9 @@ $(function(){
 </div>
 <input type="submit" value="로그인" style="display:none;" />
 </form>
-
+id : ${authUser.id}<br />
+name : ${authUser.name}<br />
+message : ${message}<br />
 
 
 

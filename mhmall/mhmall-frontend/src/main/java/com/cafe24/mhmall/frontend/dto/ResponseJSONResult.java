@@ -5,13 +5,17 @@ public class ResponseJSONResult<T> {
 	private String message; //if fail, set
 	private T data;    		//if success, set
 	
-	private ResponseJSONResult() {}
-	private ResponseJSONResult(String result, String message, T data) {
+	public ResponseJSONResult() {}
+	public ResponseJSONResult(String result, String message, T data) {
 		this.result = result;
 		this.message = message;
 		this.data = data;
 	}
 
+	public static ResponseJSONResult fail(String message) {
+		return new ResponseJSONResult("fail", message, null);
+	}
+	
 	public String getResult() {
 		return result;
 	}
@@ -27,14 +31,14 @@ public class ResponseJSONResult<T> {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 	public T getData() {
 		return data;
 	}
-
 	public void setData(T data) {
 		this.data = data;
 	}
+
+
 	
 
 }
