@@ -82,7 +82,7 @@ public class ItemControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	

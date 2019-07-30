@@ -83,7 +83,7 @@ public class BasketControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	// 비회원 장바구니 리스트

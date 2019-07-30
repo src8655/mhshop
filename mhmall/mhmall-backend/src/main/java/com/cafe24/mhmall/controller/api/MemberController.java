@@ -124,7 +124,7 @@ public class MemberController {
 		if(newMemberVo == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("로그인 실패"));
 		else
-			return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(newMemberVo.getMockToken()));
+			return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(newMemberVo));
 	}
 	
 	

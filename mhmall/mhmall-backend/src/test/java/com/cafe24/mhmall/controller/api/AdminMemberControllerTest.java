@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -81,7 +81,7 @@ public class AdminMemberControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsString();
+		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	

@@ -12,6 +12,6 @@ public class MemberController {
 
 	@RequestMapping("/login")
 	public String login() {
-		return "ok";
+		return "member/login";
 	}
 }
