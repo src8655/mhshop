@@ -2,6 +2,7 @@ package com.cafe24.mhmall.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -39,7 +40,7 @@ public class MainController {
  
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + "pjmall:1234");
+        headers.add("Authorization", "Basic " + Base64.getEncoder().encodeToString("pjmall:1234".getBytes()));
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
         
