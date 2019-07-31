@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.websocket.Session;
@@ -54,6 +55,7 @@ public class MemberController {
 	@ApiOperation(value = "회원ID 중복여부 확인", notes = "회원ID 중복확인 API")
 	public ResponseEntity<JSONResult> idcheck(
 			@ModelAttribute @Valid RequestMemberIdDto dto,
+			HttpServletResponse response,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -64,7 +66,12 @@ public class MemberController {
 		boolean isExist = memberService.idCheck(dto.getId());
 		
 		// 중복하면 True 아니면 False
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isExist));
+		return ResponseEntity.status(HttpStatus.OK)
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
+				.header("Access-Control-Max-Age", "3600")
+				.header("Access-Control-Allow-Headers", "x-requested-with")
+				.body(JSONResult.success(isExist));
 	}
 	
 	

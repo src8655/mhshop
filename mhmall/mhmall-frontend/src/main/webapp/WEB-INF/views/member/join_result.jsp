@@ -16,8 +16,6 @@
 
 
 <script type="text/javascript">
-var BACKENDHOST = "http://localhost:8888/mhmall";
-
 $(function(){
 	$("#leftbtn").click(function(){
 		$("#main_scroll").stop().animate({'scrollLeft':0},500);
@@ -28,43 +26,6 @@ $(function(){
 	$("#header_searchbt").click(function(){
 		$("#mheader_c").slideToggle(200);
 	});
-
-	
-	// 아이디 중복체크
-	// 아이디가 변경되었을 때
-	$("#user_ids").change(function(){
-		$("#id_ch_value").html("중복체크를 해주세요");
-	});
-	$("#join_id_check_btn").click(function(){
-		var id = $("#user_ids").val();
-		$.ajax({
-			url: BACKENDHOST+"/api/member/join/idcheck/"+id,
-			type: "get",
-			dataType: "json",
-			data: "",
-			success: function(response){
-				if(response.result != "success") {
-					alert(response.message);
-					return;
-				}
-
-				if(response.data == true) {
-					$("#id_ch_value").html("중복된 아이디 입니다.");
-					$("#id_ch_value").val("");
-					return;
-				}
-
-				$("#id_ch_value").html("사용 가능한 아이디입니다.");
-				
-			},
-			error: function(xhr, error){
-				$("#id_ch_value").html("잘못된 아이디 형식입니다.");
-			}
-		});
-		
-	});
-	
-	
 });
 </script>
 </head>
@@ -143,62 +104,23 @@ $(function(){
 
 <div class="join_agree">
 	<div class="join_agree_header">
-		<h1>
+		<h1> 
 			개인 회원가입
 		</h1>
 		<ul>
-			<li>3 가입완료</li>
-			<li style="color:#ea0000;border-bottom:2px solid #ea0000;">2 정보입력</li>
+			<li style="color:#ea0000;border-bottom:2px solid #ea0000;">3 가입완료</li>
+			<li>2 정보입력</li>
 			<li>1 약관동의</li>
 		</ul>
 	</div>
-	<p class="join_agree_c">회원정보를 입력해주세요. 모두 입력해야 가입이 가능합니다.</p>
-<form action="join_post" method="post" id="join">
-	<ul class="joins">
-		<li>
-			<h1><span style="color:#e61337;">•</span> 이름</h1>
-			<div><input type="text" name="name" class="join_input" placeholder="이름을 입력해 주세요" /></div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 아이디</h1>
-			<div>
-					<input type="text" name="id" id="user_ids"  class="join_input" placeholder="ID를 입력해 주세요" style="width:50%;" />
-					<input type="button" value="중복확인" id="join_id_check_btn" class="join_id_button" />
-					<p style="line-height:26px;margin:0 0 0 5px;"><span style="color:#3985ac;font-size:12px;" id="id_ch_value">아이디를 입력해 주세요</span></p>
-				
-			</div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 비밀번호</h1>
-			<div><input type="password" name="password" class="join_input" placeholder="비밀번호를 입력해 주세요" /></div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 비밀번호 확인</h1>
-			<div><input type="password" name="password2" class="join_input" placeholder="비밀번호를 다시 한번 입력해 주세요" /></div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 이메일</h1>
-			<div><input type="text" name="email" class="join_input" placeholder="이메일을 입력해 주세요" /></div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 우편번호</h1>
-			<div>
-				<input type="text" name="zipcode" id="addr_code" style="width:30%;" class="join_input" />
-				<input type="button" value="우편번호 찾기" onclick="btn_find_daum()" class="join_id_button" />
-				
-			</div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 주소</h1>
-			<div><input type="text" name="addr" id="addr" class="join_input" /></div>
-		</li>
-		<li>
-			<h1><span style="color:#e61337;">•</span> 휴대폰 <span style="font-weight:bold;color:red;font-size:11px;"></span></h1>
-			<div><input type="text" name="phone1" style="width:20%;" class="join_input" /> - <input type="text" name="phone2" style="width:20%;" class="join_input" /> - <input type="text" name="phone3" style="width:20%;" class="join_input" /></div>
-		</li>
-	</ul>
+	<p class="join_agree_c">회원정보를 입력해주세요. 모두 입력하셔야 가입이 가능합니다.</p>
+
+
+	<p class="join_agree_end"><span style="color:blue;">${name}님</span>의 회원가입이 완료되었습니다.</p>
+
+
 	<div class="join_red_button">
-		<input type="submit" value="회원가입" />
+		<a href="login">로그인</a>
 	</div>
 </form>
 </div>

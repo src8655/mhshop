@@ -430,6 +430,7 @@ color:#555555;
 overflow-y:scroll;
 }
 .join_red_button {
+padding-bottom:10px;
 overflow:hidden;
 }
 .join_red_button a {
@@ -442,6 +443,25 @@ display:block;
 height:45px;
 line-height:45px;
 text-align:center;
+margin-top:20px;
+border-top:1px solid #d81818;
+border-right:1px solid #d81818;
+border-bottom:1px solid #9e1212;
+border-left:1px solid #d81818;
+overflow:hidden;
+}
+.join_red_button input {
+width:150px;
+background:#eb2b2b;
+font-size:15px;
+font-weight:bold;
+color:#ffffff;
+text-decoration:none;
+display:block;
+height:45px;
+line-height:45px;
+text-align:center;
+margin:0 auto;
 margin-top:20px;
 border-top:1px solid #d81818;
 border-right:1px solid #d81818;

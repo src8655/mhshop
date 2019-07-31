@@ -32,11 +32,16 @@ $(function(){
 <body>
 <div id="top_bg">
   <ul>
-    <li><a href="#">고객센터</a></li>
     <li><a href="#" style="color:#adc12c;">나의 쇼핑정보 <img src="${pageContext.servletContext.contextPath}/assets/images/myinfo.jpg" alt="나의 쇼핑정보" /></a></li>
     <li><a href="#">장바구니</a></li>
-    <li><a href="#">회원가입</a></li>
-    <li><a href="#" style="border:0px;">로그인</a></li>
+    <c:if test="${authUser eq null}">
+	    <li><a href="member/join">회원가입</a></li>
+	    <li><a href="member/login" style="border:0px;">로그인</a></li>
+    </c:if>
+    <c:if test="${authUser ne null}">
+	    <li><a href="member/logout">로그아웃</a></li>
+	    <li><a><span style="font-weight:bold;">${authUser.name}</span> 님</a></li>
+    </c:if>
   </ul>
 </div>
 <div id="header_bg">

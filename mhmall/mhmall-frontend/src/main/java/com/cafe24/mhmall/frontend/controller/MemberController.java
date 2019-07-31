@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cafe24.mhmall.frontend.dto.RequestJoinDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 
+	// 로그인 폼
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String loginform() {
 		
@@ -35,6 +38,7 @@ public class MemberController {
 	}
 	
 
+	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(
 			@RequestParam(name = "id", required = true, defaultValue = "") String id,
@@ -59,5 +63,100 @@ public class MemberController {
         session.setAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, memberVo.getRole(), memberVo.getMockToken()));
 		
 		return "redirect:/";
+	}
+	
+	
+
+	// 로그아웃
+	@RequestMapping("logout")
+	public String logout(
+			HttpSession session
+			) {
+		
+        session.setAttribute("authUser", null);
+		
+		return "redirect:/";
+	}
+	
+	
+	// 회원가입 약관
+	@RequestMapping(value = "join", method = RequestMethod.GET)
+	public String join() {
+		
+		return "member/join_agree";
+	}
+	
+	
+
+	// 회원가입 폼
+	@RequestMapping(value = "join", method = RequestMethod.POST)
+	public String join_form(
+			@RequestParam(name = "agrees", required = true, defaultValue = "false") boolean agrees,
+			HttpSession session,
+			Model model
+			) {
+		
+		// 약관에 동의하지 않았으면
+		if(!agrees) {
+			model.addAttribute("message", "약관에 동의해주세요.");
+			return "post/error";
+		}
+		
+		return "member/join_write";
+	}
+	
+	
+	
+
+	// 회원가입 완료
+	@RequestMapping(value = "join_post", method = RequestMethod.POST)
+	public String join_post(
+			@ModelAttribute RequestJoinDto dto,
+			HttpSession session,
+			Model model
+			) {
+		
+		MemberVo memberVo = dto.toVo();
+		
+		// 가입 요청
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+	    params.add("id", memberVo.getId());
+	    params.add("password", memberVo.getPassword());
+	    params.add("name", memberVo.getName());
+	    params.add("phone", memberVo.getPhone());
+	    params.add("email", memberVo.getEmail());
+	    params.add("zipcode", memberVo.getZipcode());
+	    params.add("addr", memberVo.getAddr());
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.<Boolean>request("/api/member/join", HttpMethod.POST, params, null, Boolean.class);
+
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "가입실패");
+        	return "post/error";
+        }
+        
+        // 가입 결과페이지
+        session.setAttribute("joinResult", memberVo.getName());
+		return "redirect:/member/join_result";
+	}
+	
+	
+	// 회원가입 완료 페이지
+	@RequestMapping("join_result")
+	public String join_result(
+			HttpSession session,
+			Model model
+			) {
+		
+		String name = (String) session.getAttribute("joinResult");
+        session.setAttribute("joinResult", null);
+        model.addAttribute("name", name);
+		
+		
+		return "member/join_result";
 	}
 }
