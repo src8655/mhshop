@@ -37,7 +37,6 @@ $(function(){
     <li><a href="#">장바구니</a></li>
     <li><a href="#">회원가입</a></li>
     <li><a href="#" style="border:0px;">로그인</a></li>
-    <li></li>
   </ul>
 </div>
 <div id="header_bg">
@@ -101,31 +100,77 @@ $(function(){
 	
 	
 	
-<form action="login" method="post" name="login">
-<div class="login_bg">
-	<h1>12번가<span style="color:#333333;">로그인</span></h1>
-	<div class="login">
-		<div class="login_box">
-			<div class="login_box_t">
-				<div class="login_box_t_l">
-					<input type="text" name="id" value="${user_id}" placeholder="12번가 아이디 입력" />
-					<input type="password" name="password" style="margin-top:3px;" placeholder="비밀번호 입력" />
-				</div>
-				<a href="#10" onclick="login.submit();">로그인</a>
-			</div>
-			<div class="login_box_c">
-				<input type="checkbox" name="auto_ids" value="1" id="auto_id" <c:if test="${user_id ne ''}">checked</c:if> /><label for="auto_id">아이디 저장</label>
-			</div>
-			<ul>
-				<li><a href="join.o" style="color:#6283e3;border:1px solid #6283e3;">회원가입</a></li>
-				<li><a href="login_find_id.o">아이디 찾기</a></li>
-				<li><a href="login_find_pw.o">비밀번호 찾기</a></li>
-			</ul>
-		</div>
+<div class="join_agree_bg">
+
+<div class="join_agree">
+	<div class="join_agree_header">
+		<h1>
+			개인 회원가입
+		</h1>
+		<ul>
+			<li>3 가입완료</li>
+			<li style="color:#ea0000;border-bottom:2px solid #ea0000;">2 정보입력</li>
+			<li>1 약관동의</li>
+		</ul>
 	</div>
-</div>
-<input type="submit" value="로그인" style="display:none;" />
+	<p class="join_agree_c">회원정보를 입력해주세요. 모두 입력해야 가입이 가능합니다.</p>
+<form action="join_write_post.o" method="post" id="join">
+	<ul class="joins">
+		<li>
+			<h1><span style="color:#e61337;">•</span> 이름</h1>
+			<div><input type="text" name="name" class="join_input" placeholder="이름을 입력해 주세요" /></div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 아이디</h1>
+			<div>
+					<input type="text" name="id" id="user_ids"  class="join_input" placeholder="ID를 입력해 주세요" style="width:50%;" />
+					<input type="button" value="중복확인" onclick="" class="join_id_button" />
+					<p style="line-height:26px;margin:0 0 0 5px;"><span style="color:#3985ac;font-size:12px;" id="id_ch_value">아이디를 입력해 주세요</span></p>
+				
+			</div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 비밀번호</h1>
+			<div><input type="password" name="password" class="join_input" placeholder="비밀번호를 입력해 주세요" /></div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 비밀번호 확인</h1>
+			<div><input type="password" name="password2" class="join_input" placeholder="비밀번호를 다시 한번 입력해 주세요" /></div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 이메일</h1>
+			<div><input type="text" name="email" class="join_input" placeholder="이메일을 입력해 주세요" /></div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 우편번호</h1>
+			<div>
+				<input type="text" name="zipcode" id="addr_code" style="width:30%;" class="join_input" />
+				<input type="button" value="우편번호 찾기" onclick="btn_find_daum()" class="join_id_button" />
+				
+			</div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 주소</h1>
+			<div><input type="text" name="addr" id="addr" class="join_input" /></div>
+		</li>
+		<li>
+			<h1><span style="color:#e61337;">•</span> 휴대폰 <span style="font-weight:bold;color:red;font-size:11px;"></span></h1>
+			<div><input type="text" name="phone1" style="width:20%;" class="join_input" /> - <input type="text" name="phone2" style="width:20%;" class="join_input" /> - <input type="text" name="phone3" style="width:20%;" class="join_input" /></div>
+		</li>
+	</ul>
+	<div class="join_red_button">
+		<a href="#10" onclick="join_submit();">회원가입</a>
+	</div>
 </form>
+</div>
+
+</div>
+
+
+
+
+
+
 
 
 

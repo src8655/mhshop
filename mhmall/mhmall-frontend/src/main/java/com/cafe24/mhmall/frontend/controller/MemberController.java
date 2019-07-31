@@ -2,6 +2,7 @@ package com.cafe24.mhmall.frontend.controller;
 
 import java.net.URI;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,8 @@ public class MemberController {
 	public String login(
 			@RequestParam(name = "id", required = true, defaultValue = "") String id,
 			@RequestParam(name = "password", required = true, defaultValue = "") String password,
-			Model model
+			Model model,
+			HttpSession session
 			) {
 		
 
@@ -48,13 +50,14 @@ public class MemberController {
         ResponseJSONResult<MemberVo> rJson = MhmallRestTemplate.<MemberVo>request("/api/member/login", HttpMethod.POST, params, null, MemberVo.class);
         
         // 실패면
-        if("fail".equals(rJson.getResult())) 
+        if("fail".equals(rJson.getResult())) {
         	model.addAttribute("message", rJson.getMessage());
-        else {
-        	MemberVo memberVo = rJson.getData();
-        	model.addAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, null, null));
+        	return "post/error";
         }
+        
+        MemberVo memberVo = rJson.getData();
+        session.setAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, memberVo.getRole(), memberVo.getMockToken()));
 		
-		return "member/login";
+		return "redirect:/";
 	}
 }

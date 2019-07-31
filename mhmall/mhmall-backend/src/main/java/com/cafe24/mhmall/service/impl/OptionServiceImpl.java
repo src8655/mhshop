@@ -132,8 +132,6 @@ public class OptionServiceImpl implements OptionService {
 	
 	
 	// 구매한 수량만큼 재고량 복구
-	// sqlException 발생 시 롤백
-	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public boolean restoreCnt(List<OrdersItemVo> ordersItemList) {
 		for(OrdersItemVo ordersItemVo : ordersItemList) {
