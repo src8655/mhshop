@@ -30,6 +30,7 @@ import com.cafe24.mhmall.dto.RequestMemberIdDto;
 import com.cafe24.mhmall.dto.RequestOrdersNoDto;
 import com.cafe24.mhmall.dto.RequestOrdersTrackingDto;
 import com.cafe24.mhmall.dto.RequestOrdersWriteDto;
+import com.cafe24.mhmall.dto.ResponseOrdersDto;
 import com.cafe24.mhmall.dto.ResponseOrdersViewDto;
 import com.cafe24.mhmall.security.Auth;
 import com.cafe24.mhmall.security.AuthUser;
@@ -130,8 +131,11 @@ public class OrdersController {
 		// 주문내역 일괄 추가 <= 주문번호
 		ordersItemService.add(ordersNo, optionNos, optionCnts);
 		
+		// 주문내역 리스트 받기
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersNo);
+		
 		// 주문번호 리턴
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersNo));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(new ResponseOrdersDto(ordersNo, ordersItemList)));
 	}
 
 	
@@ -214,8 +218,11 @@ public class OrdersController {
 		// 주문내역 일괄 추가 <= 주문번호
 		ordersItemService.add(ordersNo, optionNos, optionCnts);
 		
+		// 주문내역 리스트 받기
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersNo);
+		
 		// 주문번호 리턴
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersNo));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(new ResponseOrdersDto(ordersNo, ordersItemList)));
 	}
 	
 	
