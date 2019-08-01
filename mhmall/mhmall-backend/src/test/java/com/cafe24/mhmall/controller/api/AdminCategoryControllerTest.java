@@ -66,9 +66,11 @@ public class AdminCategoryControllerTest {
 		
 		// 관리자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id2\","
+						+ "\"password\":\"testpassword2!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -89,18 +91,22 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리명 Valid
 		resultActions = mockMvc.perform(post("/api/admin/category")
-				.param("name", "")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"name\":\"\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions.andExpect(status().isBadRequest());
 
 		
 		// 작성성공
 		resultActions = mockMvc.perform(post("/api/admin/category")
-				.param("name", "category_name3")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"name\":\"category_name3\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -114,26 +120,38 @@ public class AdminCategoryControllerTest {
 		ResultActions resultActions;
 		
 		// 카테고리번호 Valid
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", "aa", "test")
+		resultActions = mockMvc.perform(put("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"aa\","
+						+ "\"name\":\"test\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions.andExpect(status().isBadRequest());
 		
 		
 		// 카테고리번호가 없는 번호일 때
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 999999L, "test")
+		resultActions = mockMvc.perform(put("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"999999\","
+						+ "\"name\":\"test\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(false)));
 		
 
 		// 카테고리 수정 완료
-		resultActions = mockMvc.perform(put("/api/admin/category/{no}/{name}", 1L, "test")
+		resultActions = mockMvc.perform(put("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\","
+						+ "\"name\":\"test\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(true)));
@@ -145,34 +163,46 @@ public class AdminCategoryControllerTest {
 		ResultActions resultActions;
 		
 		// 카테고리번호 Valid
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", "aa")
+		resultActions = mockMvc.perform(delete("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"aa\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions.andExpect(status().isBadRequest());
 		
 
 		// 카테고리에 속한 상품이 있을 경우
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions.andExpect(status().isBadRequest());
 		
 		
 		// 없는 카테고리 번호로 실패
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 9999L)
+		resultActions = mockMvc.perform(delete("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"9999\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(false)));
 		
 		
 		// 카테고리 삭제 완료
-		resultActions = mockMvc.perform(delete("/api/admin/category/{no}", 2L)
+		resultActions = mockMvc.perform(delete("/api/admin/category")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"2\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(true)));

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,14 +51,12 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 카테고리를 DB에 등록", notes = "관리자 카테고리 등록 API")
 	public ResponseEntity<JSONResult> write(
-			@ModelAttribute @Valid RequestCategoryWriteDto dto,
+			@RequestBody @Valid RequestCategoryWriteDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -73,15 +72,12 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-
-		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "카테고리명", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/{no}/{name}", method = RequestMethod.PUT)
+	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 수정", notes = "관리자 카테고리 수정 API")
 	public ResponseEntity<JSONResult> edit(
-			@ModelAttribute @Valid RequestCategoryEditDto dto,
+			@RequestBody @Valid RequestCategoryEditDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -98,14 +94,12 @@ public class AdminCategoryController {
 	
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "카테고리번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 카테고리를 DB에서 삭제", notes = "관리자 카테고리 삭제 API")
 	public ResponseEntity<JSONResult> delete(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사

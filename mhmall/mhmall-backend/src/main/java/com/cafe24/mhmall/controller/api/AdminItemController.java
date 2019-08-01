@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,18 +96,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 DB에 저장", notes = "관리자 상품 DB에 저장 API")
 	public ResponseEntity<JSONResult> write(
-			@ModelAttribute @Valid RequestItemWriteDto dto,
+			@RequestBody @Valid RequestItemWriteDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -127,14 +122,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 DB에 삭제", notes = "관리자 상품 DB에 삭제 API")
 	public ResponseEntity<JSONResult> delete(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -160,9 +153,9 @@ public class AdminItemController {
 		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
 		
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "level", value = "옵션레벨", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "level", value = "옵션레벨", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/optiondetail/{itemNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/optiondetail/{itemNo}/{level}", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 상세옵션 리스트", notes = "관리자 상세옵션 리스트 API")
 	public ResponseEntity<JSONResult> optionDetailList(
 			@ModelAttribute @Valid RequestOptionDetailViewDto dto,
@@ -185,19 +178,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "상품명", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "description", value = "상품설명", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "money", value = "가격", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "thumbnail", value = "썸네일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/{no}", method = RequestMethod.PUT)
+	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 DB에 수정", notes = "관리자 상품 DB에 수정 API")
 	public ResponseEntity<JSONResult> edit(
-			@ModelAttribute @Valid RequestItemEditDto dto,
+			@RequestBody @Valid RequestItemEditDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -218,15 +204,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "display", value = "상품진열여부", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/display/{no}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/display", method = RequestMethod.PUT)
 	@ApiOperation(value = "관리자 상품 진열여부 DB에 수정", notes = "관리자 상품 진열여부 DB에 수정 API")
 	public ResponseEntity<JSONResult> edit_display(
-			@ModelAttribute @Valid RequestItemDisplayDto dto,
+			@RequestBody @Valid RequestItemDisplayDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -253,15 +236,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "itemImg", value = "상품이미지", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/img", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에 저장", notes = "관리자 상품 이미지를 DB에 저장 API")
 	public ResponseEntity<JSONResult> additemimg(
-			@ModelAttribute @Valid RequestItemImgWriteDto dto,
+			@RequestBody @Valid RequestItemImgWriteDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -282,14 +262,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "상품이미지번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/img/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/img", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 이미지를 DB에서 삭제", notes = "관리자 상품 이미지를 DB에서 삭제 API")
 	public ResponseEntity<JSONResult> deleteitemimg(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -310,16 +288,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "optionName", value = "옵션상세명", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "level", value = "옵션상세레벨", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/optiondetail", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 상세옵션 추가", notes = "관리자 상품 상세옵션 추가 API")
 	public ResponseEntity<JSONResult> addoptiondetail(
-			@ModelAttribute @Valid RequestOptionDetailWriteDto dto,
+			@RequestBody @Valid RequestOptionDetailWriteDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -339,14 +313,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "상세옵션번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/optiondetail/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/optiondetail", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 상세옵션 삭제", notes = "관리자 상품 상세옵션 삭제 API")
 	public ResponseEntity<JSONResult> deleteoptiondetail(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -367,17 +339,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "optionDetailNo2", value = "2차상세옵션번호", paramType = "query", required = false, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "재고", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	@ApiOperation(value = "관리자 상품 옵션 추가", notes = "관리자 상품 옵션 추가 API")
 	public ResponseEntity<JSONResult> addoption(
-			@ModelAttribute @Valid RequestOptionWriteDto dto,
+			@RequestBody @Valid RequestOptionWriteDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -400,14 +367,12 @@ public class AdminItemController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "옵션번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "mockToken", value = "인증키", paramType = "query", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/option/{no}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/option", method = RequestMethod.DELETE)
 	@ApiOperation(value = "관리자 상품 옵션 삭제", notes = "관리자 상품 옵션 삭제 API")
 	public ResponseEntity<JSONResult> addoption(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사

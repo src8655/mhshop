@@ -69,9 +69,11 @@ public class AdminItemControllerTest {
 		
 		// 관리자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id2\","
+						+ "\"password\":\"testpassword2!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions.andDo(print())
 		.andExpect(status().isOk())
@@ -125,13 +127,15 @@ public class AdminItemControllerTest {
 		
 		// 상품이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item")
-				.param("name", "")
-				.param("description", "test_description2")
-				.param("money", "30000")
-				.param("thumbnail", "test_thumbnail3")
-				.param("categoryNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"name\":\"\","
+						+ "\"description\":\"test_description2\","
+						+ "\"money\":\"30000\","
+						+ "\"thumbnail\":\"test_thumbnail3\","
+						+ "\"categoryNo\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -145,7 +149,14 @@ public class AdminItemControllerTest {
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"name\":\"test_name\","
+						+ "\"description\":\"test_description2\","
+						+ "\"money\":\"\","
+						+ "\"thumbnail\":\"test_thumbnail3\","
+						+ "\"categoryNo\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -159,7 +170,14 @@ public class AdminItemControllerTest {
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"name\":\"test_name\","
+						+ "\"description\":\"test_description2\","
+						+ "\"money\":\"1000\","
+						+ "\"thumbnail\":\"test_thumbnail3\","
+						+ "\"categoryNo\":\"1\""
+						+ "}"));
 		
 		// 응답이 200 인지
 		resultActions
@@ -176,9 +194,12 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 		
 		// 상품삭제
-		resultActions = mockMvc.perform(delete("/api/admin/item/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andDo(print())
 		.andExpect(status().isOk())
@@ -194,8 +215,7 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 		
 		// 옵션레벨 Valid
-		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
-				.param("level", "3")
+		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}/{level}", 1L, 3L)
 				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
@@ -204,8 +224,7 @@ public class AdminItemControllerTest {
 		
 
 		// 성공
-		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}", 1L)
-				.param("level", "1")
+		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}/{level}", 1L, 1L)
 				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
@@ -230,21 +249,24 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 
 		// 상품명 Valid
-		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
-				.param("name", "")
-				.param("description", "test_description11")
-				.param("money", "11000")
-				.param("thumbnail", "test_thumbnail11")
-				.param("categoryNo", "2")
+		resultActions = mockMvc.perform(put("/api/admin/item")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\","
+						+ "\"name\":\"\","
+						+ "\"description\":\"test_description11\","
+						+ "\"money\":\"11000\","
+						+ "\"thumbnail\":\"test_thumbnail11\","
+						+ "\"categoryNo\":\"2\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 		
 		// 상품금액 Valid
-		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
+		resultActions = mockMvc.perform(put("/api/admin/item")
 				.param("no", "1")
 				.param("name", "change!!")
 				.param("description", "test_description11")
@@ -252,14 +274,22 @@ public class AdminItemControllerTest {
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\","
+						+ "\"name\":\"change!!\","
+						+ "\"description\":\"test_description11\","
+						+ "\"money\":\"-1\","
+						+ "\"thumbnail\":\"test_thumbnail11\","
+						+ "\"categoryNo\":\"2\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 		
 		// 성공
-		resultActions = mockMvc.perform(put("/api/admin/item/{no}", 1L)
+		resultActions = mockMvc.perform(put("/api/admin/item")
 				.param("no", "1")
 				.param("name", "change!!")
 				.param("description", "test_description11")
@@ -267,7 +297,15 @@ public class AdminItemControllerTest {
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\","
+						+ "\"name\":\"change!!\","
+						+ "\"description\":\"test_description11\","
+						+ "\"money\":\"11000\","
+						+ "\"thumbnail\":\"test_thumbnail11\","
+						+ "\"categoryNo\":\"2\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -285,20 +323,26 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 		
 		// 진열상태 Valid
-		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 2L)
-				.param("display", "ttttrue")
+		resultActions = mockMvc.perform(put("/api/admin/item/display")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"2\","
+						+ "\"display\":\"ttttrue\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 		
 		// 성공
-		resultActions = mockMvc.perform(put("/api/admin/item/display/{no}", 1L)
-				.param("display", "TRUE")
+		resultActions = mockMvc.perform(put("/api/admin/item/display")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\","
+						+ "\"display\":\"TRUE\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -316,10 +360,12 @@ public class AdminItemControllerTest {
 
 		// 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.param("itemNo", "")
-				.param("itemImg", "test_img")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"\","
+						+ "\"itemImg\":\"test_img\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -327,10 +373,12 @@ public class AdminItemControllerTest {
 
 		// 없는 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.param("itemNo", "99")
-				.param("itemImg", "test_img")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"99\","
+						+ "\"itemImg\":\"test_img\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -338,10 +386,12 @@ public class AdminItemControllerTest {
 
 		// 상품이미지 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.param("itemNo", "1")
-				.param("itemImg", "")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"1\","
+						+ "\"itemImg\":\"\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -349,10 +399,12 @@ public class AdminItemControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.param("itemNo", "1")
-				.param("itemImg", "test_img")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"1\","
+						+ "\"itemImg\":\"test_img\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -367,9 +419,12 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 
 		// 없는 이미지 삭제
-		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 99L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/img")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"99\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -377,9 +432,12 @@ public class AdminItemControllerTest {
 		
 
 		// 성공
-		resultActions = mockMvc.perform(delete("/api/admin/item/img/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/img")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -397,11 +455,13 @@ public class AdminItemControllerTest {
 
 		// 옵션이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "")
-				.param("level", "1")
-				.param("itemNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionName\":\"\","
+						+ "\"level\":\"1\","
+						+ "\"itemNo\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -409,11 +469,13 @@ public class AdminItemControllerTest {
 
 		// 옵션레벨 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "option_name")
-				.param("level", "3")
-				.param("itemNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionName\":\"option_name\","
+						+ "\"level\":\"3\","
+						+ "\"itemNo\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -421,10 +483,13 @@ public class AdminItemControllerTest {
 
 		// 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "option_name")
-				.param("level", "3")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionName\":\"option_name\","
+						+ "\"level\":\"3\","
+						+ "\"itemNo\":\"\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -432,11 +497,13 @@ public class AdminItemControllerTest {
 		
 		// 없는 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "option_name")
-				.param("level", "3")
-				.param("itemNo", "99")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionName\":\"option_name\","
+						+ "\"level\":\"3\","
+						+ "\"itemNo\":\"99\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -444,11 +511,13 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.param("optionName", "option_name")
-				.param("level", "1")
-				.param("itemNo", "1")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionName\":\"option_name\","
+						+ "\"level\":\"1\","
+						+ "\"itemNo\":\"1\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -463,18 +532,24 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 
 		// 옵션에 이미 사용중인 상세옵션 실패
-		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 
 
 		// 없는 상세옵션번호
-		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 99L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"99\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -482,9 +557,12 @@ public class AdminItemControllerTest {
 		
 		
 		// 성공
-		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail/{no}", 4L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"4\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -503,12 +581,14 @@ public class AdminItemControllerTest {
 
 		// 수량 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "1")
-				.param("optionDetailNo1", "1")
-				.param("optionDetailNo2", "4")
-				.param("cnt", "-5")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"1\","
+						+ "\"optionDetailNo1\":\"1\","
+						+ "\"optionDetailNo2\":\"4\","
+						+ "\"cnt\":\"-5\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -516,12 +596,14 @@ public class AdminItemControllerTest {
 		
 		// 존재하지 않는 상품번호 실패
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "99")
-				.param("optionDetailNo1", "1")
-				.param("optionDetailNo2", "4")
-				.param("cnt", "5")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"99\","
+						+ "\"optionDetailNo1\":\"1\","
+						+ "\"optionDetailNo2\":\"4\","
+						+ "\"cnt\":\"5\""
+						+ "}"));
 		// 응답이400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -529,11 +611,14 @@ public class AdminItemControllerTest {
 		
 		// 존재하지 않은 상세옵션번호 실패
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.param("itemNo", "1")
-				.param("optionDetailNo1", "99")
-				.param("cnt", "5")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"1\","
+						+ "\"optionDetailNo1\":\"99\","
+						+ "\"optionDetailNo2\":\"\","
+						+ "\"cnt\":\"5\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -546,7 +631,13 @@ public class AdminItemControllerTest {
 				.param("optionDetailNo2", "4")
 				.param("cnt", "5")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"itemNo\":\"1\","
+						+ "\"optionDetailNo1\":\"1\","
+						+ "\"optionDetailNo2\":\"4\","
+						+ "\"cnt\":\"5\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -562,9 +653,12 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 
 		// 없는 옵션 삭제
-		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 99L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/option")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"99\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -572,9 +666,12 @@ public class AdminItemControllerTest {
 		
 
 		// 성공
-		resultActions = mockMvc.perform(delete("/api/admin/item/option/{no}", 1L)
+		resultActions = mockMvc.perform(delete("/api/admin/item/option")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())

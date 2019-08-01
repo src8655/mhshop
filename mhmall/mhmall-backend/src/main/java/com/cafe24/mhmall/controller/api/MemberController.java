@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,20 +75,11 @@ public class MemberController {
 				.body(JSONResult.success(isExist));
 	}
 	
-	
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "id", value = "아이디", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "phone", value = "연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = ""),
-	})
+
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	@ApiOperation(value = "회원을 DB에 등록", notes = "회원등록 API")
 	public ResponseEntity<JSONResult> join(
-			@ModelAttribute @Valid RequestMemberJoinDto dto,
+			@RequestBody @Valid RequestMemberJoinDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -108,14 +100,10 @@ public class MemberController {
 	
 	
 
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "id", value = "아이디", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 로그인", notes = "회원 로그인 API")
 	public ResponseEntity<JSONResult> login(
-			@ModelAttribute @Valid RequestMemberLoginDto dto,
+			@RequestBody @Valid RequestMemberLoginDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -157,21 +145,13 @@ public class MemberController {
 
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-
-		@ApiImplicitParam(name = "id", value = "", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "password", value = "비밀번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "name", value = "이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "phone", value = "연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "email", value = "이메일", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "zipcode", value = "우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "addr", value = "주소", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/loginupdate", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원수정", notes = "회원 로그아웃 API")
 	public ResponseEntity<JSONResult> loginUpdate(
 			@AuthUser MemberVo authMember,
-			@ModelAttribute @Valid RequestMemberJoinDto dto,
+			@RequestBody @Valid RequestMemberJoinDto dto,
 			BindingResult result
 			) {
 		// 유효성검사

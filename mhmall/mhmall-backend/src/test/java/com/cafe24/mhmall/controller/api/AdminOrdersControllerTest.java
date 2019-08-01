@@ -66,12 +66,14 @@ public class AdminOrdersControllerTest {
 		
 
 		ResultActions resultActions;
-		
+
 		// 관리자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id2\","
+						+ "\"password\":\"testpassword2!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -139,18 +141,24 @@ public class AdminOrdersControllerTest {
 		ResultActions resultActions;
 		
 		// 입금대기 상태가 아닐 때 실패
-		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck/{ordersNo}", "2019-07-11_000258")
+		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"ordersNo\":\"2019-07-11_000258\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 		
 		// 입금대기 상태일 때 성공
-		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck/{ordersNo}", "2019-07-11_000256")
+		resultActions = mockMvc.perform(put("/api/admin/orders/paycheck")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"ordersNo\":\"2019-07-11_000256\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -165,20 +173,26 @@ public class AdminOrdersControllerTest {
 		ResultActions resultActions;
 		
 		// 운송장번호 Valid
-		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck/{ordersNo}", "2019-07-11_000257")
-				.param("trackingNum", "")
+		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"ordersNo\":\"2019-07-11_000257\","
+						+ "\"trackingNum\":\"\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 		
 		// 운송장번호등록 성공
-		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck/{ordersNo}", "2019-07-11_000257")
-				.param("trackingNum", "999988887777")
+		resultActions = mockMvc.perform(put("/api/admin/orders/tnumcheck")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"ordersNo\":\"2019-07-11_000257\","
+						+ "\"trackingNum\":\"999988887777\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())

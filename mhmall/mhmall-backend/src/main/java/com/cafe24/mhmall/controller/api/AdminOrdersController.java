@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,14 +103,12 @@ public class AdminOrdersController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/paycheck/{ordersNo}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/paycheck", method = RequestMethod.PUT)
 	@ApiOperation(value = "결제확인 상태변경 요청", notes = "무통장 결제확인 상태변경 요청 API")
 	public ResponseEntity<JSONResult> paycheck(
-			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			@RequestBody @Valid RequestOrdersNoDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -131,15 +130,12 @@ public class AdminOrdersController {
 
 	@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "trackingNum", value = "운송장번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/tnumcheck/{ordersNo}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/tnumcheck", method = RequestMethod.PUT)
 	@ApiOperation(value = "운송장번호 등록 요청", notes = "운송장번호 등록 요청 API")
 	public ResponseEntity<JSONResult> trackingnumbercheck(
-			@ModelAttribute @Valid RequestOrdersTrackingDto dto,
+			@RequestBody @Valid RequestOrdersTrackingDto dto,
 			BindingResult result
 			) {
 		// 유효성검사

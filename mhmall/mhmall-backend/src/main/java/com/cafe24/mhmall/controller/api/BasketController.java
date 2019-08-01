@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,15 +99,10 @@ public class BasketController {
 	
 	
 	@Transactional(rollbackFor=Exception.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "optionNo", value = "옵션번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "수량", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 장바구니 추가", notes = "비회원 장바구니 추가 요청 API")
 	public ResponseEntity<JSONResult> basketguestAdd(
-			@ModelAttribute @Valid RequestBasketAddGuestDto dto,
+			@RequestBody @Valid RequestBasketAddGuestDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -130,14 +126,11 @@ public class BasketController {
 	
 
 	
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = "")
-	})
+
 	@RequestMapping(value = "/guest", method = RequestMethod.DELETE)
 	@ApiOperation(value = "비회원 장바구니 삭제", notes = "비회원 장바구니 삭제 요청 API")
 	public ResponseEntity<JSONResult> basketguestDelete(
-			@ModelAttribute @Valid RequestBasketDelGuestDto dto,
+			@RequestBody @Valid RequestBasketDelGuestDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -152,15 +145,11 @@ public class BasketController {
 	
 	
 	
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "수량", paramType = "query", required = true, defaultValue = "")
-	})
+
 	@RequestMapping(value = "/guest", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 장바구니 수정", notes = "비회원 장바구니 수정 요청 API")
 	public ResponseEntity<JSONResult> basketguestEdit(
-			@ModelAttribute @Valid RequestBasketEditGuestDto dto,
+			@RequestBody @Valid RequestBasketEditGuestDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -214,15 +203,12 @@ public class BasketController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "optionNo", value = "옵션번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "수량", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 장바구니 추가", notes = "회원 장바구니 추가 요청 API")
 	public ResponseEntity<JSONResult> basketmemberAdd(
-			@ModelAttribute @Valid RequestBasketAddDto dto,
+			@RequestBody @Valid RequestBasketAddDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
@@ -248,14 +234,12 @@ public class BasketController {
 	
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.DELETE)
 	@ApiOperation(value = "회원 장바구니 삭제", notes = "회원 장바구니 삭제 요청 API")
 	public ResponseEntity<JSONResult> basketmemberDelete(
-			@ModelAttribute @Valid RequestNoDto dto,
+			@RequestBody @Valid RequestNoDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
@@ -272,15 +256,12 @@ public class BasketController {
 	
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "no", value = "장바구니번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "cnt", value = "수량", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원 장바구니 수정", notes = "회원 장바구니 수정 요청 API")
 	public ResponseEntity<JSONResult> basketmemberEdit(
-			@ModelAttribute @Valid RequestBasketEditDto dto,
+			@RequestBody @Valid RequestBasketEditDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {

@@ -8,7 +8,7 @@ import com.cafe24.mhmall.vo.OptionVo;
 public class RequestOptionListDto {
 	@NotNull
 	private Long itemNo;
-	private Long optionDetailNo1;
+	private Long optionDetailNo1 = null;
 	
 	public OptionVo toVo() {
 		return new OptionVo(null, itemNo, optionDetailNo1, null, null, null, null);
@@ -23,6 +23,7 @@ public class RequestOptionListDto {
 		return optionDetailNo1;
 	}
 	public void setOptionDetailNo1(Long optionDetailNo1) {
+		if(optionDetailNo1 == 0) optionDetailNo1 = null;
 		this.optionDetailNo1 = optionDetailNo1;
 	}
 

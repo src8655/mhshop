@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,12 +26,15 @@ import com.cafe24.mhmall.dto.RequestBasketGuestDto;
 import com.cafe24.mhmall.dto.RequestGuestChangePwDto;
 import com.cafe24.mhmall.dto.RequestGuestFindPwDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersDto;
+import com.cafe24.mhmall.dto.RequestGuestOrdersStartDto;
 import com.cafe24.mhmall.dto.RequestGuestOrdersViewDto;
 import com.cafe24.mhmall.dto.RequestMemberIdDto;
 import com.cafe24.mhmall.dto.RequestOrdersNoDto;
 import com.cafe24.mhmall.dto.RequestOrdersTrackingDto;
 import com.cafe24.mhmall.dto.RequestOrdersWriteDto;
+import com.cafe24.mhmall.dto.RequestOrdersWriteGuestDto;
 import com.cafe24.mhmall.dto.ResponseOrdersDto;
+import com.cafe24.mhmall.dto.ResponseOrdersMemberDto;
 import com.cafe24.mhmall.dto.ResponseOrdersViewDto;
 import com.cafe24.mhmall.security.Auth;
 import com.cafe24.mhmall.security.AuthUser;
@@ -81,55 +85,43 @@ public class OrdersController {
 
 	// sqlException 발생 시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
-
-		@ApiImplicitParam(name = "optionNos", value = "주문상품들", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "optionCnts", value = "주문수량들", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 주문", notes = "비회원 주문 요청 API")
 	public ResponseEntity<JSONResult> guestOrders(
-			@ModelAttribute @Valid RequestGuestOrdersDto guestDto,
-			@ModelAttribute @Valid RequestBasketGuestDto basketDto,
-			BindingResult result,
-			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
-			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts
+			@RequestBody @Valid RequestGuestOrdersStartDto guestDto,
+			BindingResult result
 			) {
 		// 유효성검사
 		if(result.hasErrors())
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// 존재하는 옵션들인지 확인
-		if(!optionService.isExistAllOption(optionNos))
+		if(!optionService.isExistAllOption(guestDto.getOptionNos()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
 		// 판매중인 상품들인지 확인
-		if(!optionService.isOnSaleAll(optionNos))
+		if(!optionService.isOnSaleAll(guestDto.getOptionNos()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
+		try {optionService.isExistAllCnt(guestDto.getOptionNos(), guestDto.getOptionCnts());} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
 		}
 
 		// 금액계산
-		Long money = optionService.moneySum(optionNos, optionCnts);
+		Long money = optionService.moneySum(guestDto.getOptionNos(), guestDto.getOptionCnts());
 		
 		// 주문 데이터 추가(회원번호:null, 상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, null);
 		
 		// 옵션으로 비회원 장바구니 삭제
-		basketService.deleteAllByOptionNoG(optionNos, basketDto.toVo());
+		basketService.deleteAllByOptionNoG(guestDto.getOptionNos(), guestDto.toVo2());
 		
 		// 비회원 데이터 추가 <= 주문번호
 		guestService.add(ordersNo, guestDto.toVo());
 		
 		// 주문내역 일괄 추가 <= 주문번호
-		ordersItemService.add(ordersNo, optionNos, optionCnts);
+		ordersItemService.add(ordersNo, guestDto.getOptionNos(), guestDto.getOptionCnts());
 		
 		// 주문내역 리스트 받기
 		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersNo);
@@ -140,30 +132,20 @@ public class OrdersController {
 
 	
 	@Transactional(rollbackFor=Exception.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = ""),
-
-		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toZipcode", value = "받는사람우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toAddr", value = "받는사람주소", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 주문 완료", notes = "비회원 주문 완료 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersPost(
-			@ModelAttribute @Valid RequestGuestOrdersViewDto guestDto,
-			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
+			@RequestBody @Valid RequestOrdersWriteGuestDto guestDto,
 			BindingResult result
 			) {
 		// 유효성검사
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// 존재하는 주문이고 상태가 "주문대기"인지 확인
-		if(!ordersService.isExistAndValid(guestDto.toVo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
+		if(!ordersService.isExistAndValid(guestDto.toVo2())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
 		
 		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
-		if(!ordersService.ordersPost(guestDto.getOrdersNo(), ordersDto.toVo()))
+		if(!ordersService.ordersPost(guestDto.getOrdersNo(), guestDto.toVo()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
 		
 		// 주문을 불러온다.
@@ -181,42 +163,38 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "optionNos", value = "주문상품들", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "optionCnts", value = "주문수량들", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	@ApiOperation(value = "회원 주문", notes = "회원 주문 요청 API")
 	public ResponseEntity<JSONResult> memberOrders(
-			@RequestParam(name = "optionNos", required = true) Long[] optionNos,
-			@RequestParam(name = "optionCnts", required = true) Integer[] optionCnts,
+			@RequestBody ResponseOrdersMemberDto dto,
 			@AuthUser MemberVo authMember
 			) {
 		// 존재하는 옵션들인지 확인
-		if(!optionService.isExistAllOption(optionNos))
+		if(!optionService.isExistAllOption(dto.getOptionNos()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품이 존재합니다."));
 		
 		// 판매중인 상품들인지 확인
-		if(!optionService.isOnSaleAll(optionNos))
+		if(!optionService.isOnSaleAll(dto.getOptionNos()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		try {optionService.isExistAllCnt(optionNos, optionCnts);} catch (Exception e) {
+		try {optionService.isExistAllCnt(dto.getOptionNos(), dto.getOptionCnts());} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
 		}
 
 		// 금액계산
-		Long money = optionService.moneySum(optionNos, optionCnts);
+		Long money = optionService.moneySum(dto.getOptionNos(), dto.getOptionCnts());
 		
 		// 회원 주문 데이터 추가(상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, authMember.getId());
 
 		// 옵션으로 회원 장바구니 삭제
-		basketService.deleteAllByOptionNoM(optionNos, authMember.getId());
+		basketService.deleteAllByOptionNoM(dto.getOptionNos(), authMember.getId());
 		
 		// 주문내역 일괄 추가 <= 주문번호
-		ordersItemService.add(ordersNo, optionNos, optionCnts);
+		ordersItemService.add(ordersNo, dto.getOptionNos(), dto.getOptionCnts());
 		
 		// 주문내역 리스트 받기
 		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersNo);
@@ -231,20 +209,12 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "toName", value = "받는사람이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toPhone", value = "받는사람연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toZipcode", value = "받는사람우편번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "toAddr", value = "받는사람주소", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
 	@RequestMapping(value = "/member", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원 주문 완료", notes = "회원 주문 완료 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersPost(
-			@ModelAttribute @Valid RequestOrdersNoDto dto,
-			@ModelAttribute @Valid RequestOrdersWriteDto ordersDto,
+			@RequestBody @Valid RequestOrdersWriteDto ordersDto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
@@ -252,15 +222,15 @@ public class OrdersController {
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 
 		// 존재하는 주문이고 상태가 "주문대기"인지 확인(회원)
-		if(!ordersService.isExistAndValidMember(dto.getOrdersNo(), authMember.getId()))
+		if(!ordersService.isExistAndValidMember(ordersDto.getOrdersNo(), authMember.getId()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("잘못된 접근입니다."));
 		
 		// 주문에 받는사람 정보를 변경하고 상태를 "입금대기"로 변경
-		if(!ordersService.ordersPost(dto.getOrdersNo(), ordersDto.toVo()))
+		if(!ordersService.ordersPost(ordersDto.getOrdersNo(), ordersDto.toVo()))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("주문실패"));
 		
 		// 주문을 불러온다.
-		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
+		OrdersVo ordersVo = ordersService.getByOrdersNo(ordersDto.getOrdersNo());
 		
 		// 주문번호, 가상계좌은행, 가상계좌번호, 결제해야할 금액을 리턴 
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
@@ -275,7 +245,7 @@ public class OrdersController {
 	@RequestMapping(value = "/guest/view", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 주문상세", notes = "비회원 주문상세 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersView(
-			@ModelAttribute @Valid RequestGuestOrdersViewDto dto,
+			@RequestBody @Valid RequestGuestOrdersViewDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -318,9 +288,9 @@ public class OrdersController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/member/view", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/view/{ordersNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "회원 주문 상세", notes = "회원 주문 상세 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersView(
 			@ModelAttribute @Valid RequestOrdersNoDto dto,
@@ -348,13 +318,12 @@ public class OrdersController {
 	
 	@Transactional(rollbackFor=Exception.class)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/guest/cancel/{ordersNo}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/guest/cancel", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 주문취소", notes = "비회원 주문취소 요청 API")
 	public ResponseEntity<JSONResult> guestOrdersCancel(
-			@ModelAttribute @Valid RequestGuestOrdersViewDto dto,
+			@RequestBody @Valid RequestGuestOrdersViewDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -383,14 +352,12 @@ public class OrdersController {
 	@Transactional(rollbackFor=Exception.class)
 	@Auth
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
-		
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "path", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/member/cancel/{ordersNo}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/member/cancel", method = RequestMethod.PUT)
 	@ApiOperation(value = "회원 주문 취소", notes = "회원 주문 취소 요청 API")
 	public ResponseEntity<JSONResult> memberOrdersCancel(
-			@ModelAttribute @Valid RequestOrdersNoDto dto,
+			@RequestBody @Valid RequestOrdersNoDto dto,
 			BindingResult result,
 			@AuthUser MemberVo authMember
 			) {
@@ -418,17 +385,10 @@ public class OrdersController {
 	
 	
 	
-	
-
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPassword", value = "비회원비밀번호", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest/ordersno", method = RequestMethod.POST)
 	@ApiOperation(value = "주문번호 찾기", notes = "주문번호 찾기 요청 API")
 	public ResponseEntity<JSONResult> guestFindOrdersNo(
-			@ModelAttribute @Valid RequestGuestOrdersDto dto,
+			@RequestBody @Valid RequestGuestOrdersDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -445,15 +405,10 @@ public class OrdersController {
 	
 	
 
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest/password", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 주문 비밀번호 찾기", notes = "비회원 주문 비밀번호 찾기 요청 API")
 	public ResponseEntity<JSONResult> guestFindPw(
-			@ModelAttribute @Valid RequestGuestFindPwDto dto,
+			@RequestBody @Valid RequestGuestFindPwDto dto,
 			BindingResult result
 			) {
 		// 유효성검사
@@ -470,16 +425,10 @@ public class OrdersController {
 	
 	
 
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "ordersNo", value = "주문번호", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestName", value = "비회원이름", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPhone", value = "비회원연락처", paramType = "query", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "guestPassword", value = "변경할 비회원비밀번호", paramType = "query", required = true, defaultValue = "")
-	})
 	@RequestMapping(value = "/guest/password", method = RequestMethod.PUT)
 	@ApiOperation(value = "비회원 주문 비밀번호 변경", notes = "비회원 주문 비밀번호 변경 요청 API")
 	public ResponseEntity<JSONResult> guestChangePw(
-			@ModelAttribute @Valid RequestGuestChangePwDto dto,
+			@RequestBody @Valid RequestGuestChangePwDto dto,
 			BindingResult result
 			) {
 		// 유효성검사

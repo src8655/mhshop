@@ -67,9 +67,11 @@ public class CategoryControllerTest {
 		
 		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())

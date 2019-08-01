@@ -1,6 +1,8 @@
 package com.cafe24.mhmall.frontend.controller;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -48,11 +50,11 @@ public class MemberController {
 			) {
 		
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("id", id);
-        params.add("password", password);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("password", password);
         ResponseJSONResult<MemberVo> rJson = MhmallRestTemplate.<MemberVo>request("/api/member/login", HttpMethod.POST, params, null, MemberVo.class);
-        
+
         // 실패면
         if("fail".equals(rJson.getResult())) {
         	model.addAttribute("message", rJson.getMessage());
@@ -119,14 +121,14 @@ public class MemberController {
 		MemberVo memberVo = dto.toVo();
 		
 		// 가입 요청
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-	    params.add("id", memberVo.getId());
-	    params.add("password", memberVo.getPassword());
-	    params.add("name", memberVo.getName());
-	    params.add("phone", memberVo.getPhone());
-	    params.add("email", memberVo.getEmail());
-	    params.add("zipcode", memberVo.getZipcode());
-	    params.add("addr", memberVo.getAddr());
+        Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("id", memberVo.getId());
+	    params.put("password", memberVo.getPassword());
+	    params.put("name", memberVo.getName());
+	    params.put("phone", memberVo.getPhone());
+	    params.put("email", memberVo.getEmail());
+	    params.put("zipcode", memberVo.getZipcode());
+	    params.put("addr", memberVo.getAddr());
 	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.<Boolean>request("/api/member/join", HttpMethod.POST, params, null, Boolean.class);
 
 	    // 실패면

@@ -95,9 +95,9 @@ public class ItemController {
 	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "itemNo", value = "상품번호", paramType = "path", required = true, defaultValue = ""),
-		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "optionDetailNo1", value = "1차상세옵션번호", paramType = "path", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/option/list/{itemNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/option/list/{itemNo}/{optionDetailNo1}", method = RequestMethod.GET)
 	@ApiOperation(value = "옵션 리스트", notes = "옵션 리스트 API")
 	public ResponseEntity<JSONResult> itemoptionList(
 			@ModelAttribute @Valid RequestOptionListDto dto,

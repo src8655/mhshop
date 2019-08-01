@@ -70,9 +70,11 @@ public class ItemControllerTest {
 		
 		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -133,8 +135,7 @@ public class ItemControllerTest {
 	public void testC옵션리스트() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/item/option/list/{itemNo}", 1L)
-				.param("optionDetailNo1", "")
+		resultActions = mockMvc.perform(get("/api/item/option/list/{itemNo}/{optionDetailNo1}", 1L, 0L)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

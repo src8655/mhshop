@@ -3,7 +3,10 @@ package com.cafe24.mhmall.frontend.util;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,13 +22,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MhmallRestTemplate {
 	public static final String BACKENDHOST = "http://localhost:8888/mhmall";
 	
 	
-	public static <T> ResponseJSONResult<T> request(String uri, HttpMethod method , MultiValueMap<String, String> params, String authorization, Class<T> types) {
+	public static <T> ResponseJSONResult<T> request(String uri, HttpMethod method , Map<String, Object> params, String authorization, Class<T> types) {
         RestTemplate restTemplate = new RestTemplate();
  
         // 서버로 요청할 Header
@@ -33,9 +37,24 @@ public class MhmallRestTemplate {
         // 인증
         if(authorization != null) headers.add("Authorization", "Basic " + authorization);
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
-
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        
+        HttpEntity body = null;
+        if(method == HttpMethod.GET) {
+			// json 으로 변환
+    		String bodys = null;
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        if(params != null) {
+				try {
+					bodys = objectMapper.writeValueAsString(params);
+				} catch (JsonProcessingException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+	        }
+	        body = new HttpEntity(bodys, headers);
+        }else body = new HttpEntity(params, headers);
+        
         
     	try {
     		ResponseEntity<ResponseJSONResult> response = restTemplate.exchange(new URI(BACKENDHOST + uri), method, body, ResponseJSONResult.class);
@@ -63,4 +82,5 @@ public class MhmallRestTemplate {
 		}
         return null;
     }
+	
 }

@@ -66,9 +66,11 @@ public class MemberControllerTest {
 		
 		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -128,14 +130,16 @@ public class MemberControllerTest {
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "1test_id3")
-				.param("password", "testpassword3!")
-				.param("name", "test3")
-				.param("phone", "01000000003")
-				.param("email", "test_email3@naver.com")
-				.param("zipcode", "test_zipcode3")
-				.param("addr", "test_addr3")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+"\"id\":\"1test_id3\","
+						+"\"password\":\"testpassword3!\","
+						+"\"name\":\"test3\","
+						+"\"phone\":\"01033244343\","
+						+"\"email\":\"test_email3@naver.com\","
+						+"\"zipcode\":\"test_zipcode3\","
+						+"\"addr\":\"test_addr3\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -143,14 +147,16 @@ public class MemberControllerTest {
 		
 		// 비밀번호 Valid
 		resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "test_id3")
-				.param("password", "testpassword3")
-				.param("name", "test3")
-				.param("phone", "01000000003")
-				.param("email", "test_email3@naver.com")
-				.param("zipcode", "test_zipcode3")
-				.param("addr", "test_addr3")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+"\"id\":\"test_id3\","
+						+"\"password\":\"testpassword3\","
+						+"\"name\":\"test3\","
+						+"\"phone\":\"01033244343\","
+						+"\"email\":\"test_email3@naver.com\","
+						+"\"zipcode\":\"test_zipcode3\","
+						+"\"addr\":\"test_addr3\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -158,14 +164,16 @@ public class MemberControllerTest {
 		
 		// 전화번호 Valid
 		resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "test_id3")
-				.param("password", "testpassword3!")
-				.param("name", "test3")
-				.param("phone", "test_phone")
-				.param("email", "test_email3@naver.com")
-				.param("zipcode", "test_zipcode3")
-				.param("addr", "test_addr3")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+"\"id\":\"test_id3\","
+						+"\"password\":\"testpassword3!\","
+						+"\"name\":\"test3\","
+						+"\"phone\":\"test_phone\","
+						+"\"email\":\"test_email3@naver.com\","
+						+"\"zipcode\":\"test_zipcode3\","
+						+"\"addr\":\"test_addr3\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -173,14 +181,16 @@ public class MemberControllerTest {
 		
 		// 회원가입성공
 		resultActions = mockMvc.perform(post("/api/member/join")
-				.param("id", "test_id0")
-				.param("password", "testpassword3!")
-				.param("name", "test3")
-				.param("phone", "01033244343")
-				.param("email", "test_email3@naver.com")
-				.param("zipcode", "test_zipcode3")
-				.param("addr", "test_addr3")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+"\"id\":\"test_id0\","
+						+"\"password\":\"testpassword3!\","
+						+"\"name\":\"test3\","
+						+"\"phone\":\"01033244343\","
+						+"\"email\":\"test_email3@naver.com\","
+						+"\"zipcode\":\"test_zipcode3\","
+						+"\"addr\":\"test_addr3\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -201,9 +211,11 @@ public class MemberControllerTest {
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "1test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"1test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -211,9 +223,11 @@ public class MemberControllerTest {
 		
 		// 비밀번호 Valid
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -223,7 +237,11 @@ public class MemberControllerTest {
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.param("id", "test_id9")
 				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id9\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -231,9 +249,11 @@ public class MemberControllerTest {
 		
 		// 로그인 성공
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -277,15 +297,17 @@ public class MemberControllerTest {
 		
 		// 회원정보 불러오기
 		resultActions = mockMvc.perform(put("/api/member/loginupdate")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.param("name", "cname")
-				.param("phone", "01033244343")
-				.param("email", "test_email3@naver.com")
-				.param("zipcode", "test_zipcode3")
-				.param("addr", "test_addr3")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+"\"id\":\"test_id1\","
+						+"\"password\":\"testpassword1!\","
+						+"\"name\":\"cname\","
+						+"\"phone\":\"01033244343\","
+						+"\"email\":\"test_email3@naver.com\","
+						+"\"zipcode\":\"test_zipcode3\","
+						+"\"addr\":\"test_addr3\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions.andDo(print())
 		.andExpect(status().isOk())

@@ -71,9 +71,11 @@ public class BasketControllerTest {
 		
 		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id1")
-				.param("password", "testpassword1!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id1\","
+						+ "\"password\":\"testpassword1!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -129,10 +131,12 @@ public class BasketControllerTest {
 
 		// 세션 Valid
 		resultActions = mockMvc.perform(post("/api/basket/guest")
-				.param("guestSession", "")
-				.param("optionNo", "1")
-				.param("cnt", "7")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"\","
+						+ "\"optionNo\":\"1\","
+						+ "\"cnt\":\"7\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -140,10 +144,12 @@ public class BasketControllerTest {
 		
 		// 없는 옵션일 때 실패
 		resultActions = mockMvc.perform(post("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("optionNo", "99")
-				.param("cnt", "7")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"optionNo\":\"99\","
+						+ "\"cnt\":\"7\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -151,10 +157,12 @@ public class BasketControllerTest {
 
 		// 재고가 부족할 때 실패
 		resultActions = mockMvc.perform(post("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("optionNo", "1")
-				.param("cnt", "99")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"optionNo\":\"1\","
+						+ "\"cnt\":\"99\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -162,10 +170,12 @@ public class BasketControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(post("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("optionNo", "1")
-				.param("cnt", "7")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"optionNo\":\"1\","
+						+ "\"cnt\":\"7\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -183,9 +193,11 @@ public class BasketControllerTest {
 
 		// 세션 Valid
 		resultActions = mockMvc.perform(delete("/api/basket/guest")
-				.param("guestSession", "")
-				.param("no", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"\","
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -193,9 +205,11 @@ public class BasketControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("no", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"no\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -212,10 +226,12 @@ public class BasketControllerTest {
 
 		// 세션 Valid
 		resultActions = mockMvc.perform(put("/api/basket/guest")
-				.param("guestSession", "")
-				.param("no", "1")
-				.param("cnt", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"\","
+						+ "\"no\":\"1\","
+						+ "\"cnt\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -223,10 +239,12 @@ public class BasketControllerTest {
 		
 		// 없는 장바구니
 		resultActions = mockMvc.perform(put("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("no", "99")
-				.param("cnt", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"no\":\"99\","
+						+ "\"cnt\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -234,10 +252,12 @@ public class BasketControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(put("/api/basket/guest")
-				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
-				.param("no", "1")
-				.param("cnt", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
+						+ "\"no\":\"1\","
+						+ "\"cnt\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -284,9 +304,11 @@ public class BasketControllerTest {
 		// 없는 옵션일 때 실패
 		resultActions = mockMvc.perform(post("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("optionNo", "99")
-				.param("cnt", "7")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionNo\":\"99\","
+						+ "\"cnt\":\"7\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -295,9 +317,11 @@ public class BasketControllerTest {
 		// 재고가 부족할 때 실패
 		resultActions = mockMvc.perform(post("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("optionNo", "1")
-				.param("cnt", "99")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionNo\":\"1\","
+						+ "\"cnt\":\"99\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -306,9 +330,11 @@ public class BasketControllerTest {
 		// 성공
 		resultActions = mockMvc.perform(post("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("optionNo", "1")
-				.param("cnt", "7")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"optionNo\":\"1\","
+						+ "\"cnt\":\"7\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -328,8 +354,10 @@ public class BasketControllerTest {
 		// 장바구니 번호 Valid
 		resultActions = mockMvc.perform(delete("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -338,8 +366,10 @@ public class BasketControllerTest {
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "3")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"3\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -357,9 +387,11 @@ public class BasketControllerTest {
 		// 장바구니번호 Valid
 		resultActions = mockMvc.perform(put("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "")
-				.param("cnt", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"\","
+						+ "\"cnt\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -368,9 +400,11 @@ public class BasketControllerTest {
 		// 없는 장바구니
 		resultActions = mockMvc.perform(put("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "99")
-				.param("cnt", "1")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"99\","
+						+ "\"cnt\":\"1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -379,9 +413,11 @@ public class BasketControllerTest {
 		// 재고가 부족할 때
 		resultActions = mockMvc.perform(put("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "3")
-				.param("cnt", "99")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"3\","
+						+ "\"cnt\":\"99\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
@@ -390,9 +426,11 @@ public class BasketControllerTest {
 		// 성공
 		resultActions = mockMvc.perform(put("/api/basket/member")
 				.header("Authorization", "Basic " + authorization)
-				.param("no", "3")
-				.param("cnt", "6")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"no\":\"3\","
+						+ "\"cnt\":\"6\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isOk())

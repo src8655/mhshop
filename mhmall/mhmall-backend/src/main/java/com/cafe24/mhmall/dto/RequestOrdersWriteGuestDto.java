@@ -5,9 +5,10 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.cafe24.mhmall.vo.GuestVo;
 import com.cafe24.mhmall.vo.OrdersVo;
 
-public class RequestOrdersWriteDto {
+public class RequestOrdersWriteGuestDto {
 	@NotEmpty
 	@Length(min=2, max=5)
 	private String toName;
@@ -18,20 +19,23 @@ public class RequestOrdersWriteDto {
 	private String toZipcode;
 	@NotEmpty
 	private String toAddr;
+	
 
 	@NotEmpty
 	private String ordersNo;
+	@NotEmpty(message = "최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함")
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$")
+	private String guestPassword;
+	
 
-	public OrdersVo toVo2() {
-		return new OrdersVo(ordersNo, null, null, null, null, null, null, null, null, null, null, null, null, null);
-	}
-	
-	
 	public OrdersVo toVo() {
 		return new OrdersVo(null, null, null, null, null, null, null, null, toName, toPhone, toZipcode, toAddr, null, null);
 	}
-	public RequestOrdersWriteDto() {}
-	public RequestOrdersWriteDto(String toName, String toPhone, String toZipcode, String toAddr) {
+	public GuestVo toVo2() {
+		return new GuestVo(ordersNo, null, null, guestPassword, null);
+	}
+	public RequestOrdersWriteGuestDto() {}
+	public RequestOrdersWriteGuestDto(String toName, String toPhone, String toZipcode, String toAddr) {
 		this.toName = toName;
 		this.toPhone = toPhone;
 		this.toZipcode = toZipcode;
@@ -61,13 +65,17 @@ public class RequestOrdersWriteDto {
 	public void setToAddr(String toAddr) {
 		this.toAddr = toAddr;
 	}
-
-
 	public String getOrdersNo() {
 		return ordersNo;
 	}
 	public void setOrdersNo(String ordersNo) {
 		this.ordersNo = ordersNo;
+	}
+	public String getGuestPassword() {
+		return guestPassword;
+	}
+	public void setGuestPassword(String guestPassword) {
+		this.guestPassword = guestPassword;
 	}
 	
 	

@@ -69,9 +69,11 @@ public class AdminMemberControllerTest {
 		
 		// 관리자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
-				.param("id", "test_id2")
-				.param("password", "testpassword2!")
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id2\","
+						+ "\"password\":\"testpassword2!\""
+						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
 		.andExpect(status().isOk())
@@ -170,18 +172,24 @@ public class AdminMemberControllerTest {
 		ResultActions resultActions;
 		
 		// 아이디 Valid
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "1test_id1")
+		resultActions = mockMvc.perform(delete("/api/admin/member")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"1test_id1\""
+						+ "}"));
 		// 응답이 400 인지
 		resultActions
 		.andExpect(status().isBadRequest());
 		
 
 		// 삭제 실패(없는 아이디)
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id3")
+		resultActions = mockMvc.perform(delete("/api/admin/member")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id3\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
@@ -189,9 +197,12 @@ public class AdminMemberControllerTest {
 		
 
 		// 삭제 성공
-		resultActions = mockMvc.perform(delete("/api/admin/member/{id}", "test_id2")
+		resultActions = mockMvc.perform(delete("/api/admin/member")
 				.header("Authorization", "Basic " + authorization)
-				.contentType(MediaType.APPLICATION_JSON));
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{"
+						+ "\"id\":\"test_id2\""
+						+ "}"));
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
