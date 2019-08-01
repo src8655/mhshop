@@ -93,17 +93,9 @@ public class BasketControllerTest {
 	public void testA비회원장바구니리스트() throws Exception {
 		ResultActions resultActions;
 
-		// 세션 Valid
-		resultActions = mockMvc.perform(get("/api/basket/guest")
-				.param("guestSession", "")
-				.contentType(MediaType.APPLICATION_JSON));
-		// 응답이 400 인지
-		resultActions
-		.andExpect(status().isBadRequest());
-		
 
 		// 성공
-		resultActions = mockMvc.perform(get("/api/basket/guest")
+		resultActions = mockMvc.perform(get("/api/basket/guest/{guestSession}", "ODIJOSAIDPBV132012ID9V823V")
 				.param("guestSession", "ODIJOSAIDPBV132012ID9V823V")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지

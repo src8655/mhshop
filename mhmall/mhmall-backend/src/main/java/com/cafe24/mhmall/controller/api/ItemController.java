@@ -116,9 +116,9 @@ public class ItemController {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = "")
+		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "path", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/{categoryNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> itemlist(
 			@ModelAttribute @Valid RequestItemCategoryDto dto,
@@ -158,7 +158,7 @@ public class ItemController {
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "query", required = false, defaultValue = ""),
 		@ApiImplicitParam(name = "showCnt", value = "보여질 개수", paramType = "query", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/list/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/new/{categoryNo}/{showCnt}", method = RequestMethod.GET)
 	@ApiOperation(value = "최근 상품 리스트", notes = "최근 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> newitemlist(
 			@ModelAttribute @Valid RequestItemNewListDto dto,

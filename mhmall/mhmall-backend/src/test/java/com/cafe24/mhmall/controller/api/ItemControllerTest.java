@@ -157,8 +157,7 @@ public class ItemControllerTest {
 		ResultActions resultActions;
 		
 		
-		resultActions = mockMvc.perform(get("/api/item/list")
-				.param("categoryNo", "1")
+		resultActions = mockMvc.perform(get("/api/item/list/{categoryNo}", 1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -203,9 +202,7 @@ public class ItemControllerTest {
 		ResultActions resultActions;
 		
 		
-		resultActions = mockMvc.perform(get("/api/item/list/new")
-				.param("showCnt", "5")
-				.param("categoryNo", "1")
+		resultActions = mockMvc.perform(get("/api/item/list/new/{categoryNo}/{showCnt}", 1L, 5L)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

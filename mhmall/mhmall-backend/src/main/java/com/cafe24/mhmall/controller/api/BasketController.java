@@ -73,9 +73,9 @@ public class BasketController {
 	
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "query", required = true, defaultValue = "")
+		@ApiImplicitParam(name = "guestSession", value = "비회원식별자", paramType = "path", required = true, defaultValue = "")
 	})
-	@RequestMapping(value = "/guest", method = RequestMethod.GET)
+	@RequestMapping(value = "/guest/{guestSession}", method = RequestMethod.GET)
 	@ApiOperation(value = "비회원 장바구니 리스트", notes = "비회원 장바구니 리스트 요청 API")
 	public ResponseEntity<JSONResult> basketguestList(
 			@ModelAttribute @Valid RequestBasketGuestDto guestDto,
