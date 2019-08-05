@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,34 +18,36 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+	public Object resolveArgument(
+		MethodParameter parameter,
+		ModelAndViewContainer mavContainer,
+		NativeWebRequest webRequest,
+		WebDataBinderFactory binderFactory) throws Exception {
 		
-		if(supportsParameter(parameter) == false) {
-			return WebArgumentResolver.UNRESOLVED;
+		Object principal = null;
+		if(SecurityContextHolder.getContext().getAuthentication() != null){
+			principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
+		System.out.println(principal);
 		
-		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-		HttpSession session = request.getSession();
-		
-		if(session == null) {
+		if(principal == null || principal.getClass() == String.class) {
 			return null;
-		}
+		} 
 		
-		return session.getAttribute("authUser");
+		return principal;
 	}
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		AuthUser authUser = parameter.getParameterAnnotation(AuthUser.class);
 		
-		// @AuthUser 가 안붙어 있음
-		if(authUser == null) {
+		// @AuthUser가 안붙어 있음
+		if( authUser == null ) {
 			return false;
 		}
 		
-		// 파라미터 타입이 UserVo가 아니면
-		if(!parameter.getParameterType().equals(MemberVo.class)) {
+		// 파라미터 타입이 UserVo가 아님
+		if(parameter.getParameterType().equals( SecurityUser.class ) == false) {
 			return false;
 		}
 		

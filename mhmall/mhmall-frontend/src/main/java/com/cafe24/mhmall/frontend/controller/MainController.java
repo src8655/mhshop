@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +31,7 @@ public class MainController {
 
 	@RequestMapping({"", "/"})
 	public String main(
-			@AuthUser MemberVo authUser
+			@AuthUser SecurityUser authUser
 			) {
 		System.out.println(authUser);
 		return "main/index";

@@ -63,7 +63,7 @@ public class AdminMemberController {
 	}
 	
 
-	@Auth(role = Role.ROLE_ADMIN)
+	//@Auth(role = Role.ROLE_ADMIN)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = ""),
 		

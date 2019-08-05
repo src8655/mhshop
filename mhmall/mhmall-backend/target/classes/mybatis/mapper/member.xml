@@ -16,7 +16,7 @@
 		insert into member(id, password, name, phone, email, zipcode, addr, reg_date, role)
 		values(
 		AES_ENCRYPT(#{id}, #{aesKey}),
-		SHA2(#{password}, 512),
+		#{password},
 		AES_ENCRYPT(#{name}, #{aesKey}),
 		AES_ENCRYPT(#{phone}, #{aesKey}),
 		AES_ENCRYPT(#{email}, #{aesKey}),
@@ -25,6 +25,7 @@
 		now(),
 		#{role})
 	]]>
+		<!-- SHA2(#{password}, 512), -->
 
 	</insert>
 	

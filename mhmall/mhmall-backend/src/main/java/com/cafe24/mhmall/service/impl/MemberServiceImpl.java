@@ -5,6 +5,8 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mhmall.repository.MemberDao;
@@ -37,6 +39,9 @@ public class MemberServiceImpl implements MemberService {
 
 		memberVo.setRole(Auth.Role.ROLE_USER.toString());
 		
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
+		
 		int result = memberDao.insert(memberVo);
 		return result == 1;
 	}
@@ -65,6 +70,11 @@ public class MemberServiceImpl implements MemberService {
 	// 아이디로 회원조회
 	@Override
 	public MemberVo getById(MemberVo memberVo) {
+		
+		if(memberVo != null) {
+			memberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
+		}
+		
 		return memberDao.selectOneById(memberVo);
 	}
 

@@ -40,7 +40,7 @@ public class MhmallRestTemplate {
         headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         
         HttpEntity body = null;
-        if(method == HttpMethod.GET) {
+        if(method != HttpMethod.GET) {
 			// json 으로 변환
     		String bodys = null;
 	        ObjectMapper objectMapper = new ObjectMapper();
