@@ -34,7 +34,7 @@ public class MhmallRestTemplate {
  
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
-        // 인증
+        // 인증/
         if(authorization != null) headers.add("Authorization", "Basic " + authorization);
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
