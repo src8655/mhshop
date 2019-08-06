@@ -2,6 +2,7 @@ package com.cafe24.mhmall.frontend.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -20,9 +21,14 @@ public class AdminServiceImpl implements AdminService {
 	
 	// 관리자 회원목록
 	@Override
-	public ResponseJSONResult<ListMemberVo> getMemberList(String authorization) {
+	public ResponseJSONResult<ListMemberVo> getMemberList(String authorization, Optional<String> search) {
 		
-		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list", HttpMethod.GET, null, authorization);
+		String search_str = "";
+		// 검색어가 존재하면
+		if(search.isPresent())
+			search_str = "/" + search.get();
+		
+		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list"+search_str, HttpMethod.GET, null, authorization);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListMemberVo data = mapper.convertValue(rJson.getData(), ListMemberVo.class);

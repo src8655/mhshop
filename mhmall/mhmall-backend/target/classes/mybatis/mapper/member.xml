@@ -53,7 +53,6 @@
 	
 	<!-- 회원리스트 -->
 	<select id="selectlist" parameterType="java.util.Map" resultType="membervo">
-	<![CDATA[
 		SELECT 
 		cast(AES_DECRYPT(id, #{aesKey}) as char) as id,
 		password,
@@ -65,8 +64,10 @@
 		DATE_FORMAT(reg_date,'%Y년%m월%d일') as regDate,
 		role
 		FROM member
+		<if test="search != null">
+		where cast(AES_DECRYPT(name, #{aesKey}) as char) like CONCAT('%',#{search},'%')
+		</if>
 		order by regDate desc
-	]]>
 	</select>
 	
 	

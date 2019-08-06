@@ -23,7 +23,7 @@
 		}
 </style>
 
-<div class="container">
+	<div class="container">
     	<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-primary">
@@ -68,6 +68,11 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	
 
 
 <c:import url="/WEB-INF/views/admin/include/footer.jsp"></c:import>

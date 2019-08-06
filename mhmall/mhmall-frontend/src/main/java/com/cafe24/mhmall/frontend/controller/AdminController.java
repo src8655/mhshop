@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -55,8 +56,9 @@ public class AdminController {
 
 	// 관리자 회원목록
 	@Auth(role = Role.ROLE_ADMIN)
-	@RequestMapping(value = "/member", method = RequestMethod.GET)
+	@RequestMapping(value = {"/member", "/member/{search}"}, method = RequestMethod.GET)
 	public String member(
+			@PathVariable("search") Optional<String> search,
 			@AuthUser MemberVo authUser,
 			Model model
 			) {
@@ -64,7 +66,7 @@ public class AdminController {
 		System.out.println(authUser);
 		
 		// 관리자 회원목록
-		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(authUser.getMockToken());
+		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(authUser.getMockToken(), search);
 		
 		model.addAttribute("memberList", rJson.getData());
 		return "admin/member";

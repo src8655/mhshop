@@ -50,13 +50,14 @@ public class AdminMemberController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "authorization", value = "인증키", paramType = "header", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = {"/list", "/list/{search}"}, method = RequestMethod.GET)
 	@ApiOperation(value = "회원 리스트", notes = "회원 리스트 요청 API")
-	public ResponseEntity<JSONResult> list() {
-		// 권한 확인
+	public ResponseEntity<JSONResult> list(
+			@PathVariable(name = "search", required = false, value = "") String search
+			) {
 		
 		// Service에 회원리스트 요청
-		List<MemberVo> memberList = memberService.getList();
+		List<MemberVo> memberList = memberService.getList(search);
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(memberList));

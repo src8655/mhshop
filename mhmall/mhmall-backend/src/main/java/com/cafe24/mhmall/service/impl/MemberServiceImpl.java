@@ -62,8 +62,8 @@ public class MemberServiceImpl implements MemberService {
 
 	// 회원 리스트
 	@Override
-	public List<MemberVo> getList() {
-		return memberDao.selectList();
+	public List<MemberVo> getList(String search) {
+		return memberDao.selectList(search);
 	}
 
 
