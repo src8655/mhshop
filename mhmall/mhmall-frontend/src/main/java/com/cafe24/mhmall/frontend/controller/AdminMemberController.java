@@ -38,16 +38,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/admin/member")
+public class AdminMemberController {
 	
-	// 관리자 메인
+	@Autowired
+	AdminMemberService adminMemberService;
+	
+
+	// 관리자 회원목록
 	@Auth(role = Role.ROLE_ADMIN)
-	@RequestMapping({"", "/"})
-	public String admin() {
+	@RequestMapping(value = {"", "/{search}"}, method = RequestMethod.GET)
+	public String member(
+			@PathVariable("search") Optional<String> search,
+			@AuthUser MemberVo authUser,
+			Model model
+			) {
 		
-		return "admin/index";
+		// 관리자 회원목록
+		ResponseJSONResult<AdminMemberService.ListMemberVo> rJson = adminMemberService.getMemberList(authUser.getMockToken(), search);
+		
+		model.addAttribute("memberList", rJson.getData());
+		if(search.isPresent()) {
+			model.addAttribute("searchs", search.get());
+			System.out.println(search.get());
+		}
+		return "admin/member";
 	}
-	
-	
 }

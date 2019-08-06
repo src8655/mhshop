@@ -29,6 +29,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.service.AdminCategoryService;
 import com.cafe24.mhmall.frontend.service.AdminMemberService;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
@@ -38,16 +39,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/admin/item")
+public class AdminItemController {
 	
-	// 관리자 메인
+	
+	// 관리자 상품목록
 	@Auth(role = Role.ROLE_ADMIN)
-	@RequestMapping({"", "/"})
-	public String admin() {
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String item(
+			@AuthUser MemberVo authUser,
+			Model model
+			) {
 		
-		return "admin/index";
+		return "admin/item";
 	}
 	
+	
+
+	// 관리자 상품목록
+	@Auth(role = Role.ROLE_ADMIN)
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
+	public String item_write_form(
+			@AuthUser MemberVo authUser,
+			Model model
+			) {
+		
+		return "admin/item_write";
+	}
 	
 }

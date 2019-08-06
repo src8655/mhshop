@@ -34,10 +34,10 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">관리자페이지</div>
       <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">카테고리 관리</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">상품관리</a>
+        <a href="${pageContext.servletContext.contextPath}/admin/category" class="list-group-item list-group-item-action bg-light">카테고리 관리</a>
+        <a href="${pageContext.servletContext.contextPath}/admin/item" class="list-group-item list-group-item-action bg-light">상품관리</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">주문관리</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">회원관리</a>
+        <a href="${pageContext.servletContext.contextPath}/admin/member" class="list-group-item list-group-item-action bg-light">회원관리</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->

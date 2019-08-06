@@ -5,22 +5,33 @@
 
 <c:import url="/WEB-INF/views/admin/include/header.jsp"></c:import>
 
-<style>
-    	.row{
-		    margin-top:40px;
-		    padding: 0 10px;
-		}
-		.clickable{
-		    cursor: pointer;   
-		}
+<style type="text/css">
+.row{
+    margin-top:40px;
+    padding: 0 10px;
+}
+.clickable{
+    cursor: pointer;   
+}
 
-		.panel-heading div {
-			margin-top: -18px;
-			font-size: 15px;
-		}
-		.panel-heading div span{
-			margin-left:5px;
-		}
+.panel-heading div {
+	margin-top: -18px;
+	font-size: 15px;
+}
+.panel-heading div span{
+	margin-left:5px;
+}
+
+@media screen and (max-width:990px) {
+	.member_table_bg {
+		width:100%;
+		overflow-x:scroll;
+		overflow-y:hidden;
+	}
+	.member_table {
+		width:750px;
+	}
+}
 </style>
 
 
@@ -45,18 +56,13 @@ $(function(){
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">회원목록</h3>
-						<div class="pull-right">
-							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
-								<i class="glyphicon glyphicon-filter"></i>
-							</span>
-						</div>
 					</div>
 					<div class="panel-body">
 						<input type="text" class="form-control float-left mb-3" style="width:68%;" id="admin_member_search" placeholder="이름으로 검색" value="${searchs}" />
 						<button class="btn btn-success float-right" style="width:30%;" id="admin_member_search_btn">검색</button>
 					</div>
-					<div class="">
-					<table class="table table-hover" id="dev-table">
+					<div class="member_table_bg">
+					<table class="table table-hover member_table">
 						<thead>
 							<tr>
 								<th>아이디</th>
@@ -85,6 +91,10 @@ $(function(){
 			</div>
 		</div>
 	</div>
+	
+					
+
+					
 	
 	
 	

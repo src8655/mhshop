@@ -6,7 +6,7 @@
 	<!-- 카테고리 리스트 조회 -->
  	<select id="selectList" resultType="categoryvo">
 	<![CDATA[
-		select no, name from category order by no asc
+		select no, name from category order by name asc
 	]]>
 	</select>
 	
