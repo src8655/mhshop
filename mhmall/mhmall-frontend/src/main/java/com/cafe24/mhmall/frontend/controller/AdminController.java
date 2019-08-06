@@ -26,7 +26,6 @@ import com.cafe24.mhmall.frontend.dto.JSONResult;
 import com.cafe24.mhmall.frontend.dto.RequestJoinDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.AuthUser;
-import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.AdminService;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
@@ -54,11 +53,11 @@ public class AdminController {
 	// 관리자 회원목록
 	@RequestMapping(value = "/member", method = RequestMethod.GET)
 	public String member(
-			@AuthUser SecurityUser securityUser
+			@AuthUser MemberVo authUser
 			) {
 		
 		// 관리자 회원목록
-		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(securityUser.getAuthorization());
+		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(authUser.getMockToken());
 		
 		System.out.println(rJson.getMessage());
 		

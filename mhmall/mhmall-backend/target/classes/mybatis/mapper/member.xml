@@ -16,7 +16,7 @@
 		insert into member(id, password, name, phone, email, zipcode, addr, reg_date, role)
 		values(
 		AES_ENCRYPT(#{id}, #{aesKey}),
-		#{password},
+		SHA2(#{password}, 512),
 		AES_ENCRYPT(#{name}, #{aesKey}),
 		AES_ENCRYPT(#{phone}, #{aesKey}),
 		AES_ENCRYPT(#{email}, #{aesKey}),
@@ -46,9 +46,8 @@
 		
 		FROM member
 		where id=AES_ENCRYPT(#{id}, #{aesKey})
-		and password=#{password}
+		and password=SHA2(#{password}, 512)
 	]]>
-	<!-- and password=SHA2(#{password}, 512) -->
 	</select>
 	
 	

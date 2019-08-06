@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
 		
 		if(newMemberVo != null) {
-			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));
+			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
 		}
 		
 		return newMemberVo;
@@ -71,10 +71,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVo getById(MemberVo memberVo) {
 		MemberVo newMemberVo = memberDao.selectOneById(memberVo);
-		
-		if(newMemberVo != null) {
-			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));
-		}
 		
 		return newMemberVo;
 	}

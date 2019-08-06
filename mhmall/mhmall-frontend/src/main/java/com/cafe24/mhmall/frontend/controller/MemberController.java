@@ -45,7 +45,7 @@ public class MemberController {
 		return "member/login";
 	}
 	
-/*
+
 	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(
@@ -55,11 +55,8 @@ public class MemberController {
 			HttpSession session
 			) {
 		
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("id", id);
-        params.put("password", password);
-        ResponseJSONResult<MemberVo> rJson = MhmallRestTemplate.<MemberVo>request("/api/member/login", HttpMethod.POST, params, null, MemberVo.class);
+		
+		ResponseJSONResult<MemberVo> rJson = memberService.login(id, password);
 
         // 실패면
         if("fail".equals(rJson.getResult())) {
@@ -67,6 +64,7 @@ public class MemberController {
         	return "post/error";
         }
         
+        // 세션에 저장
         MemberVo memberVo = rJson.getData();
         session.setAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, memberVo.getRole(), memberVo.getMockToken()));
 		
@@ -81,11 +79,12 @@ public class MemberController {
 			HttpSession session
 			) {
 		
+		// 세션에서 제거
         session.setAttribute("authUser", null);
 		
 		return "redirect:/";
 	}
-	*/
+	
 	
 	
 

@@ -24,17 +24,9 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		NativeWebRequest webRequest,
 		WebDataBinderFactory binderFactory) throws Exception {
 		
-		Object principal = null;
-		if(SecurityContextHolder.getContext().getAuthentication() != null){
-			principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		}
-		System.out.println(principal);
 		
-		if(principal == null || principal.getClass() == String.class) {
-			return null;
-		} 
 		
-		return principal;
+		return null;
 	}
 
 	@Override
@@ -47,7 +39,7 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		}
 		
 		// 파라미터 타입이 UserVo가 아님
-		if(parameter.getParameterType().equals( SecurityUser.class ) == false) {
+		if(parameter.getParameterType().equals( MemberVo.class ) == false) {
 			return false;
 		}
 		

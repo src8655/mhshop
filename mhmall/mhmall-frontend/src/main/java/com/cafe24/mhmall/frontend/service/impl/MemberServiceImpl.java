@@ -19,21 +19,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class MemberServiceImpl implements MemberService {
 	
-	@Autowired
-	private OAuth2RestTemplate restTemplate;
-
-	
 	// 로그인
 	@Override
-	public MemberVo login(String id){
-		
-		ResponseJSONResult<MemberVo> jsonResult = MhmallRestTemplate.request(restTemplate, "/api/admin/member/view/" + id, HttpMethod.GET, null, null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		MemberVo data = mapper.convertValue(jsonResult.getData(), MemberVo.class);
-		jsonResult.setData(data);
-
-		return jsonResult.getData();
+	public ResponseJSONResult<MemberVo> login(String id, String password) {
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("password", password);
+        ResponseJSONResult<MemberVo> rJson = MhmallRestTemplate.request("/api/member/login", HttpMethod.POST, params, null);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        MemberVo data = mapper.convertValue(rJson.getData(), MemberVo.class);
+		rJson.setData(data);
+        
+		return rJson;
 	}
 	
 	
@@ -56,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
 	    params.put("zipcode", memberVo.getZipcode());
 	    params.put("addr", memberVo.getAddr());
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/member/join", HttpMethod.POST, params, null);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/member/join", HttpMethod.POST, params, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -69,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
 	// 아이디 중복확인
 	@Override
 	public ResponseJSONResult<Boolean> idcheck(String id) {
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/member/join/idcheck/" + id, HttpMethod.GET, null, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/member/join/idcheck/" + id, HttpMethod.GET, null, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -77,4 +75,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		return rJson;
 	}
+
+
+
 }

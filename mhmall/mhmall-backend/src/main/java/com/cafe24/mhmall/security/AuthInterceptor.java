@@ -43,7 +43,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		
-		/*
+		
 		
 		
 		
@@ -107,7 +107,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		*/
+		
 		return true;
 	}
 

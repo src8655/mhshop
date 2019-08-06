@@ -16,16 +16,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-	
-	@Autowired
-	private OAuth2RestTemplate restTemplate;
 
 	
 	// 관리자 회원목록
 	@Override
 	public ResponseJSONResult<ListMemberVo> getMemberList(String authorization) {
 		
-		ResponseJSONResult rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/member/list", HttpMethod.POST, null, authorization);
+		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list", HttpMethod.POST, null, authorization);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListMemberVo data = mapper.convertValue(rJson.getData(), ListMemberVo.class);
