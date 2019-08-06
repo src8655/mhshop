@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cafe24.mhmall.frontend.dto.JSONResult;
 import com.cafe24.mhmall.frontend.dto.RequestJoinDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
+import com.cafe24.mhmall.frontend.security.Auth;
+import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
 import com.cafe24.mhmall.frontend.service.AdminService;
 import com.cafe24.mhmall.frontend.service.MemberService;
@@ -42,6 +44,7 @@ public class AdminController {
 	AdminService adminService;
 
 	// 관리자 메인
+	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping({"", "/"})
 	public String admin() {
 		
@@ -51,17 +54,19 @@ public class AdminController {
 	
 
 	// 관리자 회원목록
+	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/member", method = RequestMethod.GET)
 	public String member(
-			@AuthUser MemberVo authUser
+			@AuthUser MemberVo authUser,
+			Model model
 			) {
+		
+		System.out.println(authUser);
 		
 		// 관리자 회원목록
 		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(authUser.getMockToken());
 		
-		System.out.println(rJson.getMessage());
-		
-		
+		model.addAttribute("memberList", rJson.getData());
 		return "admin/member";
 	}
 }

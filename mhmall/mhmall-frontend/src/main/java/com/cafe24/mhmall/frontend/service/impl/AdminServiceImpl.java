@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ResponseJSONResult<ListMemberVo> getMemberList(String authorization) {
 		
-		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list", HttpMethod.POST, null, authorization);
+		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list", HttpMethod.GET, null, authorization);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListMemberVo data = mapper.convertValue(rJson.getData(), ListMemberVo.class);

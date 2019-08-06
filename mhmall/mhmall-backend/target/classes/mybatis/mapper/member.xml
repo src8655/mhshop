@@ -62,7 +62,7 @@
 		cast(AES_DECRYPT(email, #{aesKey}) as char) as email,
 		cast(AES_DECRYPT(zipcode, #{aesKey}) as char) as zipcode,
 		cast(AES_DECRYPT(addr, #{aesKey}) as char) as addr,
-		reg_date as regDate,
+		DATE_FORMAT(reg_date,'%Y년%m월%d일') as regDate,
 		role
 		FROM member
 		order by regDate desc

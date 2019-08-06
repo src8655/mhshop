@@ -38,10 +38,10 @@ public class MemberServiceImpl implements MemberService {
 	public Boolean add(MemberVo memberVo) {
 
 		memberVo.setRole(Auth.Role.ROLE_USER.toString());
-		
+		/*
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
-		
+		*/
 		int result = memberDao.insert(memberVo);
 		return result == 1;
 	}

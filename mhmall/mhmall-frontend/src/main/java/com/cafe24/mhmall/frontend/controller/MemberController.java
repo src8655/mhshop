@@ -66,7 +66,7 @@ public class MemberController {
         
         // 세션에 저장
         MemberVo memberVo = rJson.getData();
-        session.setAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, memberVo.getRole(), memberVo.getMockToken()));
+        session.setAttribute("authUser", new MemberVo(memberVo.getId(), null, memberVo.getName(), null, null, null, null, null, memberVo.getRole(), null, memberVo.getMockToken()));
 		
 		return "redirect:/";
 	}

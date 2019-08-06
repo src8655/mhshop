@@ -22,8 +22,11 @@ public class MemberVo {
 
 	public MemberVo() {}
 	
+
+
+
 	public MemberVo(String id, String password, String name, String phone, String email, String zipcode, String addr,
-			String regDate, String role, String aesKey) {
+			String regDate, String role, String aesKey, String mockToken) {
 		this.id = id;
 		this.password = password;
 		this.name = name;
@@ -34,7 +37,10 @@ public class MemberVo {
 		this.regDate = regDate;
 		this.role = role;
 		this.aesKey = aesKey;
+		this.mockToken = mockToken;
 	}
+
+
 
 
 	public String getMockToken() {

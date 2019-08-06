@@ -38,6 +38,7 @@
 					<div class="panel-body">
 						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="검색" />
 					</div>
+					<div class="">
 					<table class="table table-hover" id="dev-table">
 						<thead>
 							<tr>
@@ -50,32 +51,19 @@
 							</tr>
 						</thead>
 						<tbody>
+							<c:forEach items="${memberList}" var="mdata">
 							<tr>
-								<td>1</td>
-								<td>Kilgore</td>
-								<td>Trout</td>
-								<td>kilgore</td>
-								<td>kilgore</td>
+								<td>${mdata.id}</td>
+								<td>${mdata.name}</td>
+								<td>${mdata.phone}</td>
+								<td>${mdata.email}</td>
+								<td>${mdata.regDate}</td>
 								<td><a href="#" class="btn btn-danger">삭제</a></td>
 							</tr>
-							<tr>
-								<td>2</td>
-								<td>Bob</td>
-								<td>Loblaw</td>
-								<td>boblahblah</td>
-								<td>kilgore</td>
-								<td><a href="#" class="btn btn-danger">삭제</a></td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Holden</td>
-								<td>Caulfield</td>
-								<td>penceyreject</td>
-								<td>kilgore</td>
-								<td><a href="#" class="btn btn-danger">삭제</a></td>
-							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 		</div>

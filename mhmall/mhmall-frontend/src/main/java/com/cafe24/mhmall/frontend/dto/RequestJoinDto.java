@@ -16,7 +16,7 @@ public class RequestJoinDto {
 	
 	public MemberVo toVo() {
 		String phone = phone1 + phone2 + phone3;
-		return new MemberVo(id, password, name, phone, email, zipcode, addr, null, null, null);
+		return new MemberVo(id, password, name, phone, email, zipcode, addr, null, null, null, null);
 	}
 	
 	public String getId() {
