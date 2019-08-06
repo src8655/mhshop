@@ -11,7 +11,7 @@ import com.cafe24.mhmall.frontend.config.web.SecurityConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan({"com.cafe24.mhmall.frontend.controller", "com.cafe24.mhmall.frontend.exception"})
-@Import({ SecurityConfig.class, MVCConfig.class })
+@ComponentScan({"com.cafe24.mhmall.frontend.controller"})
+@Import({ MVCConfig.class, SecurityConfig.class })
 public class WebConfig {
 }

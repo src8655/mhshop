@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cafe24.mhmall.frontend.dto.JSONResult;
 import com.cafe24.mhmall.frontend.dto.RequestJoinDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
+import com.cafe24.mhmall.frontend.service.MemberService;
+import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,9 +34,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
+	
+	@Autowired
+	MemberService memberService;
 
 	// 로그인 폼
-	@RequestMapping(value = "login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginform() {
 		
 		return "member/login";
@@ -81,56 +87,44 @@ public class MemberController {
 	}
 	*/
 	
-	// 회원가입 약관
-	@RequestMapping(value = "join", method = RequestMethod.GET)
-	public String join() {
-		
-		return "member/join_agree";
-	}
-	
 	
 
 	// 회원가입 폼
-	@RequestMapping(value = "join", method = RequestMethod.POST)
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join_form(
-			@RequestParam(name = "agrees", required = true, defaultValue = "false") boolean agrees,
-			HttpSession session,
-			Model model
 			) {
-		
-		// 약관에 동의하지 않았으면
-		if(!agrees) {
-			model.addAttribute("message", "약관에 동의해주세요.");
-			return "post/error";
-		}
 		
 		return "member/join_write";
 	}
 	
 	
 	
+	
+	// 아이디 중복확인
+	@ResponseBody
+	@RequestMapping(value = "/join/idcheck/{id}", method = RequestMethod.GET)
+	public ResponseJSONResult<Boolean> id_check(
+			@PathVariable("id") String id
+			) {
+		
+		ResponseJSONResult<Boolean> rJson = memberService.idcheck(id);
+		
+		return rJson;
+	}
+	
+	
+	
 
 	// 회원가입 완료
-	@RequestMapping(value = "join_post", method = RequestMethod.POST)
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join_post(
 			@ModelAttribute RequestJoinDto dto,
 			HttpSession session,
 			Model model
 			) {
 		
-		MemberVo memberVo = dto.toVo();
+		ResponseJSONResult<Boolean> rJson = memberService.add(dto);
 		
-		// 가입 요청
-        Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("id", memberVo.getId());
-	    params.put("password", memberVo.getPassword());
-	    params.put("name", memberVo.getName());
-	    params.put("phone", memberVo.getPhone());
-	    params.put("email", memberVo.getEmail());
-	    params.put("zipcode", memberVo.getZipcode());
-	    params.put("addr", memberVo.getAddr());
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.<Boolean>request("/api/member/join", HttpMethod.POST, params, null, Boolean.class);
-
 	    // 실패면
         if("fail".equals(rJson.getResult())) {
         	model.addAttribute("message", rJson.getMessage());
@@ -142,13 +136,13 @@ public class MemberController {
         }
         
         // 가입 결과페이지
-        session.setAttribute("joinResult", memberVo.getName());
+        session.setAttribute("joinResult", dto.getName());
 		return "redirect:/member/join_result";
 	}
 	
 	
 	// 회원가입 완료 페이지
-	@RequestMapping("join_result")
+	@RequestMapping("/join_result")
 	public String join_result(
 			HttpSession session,
 			Model model

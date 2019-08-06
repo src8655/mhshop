@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
@@ -29,31 +30,18 @@ public class MhmallRestTemplate {
 	public static final String BACKENDHOST = "http://localhost:8888/mhmall";
 	
 	
-	public static <T> ResponseJSONResult<T> request(String uri, HttpMethod method , Map<String, Object> params, String authorization, Class<T> types) {
-        RestTemplate restTemplate = new RestTemplate();
+	public static <T> ResponseJSONResult<T> request(OAuth2RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization, Class<T> types) {
+       // RestTemplate restTemplate = new RestTemplate();
  
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
-        // 인증/
+        // 인증
         if(authorization != null) headers.add("Authorization", "Basic " + authorization);
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         
         HttpEntity body = null;
-        if(method != HttpMethod.GET) {
-			// json 으로 변환
-    		String bodys = null;
-	        ObjectMapper objectMapper = new ObjectMapper();
-	        if(params != null) {
-				try {
-					bodys = objectMapper.writeValueAsString(params);
-				} catch (JsonProcessingException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-	        }
-	        body = new HttpEntity(bodys, headers);
-        }else body = new HttpEntity(params, headers);
+        body = new HttpEntity(params, headers);
         
         
     	try {
@@ -74,9 +62,7 @@ public class MhmallRestTemplate {
 					rJson = mapper.readValue(e.getResponseBodyAsString(), ResponseJSONResult.class);
 				} catch (IOException e1) {}
 				return rJson;
-			}else {
-				return rJson;
-			}
+			}else return rJson;
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

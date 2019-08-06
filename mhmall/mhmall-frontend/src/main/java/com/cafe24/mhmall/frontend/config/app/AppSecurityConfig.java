@@ -68,9 +68,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         			.invalidateHttpSession(true)
         
         // ExceptionHandlingConfigurer
-        .and()
+        /*.and()
         	.exceptionHandling()
-        		.accessDeniedPage("/views/error/404.jsp")
+        		.accessDeniedPage("/views/error/404.jsp")*/
         
         // RememberMeConfigurer
         

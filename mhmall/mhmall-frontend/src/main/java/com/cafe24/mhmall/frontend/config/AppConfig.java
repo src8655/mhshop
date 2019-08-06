@@ -11,7 +11,7 @@ import com.cafe24.mhmall.frontend.config.app.OAuth2ClientConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan({"com.cafe24.mhmall.frontend.security", "com.cafe24.mhmall.frontend.service", "com.cafe24.mhmall.frontend.repository", "com.cafe24.mhmall.frontend.aspect"})
+@ComponentScan({"com.cafe24.mhmall.frontend.security", "com.cafe24.mhmall.frontend.service.impl", "com.cafe24.mhmall.frontend.repository", "com.cafe24.mhmall.frontend.aspect"})
 @Import({ AppSecurityConfig.class, OAuth2ClientConfig.class })
 public class AppConfig {
 }

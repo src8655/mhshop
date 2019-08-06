@@ -62,7 +62,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	}
 	
 	@Bean
-	public StringHttpMessageConverter  stringHttpMessageConverter() {
+	public StringHttpMessageConverter stringHttpMessageConverter() {
 		StringHttpMessageConverter converter = new StringHttpMessageConverter();
 		converter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "html", Charset.forName("UTF-8"))));	
 		
@@ -74,4 +74,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 		converters.add(mappingJackson2HttpMessageConverter());
 		converters.add(stringHttpMessageConverter());
 	}
+	
+	
+	
 }

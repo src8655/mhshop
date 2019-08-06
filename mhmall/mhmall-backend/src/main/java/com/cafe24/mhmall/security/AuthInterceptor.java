@@ -30,6 +30,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 		
+		
 		//2. casting
 		HandlerMethod handlerMethod = (HandlerMethod)handler;
 		
@@ -40,6 +41,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		if(auth == null) {
 			return true;
 		}
+		
+		
+		/*
+		
+		
 		
 		//6. @Auth가 붙는 경우
 		//   인증 여부 체크
@@ -101,7 +107,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		
+		*/
 		return true;
 	}
 

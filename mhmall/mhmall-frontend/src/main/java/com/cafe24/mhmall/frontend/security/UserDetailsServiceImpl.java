@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.cafe24.mhmall.frontend.service.MemberService;
+import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 
 
@@ -20,7 +20,7 @@ import com.cafe24.mhmall.frontend.vo.MemberVo;
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
-	private MemberService memberService;
+	private MemberServiceImpl memberService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {

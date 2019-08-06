@@ -31,9 +31,7 @@ public class MainController {
 
 	@RequestMapping({"", "/"})
 	public String main(
-			@AuthUser SecurityUser authUser
 			) {
-		System.out.println(authUser);
 		return "main/index";
 	}
 	
