@@ -8,16 +8,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.cafe24.mhmall.vo.ItemVo;
 
 public class RequestItemWriteDto {
-	@NotEmpty
+	@NotEmpty(message = "상품명을 입력해 주세요.")
 	private String name;
 	private String description;
-	@NotNull
-	@Min(0)
+	@NotNull(message = "금액을 입력해 주세요.")
+	@Min(value = 0, message = "0보다 커야합니다.")
 	private Long money;
-	@NotEmpty
+	@NotEmpty(message = "썸네일 이미지를 선택해 주세요.")
 	private String thumbnail;
-	@NotNull
-	@Min(1)
+	@NotNull(message = "카테고리를 선택해 주세요.")
+	@Min(value = 1, message = "잘못된 카테고리 입니다.")
 	private Long categoryNo;
 	
 	public ItemVo toVo() {
