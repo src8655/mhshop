@@ -23,9 +23,25 @@
 		}
 </style>
 
+
+<script>
+$(function(){
+
+	// 회원검색 버튼
+	$("#admin_member_search_btn").click(function(){
+		var search = encodeURI($("#admin_member_search").val());
+		location.href="${pageContext.servletContext.contextPath}/admin/member/" + search;
+	});
+	
+	
+});
+</script>
+
 	<div class="container">
     	<div class="row">
 			<div class="col-md-12">
+			
+			
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">회원목록</h3>
@@ -36,7 +52,8 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="검색" />
+						<input type="text" class="form-control float-left mb-3" style="width:68%;" id="admin_member_search" placeholder="이름으로 검색" value="${searchs}" />
+						<button class="btn btn-success float-right" style="width:30%;" id="admin_member_search_btn">검색</button>
 					</div>
 					<div class="">
 					<table class="table table-hover" id="dev-table">

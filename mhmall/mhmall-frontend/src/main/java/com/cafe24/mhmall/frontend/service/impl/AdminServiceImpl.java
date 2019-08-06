@@ -1,5 +1,7 @@
 package com.cafe24.mhmall.frontend.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +27,15 @@ public class AdminServiceImpl implements AdminService {
 		
 		String search_str = "";
 		// 검색어가 존재하면
-		if(search.isPresent())
-			search_str = "/" + search.get();
+		if(search.isPresent()) {
+			try {
+				search_str = URLEncoder.encode(search.get(), "UTF-8");
+				search_str = "/" + search_str;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(search_str + "--");
 		
 		ResponseJSONResult rJson = MhmallRestTemplate.request("/api/admin/member/list"+search_str, HttpMethod.GET, null, authorization);
 		

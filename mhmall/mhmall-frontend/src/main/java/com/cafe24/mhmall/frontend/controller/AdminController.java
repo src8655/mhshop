@@ -63,12 +63,14 @@ public class AdminController {
 			Model model
 			) {
 		
-		System.out.println(authUser);
-		
 		// 관리자 회원목록
 		ResponseJSONResult<AdminService.ListMemberVo> rJson = adminService.getMemberList(authUser.getMockToken(), search);
 		
 		model.addAttribute("memberList", rJson.getData());
+		if(search.isPresent()) {
+			model.addAttribute("searchs", search.get());
+			System.out.println(search.get());
+		}
 		return "admin/member";
 	}
 }
