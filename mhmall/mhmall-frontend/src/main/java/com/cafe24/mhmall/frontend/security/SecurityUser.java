@@ -88,8 +88,9 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "SecurityUser [name=" + name + ", username=" + username + ", password=" + password + ", authorities="
-				+ authorities + "]";
+		return "SecurityUser [authorization=" + authorization + ", name=" + name + ", username=" + username
+				+ ", password=" + password + ", authorities=" + authorities + "]";
 	}
 
+	
 }

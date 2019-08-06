@@ -46,8 +46,9 @@
 		
 		FROM member
 		where id=AES_ENCRYPT(#{id}, #{aesKey})
-		and password=SHA2(#{password}, 512)
+		and password=#{password}
 	]]>
+	<!-- and password=SHA2(#{password}, 512) -->
 	</select>
 	
 	

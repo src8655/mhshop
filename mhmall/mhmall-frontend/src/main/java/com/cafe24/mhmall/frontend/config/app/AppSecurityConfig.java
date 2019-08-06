@@ -44,7 +44,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         		// ADMIN 권한
         		// .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
         		// .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN");
-        		.antMatchers("/admin", "/admin/**").hasRole("ADMIN")
+        		.antMatchers("/admin", "/admin/**").hasAuthority("ROLE_ADMIN")
         	
         		// 모두 허용
         		.anyRequest().permitAll()
@@ -62,7 +62,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         // LogoutConfigurer
         .and()
         	.logout()
-        			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+        			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
         			.logoutSuccessUrl("/")
         			.deleteCookies("JSESSIONID")
         			.invalidateHttpSession(true)

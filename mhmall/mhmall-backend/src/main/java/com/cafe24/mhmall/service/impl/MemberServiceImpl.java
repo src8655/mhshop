@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
 		
 		if(newMemberVo != null) {
-			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
+			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));
 		}
 		
 		return newMemberVo;
@@ -70,12 +70,13 @@ public class MemberServiceImpl implements MemberService {
 	// 아이디로 회원조회
 	@Override
 	public MemberVo getById(MemberVo memberVo) {
+		MemberVo newMemberVo = memberDao.selectOneById(memberVo);
 		
-		if(memberVo != null) {
-			memberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
+		if(newMemberVo != null) {
+			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));
 		}
 		
-		return memberDao.selectOneById(memberVo);
+		return newMemberVo;
 	}
 
 

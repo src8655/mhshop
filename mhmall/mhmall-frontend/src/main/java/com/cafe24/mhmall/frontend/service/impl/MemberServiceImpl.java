@@ -13,6 +13,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
@@ -26,7 +27,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVo login(String id){
 		
-		ResponseJSONResult<MemberVo> jsonResult = MhmallRestTemplate.<MemberVo>request(restTemplate, "/api/admin/member/view/" + id, HttpMethod.GET, null, null, MemberVo.class);
+		ResponseJSONResult<MemberVo> jsonResult = MhmallRestTemplate.request(restTemplate, "/api/admin/member/view/" + id, HttpMethod.GET, null, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		MemberVo data = mapper.convertValue(jsonResult.getData(), MemberVo.class);
+		jsonResult.setData(data);
 
 		return jsonResult.getData();
 	}
@@ -51,7 +56,11 @@ public class MemberServiceImpl implements MemberService {
 	    params.put("zipcode", memberVo.getZipcode());
 	    params.put("addr", memberVo.getAddr());
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.<Boolean>request(restTemplate, "/api/member/join", HttpMethod.POST, params, null, Boolean.class);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/member/join", HttpMethod.POST, params, null);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+		rJson.setData(data);
 	    
 	    return rJson;
 	}
@@ -60,7 +69,12 @@ public class MemberServiceImpl implements MemberService {
 	// 아이디 중복확인
 	@Override
 	public ResponseJSONResult<Boolean> idcheck(String id) {
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.<Boolean>request(restTemplate, "/api/member/join/idcheck/" + id, HttpMethod.GET, null, null, Boolean.class);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/member/join/idcheck/" + id, HttpMethod.GET, null, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+		rJson.setData(data);
+		
 		return rJson;
 	}
 }

@@ -30,7 +30,7 @@ public class MhmallRestTemplate {
 	public static final String BACKENDHOST = "http://localhost:8888/mhmall";
 	
 	
-	public static <T> ResponseJSONResult<T> request(OAuth2RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization, Class<T> types) {
+	public static ResponseJSONResult request(OAuth2RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization) {
        // RestTemplate restTemplate = new RestTemplate();
  
         // 서버로 요청할 Header
@@ -47,10 +47,6 @@ public class MhmallRestTemplate {
     	try {
     		ResponseEntity<ResponseJSONResult> response = restTemplate.exchange(new URI(BACKENDHOST + uri), method, body, ResponseJSONResult.class);
     		ResponseJSONResult rJson = response.getBody();
-    		
-    		ObjectMapper mapper = new ObjectMapper();
-        	T data = mapper.convertValue(rJson.getData(), types);
-        	rJson.setData(data);
         	
     		return rJson;
 		} catch (HttpClientErrorException e) {
