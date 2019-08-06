@@ -75,12 +75,13 @@ public class AdminItemController {
 
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "path", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/list/{cateogryNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/{categoryNo}", method = RequestMethod.GET)
 	@ApiOperation(value = "관리자 상품 리스트", notes = "관리자 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> list(
 			@ModelAttribute @Valid RequestItemCategoryDto dto,
 			BindingResult result
 			) {
+		System.out.println(dto.getCategoryNo() + "----------------------------------------back");
 		
 		// Service에 상품리스트 요청
 		List<ItemVo> itemList = itemService.getList(dto.toVo());

@@ -93,7 +93,7 @@ public class AdminItemControllerTest {
 		ResultActions resultActions;
 		
 		
-		resultActions = mockMvc.perform(get("/api/admin/item/list/{cateogryNo}", 1L)
+		resultActions = mockMvc.perform(get("/api/admin/item/list/{cateogryNo}", -1L)
 				.header("Authorization", "Basic " + authorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지

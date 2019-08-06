@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,22 @@ public class AdminItemServiceImpl implements AdminItemService {
 		return rJson;
 	}
 
-	
+	// 상품 리스트 요청
+	@Override
+	public ResponseJSONResult<ListItemVo> getList(String mockToken, Optional<Long> categoryNo) {
+		Long cateNo = -1L;
+		if(categoryNo.isPresent()) {
+			cateNo = categoryNo.get();
+		}
+		System.out.println(cateNo + "----------------------------------------front");
+		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request("/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
 	
 	
 	
@@ -107,4 +123,11 @@ public class AdminItemServiceImpl implements AdminItemService {
 		
 		return filename;
 	}
+
+
+
+
+
+
+
 }

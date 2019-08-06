@@ -28,6 +28,7 @@ public class ItemServiceImpl implements ItemService {
 	// 상품 리스트
 	@Override
 	public List<ItemVo> getList(ItemVo itemVo) {
+		if(itemVo.getCategoryNo() != null && itemVo.getCategoryNo() == -1) itemVo.setCategoryNo(null);
 		return itemDao.selectList(itemVo);
 	}
 

@@ -55,11 +55,23 @@ public class AdminItemController {
 	
 	// 관리자 상품목록
 	@Auth(role = Role.ROLE_ADMIN)
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = {"", "/{categoryNo}"}, method = RequestMethod.GET)
 	public String item(
+			@PathVariable("categoryNo") Optional<Long> categoryNo,
 			@AuthUser MemberVo authUser,
 			Model model
 			) {
+		
+		// 상품 리스트 요청
+		ResponseJSONResult<AdminItemService.ListItemVo> rJson = adminItemService.getList(authUser.getMockToken(), categoryNo);
+		model.addAttribute("itemList", rJson.getData());
+
+		// 카테고리 리스트 요청
+		ResponseJSONResult<AdminCategoryService.ListCategoryVo> rJsonCategory = adminCategoryService.getList();
+		model.addAttribute("categoryList", rJsonCategory.getData());
+		
+		if(categoryNo.isPresent())
+			model.addAttribute("categoryNos", categoryNo.get());
 		
 		return "admin/item";
 	}
