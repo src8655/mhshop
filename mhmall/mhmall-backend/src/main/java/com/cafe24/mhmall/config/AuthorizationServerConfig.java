@@ -36,17 +36,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //			.accessTokenValiditySeconds(60);
 
 		// client credentials
-		clients.inMemory() 
+		/*clients.inMemory() 
 			.withClient("mhmall")
 			.authorizedGrantTypes("password", "client_credentials")
 			.authorities("ROLE_CLIENT")
 			.scopes("read", "write")
 			.resourceIds("mhmall_api")
-			.secret("1234");
+			.secret("1234");*/
 			//.accessTokenValiditySeconds(60);
 		
-//		clients
-//			.jdbc(dataSource());
+		clients
+			.jdbc(dataSource());
 		
 		
 		
@@ -54,7 +54,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //			.withClient("my-client-with-registered-redirect")
 //			.authorizedGrantTypes("authorization_code") .authorities("ROLE_CLIENT") .scopes("read", "trust") .resourceIds("sparklr") .redirectUris("http://localhost:8080") .and() .withClient("my-client-with-secret") .authorizedGrantTypes("client_credentials", "password") .authorities("ROLE_CLIENT") .scopes("read") .resourceIds("sparklr") .secret("secret");
 	}
-	/*
+	
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     	// OAuth2 서버가 작동하기 위한 Endpoint에 대한 정보를 설정
@@ -67,6 +67,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @ConfigurationProperties("spring.datasource")
     public DataSource dataSource() throws SQLException {
         return new BasicDataSource();
-    }*/
+    }
     
 }
