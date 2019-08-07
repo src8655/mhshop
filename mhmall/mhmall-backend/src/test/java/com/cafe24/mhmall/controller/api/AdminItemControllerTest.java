@@ -57,7 +57,7 @@ public class AdminItemControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String authorization;
+	private String myAuthorization;
 
 	
 	@Before
@@ -83,7 +83,7 @@ public class AdminItemControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
+		myAuthorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 
@@ -94,7 +94,7 @@ public class AdminItemControllerTest {
 		
 		
 		resultActions = mockMvc.perform(get("/api/admin/item/list/{cateogryNo}", -1L)
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions.andDo(print())
@@ -126,7 +126,7 @@ public class AdminItemControllerTest {
 		
 		// 상품이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"name\":\"\","
@@ -147,7 +147,7 @@ public class AdminItemControllerTest {
 				.param("money", "")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"name\":\"test_name\","
@@ -168,7 +168,7 @@ public class AdminItemControllerTest {
 				.param("money", "1000")
 				.param("thumbnail", "test_thumbnail3")
 				.param("categoryNo", "1")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"name\":\"test_name\","
@@ -194,7 +194,7 @@ public class AdminItemControllerTest {
 		
 		// 상품삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\""
@@ -215,7 +215,7 @@ public class AdminItemControllerTest {
 		
 		// 옵션레벨 Valid
 		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}/{level}", 1L, 3L)
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -224,7 +224,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(get("/api/admin/item/optiondetail/{itemNo}/{level}", 1L, 1L)
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -249,7 +249,7 @@ public class AdminItemControllerTest {
 
 		// 상품명 Valid
 		resultActions = mockMvc.perform(put("/api/admin/item")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\","
@@ -272,7 +272,7 @@ public class AdminItemControllerTest {
 				.param("money", "-1")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\","
@@ -295,7 +295,7 @@ public class AdminItemControllerTest {
 				.param("money", "11000")
 				.param("thumbnail", "test_thumbnail11")
 				.param("categoryNo", "2")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\","
@@ -323,7 +323,7 @@ public class AdminItemControllerTest {
 		
 		// 진열상태 Valid
 		resultActions = mockMvc.perform(put("/api/admin/item/display")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"2\","
@@ -336,7 +336,7 @@ public class AdminItemControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(put("/api/admin/item/display")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\","
@@ -359,7 +359,7 @@ public class AdminItemControllerTest {
 
 		// 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"\","
@@ -372,7 +372,7 @@ public class AdminItemControllerTest {
 
 		// 없는 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"99\","
@@ -385,7 +385,7 @@ public class AdminItemControllerTest {
 
 		// 상품이미지 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"1\","
@@ -398,7 +398,7 @@ public class AdminItemControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(post("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"1\","
@@ -419,7 +419,7 @@ public class AdminItemControllerTest {
 
 		// 없는 이미지 삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"99\""
@@ -432,7 +432,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/img")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\""
@@ -454,7 +454,7 @@ public class AdminItemControllerTest {
 
 		// 옵션이름 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionName\":\"\","
@@ -468,7 +468,7 @@ public class AdminItemControllerTest {
 
 		// 옵션레벨 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionName\":\"option_name\","
@@ -482,7 +482,7 @@ public class AdminItemControllerTest {
 
 		// 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionName\":\"option_name\","
@@ -496,7 +496,7 @@ public class AdminItemControllerTest {
 		
 		// 없는 상품번호 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionName\":\"option_name\","
@@ -510,7 +510,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(post("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionName\":\"option_name\","
@@ -532,7 +532,7 @@ public class AdminItemControllerTest {
 
 		// 옵션에 이미 사용중인 상세옵션 실패
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\""
@@ -544,7 +544,7 @@ public class AdminItemControllerTest {
 
 		// 없는 상세옵션번호
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"99\""
@@ -557,7 +557,7 @@ public class AdminItemControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/optiondetail")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"4\""
@@ -580,7 +580,7 @@ public class AdminItemControllerTest {
 
 		// 수량 Valid
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"1\","
@@ -595,7 +595,7 @@ public class AdminItemControllerTest {
 		
 		// 존재하지 않는 상품번호 실패
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"99\","
@@ -610,7 +610,7 @@ public class AdminItemControllerTest {
 		
 		// 존재하지 않은 상세옵션번호 실패
 		resultActions = mockMvc.perform(post("/api/admin/item/option")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"1\","
@@ -629,7 +629,7 @@ public class AdminItemControllerTest {
 				.param("optionDetailNo1", "1")
 				.param("optionDetailNo2", "4")
 				.param("cnt", "5")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"itemNo\":\"1\","
@@ -653,7 +653,7 @@ public class AdminItemControllerTest {
 
 		// 없는 옵션 삭제
 		resultActions = mockMvc.perform(delete("/api/admin/item/option")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"99\""
@@ -666,7 +666,7 @@ public class AdminItemControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(delete("/api/admin/item/option")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\""

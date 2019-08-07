@@ -59,7 +59,7 @@ public class OrdersControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String authorization;
+	private String myAuthorization;
 
 	
 	@Before
@@ -85,7 +85,7 @@ public class OrdersControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
+		myAuthorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	// 비회원 주문
@@ -270,7 +270,7 @@ public class OrdersControllerTest {
 
 		// 없는 옵션일 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionNos\":[999],"
@@ -283,7 +283,7 @@ public class OrdersControllerTest {
 		
 		// 판매중인 상품이 아닐 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionNos\":[3],"
@@ -296,7 +296,7 @@ public class OrdersControllerTest {
 		
 		// 재고가 부족할 때
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionNos\":[1],"
@@ -309,7 +309,7 @@ public class OrdersControllerTest {
 		
 		// 성공, 주문번호를 리턴하는지
 		resultActions = mockMvc.perform(post("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"optionNos\":[1],"
@@ -333,7 +333,7 @@ public class OrdersControllerTest {
 
 		// 주문번호 Valid
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"\","
@@ -350,7 +350,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않는 주문
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_999999\","
@@ -367,7 +367,7 @@ public class OrdersControllerTest {
 		
 		// 주문은 존재하지만 본인의 주문이 아닌 경우
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_000259\","
@@ -384,7 +384,7 @@ public class OrdersControllerTest {
 		
 		// 성공
 		resultActions = mockMvc.perform(put("/api/orders/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_000260\","
@@ -451,7 +451,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(get("/api/orders/member/list")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -471,7 +471,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않거나 잘못된 주문
 		resultActions = mockMvc.perform(get("/api/orders/member/view/{ordersNo}", "2019-07-11_0002596")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -480,7 +480,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(get("/api/orders/member/view/{ordersNo}", "2019-07-11_000256")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -559,7 +559,7 @@ public class OrdersControllerTest {
 
 		// 존재하지 않는 주문
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_99999\""
@@ -571,7 +571,7 @@ public class OrdersControllerTest {
 
 		// 회원 본인의 것이 아닐 때
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_000258\""
@@ -583,7 +583,7 @@ public class OrdersControllerTest {
 
 		// 성공
 		resultActions = mockMvc.perform(put("/api/orders/member/cancel")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"ordersNo\":\"2019-07-11_000256\""

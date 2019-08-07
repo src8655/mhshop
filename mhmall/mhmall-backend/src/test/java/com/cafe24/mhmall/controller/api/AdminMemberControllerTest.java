@@ -57,7 +57,7 @@ public class AdminMemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String authorization;
+	private String myAuthorization;
 
 	
 	@Before
@@ -83,7 +83,7 @@ public class AdminMemberControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
+		myAuthorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	
@@ -93,7 +93,7 @@ public class AdminMemberControllerTest {
 		ResultActions resultActions;
 		
 		resultActions = mockMvc.perform(get("/api/admin/member/list")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
@@ -130,7 +130,7 @@ public class AdminMemberControllerTest {
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "1test_id1")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 400 인지
 		resultActions
@@ -139,7 +139,7 @@ public class AdminMemberControllerTest {
 
 		// 없는 아이디
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id9999")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -149,7 +149,7 @@ public class AdminMemberControllerTest {
 		
 		// 있는 아이디
 		resultActions = mockMvc.perform(get("/api/admin/member/view/{id}", "test_id1")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -173,7 +173,7 @@ public class AdminMemberControllerTest {
 		
 		// 아이디 Valid
 		resultActions = mockMvc.perform(delete("/api/admin/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"id\":\"1test_id1\""
@@ -185,7 +185,7 @@ public class AdminMemberControllerTest {
 
 		// 삭제 실패(없는 아이디)
 		resultActions = mockMvc.perform(delete("/api/admin/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"id\":\"test_id3\""
@@ -198,7 +198,7 @@ public class AdminMemberControllerTest {
 
 		// 삭제 성공
 		resultActions = mockMvc.perform(delete("/api/admin/member")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"id\":\"test_id2\""

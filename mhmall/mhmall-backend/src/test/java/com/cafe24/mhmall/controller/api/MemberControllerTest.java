@@ -55,7 +55,7 @@ public class MemberControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String authorization;
+	private String myAuthorization;
 	
 	@Before
 	public void setup() throws Exception {
@@ -80,7 +80,7 @@ public class MemberControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
+		myAuthorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 	
 	
@@ -276,7 +276,7 @@ public class MemberControllerTest {
 		
 		// 회원정보 불러오기
 		resultActions = mockMvc.perform(get("/api/member/loginupdate")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
@@ -297,7 +297,7 @@ public class MemberControllerTest {
 		
 		// 회원정보 불러오기
 		resultActions = mockMvc.perform(put("/api/member/loginupdate")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+"\"id\":\"test_id1\","

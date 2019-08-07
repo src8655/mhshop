@@ -55,7 +55,7 @@ public class AdminCategoryControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	private String authorization;
+	private String myAuthorization;
 	
 	@Before
 	public void setup() throws Exception {
@@ -80,7 +80,7 @@ public class AdminCategoryControllerTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(content);
-		authorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
+		myAuthorization = jsonObj.get("data").getAsJsonObject().get("mockToken").getAsString();
 	}
 
 	
@@ -91,7 +91,7 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리명 Valid
 		resultActions = mockMvc.perform(post("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"name\":\"\""
@@ -102,7 +102,7 @@ public class AdminCategoryControllerTest {
 		
 		// 작성성공
 		resultActions = mockMvc.perform(post("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"name\":\"category_name3\""
@@ -121,7 +121,7 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리번호 Valid
 		resultActions = mockMvc.perform(put("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"aa\","
@@ -133,7 +133,7 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리번호가 없는 번호일 때
 		resultActions = mockMvc.perform(put("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"999999\","
@@ -146,7 +146,7 @@ public class AdminCategoryControllerTest {
 
 		// 카테고리 수정 완료
 		resultActions = mockMvc.perform(put("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\","
@@ -164,7 +164,7 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리번호 Valid
 		resultActions = mockMvc.perform(delete("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"aa\""
@@ -175,7 +175,7 @@ public class AdminCategoryControllerTest {
 
 		// 카테고리에 속한 상품이 있을 경우
 		resultActions = mockMvc.perform(delete("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"1\""
@@ -186,7 +186,7 @@ public class AdminCategoryControllerTest {
 		
 		// 없는 카테고리 번호로 실패
 		resultActions = mockMvc.perform(delete("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"9999\""
@@ -198,7 +198,7 @@ public class AdminCategoryControllerTest {
 		
 		// 카테고리 삭제 완료
 		resultActions = mockMvc.perform(delete("/api/admin/category")
-				.header("Authorization", "Basic " + authorization)
+				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"no\":\"2\""
