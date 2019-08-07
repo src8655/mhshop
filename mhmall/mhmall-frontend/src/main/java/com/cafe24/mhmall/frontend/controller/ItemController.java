@@ -40,7 +40,7 @@ public class ItemController {
 	
 
 	@RequestMapping("/view")
-	public String main(
+	public String item_view(
 			Model model
 			) {
 		
