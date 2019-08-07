@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.vo.CategoryVo;
 
-public interface AdminCategoryService {
+public interface CategoryService {
 
 	ResponseJSONResult<Boolean> add(String mockToken, String categoryName);				// 카테고리 추가요청
 	ResponseJSONResult<ListCategoryVo> getList();										// 카테고리 리스트 요청

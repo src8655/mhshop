@@ -56,7 +56,9 @@
 		name=#{name},
 		description=#{description},
 		money=#{money},
+		<if test="thumbnail != null">
 		thumbnail=#{thumbnail},
+		</if>
 		category_no=#{categoryNo}
 		where no=#{no}
 	</update>

@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -15,37 +14,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
-import com.cafe24.mhmall.frontend.service.AdminItemService;
+import com.cafe24.mhmall.frontend.service.ItemImgService;
+import com.cafe24.mhmall.frontend.service.OptionDetailService.ListOptionDetailVo;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
-import com.cafe24.mhmall.frontend.vo.ItemVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class AdminItemServiceImpl implements AdminItemService {
-	private static final String SAVE_PATH = "/mhmall-uploads";
+public class ItemImgServiceImpl implements ItemImgService {
+	private static final String SAVE_PATH_IMG = "/mhmall-uploads";
 	private static final String URL = "/images";
-
 
 	@Autowired
 	private OAuth2RestTemplate restTemplate;
+
 	
-	// 상품작성 요청
+	// 상품이미지 추가 요청
 	@Override
-	public ResponseJSONResult<Boolean> add(String mockToken, ItemVo itemVo, MultipartFile thumbnailFile) {
+	public ResponseJSONResult<Boolean> add(String mockToken, Long itemNo, MultipartFile itemImgFile) {
+		if(itemImgFile.isEmpty())
+			return ResponseJSONResult.fail("이미지가 없습니다.");
 		
-		// 썸네일 이미지 이름
-		String url = generateSaveFileName(thumbnailFile);
-		itemVo.setThumbnail(URL + "/" + url);
+		// 이미지 이름
+		String url = generateSaveFileName(itemImgFile);
+		String itemImg = URL + "/" + url;
 		
 		// 파라미터 설정
 		Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("name", itemVo.getName());
-	    params.put("description", itemVo.getDescription());
-	    params.put("money", itemVo.getMoney());
-	    params.put("thumbnail", itemVo.getThumbnail());
-	    params.put("categoryNo", itemVo.getCategoryNo());
+	    params.put("itemNo", itemNo);
+	    params.put("itemImg", itemImg);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/img", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -53,27 +51,44 @@ public class AdminItemServiceImpl implements AdminItemService {
 		
 		// 성공하면 실제 저장
 		if("success".equals(rJson.getResult())) {
-			restore(thumbnailFile, url);
+			restore(itemImgFile, url);
 		}
 		
 		return rJson;
 	}
-
-	// 상품 리스트 요청
+	
+	
+	// 상품이미지리스트 요청
 	@Override
-	public ResponseJSONResult<ListItemVo> getList(String mockToken, Optional<Long> categoryNo) {
-		Long cateNo = -1L;
-		if(categoryNo.isPresent()) {
-			cateNo = categoryNo.get();
-		}
-		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
+	public ResponseJSONResult<ListItemImgVo> getList(Long itemNo) {
+		ResponseJSONResult<ListItemImgVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/img/"+itemNo, HttpMethod.GET, null, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ListItemImgVo data = mapper.convertValue(rJson.getData(), ListItemImgVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+	
+
+	// 상품이미지 삭제 요청
+	@Override
+	public ResponseJSONResult<Boolean> delete(String mockToken, Long no) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("no", no);
+	    
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/img", HttpMethod.DELETE, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
-		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
 		rJson.setData(data);
 		
 		return rJson;
 	}
+	
+	
+	
+	
 	
 	
 	
@@ -93,7 +108,7 @@ public class AdminItemServiceImpl implements AdminItemService {
 			
 			byte[] fileData = multipartFile.getBytes();
 			
-			OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFileName);
+			OutputStream os = new FileOutputStream(SAVE_PATH_IMG + "/" + saveFileName);
 			os.write(fileData);
 			os.close();
 			
@@ -109,7 +124,7 @@ public class AdminItemServiceImpl implements AdminItemService {
 		
 		return url;
 	}
-	
+
 	private String generateSaveFileName(MultipartFile multipartFile) {
 		String originalFilename = multipartFile.getOriginalFilename();
 		String extName = originalFilename.substring(originalFilename.lastIndexOf('.')+1);
@@ -128,6 +143,9 @@ public class AdminItemServiceImpl implements AdminItemService {
 		
 		return filename;
 	}
+
+
+
 
 
 

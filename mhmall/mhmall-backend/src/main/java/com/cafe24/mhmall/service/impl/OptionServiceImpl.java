@@ -27,6 +27,7 @@ public class OptionServiceImpl implements OptionService {
 	// 상품번호에 속한 레벨별 옵션 리스트
 	@Override
 	public List<OptionVo> getListByItemNo(OptionVo optionVo) {
+		if(optionVo.getOptionDetailNo1() == -1) optionVo.setOptionDetailNo1(null);
 		return optionDao.selectListLevel(optionVo);
 	}
 

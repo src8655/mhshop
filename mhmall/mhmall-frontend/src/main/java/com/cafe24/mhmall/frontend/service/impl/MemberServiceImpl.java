@@ -1,7 +1,10 @@
 package com.cafe24.mhmall.frontend.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -91,7 +94,30 @@ public class MemberServiceImpl implements MemberService {
 		
 		return rJson;
 	}
+	
 
-
+	// 관리자 회원목록
+	@Override
+	public ResponseJSONResult<ListMemberVo> getMemberList(String authorization, Optional<String> search) {
+		
+		String search_str = "";
+		// 검색어가 존재하면
+		if(search.isPresent()) {
+			try {
+				search_str = URLEncoder.encode(search.get(), "UTF-8");
+				search_str = "/" + search_str;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		ResponseJSONResult rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/member/list"+search_str, HttpMethod.GET, null, authorization);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ListMemberVo data = mapper.convertValue(rJson.getData(), ListMemberVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
 
 }

@@ -38,8 +38,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		// AuthorizedURL(Basic ACL)
         http
         	.authorizeRequests()
-        		// 모두 허용
-        		.anyRequest().permitAll()
+    		//.antMatchers("/user/update", "/user/logout").authenticated()
+    		//.antMatchers("/board/write", "/board/modify", "/board/modify/**").authenticated()
+    		.antMatchers("/admin", "/admin/**").hasRole("ADMIN")
+        	// 모두 허용
+        	.anyRequest().permitAll()
         
         // FormLoginConfigurer
         .and()

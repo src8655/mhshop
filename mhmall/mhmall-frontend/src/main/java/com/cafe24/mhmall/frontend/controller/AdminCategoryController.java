@@ -30,8 +30,7 @@ import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
 import com.cafe24.mhmall.frontend.security.SecurityUser;
-import com.cafe24.mhmall.frontend.service.AdminCategoryService;
-import com.cafe24.mhmall.frontend.service.AdminMemberService;
+import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
@@ -44,7 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AdminCategoryController {
 	
 	@Autowired
-	AdminCategoryService adminCategoryService;
+	CategoryService adminCategoryService;
 
 	
 	// 관리자 카테고리목록
@@ -56,7 +55,7 @@ public class AdminCategoryController {
 			) {
 		
 		// 카테고리 리스트 요청
-		ResponseJSONResult<AdminCategoryService.ListCategoryVo> rJson = adminCategoryService.getList();
+		ResponseJSONResult<CategoryService.ListCategoryVo> rJson = adminCategoryService.getList();
 		
 		model.addAttribute("categoryList", rJson.getData());
 		model.addAttribute("cnt", 1);

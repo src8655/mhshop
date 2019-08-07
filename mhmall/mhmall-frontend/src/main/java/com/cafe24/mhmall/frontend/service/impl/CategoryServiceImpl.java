@@ -9,12 +9,12 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
-import com.cafe24.mhmall.frontend.service.AdminCategoryService;
+import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class AdminCategoryServiceImpl implements AdminCategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private OAuth2RestTemplate restTemplate;

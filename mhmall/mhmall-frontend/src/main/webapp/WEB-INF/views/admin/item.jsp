@@ -4,8 +4,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:import url="/WEB-INF/views/admin/include/header.jsp"></c:import>
-
-
+<style type="text/css">
+.item_name_box {
+position:absolute;
+background-color: rgba( 255, 255, 255, 1.0 );
+width:100%;
+padding:0 10px 0 10px;
+line-height:30px;
+height:30px;
+bottom:0px;
+overflow:hidden;
+}
+</style>
 <script>
 $(function(){
 
@@ -56,14 +66,35 @@ $(function(){
 	        <c:if test="${idata.display eq 'FALSE'}">
 	          <div class="btn btn-default" style="color:blue;">판매중지</div>
 	        </c:if>
-	          <img class="card-img-top" src="${pageContext.servletContext.contextPath}${idata.thumbnail}" alt="">
-	          <div class="card-body">
-	            <h6 class="card-title">${idata.name}</h6>
+	          <div style="position:relative;">
+	          	<img class="card-img-top" src="${pageContext.servletContext.contextPath}${idata.thumbnail}" alt="">
+	            <div class="item_name_box">
+	            	${idata.name}
+	            </div>
 	          </div>
 	          <div class="card-footer">
-	            <a href="#" class="btn btn-primary">판매시작</a>
-	            <a href="#" class="btn btn-primary">삭제</a>
-	            <a href="#" class="btn btn-primary">수정</a>
+	          	<c:if test="${idata.display eq 'TRUE'}">
+		            <form action="${pageContext.servletContext.contextPath}/admin/item/display" method="post" style="display:inline;">
+	           		<input type="hidden" name="no" value="${idata.no}" />
+	           		<input type="hidden" name="display" value="FALSE" />
+	           		<input type="hidden" name="categoryNo" value="${categoryNos}" />
+		            	<button type="submit" class="btn btn-primary">판매중지</button>
+		            </form>
+	            </c:if>
+	          	<c:if test="${idata.display eq 'FALSE'}">
+		            <form action="${pageContext.servletContext.contextPath}/admin/item/display" method="post" style="display:inline;">
+	           		<input type="hidden" name="no" value="${idata.no}" />
+	           		<input type="hidden" name="display" value="TRUE" />
+	           		<input type="hidden" name="categoryNo" value="${categoryNos}" />
+		            	<button type="submit" class="btn btn-primary">판매시작</button>
+		            </form>
+	            </c:if>
+	            <form action="${pageContext.servletContext.contextPath}/admin/item/delete" method="post" style="display:inline;">
+	            <input type="hidden" name="no" value="${idata.no}" />
+	            <input type="hidden" name="categoryNo" value="${categoryNos}" />
+	            	<button type="submit" class="btn btn-primary">삭제</button>
+	            </form>
+	            <a href="${pageContext.servletContext.contextPath}/admin/item/edit/${idata.no}" class="btn btn-primary">수정</a>
 	          </div>
 	        </div>
 	      </div>

@@ -16,7 +16,6 @@ public class RequestItemEditDto {
 	@NotNull
 	@Min(0)
 	private Long money;
-	@NotEmpty
 	private String thumbnail;
 	@NotNull
 	@Min(1)

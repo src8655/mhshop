@@ -8,6 +8,7 @@
 		select no, option_name as optionName, level, item_no as itemNo
 		from option_detail
 		where item_no=#{itemNo} and level=#{level}
+		order by option_name asc
 	</select>
 	
 	
