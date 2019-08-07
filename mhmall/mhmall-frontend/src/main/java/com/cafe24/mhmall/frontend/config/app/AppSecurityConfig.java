@@ -20,6 +20,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -37,21 +40,21 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         	.authorizeRequests()
         		// 모두 허용
         		.anyRequest().permitAll()
-        /*
+        
         // FormLoginConfigurer
         .and()
         	.formLogin()
-        		.loginPage("/user/login")
-        		.loginProcessingUrl("/user/auth")
-        		.failureUrl("/user/login")
-        		.successHandler(authenticationSuccessHandler())
-        		.usernameParameter("email")
+        		.loginPage("/member/login")
+        		.loginProcessingUrl("/member/login")
+        		.failureUrl("/member/login")
+        		.defaultSuccessUrl("/")
+        		.usernameParameter("id")
         		.passwordParameter("password")
         
         // LogoutConfigurer
         .and()
         	.logout()
-        			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+        			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
         			.logoutSuccessUrl("/")
         			.deleteCookies("JSESSIONID")
         			.invalidateHttpSession(true)
@@ -64,9 +67,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         // RememberMeConfigurer
         .and()
         	.rememberMe()
-        		.key("mysite")
+        		.key("mhmall")
         		.rememberMeParameter("remember-me")
-        */
+        
         // CSRFConfigurer(Temporary for Test)
         .and()
         	.csrf()
@@ -75,7 +78,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         //.and()
         //.addFilterBefore(cafe24AuthenticationProcessingFilter(), BasicAuthenticationFilter.class);
 	}
-/*
+
 	// 사용자 세부 서비스를 설정
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -85,12 +88,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authenticationProvider(authProvider());
 	}
-	
+	/*
 	@Bean
 	public AuthenticationSuccessHandler authenticationSuccessHandler() {
 	    return new CustomUrlAuthenticationSuccessHandler();
 	}
-	
+	*/
 	// Encode the Password on Authentication
 	// BCrypt Password Encoder(with Random Salt)
 	@Bean
@@ -105,5 +108,5 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	    authProvider.setPasswordEncoder(passwordEncoder());
 	    
 	    return authProvider;
-	}	*/
+	}
 }

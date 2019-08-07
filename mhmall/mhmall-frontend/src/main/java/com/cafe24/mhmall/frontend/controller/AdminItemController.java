@@ -30,6 +30,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.AdminCategoryService;
 import com.cafe24.mhmall.frontend.service.AdminItemService;
 import com.cafe24.mhmall.frontend.service.AdminMemberService;
@@ -58,7 +59,7 @@ public class AdminItemController {
 	@RequestMapping(value = {"", "/{categoryNo}"}, method = RequestMethod.GET)
 	public String item(
 			@PathVariable("categoryNo") Optional<Long> categoryNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -82,7 +83,7 @@ public class AdminItemController {
 	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String item_write_form(
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -100,7 +101,7 @@ public class AdminItemController {
 	public String item_write(
 			@ModelAttribute ItemVo itemVo,
 			@RequestParam(value="thumbnailFile") MultipartFile thumbnailFile,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

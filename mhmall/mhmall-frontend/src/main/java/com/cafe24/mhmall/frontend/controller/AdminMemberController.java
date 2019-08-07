@@ -29,6 +29,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.AdminMemberService;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
@@ -50,9 +51,10 @@ public class AdminMemberController {
 	@RequestMapping(value = {"", "/{search}"}, method = RequestMethod.GET)
 	public String member(
 			@PathVariable("search") Optional<String> search,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
+		System.out.println(authUser);
 		
 		// 관리자 회원목록
 		ResponseJSONResult<AdminMemberService.ListMemberVo> rJson = adminMemberService.getMemberList(authUser.getMockToken(), search);

@@ -24,6 +24,7 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		NativeWebRequest webRequest,
 		WebDataBinderFactory binderFactory) throws Exception {
 		
+		/*
 		if(supportsParameter(parameter) == false) {
 			return WebArgumentResolver.UNRESOLVED;
 		}
@@ -36,6 +37,19 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		}
 		
 		return session.getAttribute("authUser");
+		*/
+		
+
+		Object principal = null;
+		if(SecurityContextHolder.getContext().getAuthentication() != null){
+			principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		
+		if(principal == null || principal.getClass() == String.class) {
+			return null;
+		} 
+		
+		return principal;
 	}
 
 	@Override
@@ -48,7 +62,7 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		}
 		
 		// 파라미터 타입이 UserVo가 아님
-		if(parameter.getParameterType().equals( MemberVo.class ) == false) {
+		if(parameter.getParameterType().equals( SecurityUser.class ) == false) {
 			return false;
 		}
 		

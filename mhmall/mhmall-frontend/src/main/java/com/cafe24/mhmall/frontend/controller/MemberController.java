@@ -45,7 +45,7 @@ public class MemberController {
 		return "member/login";
 	}
 	
-
+/*
 	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(
@@ -85,7 +85,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	
+	*/
 	
 
 	// 회원가입 폼

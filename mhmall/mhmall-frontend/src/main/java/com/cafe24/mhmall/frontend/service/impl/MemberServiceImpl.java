@@ -80,5 +80,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	// 아이디로 회원정보(로그인)
+	@Override
+	public ResponseJSONResult<MemberVo> get(String id) {
+		ResponseJSONResult<MemberVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/member/view/" + id, HttpMethod.GET, null, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		MemberVo data = mapper.convertValue(rJson.getData(), MemberVo.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
+
+
 
 }

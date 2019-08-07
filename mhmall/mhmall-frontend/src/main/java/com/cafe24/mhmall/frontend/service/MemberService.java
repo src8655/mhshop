@@ -9,5 +9,6 @@ public interface MemberService {
 	ResponseJSONResult<MemberVo> login(String id, String password);	// 로그인
 	ResponseJSONResult<Boolean> add(RequestJoinDto dto);			// 회원가입
 	ResponseJSONResult<Boolean> idcheck(String id);					// 아이디 중복확인
-
+	ResponseJSONResult<MemberVo> get(String id);					// 아이디로 회원정보(로그인)
+	
 }
