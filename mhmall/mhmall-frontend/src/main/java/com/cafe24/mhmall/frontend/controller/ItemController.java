@@ -29,7 +29,8 @@ import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-public class MainController {
+@RequestMapping("/item")
+public class ItemController {
 	
 	@Autowired
 	CategoryService categoryService;
@@ -38,7 +39,7 @@ public class MainController {
 	ItemService itemService;
 	
 
-	@RequestMapping({"", "/"})
+	@RequestMapping("/view")
 	public String main(
 			Model model
 			) {
@@ -48,11 +49,8 @@ public class MainController {
 		model.addAttribute("categoryList", rJsonCategory.getData());
 		
 		
-		// 최근상품리스트 (4개)
-		ResponseJSONResult<ItemService.ListItemVo> rJsonItemList = itemService.getNewList(-1L, 4);
-		model.addAttribute("itemList", rJsonItemList.getData());
 				
-		return "main/index";
+		return "item/view";
 	}
 	
 }

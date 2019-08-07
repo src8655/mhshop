@@ -164,7 +164,20 @@ public class ItemServiceImpl implements ItemService {
 		
 		return rJson;
 	}
+
 	
+	// 최근상품리스트
+	@Override
+	public ResponseJSONResult<ListItemVo> getNewList(Long CategoryNo, Integer cnt) {
+	    
+	    ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/new/"+CategoryNo+"/"+cnt, HttpMethod.GET, null, null);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
 	
 	
 	
@@ -220,8 +233,6 @@ public class ItemServiceImpl implements ItemService {
 		
 		return filename;
 	}
-
-
 
 
 }

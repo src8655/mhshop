@@ -49,7 +49,7 @@
 							<tr>
 							<form action="${pageContext.servletContext.contextPath}/admin/category" method="post">
 								<td colspan="2"><input type="text" name="categoryName" class="form-control" placeholder="카테고리명" /></td>
-								<td colspan="2"><button type="submit" class="btn btn-success" style="width:100%;">추가하기</button></td>
+								<td colspan="2"><button type="submit" class="btn btn-primary" style="width:100%;">추가하기</button></td>
 							</form>
 							</tr>
 							<c:forEach items="${categoryList}" var="cdata">
@@ -60,11 +60,11 @@
 									<td>
 										<input type="text" name="categoryName" class="form-control" placeholder="카테고리명" value="${cdata.name}" style="width:100%;margin:0px;" />
 									</td>
-									<td>
+									<td style="width:100px;">
 										<button type="submit" class="btn btn-primary c_edit_show_btn" style="width:100%;">수정</button>
 									</td>
 								</form>
-								<td>
+								<td style="width:100px;">
 									<form action="${pageContext.servletContext.contextPath}/admin/category/delete" method="post">
 										<input type="hidden" name="no" value="${cdata.no}" />
 										<button type="submit" class="btn btn-primary" style="width:100%;">삭제</button>

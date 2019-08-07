@@ -59,7 +59,7 @@ $(function(){
 					</div>
 					<div class="panel-body">
 						<input type="text" class="form-control float-left mb-3" style="width:68%;" id="admin_member_search" placeholder="이름으로 검색" value="${searchs}" />
-						<button class="btn btn-success float-right" style="width:30%;" id="admin_member_search_btn">검색</button>
+						<button class="btn btn-primary float-right" style="width:30%;" id="admin_member_search_btn">검색</button>
 					</div>
 					<div class="member_table_bg">
 					<table class="table table-hover member_table">
@@ -81,7 +81,7 @@ $(function(){
 								<td>${mdata.phone}</td>
 								<td>${mdata.email}</td>
 								<td>${mdata.regDate}</td>
-								<td><a href="#" class="btn btn-danger">삭제</a></td>
+								<td><a href="#" class="btn btn-primary">삭제</a></td>
 							</tr>
 							</c:forEach>
 						</tbody>

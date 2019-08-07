@@ -86,6 +86,7 @@ public class ItemServiceImpl implements ItemService {
 	// 최근 상품리스트
 	@Override
 	public List<ItemVo> getNewList(ItemVo vo) {
+		if(vo.getCategoryNo() != null && vo.getCategoryNo() == -1) vo.setCategoryNo(null);
 		return itemDao.selectNewList(vo);
 	}
 

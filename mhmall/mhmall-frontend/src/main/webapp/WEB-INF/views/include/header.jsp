@@ -46,10 +46,14 @@
 						<span style="font-weight:bold;">
 							<sec:authentication property="principal.name"/>
 						</span>
-						님 안녕하세요
+						님
 					</a>
 				</li>
+				<sec:authorize access="hasRole('ADMIN')">
+					<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/admin" style="font-weight:bold;">관리페이지</a></li>
+				</sec:authorize>
 				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/member/logout">로그아웃</a><li>
+			
 			</sec:authorize>
 			<li class="nav-item active"><a class="nav-link" href="">장바구니</a></li>
 			<li class="nav-item active"><a class="nav-link" href="">주문정보</a></li>
@@ -69,3 +73,5 @@
       
     </div>
   </nav>
+
+  

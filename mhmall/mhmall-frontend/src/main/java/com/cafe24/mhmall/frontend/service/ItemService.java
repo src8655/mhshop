@@ -17,6 +17,7 @@ public interface ItemService {
 	ResponseJSONResult<Boolean> edit(String mockToken, ItemVo itemVo, MultipartFile thumbnailFile);		// 상품수정 요청
 	ResponseJSONResult<Boolean> delete(String mockToken, Long no);										// 상품삭제 요청
 	ResponseJSONResult<Boolean> display(String mockToken, Long no, String display);						// 상품 진열여부 수정 요청
+	ResponseJSONResult<ListItemVo> getNewList(Long CategoryNo, Integer cnt);							// 최근상품리스트
 
 
 }

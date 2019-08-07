@@ -5,13 +5,13 @@
 
 <c:import url="/WEB-INF/views/member/include/header.jsp"></c:import>
 
-	<div class="container">
+	<div class="container mt-5 mb-5">
 		<div class="row">
 
 
 			<div class="col-lg-4 col-md-3 col-sm-1"></div>
 			<div class="col-lg-4 col-md-6 col-sm-10">
-				<div class="card" style="margin-top:20px;">
+				<div class="card">
 					<article class="card-body"> <a href="join"
 						class="float-right btn btn-outline-primary">회원가입</a>
 					<h4 class="card-title mb-4 mt-1">로그인</h4>
