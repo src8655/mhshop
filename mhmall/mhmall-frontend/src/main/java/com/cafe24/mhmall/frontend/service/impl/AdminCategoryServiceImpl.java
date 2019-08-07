@@ -3,7 +3,9 @@ package com.cafe24.mhmall.frontend.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class AdminCategoryServiceImpl implements AdminCategoryService {
 
+	@Autowired
+	private OAuth2RestTemplate restTemplate;
 	
 	// 카테고리 추가요청
 	@Override
@@ -22,7 +26,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("name", categoryName);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/admin/category", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -36,7 +40,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	@Override
 	public ResponseJSONResult<ListCategoryVo> getList() {
 		
-		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request("/api/category/list", HttpMethod.GET, null, null);
+		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/category/list", HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListCategoryVo data = mapper.convertValue(rJson.getData(), ListCategoryVo.class);
@@ -53,7 +57,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/admin/category", HttpMethod.DELETE, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.DELETE, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -71,7 +75,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	    params.put("name", categoryName);
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/admin/category", HttpMethod.PUT, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.PUT, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);

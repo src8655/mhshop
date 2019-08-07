@@ -34,15 +34,15 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		// @AuthUser가 붙어있음
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
-		String authorization = request.getHeader("Authorization");
+		String MyAuthorization = request.getHeader("MyAuthorization");
 		
 		// 인증받을 정보가 없으면 실패
-		if(authorization == null) {
+		if(MyAuthorization == null) {
 			return null;
 		}
 		
 		// 잘못된 인증 정보일 때
-		String[] basic_split = authorization.split(" ");
+		String[] basic_split = MyAuthorization.split(" ");
 		if(basic_split.length != 2) {
 			return null;
 		}

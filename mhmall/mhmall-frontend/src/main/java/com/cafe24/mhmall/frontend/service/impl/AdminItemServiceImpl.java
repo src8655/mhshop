@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +25,10 @@ public class AdminItemServiceImpl implements AdminItemService {
 	private static final String SAVE_PATH = "/mhmall-uploads";
 	private static final String URL = "/images";
 
+
+	@Autowired
+	private OAuth2RestTemplate restTemplate;
+	
 	// 상품작성 요청
 	@Override
 	public ResponseJSONResult<Boolean> add(String mockToken, ItemVo itemVo, MultipartFile thumbnailFile) {
@@ -39,7 +45,7 @@ public class AdminItemServiceImpl implements AdminItemService {
 	    params.put("thumbnail", itemVo.getThumbnail());
 	    params.put("categoryNo", itemVo.getCategoryNo());
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request("/api/admin/item", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -60,8 +66,7 @@ public class AdminItemServiceImpl implements AdminItemService {
 		if(categoryNo.isPresent()) {
 			cateNo = categoryNo.get();
 		}
-		System.out.println(cateNo + "----------------------------------------front");
-		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request("/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);

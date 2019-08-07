@@ -50,17 +50,19 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		//6. @Auth가 붙는 경우
 		//   인증 여부 체크
 		// 헤더정보
-		String authorization = request.getHeader("Authorization");
+		String MyAuthorization = request.getHeader("MyAuthorization");
+		
+		System.out.println("MyAuthorization : " + MyAuthorization);
 		
 		// 인증받을 정보가 없으면 실패
-		if(authorization == null) {
+		if(MyAuthorization == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
 			return false;
 		}
 
 		// 잘못된 인증 정보일 때
-		String[] basic_split = authorization.split(" ");
+		String[] basic_split = MyAuthorization.split(" ");
 		if(basic_split.length != 2) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");
