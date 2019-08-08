@@ -59,15 +59,15 @@
 			<li class="nav-item active"><a class="nav-link" href="">주문정보</a></li>
         </ul>
         
-        
-	      <form class="row form-inline my-2 my-lg-0 ml-auto mr-2">
-	        <div class="col-md-8 col-sm-9 col-8">
+	      <form class="col-lg-4 row form-inline">
+	        <div class="col-md-8 col-sm-9 col-8 pr-0">
 		        <input class="form-control mr-1" type="search" placeholder="Search" style="width:100%;" aria-label="Search">
 		      </div>
-	        <div class="col-md-4 col-sm-3 col-4">
-		      <button class="btn btn-outline-white" style="width:100%;border:1px solid #ffffff;color:#ffffff;" type="submit">Search</button>
+	        <div class="col-md-4 col-sm-3 col-4 pl-1 pr-0">
+		      <button class="btn btn-outline-white pl-0 pr-0" style="width:100%;border:1px solid #ffffff;color:#ffffff;" type="submit">Search</button>
 		      </div>
-		    </form>
+		  </form>
+		  
       </div>
       
       
