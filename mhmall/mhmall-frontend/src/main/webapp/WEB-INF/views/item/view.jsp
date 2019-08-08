@@ -57,7 +57,7 @@ $(function(){
 			return;
 		}
 		$.ajax({
-			url: "${pageContext.request.contextPath}/admin/item/option/${itemVo.no}/"+optionDetailNo1,
+			url: "${pageContext.request.contextPath}/item/option/${itemVo.no}/"+optionDetailNo1,
 			type: "get",
 			dataType: "json",
 			data: "",
@@ -171,7 +171,7 @@ $(function(){
 			<div class="mt-4 row">
 				<div class="col-md-6">
 					<img class="card-img-top img-fluid"
-						src="http://localhost:8080/mhmall-frontend/images/20197785633683.jpg"
+						src="${pageContext.servletContext.contextPath}${itemVo.thumbnail}"
 						width="100%" style="border: 2px solid #eeeeee;" alt="">
 				</div>
 				<div class="col-md-6 card-body">

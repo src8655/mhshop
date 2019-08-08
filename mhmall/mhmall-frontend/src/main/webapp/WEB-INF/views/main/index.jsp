@@ -58,10 +58,10 @@
 		<c:forEach items="${itemList}" var="idata">
           <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="${pageContext.servletContext.contextPath}${idata.thumbnail}" alt=""></a>
+              <a href="${pageContext.servletContext.contextPath}/item/view/${idata.no}"><img class="card-img-top" src="${pageContext.servletContext.contextPath}${idata.thumbnail}" alt=""></a>
               <div>
                 <h5 class="text-center mr-2 ml-2" style="height:20px;line-height:20px;overflow:hidden;">
-                  <a href="#" style="text-decoration:none;color:#000000;font-size:14px;">${idata.name}</a>
+                  <a href="${pageContext.servletContext.contextPath}/item/view/${idata.no}" style="text-decoration:none;color:#000000;font-size:14px;">${idata.name}</a>
                 </h5>
                 <h6 class="m-2 text-center">
                   <fmt:formatNumber value="${idata.money}" pattern="#,###" />원

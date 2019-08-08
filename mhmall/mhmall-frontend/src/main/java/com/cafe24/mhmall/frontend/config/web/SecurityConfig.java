@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.cafe24.mhmall.frontend.security.AuthInterceptor;
 import com.cafe24.mhmall.frontend.security.AuthUserHandlerMethodArgumentResolver;
+import com.cafe24.mhmall.frontend.security.GuestInterceptor;
 
 
 @Configuration
@@ -33,9 +34,13 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 	//
 	// Interceptor
 	//
-	@Bean
+	/*@Bean
 	public AuthInterceptor authInterceptor() {
 		return new AuthInterceptor();
+	}*/
+	@Bean
+	public GuestInterceptor guestInterceptor() {
+		return new GuestInterceptor();
 	}
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -46,5 +51,7 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 		.excludePathPatterns("/member/logout")
 		.excludePathPatterns("/assets/**");
 		*/
+		
+		registry.addInterceptor(guestInterceptor());
 	}
 }

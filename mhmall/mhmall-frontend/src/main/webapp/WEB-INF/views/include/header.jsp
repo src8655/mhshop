@@ -55,7 +55,7 @@
 				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/member/logout">로그아웃</a><li>
 			
 			</sec:authorize>
-			<li class="nav-item active"><a class="nav-link" href="">장바구니</a></li>
+			<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/item/basket">장바구니</a></li>
 			<li class="nav-item active"><a class="nav-link" href="">주문정보</a></li>
         </ul>
         

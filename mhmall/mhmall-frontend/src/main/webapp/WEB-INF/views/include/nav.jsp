@@ -15,7 +15,7 @@ $(function(){
 </script>
 
       <div class="col-lg-3 mt-4">
-        <div class="list-group d-lg-block d-md-none d-sm-none d-none">
+        <div class="mb-4 list-group d-lg-block d-md-none d-sm-none d-none">
 			<c:forEach items="${categoryList}" var="cdata">
           		<a href="${cdata.no}" class="list-group-item">${cdata.name}</a>
 			</c:forEach>
