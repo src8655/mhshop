@@ -127,12 +127,18 @@ $(function(){
 	
 	// 장바구니 추가 버튼
 	$("#view-basket-btn").click(function(){
+		if($("#cnt_input").attr("disabled") == "disabled") {
+			return ;
+		}
 		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/item/basket");
 		$("#item_view_form").submit();
 	});
 	
 	// 바로 구매 버튼
 	$("#view-buy-btn").click(function(){
+		if($("#cnt_input").attr("disabled") == "disabled") {
+			return ;
+		}
 		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/item/buy");
 		$("#item_view_form").submit();
 	});
