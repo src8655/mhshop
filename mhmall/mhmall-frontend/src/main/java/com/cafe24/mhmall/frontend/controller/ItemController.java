@@ -1,6 +1,7 @@
 package com.cafe24.mhmall.frontend.controller;
 
 import java.net.URI;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -24,7 +25,9 @@ import com.cafe24.mhmall.frontend.security.AuthUser;
 import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.service.ItemImgService;
 import com.cafe24.mhmall.frontend.service.ItemService;
+import com.cafe24.mhmall.frontend.service.OptionService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
+import com.cafe24.mhmall.frontend.vo.ItemVo;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,9 +41,17 @@ public class ItemController {
 	@Autowired
 	ItemService itemService;
 	
+	@Autowired
+	OptionService optionService;
+	
+	@Autowired
+	ItemImgService itemImgService;
+	
 
-	@RequestMapping("/view")
+	// 상품상세
+	@RequestMapping("/view/{no}")
 	public String item_view(
+			@PathVariable("no") Long no,
 			Model model
 			) {
 		
@@ -49,7 +60,21 @@ public class ItemController {
 		model.addAttribute("categoryList", rJsonCategory.getData());
 		
 		
-				
+		// 상품정보 요청
+		ResponseJSONResult<ItemVo> rJsonItem = itemService.get(no);
+		model.addAttribute("itemVo", rJsonItem.getData());
+		
+		// 옵션리스트(1차만)
+		Optional<Long> optionDetailNo1 = Optional.empty();
+		ResponseJSONResult<OptionService.ListOptionVo> rJsonOption = optionService.getList(no, optionDetailNo1);
+		model.addAttribute("optionList", rJsonOption.getData());
+		
+		
+		// 상품이미지리스트 요청
+		ResponseJSONResult<ItemImgService.ListItemImgVo> rJsonItemImg = itemImgService.getList(no);
+		model.addAttribute("itemImgList", rJsonItemImg.getData());
+		
+			
 		return "item/view";
 	}
 	

@@ -28,7 +28,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background:#20a8d8;">
     <div class="container">
-      <a class="navbar-brand" href="#">MH SHOP</a>
+      <a class="navbar-brand" href="${pageContext.servletContext.contextPath}">MH SHOP</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -60,11 +60,11 @@
         </ul>
         
         
-	      <form class="row form-inline my-2 my-lg-0 ml-auto">
-	        <div class="col-md-8 col-sm-9 col-xs-12">
+	      <form class="row form-inline my-2 my-lg-0 ml-auto mr-2">
+	        <div class="col-md-8 col-sm-9 col-8">
 		        <input class="form-control mr-1" type="search" placeholder="Search" style="width:100%;" aria-label="Search">
 		      </div>
-	        <div class="col-md-4 col-sm-3 col-xs-12">
+	        <div class="col-md-4 col-sm-3 col-4">
 		      <button class="btn btn-outline-white" style="width:100%;border:1px solid #ffffff;color:#ffffff;" type="submit">Search</button>
 		      </div>
 		    </form>

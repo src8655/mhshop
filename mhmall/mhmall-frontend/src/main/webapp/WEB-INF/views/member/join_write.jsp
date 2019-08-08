@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-<c:import url="/WEB-INF/views/member/include/header.jsp"></c:import>
+<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
@@ -114,4 +114,4 @@ $(function(){
 
 
 
-<c:import url="/WEB-INF/views/member/include/footer.jsp"></c:import>
+<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
