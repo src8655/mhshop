@@ -16,12 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableOAuth2Client
 public class OAuth2ClientConfig {
 	
-	//@Autowired 
-	//private ClientTokenServices clientTokenService;
-	
-	//@Autowired
-	//private OAuth2ClientContext oauth2ClientContext;
-	
 	@Bean
 	public OAuth2ProtectedResourceDetails resourceDetails() {
         ClientCredentialsResourceDetails resourceDetails = new ClientCredentialsResourceDetails();
@@ -44,11 +38,7 @@ public class OAuth2ClientConfig {
 	    
         restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
         System.out.println("access token: " + restTemplate.getAccessToken());
-        
-//	    List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-//	    interceptors.add(new LoggingRequestInterceptor());
-//	    template.setInterceptors(interceptors);
-//	    template.setRetryBadAccessTokens(true);
+
 	    
 	    return restTemplate;
 	}

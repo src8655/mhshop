@@ -38,8 +38,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		// AuthorizedURL(Basic ACL)
         http
         	.authorizeRequests()
-    		//.antMatchers("/user/update", "/user/logout").authenticated()
-    		//.antMatchers("/board/write", "/board/modify", "/board/modify/**").authenticated()
     		.antMatchers("/admin", "/admin/**").hasRole("ADMIN")
         	// 모두 허용
         	.anyRequest().permitAll()
@@ -78,8 +76,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         	.csrf()
         		.disable();
         
-        //.and()
-        //.addFilterBefore(cafe24AuthenticationProcessingFilter(), BasicAuthenticationFilter.class);
 	}
 
 	// 사용자 세부 서비스를 설정
@@ -91,12 +87,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authenticationProvider(authProvider());
 	}
-	/*
-	@Bean
-	public AuthenticationSuccessHandler authenticationSuccessHandler() {
-	    return new CustomUrlAuthenticationSuccessHandler();
-	}
-	*/
 	// Encode the Password on Authentication
 	// BCrypt Password Encoder(with Random Salt)
 	@Bean
