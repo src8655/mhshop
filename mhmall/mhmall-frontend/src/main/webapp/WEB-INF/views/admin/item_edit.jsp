@@ -396,8 +396,8 @@ $(function(){
 							<input type="hidden" name="itemNo" value="${itemVo.no}" />
 							<input type="hidden" name="no" value="${iidata.no}" />
 							<td>
-								<div class="itemimglist_img" style="background-image:url(${pageContext.servletContext.contextPath}${iidata.itemImg});">
-								</div>
+								<a target="_BLANK" href="${pageContext.servletContext.contextPath}${iidata.itemImg}" class="itemimglist_img" style="background-image:url(${pageContext.servletContext.contextPath}${iidata.itemImg});display:block;">
+								</a>
 							</td>
 							<td><button type="submit" class="btn btn-danger" style="width:100%;">삭제</button></td>
 							</form>
