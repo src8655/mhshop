@@ -120,4 +120,21 @@ public class MemberServiceImpl implements MemberService {
 		return rJson;
 	}
 
+
+	// 회원 삭제요청
+	@Override
+	public ResponseJSONResult<Boolean> delete(String mockToken, String id) {
+		
+        Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("id", id);
+	    
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/member", HttpMethod.DELETE, params, mockToken);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+		rJson.setData(data);
+	    
+	    return rJson;
+	}
+
 }

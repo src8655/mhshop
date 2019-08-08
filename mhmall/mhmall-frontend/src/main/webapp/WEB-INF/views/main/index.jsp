@@ -37,8 +37,8 @@
           	<div style="border-radius:5px;background-image:url(${pageContext.servletContext.contextPath}${midata.itemImg}); background-size:cover;"
           	class="carousel-item <c:if test="${nowst.index eq 0}">active</c:if>">
           		<div class="mt-4 mb-4" style="overflow:hidden;">
-          		<div class="mt-5 mb-5 p-5" style="background-color: rgba( 0, 0, 0, 0.5 );font-size:18px;font-weight:bold;color:#ffffff;">
-          			${midata.name}
+          		<div class="mt-5 mb-5 pr-5 pl-5 text-center" style="background-color: rgba( 0, 0, 0, 0.5 );font-size:18px;font-weight:bold;color:#ffffff;height:125px;line-height:125px;overflow:hidden;">
+          			<a href="${pageContext.servletContext.contextPath}/item/view/${midata.no}" style="color:#ffffff;text-decoration:none;">${midata.name}</a>
           		</div>
           		</div>
             </div>

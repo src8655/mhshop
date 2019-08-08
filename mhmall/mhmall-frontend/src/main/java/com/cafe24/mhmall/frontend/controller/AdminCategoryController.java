@@ -43,11 +43,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AdminCategoryController {
 	
 	@Autowired
-	CategoryService adminCategoryService;
+	CategoryService categoryService;
 
 	
 	// 관리자 카테고리목록
-	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String category(
 			@AuthUser SecurityUser authUser,
@@ -55,7 +54,7 @@ public class AdminCategoryController {
 			) {
 		
 		// 카테고리 리스트 요청
-		ResponseJSONResult<CategoryService.ListCategoryVo> rJson = adminCategoryService.getList();
+		ResponseJSONResult<CategoryService.ListCategoryVo> rJson = categoryService.getList();
 		
 		model.addAttribute("categoryList", rJson.getData());
 		model.addAttribute("cnt", 1);
@@ -65,7 +64,6 @@ public class AdminCategoryController {
 	
 	
 	// 관리자 카테고리추가
-	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String category_add(
 			@RequestParam(name = "categoryName", required = true, defaultValue = "") String categoryName,
@@ -74,7 +72,7 @@ public class AdminCategoryController {
 			) {
 		
 		// 카테고리 추가요청
-		ResponseJSONResult<Boolean> rJson = adminCategoryService.add(authUser.getMockToken(), categoryName);
+		ResponseJSONResult<Boolean> rJson = categoryService.add(authUser.getMockToken(), categoryName);
 		
         // 실패면
         if("fail".equals(rJson.getResult())) {
@@ -88,7 +86,6 @@ public class AdminCategoryController {
 	
 
 	// 관리자 카테고리 삭제
-	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String category_delete(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
@@ -97,7 +94,7 @@ public class AdminCategoryController {
 			) {
 		
 		// 카테고리 삭제요청
-		ResponseJSONResult<Boolean> rJson = adminCategoryService.delete(authUser.getMockToken(), no);
+		ResponseJSONResult<Boolean> rJson = categoryService.delete(authUser.getMockToken(), no);
 		
         // 실패면
         if("fail".equals(rJson.getResult())) {
@@ -113,7 +110,6 @@ public class AdminCategoryController {
 
 
 	// 관리자 카테고리 수정
-	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String category_edit(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
@@ -123,7 +119,7 @@ public class AdminCategoryController {
 			) {
 		
 		// 카테고리 수정요청
-		ResponseJSONResult<Boolean> rJson = adminCategoryService.edit(authUser.getMockToken(), no, categoryName);
+		ResponseJSONResult<Boolean> rJson = categoryService.edit(authUser.getMockToken(), no, categoryName);
 		
         // 실패면
         if("fail".equals(rJson.getResult())) {

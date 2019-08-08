@@ -81,7 +81,12 @@ $(function(){
 								<td>${mdata.phone}</td>
 								<td>${mdata.email}</td>
 								<td>${mdata.regDate}</td>
-								<td><a href="#" class="btn btn-primary">삭제</a></td>
+								<td>
+									<form action="${pageContext.servletContext.contextPath}/admin/member/delete" method="post">
+									<input type="hidden" name="id" value="${mdata.id}" />
+										<button type="submit" class="btn btn-primary">삭제</button>
+									</form>
+								</td>
 							</tr>
 							</c:forEach>
 						</tbody>
