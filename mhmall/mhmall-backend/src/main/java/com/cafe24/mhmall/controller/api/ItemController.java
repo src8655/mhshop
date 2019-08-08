@@ -28,6 +28,7 @@ import com.cafe24.mhmall.service.OptionDetailService;
 import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.vo.ItemImgVo;
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.MainImgVo;
 import com.cafe24.mhmall.vo.OptionVo;
 
 import io.swagger.annotations.Api;
@@ -170,6 +171,26 @@ public class ItemController {
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));
+	}
+	
+	
+	
+	// 메인 이미지 리스트
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "showCnt", value = "보여질 개수", paramType = "query", required = true, defaultValue = "")
+	})
+	@RequestMapping(value = "/list/img/new/{showCnt}", method = RequestMethod.GET)
+	@ApiOperation(value = "메인 이미지 리스트", notes = "메인 이미지 리스트 요청 API")
+	public ResponseEntity<JSONResult> newImgList(
+			@ModelAttribute @Valid RequestItemNewListDto dto,
+			BindingResult result
+			) {
+
+		// Service에 최근 메인 이미지 리스트 요청
+		List<MainImgVo> mainImgList = itemService.getNewImgList(dto.getShowCnt());
+		
+		// JSON 리턴 생성
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(mainImgList));
 	}
 
 }

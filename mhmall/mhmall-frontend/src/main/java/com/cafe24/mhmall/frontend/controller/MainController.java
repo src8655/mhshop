@@ -51,6 +51,12 @@ public class MainController {
 		// 최근상품리스트 (4개)
 		ResponseJSONResult<ItemService.ListItemVo> rJsonItemList = itemService.getNewList(-1L, 4);
 		model.addAttribute("itemList", rJsonItemList.getData());
+		
+		
+		// 최근상품이미지 (3개)
+		ResponseJSONResult<ItemService.ListMainImgVo> rJsonMainImgList = itemService.getNewImgList(3);
+		model.addAttribute("mainImgList", rJsonMainImgList.getData());
+		
 				
 		return "main/index";
 	}

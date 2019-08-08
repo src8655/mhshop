@@ -3,6 +3,7 @@ package com.cafe24.mhmall.service;
 import java.util.List;
 
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.MainImgVo;
 
 public interface ItemService {
 
@@ -15,5 +16,6 @@ public interface ItemService {
 	boolean editDisplay(Long no, String display);	// 상품진열여부 수정
 	List<ItemVo> getListU(ItemVo itemVo);			// 사용자 상품리스트
 	List<ItemVo> getNewList(ItemVo vo);				// 최근 상품리스트
+	List<MainImgVo> getNewImgList(Integer showCnt);	// 최근 메인 이미지 리스트 요청
 
 }

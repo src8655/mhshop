@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.ItemDao;
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.MainImgVo;
 
 @Repository
 public class ItemDaoImpl implements ItemDao {
@@ -76,6 +77,13 @@ public class ItemDaoImpl implements ItemDao {
 	@Override
 	public List<ItemVo> selectNewList(ItemVo vo) {
 		return sqlSession.selectList("item.selectNewList", vo);
+	}
+
+
+	// 최근 메인 이미지 리스트 요청
+	@Override
+	public List<MainImgVo> getNewItemList(Integer showCnt) {
+		return sqlSession.selectList("item.getNewItemList", showCnt);
 	}
 
 }

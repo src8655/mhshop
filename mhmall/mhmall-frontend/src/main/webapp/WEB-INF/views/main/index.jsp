@@ -32,15 +32,18 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
           </ol>
           <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+       		
+          <c:forEach items="${mainImgList}" var="midata" varStatus="nowst">
+          	<div style="border-radius:5px;background-image:url(${pageContext.servletContext.contextPath}${midata.itemImg}); background-size:cover;"
+          	class="carousel-item <c:if test="${nowst.index eq 0}">active</c:if>">
+          		<div class="mt-4 mb-4" style="overflow:hidden;">
+          		<div class="mt-5 mb-5 p-5" style="background-color: rgba( 0, 0, 0, 0.5 );font-size:18px;font-weight:bold;color:#ffffff;">
+          			${midata.name}
+          		</div>
+          		</div>
             </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-            </div>
+          </c:forEach>
+            
           </div>
           <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

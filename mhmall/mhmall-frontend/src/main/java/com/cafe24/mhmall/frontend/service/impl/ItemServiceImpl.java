@@ -179,6 +179,28 @@ public class ItemServiceImpl implements ItemService {
 		return rJson;
 	}
 	
+
+	// 최근상품이미지
+	@Override
+	public ResponseJSONResult<ListMainImgVo> getNewImgList(Integer cnt) {
+
+	    ResponseJSONResult<ListMainImgVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/img/new/"+cnt, HttpMethod.GET, null, null);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		ListMainImgVo data = mapper.convertValue(rJson.getData(), ListMainImgVo.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -233,6 +255,8 @@ public class ItemServiceImpl implements ItemService {
 		
 		return filename;
 	}
+
+
 
 
 }

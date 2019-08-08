@@ -12,6 +12,7 @@
 		<typeAlias alias="ordersitemvo" type="com.cafe24.mhmall.vo.OrdersItemVo"/>
 		<typeAlias alias="itemimgvo" type="com.cafe24.mhmall.vo.ItemImgVo"/>
 		<typeAlias alias="basketvo" type="com.cafe24.mhmall.vo.BasketVo"/>
+		<typeAlias alias="mainimgvo" type="com.cafe24.mhmall.vo.MainImgVo"/>
 	</typeAliases>
 	
 	<mappers>

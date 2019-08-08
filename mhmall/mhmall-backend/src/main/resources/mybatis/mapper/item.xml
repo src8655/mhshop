@@ -95,4 +95,33 @@
 		limit 0, #{showCnt}
 	</select>
 	
+	
+	<!-- 최근 메인 이미지 리스트 요청 -->
+	<select id="getNewItemList" parameterType="Integer" resultType="mainimgvo">
+		select aa.no as no, aa.name as name, bb.item_img as itemImg
+		from
+		(
+			select no, name
+			from item
+			where display='TRUE'
+		) aa,
+		(
+			select b.no, b.item_no, b.item_img
+			from item_img b
+			where b.no in
+			(
+				select a.no as no
+				from
+				(
+					select item_no, min(no) as no
+					from item_img
+					group by item_no
+				) a
+			)
+		) bb
+		where aa.no=bb.item_no
+		order by no desc
+		limit 0, #{showCnt}
+	</select>
+	
 </mapper>

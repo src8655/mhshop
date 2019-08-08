@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cafe24.mhmall.repository.ItemDao;
 import com.cafe24.mhmall.service.ItemService;
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.MainImgVo;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -88,6 +89,13 @@ public class ItemServiceImpl implements ItemService {
 	public List<ItemVo> getNewList(ItemVo vo) {
 		if(vo.getCategoryNo() != null && vo.getCategoryNo() == -1) vo.setCategoryNo(null);
 		return itemDao.selectNewList(vo);
+	}
+
+
+	// 최근 메인 이미지 리스트 요청
+	@Override
+	public List<MainImgVo> getNewImgList(Integer showCnt) {
+		return itemDao.getNewItemList(showCnt);
 	}
 
 }
