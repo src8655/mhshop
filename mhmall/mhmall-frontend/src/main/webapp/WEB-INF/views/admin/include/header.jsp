@@ -12,7 +12,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>MHMALL</title>
+  <title>MH SHOP</title>
 
   <!-- Bootstrap core CSS -->
   <link href="${pageContext.servletContext.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

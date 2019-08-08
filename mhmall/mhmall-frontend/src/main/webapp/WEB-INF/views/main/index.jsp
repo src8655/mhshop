@@ -34,7 +34,7 @@
           <div class="carousel-inner" role="listbox">
        		
           <c:forEach items="${mainImgList}" var="midata" varStatus="nowst">
-          	<div style="border-radius:5px;background-image:url(${pageContext.servletContext.contextPath}${midata.itemImg}); background-size:cover;"
+          	<div style="border:1px solid #e6e6e6;border-radius:5px;background-image:url(${pageContext.servletContext.contextPath}${midata.itemImg}); background-size:cover;"
           	class="carousel-item <c:if test="${nowst.index eq 0}">active</c:if>">
           		<div class="mt-4 mb-4" style="overflow:hidden;">
           		<div class="mt-5 mb-5 pr-5 pl-5 text-center" style="background-color: rgba( 0, 0, 0, 0.5 );font-size:18px;font-weight:bold;color:#ffffff;height:125px;line-height:125px;overflow:hidden;">

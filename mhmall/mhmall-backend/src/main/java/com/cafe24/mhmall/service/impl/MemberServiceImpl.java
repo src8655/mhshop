@@ -51,7 +51,8 @@ public class MemberServiceImpl implements MemberService {
 	// 로그인
 	@Override
 	public MemberVo login(MemberVo memberVo) {
-		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
+		//MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
+		MemberVo newMemberVo = memberDao.selectOneById(memberVo);
 		
 		if(newMemberVo != null) {
 			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));

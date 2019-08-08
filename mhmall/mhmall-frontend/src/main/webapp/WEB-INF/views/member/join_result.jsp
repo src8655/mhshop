@@ -11,7 +11,10 @@
 
 
 
-<p><span style="color:blue;">${name}님</span>의 회원가입이 완료되었습니다.</p>
+<div style="width:100%;text-align:center;font-size:23px;padding:50px 0 50px 0;">
+	<span style="color:blue;">${name}님</span>의 회원가입이 완료되었습니다.<br /><br />
+	<a href="${pageContext.servletContext.contextPath}/member/login" class="btn btn-primary">로그인하기</a>
+</div>
 
 
 

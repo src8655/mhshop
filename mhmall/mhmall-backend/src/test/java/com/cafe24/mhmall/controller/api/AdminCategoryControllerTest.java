@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -64,12 +66,13 @@ public class AdminCategoryControllerTest {
 
 		ResultActions resultActions;
 		
-		// 관리자 로그인
+		
+		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"id\":\"test_id2\","
-						+ "\"password\":\"testpassword2!\""
+						+ "\"password\":\"test\""
 						+ "}"));
 		// 응답이 200 인지
 		MvcResult mvcResult = resultActions
@@ -97,7 +100,7 @@ public class AdminCategoryControllerTest {
 						+ "\"name\":\"\""
 						+ "}"));
 		// 응답이 400 인지
-		resultActions.andExpect(status().isBadRequest());
+		resultActions.andDo(print()).andExpect(status().isBadRequest());
 
 		
 		// 작성성공

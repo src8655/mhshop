@@ -6,7 +6,9 @@
 <c:import url="/WEB-INF/views/admin/include/header.jsp"></c:import>
 
 
-
+<script>
+	location.href="${pageContext.servletContext.contextPath}/admin/item";
+</script>
 
 
 <c:import url="/WEB-INF/views/admin/include/footer.jsp"></c:import>

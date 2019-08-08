@@ -81,7 +81,7 @@ public class AdminItemController {
 			@ModelAttribute @Valid RequestItemCategoryDto dto,
 			BindingResult result
 			) {
-		System.out.println(dto.getCategoryNo() + "----------------------------------------back");
+		//System.out.println(dto.getCategoryNo() + "----------------------------------------back");
 		
 		// Service에 상품리스트 요청
 		List<ItemVo> itemList = itemService.getList(dto.toVo());

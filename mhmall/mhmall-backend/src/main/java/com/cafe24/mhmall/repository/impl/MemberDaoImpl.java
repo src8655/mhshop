@@ -53,7 +53,7 @@ public class MemberDaoImpl implements MemberDao {
 	// 회원 리스트
 	@Override
 	public List<MemberVo> selectList(String search) {
-		System.out.println(search);
+		//System.out.println(search);
 		Map map = new HashMap();
 		map.put("aesKey", aesKey);
 		map.put("search", search);

@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,15 +70,16 @@ public class ItemControllerTest {
 
 		ResultActions resultActions;
 		
+		
 		// 사용자 로그인
 		resultActions = mockMvc.perform(post("/api/member/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"id\":\"test_id1\","
-						+ "\"password\":\"testpassword1!\""
+						+ "\"password\":\"test\""
 						+ "}"));
 		// 응답이 200 인지
-		MvcResult mvcResult = resultActions
+		MvcResult mvcResult = resultActions.andDo(print())
 		.andExpect(status().isOk())
 		.andReturn();
 
@@ -135,7 +138,7 @@ public class ItemControllerTest {
 	public void testC옵션리스트() throws Exception {
 		ResultActions resultActions;
 		
-		resultActions = mockMvc.perform(get("/api/item/option/list/{itemNo}/{optionDetailNo1}", 1L, 0L)
+		resultActions = mockMvc.perform(get("/api/item/option/list/{itemNo}/{optionDetailNo1}", 1L, -1L)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions

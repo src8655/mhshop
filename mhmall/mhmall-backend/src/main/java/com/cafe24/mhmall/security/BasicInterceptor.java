@@ -39,7 +39,7 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("inter!!!");
+		//System.out.println("inter!!!");
 		
 		
 		// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
