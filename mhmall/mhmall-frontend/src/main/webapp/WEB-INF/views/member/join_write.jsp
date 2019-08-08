@@ -15,7 +15,7 @@ $(function(){
 	$("#user_ids").change(function(){
 		var id = $("#user_ids").val();
 		$.ajax({
-			url: "http://localhost:8080/mhmall-frontend/member/join/idcheck/"+id,
+			url: "${pageContext.servletContext.contextPath}/member/join/idcheck/"+id,
 			type: "get",
 			dataType: "json",
 			data: "",
@@ -62,7 +62,7 @@ $(function(){
 				<div class="card" style="margin-top:20px;">
 					<article class="card-body">
 					<h4 class="card-title mb-4 mt-1">회원가입</h4>
-					<form action="join" method="post">
+					<form action="${pageContext.servletContext.contextPath}/member/join" method="post">
 						<div class="form-group">
 							<input name="name" class="form-control" placeholder="이름" type="text" />
 						</div>

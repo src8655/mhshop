@@ -52,7 +52,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		// 헤더정보
 		String MyAuthorization = request.getHeader("MyAuthorization");
 		
-		System.out.println("MyAuthorization : " + MyAuthorization);
+		//System.out.println("MyAuthorization : " + MyAuthorization);
 		
 		// 인증받을 정보가 없으면 실패
 		if(MyAuthorization == null) {

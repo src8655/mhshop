@@ -3,6 +3,7 @@ package com.cafe24.mhmall.frontend.controller;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -39,8 +40,18 @@ public class MemberController {
 	MemberService memberService;
 
 	// 로그인 폼
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginform() {
+	@RequestMapping(value = {"/login", "/login/{fail}"}, method = RequestMethod.GET)
+	public String loginform(
+			@PathVariable("fail") Optional<Long> fail,
+			Model model
+			) {
+		
+		if(fail.isPresent()) {
+			model.addAttribute("failMessage", "아이디/비밀번호를 확인해 주세요.");
+		}else {
+			model.addAttribute("failMessage", "");
+		}
+		
 		
 		return "member/login";
 	}

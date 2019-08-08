@@ -12,10 +12,10 @@
 			<div class="col-lg-4 col-md-3 col-sm-1"></div>
 			<div class="col-lg-4 col-md-6 col-sm-10">
 				<div class="card">
-					<article class="card-body"> <a href="join"
+					<article class="card-body"> <a href="${pageContext.servletContext.contextPath}/member/join"
 						class="float-right btn btn-outline-primary">회원가입</a>
 					<h4 class="card-title mb-4 mt-1">로그인</h4>
-					<form action="login" method="post">
+					<form action="${pageContext.servletContext.contextPath}/member/login" method="post">
 						<div class="form-group">
 							<label>아이디</label> <input name="id" class="form-control"
 								placeholder="아이디" type="text" />
@@ -33,6 +33,11 @@
 							</div>
 							<!-- checkbox .// -->
 						</div>
+						<c:if test="${failMessage ne ''}">
+						<div class="form-group">
+							<span id="id_ch_value" style="color:blue;">${failMessage}</span>
+						</div>
+						</c:if>
 						<!-- form-group// -->
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary btn-block">
