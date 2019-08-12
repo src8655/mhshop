@@ -3,6 +3,8 @@ package com.cafe24.mhmall.frontend.service.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.service.ItemService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.ItemVo;
+import com.cafe24.mhmall.frontend.vo.ItemsVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -194,6 +197,32 @@ public class ItemServiceImpl implements ItemService {
 	}
 	
 	
+	// 상품리스트와 페이징 가져오기
+	@Override
+	public ResponseJSONResult<ItemsVo> getListU(Optional<Long> categoryNo, Optional<Integer> pages, Optional<String> kwd) {
+		Long categoryNoPath = -1L;
+		Integer pagesPath = 1;
+		String kwdPath = "";
+		if(categoryNo.isPresent()) categoryNoPath = categoryNo.get();
+		if(pages.isPresent()) pagesPath = pages.get();
+		if(kwd.isPresent()) {
+			try {
+				kwdPath = URLEncoder.encode(kwd.get(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		ResponseJSONResult<ItemsVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/"+categoryNoPath + "/" + pagesPath + "/" + kwdPath, HttpMethod.GET, null, null);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		ItemsVo data = mapper.convertValue(rJson.getData(), ItemsVo.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
+	
+	
 	
 	
 	
@@ -255,6 +284,8 @@ public class ItemServiceImpl implements ItemService {
 		
 		return filename;
 	}
+
+
 
 
 

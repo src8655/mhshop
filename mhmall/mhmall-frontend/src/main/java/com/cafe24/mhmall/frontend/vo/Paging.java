@@ -1,4 +1,4 @@
-package com.cafe24.mhmall.vo;
+package com.cafe24.mhmall.frontend.vo;
 
 public class Paging {
 	private Integer count;

@@ -165,13 +165,13 @@ public class ItemControllerTest {
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk()).andDo(print())
-		.andExpect(jsonPath("$.data[0].no", is(1)))
-		.andExpect(jsonPath("$.data[0].name", is("test_item1")))
-		.andExpect(jsonPath("$.data[0].description", is("test_description1")))
-		.andExpect(jsonPath("$.data[0].money", is(10000)))
-		.andExpect(jsonPath("$.data[0].thumbnail", is("test_thumbnail1")))
-		.andExpect(jsonPath("$.data[0].display", is("TRUE")))
-		.andExpect(jsonPath("$.data[0].categoryNo", is(1)));
+		.andExpect(jsonPath("$.data.itemList[0].no", is(1)))
+		.andExpect(jsonPath("$.data.itemList[0].name", is("test_item1")))
+		.andExpect(jsonPath("$.data.itemList[0].description", is("test_description1")))
+		.andExpect(jsonPath("$.data.itemList[0].money", is(10000)))
+		.andExpect(jsonPath("$.data.itemList[0].thumbnail", is("test_thumbnail1")))
+		.andExpect(jsonPath("$.data.itemList[0].display", is("TRUE")))
+		.andExpect(jsonPath("$.data.itemList[0].categoryNo", is(1)));
 		
 	}
 	

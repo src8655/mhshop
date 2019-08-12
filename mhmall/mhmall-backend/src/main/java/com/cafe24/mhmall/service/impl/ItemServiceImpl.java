@@ -18,7 +18,7 @@ import com.cafe24.mhmall.vo.Paging;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-	public static final int BOARD_CNT = 6;	//한번에 보여질 게시글
+	public static final int BOARD_CNT = 2;	//한번에 보여질 게시글
 	public static final int PAGE_CNT = 5;	//페이지 버튼 개수
 	
 	@Autowired
@@ -94,6 +94,8 @@ public class ItemServiceImpl implements ItemService {
 		if(pages.isPresent()) pagesPath = pages.get();
 		if(kwd.isPresent()) kwdPath = kwd.get();
 		
+		if(categoryNoPath == -1L) categoryNoPath = null;
+		
 		
 		// 회원 총 상품 개수
 		Map<String, Object> mapCnt = new HashMap<String, Object>();
@@ -107,7 +109,10 @@ public class ItemServiceImpl implements ItemService {
 		int lastPage = (int) Math.ceil((double)count/(double)BOARD_CNT);	//마지막 페이지
 		int startNum = ((pagesPath-1) * BOARD_CNT);		//시작번호
 		int rangeStart = ((pagesPath-1)/PAGE_CNT) * PAGE_CNT + 1;		//페이지 범위
-		Paging paging = new Paging(count, lastPage, startNum, rangeStart, BOARD_CNT, PAGE_CNT);
+		Paging paging = new Paging(count, lastPage, startNum, rangeStart, BOARD_CNT, PAGE_CNT, null, null, null);
+		if(categoryNoPath == null) paging.setCategoryNo(-1L); else paging.setCategoryNo(categoryNoPath);
+		paging.setPages(pagesPath);
+		if(kwdPath == null) paging.setKwd(""); else paging.setKwd(kwdPath);
 		System.out.println("----------------------------------------- paging : " + paging);
 		
 		

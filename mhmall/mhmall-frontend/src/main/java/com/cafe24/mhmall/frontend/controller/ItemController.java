@@ -36,6 +36,7 @@ import com.cafe24.mhmall.frontend.service.ItemService;
 import com.cafe24.mhmall.frontend.service.OptionService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.ItemVo;
+import com.cafe24.mhmall.frontend.vo.ItemsVo;
 import com.cafe24.mhmall.frontend.vo.MemberVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -85,7 +86,9 @@ public class ItemController {
 		ResponseJSONResult<ItemImgService.ListItemImgVo> rJsonItemImg = itemImgService.getList(no);
 		model.addAttribute("itemImgList", rJsonItemImg.getData());
 		
-			
+
+		model.addAttribute("categoryNoPath", rJsonItem.getData().getCategoryNo());
+		
 		return "item/view";
 	}
 	
@@ -226,6 +229,44 @@ public class ItemController {
         }
         
 		return "redirect:/item/basket";
+	}
+	
+	
+	
+	
+
+	// 상품 리스트
+	@RequestMapping(value = {"/list/{categoryNo}", "/list/{categoryNo}/{pages}", "/list/{categoryNo}/{pages}/{kwd}"}, method = RequestMethod.GET)
+	public String itemList(
+			@PathVariable Optional<Long> categoryNo,
+			@PathVariable Optional<Integer> pages,
+			@PathVariable Optional<String> kwd,
+			Model model
+			) {
+		
+		// 카테고리 리스트 요청
+		ResponseJSONResult<CategoryService.ListCategoryVo> rJsonCategory = categoryService.getList();
+		model.addAttribute("categoryList", rJsonCategory.getData());
+		
+		
+		// 상품리스트와 페이징 가져오기
+		ResponseJSONResult<ItemsVo> rJson = itemService.getListU(categoryNo, pages, kwd);
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+		model.addAttribute("itemList", rJson.getData().getItemList());
+		model.addAttribute("paging", rJson.getData().getPaging());
+		model.addAttribute("categoryNoPath", rJson.getData().getPaging().getCategoryNo());
+		model.addAttribute("pagesPath", rJson.getData().getPaging().getPages());
+        
+		
+		return "item/list";
 	}
 	
 }
