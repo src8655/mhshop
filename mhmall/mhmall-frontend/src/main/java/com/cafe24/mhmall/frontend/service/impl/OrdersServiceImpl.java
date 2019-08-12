@@ -151,4 +151,20 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 회원 주문 취소
+	@Override
+	public ResponseJSONResult<Boolean> memberOrdersCancel(String ordersNo, String mockToken) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ordersNo", ordersNo);
+	    
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/cancel", HttpMethod.PUT, params, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

@@ -21,6 +21,7 @@ public interface OrdersService {
 	ResponseJSONResult<OrdersVo> memberOrdersUpdate(RequestOrdersWriteGuestDto dto, String mockToken);			// 회원 주문 완료
 	ResponseJSONResult<OrdersVoList> memberOrdersList(String mockToken);										// 회원 주문 리스트
 	ResponseJSONResult<OrdersVo> memberOrdersView(String ordersNo, String mockToken);							// 회원 주문 상세
+	ResponseJSONResult<Boolean> memberOrdersCancel(String ordersNo, String mockToken);							// 회원 주문 취소
 
 
 }

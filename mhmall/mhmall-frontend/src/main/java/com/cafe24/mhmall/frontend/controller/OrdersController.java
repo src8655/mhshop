@@ -299,5 +299,30 @@ public class OrdersController {
 		return "orders/member_view";
 	}
 	
-	
+
+	// 회원 주문 취소
+	@RequestMapping(value = "/member/cancel", method = RequestMethod.POST)
+	public String memberCancel(
+			@RequestParam("ordersNo") String ordersNo,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		
+		// 회원 주문 취소
+		ResponseJSONResult<Boolean> rJson = ordersService.memberOrdersCancel(ordersNo, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "취소 실패");
+        	return "post/error";
+        }
+        
+		return "redirect:/orders/member/list";
+	}
 }

@@ -95,7 +95,10 @@ $(function(){
 								</td>
 								<td class="text-center align-middle" style="width:100px;" rowspan="${fn:length(odata.ordersItemList)}">
 									<c:if test="${odata.status eq '입금대기'}">
-										<button type="button" class="btn btn-primary w-100 pl-0 pr-0">주문취소</button>
+										<form action="${pageContext.request.contextPath}/orders/member/cancel" method="post">
+											<input type="hidden" name="ordersNo" value="${odata.ordersNo}" />
+											<button type="submit" class="btn btn-primary w-100 pl-0 pr-0">주문취소</button>
+										</form>
 									</c:if>
 								</td>
 							</c:if>
