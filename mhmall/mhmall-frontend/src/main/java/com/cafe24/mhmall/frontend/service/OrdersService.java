@@ -25,6 +25,7 @@ public interface OrdersService {
 	ResponseJSONResult<Boolean> guestOrdersCancel(String ordersNo, String guestPassword);						// 비회원 주문 취소
 	ResponseJSONResult<OrdersVoList> getAdminList(String mockToken);											// 관리자 주문 리스트 조회
 	ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken);								// 관리자 주문 상세 조회
+	ResponseJSONResult<Boolean> getAdminPaycheck(String ordersNo, String mockToken);							// 관리자 주문 입금확인
 
 
 }

@@ -40,7 +40,15 @@ $(function(){
 					</tr>
 					<tr>
 						<th class="text-center">상태</td>
-						<td>${ordersVo.status}</td>
+						<td>
+						${ordersVo.status}
+						<c:if test="${ordersVo.status eq '입금대기'}">
+						<form action="${pageContext.request.contextPath}/admin/orders/paycheck" method="post">
+						<input type="hidden" name="ordersNo" value="${ordersVo.ordersNo}" />
+							<button type="submit" class="btn btn-primary">입금확인</button>
+						</form>
+						</c:if>
+						</td>
 					</tr>
 					<tr>
 						<th class="text-center">입금은행</td>

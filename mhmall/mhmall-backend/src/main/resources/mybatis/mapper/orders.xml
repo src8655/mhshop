@@ -36,6 +36,7 @@
 	<update id="updateStatus" parameterType="java.util.Map">
 		update orders set
 		status=#{status}
+		<if test="status == '결제완료'">, pay_date=now()</if>
 		where orders_no=#{ordersNo}
 	</update>
 	

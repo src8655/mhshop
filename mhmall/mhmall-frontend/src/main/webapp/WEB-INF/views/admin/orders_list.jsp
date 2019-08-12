@@ -64,7 +64,6 @@ $(function(){
 							<th class="text-center align-middle" colspan="2">주문 상품 정보</th>
 							<th class="text-center align-middle">금액<br />(수량)</th>
 							<th class="text-center align-middle">상태</th>
-							<th class="text-center align-middle">관리</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,14 +91,6 @@ $(function(){
 							<c:if test="${oistatus.index eq 0}">
 								<td class="text-center align-middle" style="width:100px;" rowspan="${fn:length(odata.ordersItemList)}">
 									${odata.status}
-								</td>
-								<td class="text-center align-middle" style="width:100px;" rowspan="${fn:length(odata.ordersItemList)}">
-									<%-- <c:if test="${odata.status eq '입금대기'}">
-										<form action="${pageContext.request.contextPath}/orders/member/cancel" method="post">
-											<input type="hidden" name="ordersNo" value="${odata.ordersNo}" />
-											<button type="submit" class="btn btn-primary w-100 pl-0 pr-0">주문취소</button>
-										</form>
-									</c:if> --%>
 								</td>
 							</c:if>
 						</tr>

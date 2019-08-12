@@ -87,4 +87,32 @@ public class AdminOrdersController {
 	
 	
 	
+
+	// 관리자 주문 입금확인
+	@RequestMapping(value = "/paycheck", method = RequestMethod.POST)
+	public String ordersPaycheck(
+			@RequestParam("ordersNo") String ordersNo,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		// 관리자 주문 입금확인
+		ResponseJSONResult<Boolean> rJson = ordersService.getAdminPaycheck(ordersNo, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "입금확인 실패");
+        	return "post/error";
+        }
+        
+		return "redirect:/admin/orders/view/" + ordersNo;
+	}
+	
+	
+	
 }

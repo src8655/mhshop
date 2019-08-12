@@ -210,4 +210,20 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 관리자 주문 입금확인
+	@Override
+	public ResponseJSONResult<Boolean> getAdminPaycheck(String ordersNo, String mockToken) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ordersNo", ordersNo);
+	    
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/paycheck", HttpMethod.PUT, params, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }
