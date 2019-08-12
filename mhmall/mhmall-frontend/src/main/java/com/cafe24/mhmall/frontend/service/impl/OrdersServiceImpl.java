@@ -226,4 +226,21 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 관리자 운송장번호 등록
+	@Override
+	public ResponseJSONResult<Boolean> getAdminTnumcheck(String ordersNo, String trackingNum, String mockToken) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ordersNo", ordersNo);
+	    params.put("trackingNum", trackingNum);
+	    
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/tnumcheck", HttpMethod.PUT, params, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

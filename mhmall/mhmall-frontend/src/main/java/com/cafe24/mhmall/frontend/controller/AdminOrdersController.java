@@ -86,8 +86,6 @@ public class AdminOrdersController {
 	}
 	
 	
-	
-
 	// 관리자 주문 입금확인
 	@RequestMapping(value = "/paycheck", method = RequestMethod.POST)
 	public String ordersPaycheck(
@@ -107,6 +105,33 @@ public class AdminOrdersController {
         }
         if(!rJson.getData()) {
         	model.addAttribute("message", "입금확인 실패");
+        	return "post/error";
+        }
+        
+		return "redirect:/admin/orders/view/" + ordersNo;
+	}
+	
+	
+	// 관리자 운송장번호 등록
+	@RequestMapping(value = "/tnumcheck", method = RequestMethod.POST)
+	public String ordersPaycheck(
+			@RequestParam("ordersNo") String ordersNo,
+			@RequestParam("trackingNum") String trackingNum,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		// 관리자 운송장번호 등록
+		ResponseJSONResult<Boolean> rJson = ordersService.getAdminTnumcheck(ordersNo, trackingNum, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "운송장번호 등록 실패");
         	return "post/error";
         }
         

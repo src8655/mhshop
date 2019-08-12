@@ -68,7 +68,16 @@ $(function(){
 					</tr>
 					<tr>
 						<th class="text-center">운송장번호</td>
-						<td>${ordersVo.trackingNum}</td>
+						<td>
+							${ordersVo.trackingNum}
+							<c:if test="${ordersVo.status eq '결제완료'}">
+								<form action="${pageContext.request.contextPath}/admin/orders/tnumcheck" method="post">
+								<input type="hidden" name="ordersNo" value="${ordersVo.ordersNo}" />
+									<input name="trackingNum" class="form-control w-50" style="float:left;" placeholder="운송장번호" type="text" />
+									<button type="submit" class="btn btn-primary" style="float:left;">입력</button>
+								</form>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<th class="text-center">받는사람 이름</td>

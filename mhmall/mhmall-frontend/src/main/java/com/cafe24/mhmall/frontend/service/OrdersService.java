@@ -26,6 +26,7 @@ public interface OrdersService {
 	ResponseJSONResult<OrdersVoList> getAdminList(String mockToken);											// 관리자 주문 리스트 조회
 	ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken);								// 관리자 주문 상세 조회
 	ResponseJSONResult<Boolean> getAdminPaycheck(String ordersNo, String mockToken);							// 관리자 주문 입금확인
+	ResponseJSONResult<Boolean> getAdminTnumcheck(String ordersNo, String trackingNum, String mockToken);		// 관리자 운송장번호 등록
 
 
 }
