@@ -243,4 +243,61 @@ public class OrdersController {
 		
 		return "orders/member_orders_fin";
 	}
+	
+	
+	// 회원 주문 리스트
+	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
+	public String memberList(
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		
+		// 회원 주문 리스트
+		ResponseJSONResult<OrdersService.OrdersVoList> rJson = ordersService.memberOrdersList(authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+        // 비회원 주문 상세 출력
+		model.addAttribute("ordersList", rJson.getData());
+		
+		
+		return "orders/member_list";
+	}
+
+	
+	// 회원 주문 상세
+	@RequestMapping(value = "/member/view/{ordersNo}", method = RequestMethod.GET)
+	public String memberView(
+			@PathVariable("ordersNo") String ordersNo,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		
+		// 회원 주문 상세
+		ResponseJSONResult<OrdersVo> rJson = ordersService.memberOrdersView(ordersNo, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+        // 비회원 주문 상세 출력
+		model.addAttribute("ordersVo", rJson.getData());
+		
+		
+		return "orders/member_view";
+	}
+	
+	
 }

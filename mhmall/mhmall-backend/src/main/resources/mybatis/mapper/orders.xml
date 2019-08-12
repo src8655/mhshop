@@ -122,7 +122,14 @@
 	
 	<!-- 회원 주문 리스트 -->
 	<select id="selectListById" parameterType="ordersvo" resultType="ordersvo">
-		select orders_no as ordersNo, reg_date as regDate, status, bank_name as bankName, bank_num as bankNum, pay_date as payDate, money, tracking_num as trackingNum,
+		select orders_no as ordersNo,
+		DATE_FORMAT(reg_date,'%Y년%m월%d일') as regDate,
+		status,
+		bank_name as bankName,
+		bank_num as bankNum,
+		pay_date as payDate,
+		money,
+		tracking_num as trackingNum,
 
 		cast(AES_DECRYPT(to_name, #{aesKey}) as char) as toName,
 		cast(AES_DECRYPT(to_phone, #{aesKey}) as char) as toPhone,

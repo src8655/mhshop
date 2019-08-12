@@ -1,5 +1,6 @@
 package com.cafe24.mhmall.controller.api;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -279,8 +280,19 @@ public class OrdersController {
 		// 회원 주문 리스트
 		List<OrdersVo> ordersList = ordersService.getListByMemberId(authMember.getId());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
+		List<OrdersVo> ordersListTmp = new ArrayList<OrdersVo>();
+
+		// 비회원 주문상품 리스트
+		for(OrdersVo ordersVo : ordersList) {
+			List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersVo.getOrdersNo());
+			ordersVo.setOrdersItemList(ordersItemList);
+			ordersListTmp.add(ordersVo);
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersListTmp));
 	}
+	
 	
 	
 
@@ -309,9 +321,10 @@ public class OrdersController {
 		
 		// 비회원 주문상품 리스트
 		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(dto.getOrdersNo());
+		ordersVo.setOrdersItemList(ordersItemList);
 
 		// 주문상세와 주문상품리스트를 리턴
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(new ResponseOrdersViewDto(ordersVo, ordersItemList)));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 	
 	

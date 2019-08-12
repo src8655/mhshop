@@ -27,7 +27,7 @@ $(function(){
 			<table class="table table-hover member_table">
 				<thead>
 					<tr>
-						<th colspan="2" class="text-center">비회원 주문상세</th>
+						<th colspan="2" class="text-center">회원 주문상세</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -106,7 +106,7 @@ $(function(){
 					</div>
 				</div>
 
-				<c:forEach items="${ordersItemList}" var="oidata">
+				<c:forEach items="${ordersVo.ordersItemList}" var="oidata">
 					<div class="row p-2" style="border-bottom: 1px solid #e6e6e6;">
 						<div class="col-lg-6">
 							<figure class="media">

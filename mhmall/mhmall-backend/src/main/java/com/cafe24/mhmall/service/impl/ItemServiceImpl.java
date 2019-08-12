@@ -18,7 +18,7 @@ import com.cafe24.mhmall.vo.Paging;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-	public static final int BOARD_CNT = 2;	//한번에 보여질 게시글
+	public static final int BOARD_CNT = 12;	//한번에 보여질 게시글
 	public static final int PAGE_CNT = 5;	//페이지 버튼 개수
 	
 	@Autowired

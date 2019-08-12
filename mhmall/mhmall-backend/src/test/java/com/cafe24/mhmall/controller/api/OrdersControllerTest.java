@@ -457,7 +457,7 @@ public class OrdersControllerTest {
 				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
-		resultActions
+		resultActions.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data[0].ordersNo", is("2019-07-11_000256")))
 		.andExpect(jsonPath("$.data[0].status", is("입금대기")))
@@ -488,7 +488,7 @@ public class OrdersControllerTest {
 		// 응답이 200 인지
 		resultActions
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.data.ordersVo.ordersNo", is("2019-07-11_000256")))
+		.andExpect(jsonPath("$.data.ordersNo", is("2019-07-11_000256")))
 		.andExpect(jsonPath("$.data.ordersItemList[0].ordersNo", is("2019-07-11_000256")));
 		
 	}

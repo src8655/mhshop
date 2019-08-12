@@ -1,5 +1,7 @@
 package com.cafe24.mhmall.frontend.vo;
 
+import java.util.List;
+
 public class OrdersVo {
 	private Long no;
 	private String orders_no;
@@ -16,6 +18,8 @@ public class OrdersVo {
 	private String toZipcode;
 	private String toAddr;
 	private String memberId;
+	
+	private List<OrdersItemVo> ordersItemList;
 	
 	private String aesKey;
 
@@ -141,6 +145,12 @@ public class OrdersVo {
 	}
 	public void setToAddr(String toAddr) {
 		this.toAddr = toAddr;
+	}
+	public List<OrdersItemVo> getOrdersItemList() {
+		return ordersItemList;
+	}
+	public void setOrdersItemList(List<OrdersItemVo> ordersItemList) {
+		this.ordersItemList = ordersItemList;
 	}
 
 }

@@ -124,4 +124,31 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 회원 주문 리스트
+	@Override
+	public ResponseJSONResult<OrdersVoList> memberOrdersList(String mockToken) {
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/list", HttpMethod.GET, null, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
+
+	// 회원 주문 상세
+	@Override
+	public ResponseJSONResult<OrdersVo> memberOrdersView(String ordersNo, String mockToken) {
+	    
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/view/" + ordersNo, HttpMethod.GET, null, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }
