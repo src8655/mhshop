@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.mhmall.dto.JSONResult;
+import com.cafe24.mhmall.dto.RequestBasketAddGuestDto;
 import com.cafe24.mhmall.dto.RequestBasketGuestDto;
 import com.cafe24.mhmall.dto.RequestGuestChangePwDto;
 import com.cafe24.mhmall.dto.RequestGuestFindPwDto;
@@ -82,6 +83,30 @@ public class OrdersController {
 	
 	@Autowired
 	BasketService basketService;
+	
+	
+	@RequestMapping(value = "/hascnt", method = RequestMethod.POST)
+	@ApiOperation(value = "재고가 있는지 확인", notes = "재고가 있는지 확인 요청 API")
+	public ResponseEntity<JSONResult> hascnt(
+			@RequestBody ResponseOrdersMemberDto dto
+			) {
+		
+		
+		// 존재하는 옵션인지 확인
+		for(Long optionNo : dto.getOptionNos()) {
+			if(!optionService.isExistOption(optionNo)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
+		}
+		
+
+		// 옵션의 재고가 수량만큼 존재하는지 확인
+		for(int i=0;i<dto.getOptionNos().length;i++) {
+			if(!optionService.isExistCnt(dto.getOptionNos()[i], dto.getOptionCnts()[i].longValue())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
+		}
+		
+		
+		// 성공여부 리턴
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(true));
+	}
 	
 
 	// sqlException 발생 시 롤백

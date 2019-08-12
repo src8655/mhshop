@@ -74,6 +74,7 @@ public class OrdersController {
 	@RequestMapping(value = "/guestinfo", method = RequestMethod.POST)
 	public String guestInfo(
 			@ModelAttribute RequestGuestOrdersStartDto dto,
+			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
 			Model model
 			) {
 		
@@ -82,6 +83,20 @@ public class OrdersController {
         	model.addAttribute("message", "주문할 상품이 없습니다.");
         	return "post/error";
 		}
+		
+		// 존재하는 옵션이고 재고가 있는지 확인
+		ResponseJSONResult<Boolean> rJson = basketService.hasCnt(dto.getOptionNos(), dto.getOptionCnts());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "주문 실패");
+        	return "post/error";
+        }
 		
 
 		model.addAttribute("optionNos", dto.getOptionNos());

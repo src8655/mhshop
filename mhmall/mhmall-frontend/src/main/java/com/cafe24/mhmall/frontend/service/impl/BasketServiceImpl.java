@@ -149,4 +149,21 @@ public class BasketServiceImpl implements BasketService {
 		return rJson;
 	}
 
+
+	// 존재하는 옵션이고 재고가 있는지 확인
+	@Override
+	public ResponseJSONResult<Boolean> hasCnt(Long[] optionNos, Integer[] optionCnts) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("optionNos", optionNos);
+	    params.put("optionCnts", optionCnts);
+	    
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/hascnt", HttpMethod.POST, params, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

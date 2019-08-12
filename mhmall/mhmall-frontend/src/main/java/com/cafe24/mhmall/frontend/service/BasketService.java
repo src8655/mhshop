@@ -17,5 +17,6 @@ public interface BasketService {
 	ResponseJSONResult<Boolean> memberUpdate(String mockToken, Long no, Long cnt);			// 회원일 때 회원장바구니 수정 요청
 	ResponseJSONResult<Boolean> guestDelete(Long no, String guestSession);					// 비회원일 때 비회원장바구니 삭제 요청
 	ResponseJSONResult<Boolean> memberDelete(String mockToken, Long no);					// 회원일 때 회원장바구니 삭제 요청
+	ResponseJSONResult<Boolean> hasCnt(Long[] optionNos, Integer[] optionCnts);				// 존재하는 옵션이고 재고가 있는지 확인
 
 }
