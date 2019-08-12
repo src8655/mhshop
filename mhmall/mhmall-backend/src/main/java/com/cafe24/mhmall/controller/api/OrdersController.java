@@ -287,7 +287,6 @@ public class OrdersController {
 			List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersVo.getOrdersNo());
 			ordersVo.setOrdersItemList(ordersItemList);
 			ordersListTmp.add(ordersVo);
-			
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersListTmp));

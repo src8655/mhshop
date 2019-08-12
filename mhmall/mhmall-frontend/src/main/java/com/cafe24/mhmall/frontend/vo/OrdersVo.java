@@ -20,6 +20,8 @@ public class OrdersVo {
 	private String memberId;
 	
 	private List<OrdersItemVo> ordersItemList;
+	private GuestVo guestVo;
+	private MemberVo memberVo;
 	
 	private String aesKey;
 
@@ -151,6 +153,18 @@ public class OrdersVo {
 	}
 	public void setOrdersItemList(List<OrdersItemVo> ordersItemList) {
 		this.ordersItemList = ordersItemList;
+	}
+	public GuestVo getGuestVo() {
+		return guestVo;
+	}
+	public void setGuestVo(GuestVo guestVo) {
+		this.guestVo = guestVo;
+	}
+	public MemberVo getMemberVo() {
+		return memberVo;
+	}
+	public void setMemberVo(MemberVo memberVo) {
+		this.memberVo = memberVo;
 	}
 
 }

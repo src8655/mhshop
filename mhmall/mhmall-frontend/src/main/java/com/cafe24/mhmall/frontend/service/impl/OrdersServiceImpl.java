@@ -184,4 +184,30 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 관리자 주문 리스트 조회
+	@Override
+	public ResponseJSONResult<OrdersVoList> getAdminList(String mockToken) {
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/list", HttpMethod.GET, null, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
+
+	// 관리자 주문 상세 조회
+	@Override
+	public ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken) {
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/view/" + ordersNo, HttpMethod.GET, null, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

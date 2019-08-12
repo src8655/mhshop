@@ -1,5 +1,6 @@
 package com.cafe24.mhmall.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +74,17 @@ public class AdminOrdersController {
 		// OrdersService에 주문리스트 요청
 		List<OrdersVo> ordersList = ordersService.getList();
 		
+		List<OrdersVo> ordersListTmp = new ArrayList<OrdersVo>();
+
+		// 주문상품 리스트
+		for(OrdersVo ordersVo : ordersList) {
+			List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersVo.getOrdersNo());
+			ordersVo.setOrdersItemList(ordersItemList);
+			ordersListTmp.add(ordersVo);
+		}
+		
 		// JSON 리턴 생성
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersList));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersListTmp));
 	}
 	
 
@@ -95,6 +105,16 @@ public class AdminOrdersController {
 		
 		// OrdersService에 주문상세 요청
 		OrdersVo ordersVo = ordersService.getByOrdersNo(dto.getOrdersNo());
+		
+		// 주문상품 리스트
+		List<OrdersItemVo> ordersItemList = ordersItemService.getListByOrdersNo(ordersVo.getOrdersNo());
+		ordersVo.setOrdersItemList(ordersItemList);
+		
+		// 비/회원 정보
+		if(ordersVo.getMemberId() == null || (ordersVo.getMemberId() != null && "".equals(ordersVo.getMemberId())))
+			ordersVo.setGuestVo(guestService.getByOrdersNo(ordersVo.getOrdersNo()));
+		else
+			ordersVo.setMemberVo(memberService.getById(new MemberVo(ordersVo.getMemberId(), null, null, null, null, null, null, null, null, null)));
 		
 		// JSON 리턴 생성
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));

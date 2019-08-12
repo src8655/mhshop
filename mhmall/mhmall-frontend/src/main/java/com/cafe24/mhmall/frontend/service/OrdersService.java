@@ -23,6 +23,8 @@ public interface OrdersService {
 	ResponseJSONResult<OrdersVo> memberOrdersView(String ordersNo, String mockToken);							// 회원 주문 상세
 	ResponseJSONResult<Boolean> memberOrdersCancel(String ordersNo, String mockToken);							// 회원 주문 취소
 	ResponseJSONResult<Boolean> guestOrdersCancel(String ordersNo, String guestPassword);						// 비회원 주문 취소
+	ResponseJSONResult<OrdersVoList> getAdminList(String mockToken);											// 관리자 주문 리스트 조회
+	ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken);								// 관리자 주문 상세 조회
 
 
 }
