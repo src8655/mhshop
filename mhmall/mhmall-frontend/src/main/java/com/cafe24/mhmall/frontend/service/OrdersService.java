@@ -1,0 +1,16 @@
+package com.cafe24.mhmall.frontend.service;
+
+import com.cafe24.mhmall.frontend.dto.RequestGuestOrdersStartDto;
+import com.cafe24.mhmall.frontend.dto.RequestOrdersWriteGuestDto;
+import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
+import com.cafe24.mhmall.frontend.dto.ResponseOrdersDto;
+import com.cafe24.mhmall.frontend.vo.GuestVo;
+import com.cafe24.mhmall.frontend.vo.OrdersVo;
+
+public interface OrdersService {
+
+	ResponseJSONResult<ResponseOrdersDto> guestOrders(RequestGuestOrdersStartDto dto, String guestSession);		// 비회원 주문 시작
+	ResponseJSONResult<OrdersVo> guestOrdersUpdate(RequestOrdersWriteGuestDto dto);								// 비회원 주문 완료
+
+
+}

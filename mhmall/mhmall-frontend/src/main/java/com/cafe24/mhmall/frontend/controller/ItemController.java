@@ -150,7 +150,7 @@ public class ItemController {
 			@AuthUser SecurityUser authUser,
 			Model model
 			) {
-		
+		System.out.println(guestSession + "------basket");
 
 		// 카테고리 리스트 요청
 		ResponseJSONResult<CategoryService.ListCategoryVo> rJsonCategory = categoryService.getList();

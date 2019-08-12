@@ -41,7 +41,6 @@ $(function(){
 
 
 
-
       <div class="text-muted mt-4 mb-4" style="border:1px solid #e6e6e6; border-radius:5px;overflow:hidden;">
         <div class=" d-xl-block d-lg-block d-md-block d-md-none d-sm-none d-none">
         <div class="row p-2 pt-3" style="border-bottom:2px solid #e6e6e6;">
@@ -100,11 +99,16 @@ $(function(){
         
         
 	    <div class="text-right">
-	      <button type="button" class="btn btn-primary m-2">구매하기</button>
+	  	<form action="${pageContext.servletContext.contextPath}/orders/guestinfo" method="post">
+	  	  <c:forEach items="${basketList}" var="bdata">
+	  	  	<input type="hidden" name="optionNos" value="${bdata.optionNo}" />
+	  	  	<input type="hidden" name="optionCnts" value="${bdata.cnt}" />
+	  	  </c:forEach>
+	      <button type="submit" class="btn btn-primary m-2">구매하기</button>
+	  	</form>
 	    </div>
       
       </div>
-
 
 
 

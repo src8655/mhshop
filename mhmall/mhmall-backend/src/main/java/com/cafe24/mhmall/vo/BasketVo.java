@@ -114,6 +114,13 @@ public class BasketVo {
 	public void setAesKey(String aesKey) {
 		this.aesKey = aesKey;
 	}
+	@Override
+	public String toString() {
+		return "BasketVo [no=" + no + ", optionNo=" + optionNo + ", memberId=" + memberId + ", guestSession="
+				+ guestSession + ", regDate=" + regDate + ", cnt=" + cnt + ", itemNo=" + itemNo + ", optionNames="
+				+ optionNames + ", itemName=" + itemName + ", thumbnail=" + thumbnail + ", money=" + money + ", aesKey="
+				+ aesKey + "]";
+	}
 	
 	
 	

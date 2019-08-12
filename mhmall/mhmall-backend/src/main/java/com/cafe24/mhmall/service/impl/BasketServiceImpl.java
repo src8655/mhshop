@@ -169,7 +169,7 @@ public class BasketServiceImpl implements BasketService {
 		for(Long optionNo : optionNos) {
 			basketVo.setOptionNo(optionNo);
 			Integer result = basketDao.deleteAllByOptionNoG(basketVo);
-			if(result != 0) return false;
+			if(result == 0) return false;
 		}
 		return true;
 	}
@@ -184,7 +184,7 @@ public class BasketServiceImpl implements BasketService {
 		for(Long optionNo : optionNos) {
 			basketVo.setOptionNo(optionNo);
 			Integer result = basketDao.deleteAllByOptionNoM(basketVo);
-			if(result != 0) return false;
+			if(result == 0) return false;
 		}
 		return true;
 	}
