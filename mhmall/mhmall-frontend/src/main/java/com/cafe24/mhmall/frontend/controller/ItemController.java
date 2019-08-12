@@ -115,8 +115,8 @@ public class ItemController {
 	@RequestMapping(value = "/basket", method = RequestMethod.POST)
 	public String basketAdd(
 			@RequestParam("itemNo") Long itemNo,
-			@RequestParam("optionNo") Long optionNo,
-			@RequestParam("cnt") Long cnt,
+			@RequestParam("optionNos") Long optionNos,
+			@RequestParam("optionCnts") Long optionCnts,
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
 			@AuthUser SecurityUser authUser,
 			Model model
@@ -124,9 +124,9 @@ public class ItemController {
 		
 		ResponseJSONResult<Boolean> rJson = ResponseJSONResult.fail("실패");
 		// 비회원일 때 비회원장바구니 추가 요청
-		if(authUser == null) rJson = basketService.guestAdd(optionNo, cnt, guestSession);
+		if(authUser == null) rJson = basketService.guestAdd(optionNos, optionCnts, guestSession);
 		// 회원일 때 회원장바구니 추가 요청
-		else rJson = basketService.memberAdd(authUser.getMockToken(), optionNo, cnt);
+		else rJson = basketService.memberAdd(authUser.getMockToken(), optionNos, optionCnts);
 		
 	    // 실패면
         if("fail".equals(rJson.getResult())) {

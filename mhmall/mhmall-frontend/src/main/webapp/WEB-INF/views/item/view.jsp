@@ -134,17 +134,51 @@ $(function(){
 		$("#item_view_form").submit();
 	});
 	
+
+	
+});
+</script>
+
+
+
+
+<!-- 비회원일때 -->
+<sec:authorize access="!isAuthenticated()">
+<script>
+$(function(){
+
 	// 바로 구매 버튼
 	$("#view-buy-btn").click(function(){
 		if($("#cnt_input").attr("disabled") == "disabled") {
 			return ;
 		}
-		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/item/buy");
+		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/orders/guestinfo");
 		$("#item_view_form").submit();
 	});
-	
+
 });
 </script>
+</sec:authorize>
+
+
+<!-- 회원일때 -->
+<sec:authorize access="isAuthenticated()">
+<script>
+$(function(){
+
+	// 바로 구매 버튼
+	$("#view-buy-btn").click(function(){
+		if($("#cnt_input").attr("disabled") == "disabled") {
+			return ;
+		}
+		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/orders/member");
+		$("#item_view_form").submit();
+	});
+
+});
+</script>
+</sec:authorize>
+
 
 
 
@@ -172,7 +206,7 @@ $(function(){
 
 
 		<form action="#" method="post" id="item_view_form">
-		<input type="hidden" name="optionNo" value="-1" id="option_selected_no" />
+		<input type="hidden" name="optionNos" value="-1" id="option_selected_no" />
 		<input type="hidden" name="itemNo" value="${itemVo.no}" />
 			<div class="mt-4 row">
 				<div class="col-md-6">
@@ -212,7 +246,7 @@ $(function(){
 									<button class="btn btn-primary minus-btn" type="button"
 										style="font-weight: bold; width: 40px;">-</button>
 								</div>
-								<input type="text" class="form-control" value="-" name="cnt" id="cnt_input" disabled>
+								<input type="text" class="form-control" value="-" name="optionCnts" id="cnt_input" disabled>
 								<div class="input-group-append">
 									<button class="btn btn-primary plus-btn" type="button"
 										style="font-weight: bold; width: 40px;">+</button>
