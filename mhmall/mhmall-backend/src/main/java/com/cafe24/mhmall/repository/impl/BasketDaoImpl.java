@@ -147,6 +147,7 @@ public class BasketDaoImpl implements BasketDao {
 	// 옵션으로 회원 장바구니 삭제
 	@Override
 	public Integer deleteAllByOptionNoM(BasketVo basketVo) {
+		basketVo.setAesKey(aesKey);
 		return sqlSession.delete("basket.deleteAllByOptionNoM", basketVo);
 	}
 

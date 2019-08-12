@@ -189,7 +189,7 @@ public class OrdersController {
 		
 		// 회원 주문 데이터 추가(상태:주문대기) => 주문번호 받기
 		String ordersNo = ordersService.guestOrdersAdd(money, authMember.getId());
-
+		
 		// 옵션으로 회원 장바구니 삭제
 		basketService.deleteAllByOptionNoM(dto.getOptionNos(), authMember.getId());
 		

@@ -53,6 +53,7 @@ public class OrdersDaoImpl implements OrdersDao {
 	// 주문작성
 	@Override
 	public String insert(OrdersVo ordersVo) {
+		ordersVo.setAesKey(aesKey);
 		return (String)sqlSession.selectOne("orders.insert", ordersVo);
 	}
 

@@ -49,6 +49,7 @@ public class GuestInterceptor extends HandlerInterceptorAdapter {
 			// 세션을 쿠키에 추가
 			Cookie cookie = new Cookie(cookieName, sessionId);
 			cookie.setMaxAge(60*60*24*30);	// 30일로 설정
+			cookie.setPath("/");
 			response.addCookie(cookie);
 		}
 		

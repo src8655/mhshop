@@ -221,7 +221,7 @@
 	<!-- 옵션으로 회원 장바구니 삭제 -->
 	<delete id="deleteAllByOptionNoM" parameterType="basketvo">
 		delete from basket
-		where member_id=#{memberId} and option_no=#{optionNo}
+		where member_id=AES_ENCRYPT(#{memberId}, #{aesKey}) and option_no=#{optionNo}
 	</delete>
 	
 </mapper>

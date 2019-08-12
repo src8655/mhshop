@@ -23,7 +23,7 @@
 			<table class="table table-hover member_table">
 				<thead>
 					<tr>
-						<th colspan="2" class="text-center">비회원 주문이 완료되었습니다.</th>
+						<th colspan="2" class="text-center">회원 주문이 완료되었습니다.</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -41,7 +41,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<a href="${pageContext.servletContext.contextPath}/orders/guest/view" class="btn btn-primary">주문내역조회</a>
+			<a href="${pageContext.servletContext.contextPath}/orders/member/list" class="btn btn-primary">주문내역조회</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-1"></div>
 	

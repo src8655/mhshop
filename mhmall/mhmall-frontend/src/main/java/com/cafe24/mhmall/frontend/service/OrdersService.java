@@ -13,6 +13,8 @@ public interface OrdersService {
 	ResponseJSONResult<ResponseOrdersDto> guestOrders(RequestGuestOrdersStartDto dto, String guestSession);		// 비회원 주문 시작
 	ResponseJSONResult<OrdersVo> guestOrdersUpdate(RequestOrdersWriteGuestDto dto);								// 비회원 주문 완료
 	ResponseJSONResult<ResponseOrdersViewDto> guestOrdersView(String ordersNo, String guestPassword);			// 비회원 주문 상세
+	ResponseJSONResult<ResponseOrdersDto> memberOrders(Long[] optionNos, Long[] optionCnts, String mockToken);	// 회원 주문 시작
+	ResponseJSONResult<OrdersVo> memberOrdersUpdate(RequestOrdersWriteGuestDto dto, String mockToken);			// 회원 주문 완료
 
 
 }

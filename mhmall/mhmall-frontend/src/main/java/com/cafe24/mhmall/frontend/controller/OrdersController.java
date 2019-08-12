@@ -74,6 +74,12 @@ public class OrdersController {
 			Model model
 			) {
 		
+		// 주문할게 없으면 오류
+		if((dto.getOptionNos() != null && dto.getOptionNos().length == 0) || dto.getOptionNos() == null) {
+        	model.addAttribute("message", "주문할 상품이 없습니다.");
+        	return "post/error";
+		}
+		
 
 		model.addAttribute("optionNos", dto.getOptionNos());
 		model.addAttribute("optionCnts", dto.getOptionCnts());
@@ -178,5 +184,63 @@ public class OrdersController {
 		
 		
 		return "orders/guest_view";
+	}
+	
+	
+	// 회원 주문
+	@RequestMapping(value = "/member", method = RequestMethod.POST)
+	public String member(
+			@RequestParam("optionNos") Long[] optionNos,
+			@RequestParam("optionCnts") Long[] optionCnts,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		
+		// 회원 주문 시작
+		ResponseJSONResult<ResponseOrdersDto> rJson = ordersService.memberOrders(optionNos, optionCnts, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+        // 성공이면 주문서 작성 페이지
+		model.addAttribute("ordersItemList", rJson.getData().getOrdersItemList());
+		model.addAttribute("ordersNo", rJson.getData().getOrdersNo());
+		
+		
+		return "orders/member_orders";
+	}
+	
+
+	// 회원 주문완료
+	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
+	public String memberUpdate(
+			@ModelAttribute RequestOrdersWriteGuestDto dto,
+			@AuthUser SecurityUser authUser,
+			Model model
+			) {
+		
+		
+		// 회원 주문 완료
+		ResponseJSONResult<OrdersVo> rJson = ordersService.memberOrdersUpdate(dto, authUser.getMockToken());
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+        // 성공이면 입금 계좌 정보 출력
+		model.addAttribute("ordersVo", rJson.getData());
+		
+		
+		return "orders/member_orders_fin";
 	}
 }

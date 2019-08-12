@@ -86,4 +86,42 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 회원 주문 시작
+	@Override
+	public ResponseJSONResult<ResponseOrdersDto> memberOrders(Long[] optionNos, Long[] optionCnts, String mockToken) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("optionNos", optionNos);
+	    params.put("optionCnts", optionCnts);
+	    
+		ResponseJSONResult<ResponseOrdersDto> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member", HttpMethod.POST, params, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ResponseOrdersDto data = mapper.convertValue(rJson.getData(), ResponseOrdersDto.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
+
+	// 회원 주문 완료
+	@Override
+	public ResponseJSONResult<OrdersVo> memberOrdersUpdate(RequestOrdersWriteGuestDto dto, String mockToken) {
+		OrdersVo ordersVo = dto.toVo();
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("toName", dto.getToName());
+	    params.put("toPhone", ordersVo.getToPhone());
+	    params.put("toZipcode", dto.getToZipcode());
+	    params.put("toAddr", dto.getToAddr());
+	    params.put("ordersNo", dto.getOrdersNo());
+	    
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member", HttpMethod.PUT, params, mockToken);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }
