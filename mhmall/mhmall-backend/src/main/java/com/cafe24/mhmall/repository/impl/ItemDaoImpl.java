@@ -1,6 +1,7 @@
 package com.cafe24.mhmall.repository.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,8 @@ public class ItemDaoImpl implements ItemDao {
 
 	// 사용자 상품리스트
 	@Override
-	public List<ItemVo> selectListU(ItemVo itemVo) {
-		return sqlSession.selectList("item.selectListU", itemVo);
+	public List<ItemVo> selectListU(Map<String, Object> daoMap) {
+		return sqlSession.selectList("item.selectListU", daoMap);
 	}
 
 
@@ -85,5 +86,15 @@ public class ItemDaoImpl implements ItemDao {
 	public List<MainImgVo> getNewItemList(Integer showCnt) {
 		return sqlSession.selectList("item.getNewItemList", showCnt);
 	}
+
+
+	// 회원 총 상품 개수
+	@Override
+	public Integer countU(Map<String, Object> mapCnt) {
+		return sqlSession.selectOne("item.selectCountU", mapCnt);
+	}
+	
+	
+	
 
 }

@@ -1,6 +1,7 @@
 package com.cafe24.mhmall.controller.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,7 @@ import com.cafe24.mhmall.service.OptionDetailService;
 import com.cafe24.mhmall.service.OptionService;
 import com.cafe24.mhmall.vo.ItemImgVo;
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.ItemsVo;
 import com.cafe24.mhmall.vo.MainImgVo;
 import com.cafe24.mhmall.vo.OptionVo;
 
@@ -119,18 +122,19 @@ public class ItemController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "categoryNo", value = "카테고리번호", paramType = "path", required = false, defaultValue = "")
 	})
-	@RequestMapping(value = "/list/{categoryNo}", method = RequestMethod.GET)
+	@RequestMapping(value = {"/list/{categoryNo}/{pages}", "/list/{categoryNo}/{pages}/{kwd}"}, method = RequestMethod.GET)
 	@ApiOperation(value = "사용자 상품 리스트", notes = "사용자 상품 리스트 요청 API")
 	public ResponseEntity<JSONResult> itemlist(
-			@ModelAttribute @Valid RequestItemCategoryDto dto,
-			BindingResult result
+			@PathVariable Optional<Long> categoryNo,
+			@PathVariable Optional<Integer> pages,
+			@PathVariable Optional<String> kwd
 			) {
 
 		// Service에 사용자 상품리스트 요청
-		List<ItemVo> itemList = itemService.getListU(dto.toVo());
+		ItemsVo itemsVo = itemService.getListU(categoryNo, pages, kwd);
 		
 		// JSON 리턴 생성
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemList));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(itemsVo));
 	}
 	
 	

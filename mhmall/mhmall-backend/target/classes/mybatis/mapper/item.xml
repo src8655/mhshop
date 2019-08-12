@@ -72,14 +72,18 @@
 	</update>
 	
 	<!-- 상품 리스트 -->
-	<select id="selectListU" parameterType="itemvo" resultType="itemvo">
+	<select id="selectListU" parameterType="java.util.Map" resultType="itemvo">
 		select no, name, description, money, thumbnail, display, category_no as categoryNo
 		from item
 		where display='TRUE'
 		<if test="categoryNo != null">
 			and category_no=#{categoryNo}
 		</if>
+		<if test="kwd != null">
+			and name like CONCAT('%',#{kwd},'%')
+		</if>
 		order by no desc
+		limit #{startNum}, #{boardCnt}
 	</select>
 	
 	
@@ -122,6 +126,20 @@
 		where aa.no=bb.item_no
 		order by no desc
 		limit 0, #{showCnt}
+	</select>
+	
+	
+	<!-- 회원 총 상품 개수 -->
+	<select id="selectCountU" parameterType="java.util.Map" resultType="Integer">
+		select count(*)
+		from item
+		where display='TRUE'
+		<if test="categoryNo != null">
+			and category_no=#{categoryNo}
+		</if>
+		<if test="kwd != null">
+			and name like CONCAT('%',#{kwd},'%')
+		</if>
 	</select>
 	
 </mapper>

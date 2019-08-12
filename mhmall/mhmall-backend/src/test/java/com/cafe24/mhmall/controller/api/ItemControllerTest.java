@@ -160,11 +160,11 @@ public class ItemControllerTest {
 		ResultActions resultActions;
 		
 		
-		resultActions = mockMvc.perform(get("/api/item/list/{categoryNo}", 1L)
+		resultActions = mockMvc.perform(get("/api/item/list/{categoryNo}/{pages}/{kwd}", 1L, 1L, "")
 				.contentType(MediaType.APPLICATION_JSON));
 		// 응답이 200 인지
 		resultActions
-		.andExpect(status().isOk())
+		.andExpect(status().isOk()).andDo(print())
 		.andExpect(jsonPath("$.data[0].no", is(1)))
 		.andExpect(jsonPath("$.data[0].name", is("test_item1")))
 		.andExpect(jsonPath("$.data[0].description", is("test_description1")))

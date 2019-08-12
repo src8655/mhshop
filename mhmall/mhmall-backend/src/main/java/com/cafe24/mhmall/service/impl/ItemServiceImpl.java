@@ -1,7 +1,10 @@
 package com.cafe24.mhmall.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +12,14 @@ import org.springframework.stereotype.Service;
 import com.cafe24.mhmall.repository.ItemDao;
 import com.cafe24.mhmall.service.ItemService;
 import com.cafe24.mhmall.vo.ItemVo;
+import com.cafe24.mhmall.vo.ItemsVo;
 import com.cafe24.mhmall.vo.MainImgVo;
+import com.cafe24.mhmall.vo.Paging;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+	public static final int BOARD_CNT = 6;	//한번에 보여질 게시글
+	public static final int PAGE_CNT = 5;	//페이지 버튼 개수
 	
 	@Autowired
 	ItemDao itemDao;
@@ -79,8 +86,41 @@ public class ItemServiceImpl implements ItemService {
 
 	// 사용자 상품리스트
 	@Override
-	public List<ItemVo> getListU(ItemVo itemVo) {
-		return itemDao.selectListU(itemVo);
+	public ItemsVo getListU(Optional<Long> categoryNo, Optional<Integer> pages, Optional<String> kwd) {
+		Long categoryNoPath = null;
+		Integer pagesPath = 1;
+		String kwdPath = null;
+		if(categoryNo.isPresent()) categoryNoPath = categoryNo.get();
+		if(pages.isPresent()) pagesPath = pages.get();
+		if(kwd.isPresent()) kwdPath = kwd.get();
+		
+		
+		// 회원 총 상품 개수
+		Map<String, Object> mapCnt = new HashMap<String, Object>();
+		mapCnt.put("categoryNo", categoryNoPath);
+		mapCnt.put("kwd", kwdPath);
+		int count = itemDao.countU(mapCnt);
+		System.out.println("----------------------------------------- count : " + count);
+
+		
+		// 페이징 만들기
+		int lastPage = (int) Math.ceil((double)count/(double)BOARD_CNT);	//마지막 페이지
+		int startNum = ((pagesPath-1) * BOARD_CNT);		//시작번호
+		int rangeStart = ((pagesPath-1)/PAGE_CNT) * PAGE_CNT + 1;		//페이지 범위
+		Paging paging = new Paging(count, lastPage, startNum, rangeStart, BOARD_CNT, PAGE_CNT);
+		System.out.println("----------------------------------------- paging : " + paging);
+		
+		
+		// 리스트 구하기
+		Map<String, Object> daoMap = new HashMap<String, Object>();
+		daoMap.put("startNum", startNum);
+		daoMap.put("boardCnt", BOARD_CNT);
+		daoMap.put("kwd", kwdPath);
+		daoMap.put("categoryNo", categoryNoPath);
+		List<ItemVo> itemList = itemDao.selectListU(daoMap);
+		System.out.println("----------------------------------------- itemList : " + itemList);
+		
+		return new ItemsVo(itemList, paging);
 	}
 
 
