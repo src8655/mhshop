@@ -41,7 +41,11 @@
 					</tr>
 				</tbody>
 			</table>
-			<a href="${pageContext.servletContext.contextPath}/orders/guest/view" class="btn btn-primary">주문내역조회</a>
+			<form action="${pageContext.servletContext.contextPath}/orders/guest/view" method="post">
+				<input type="hidden" name="ordersNo" value="${ordersVo.ordersNo}" />
+				<input type="hidden" name="guestPassword" value="${guestPassword}" />
+				<button type="submit" class="btn btn-primary">주문내역조회</button>
+			</form>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-1"></div>
 	

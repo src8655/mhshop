@@ -41,7 +41,16 @@ $(function(){
 					</tr>
 					<tr>
 						<th class="text-center">상태</td>
-						<td>${ordersVo.status}</td>
+						<td>
+							${ordersVo.status}
+							<c:if test="${ordersVo.status eq '입금대기'}">
+							<form action="${pageContext.request.contextPath}/orders/guest/cancel" method="post">
+								<input type="hidden" name="ordersNo" value="${ordersVo.ordersNo}" />
+								<input type="hidden" name="guestPassword" value="${guestPassword}" />
+								<button type="submit" class="btn btn-primary">주문취소</button>
+							</form>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<th class="text-center">입금은행</td>

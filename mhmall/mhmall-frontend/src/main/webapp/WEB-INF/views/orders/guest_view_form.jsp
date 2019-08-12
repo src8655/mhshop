@@ -33,8 +33,24 @@ $(function(){
 	});
 	
 	
+	
 });
 </script>
+
+<c:if test="${ordersNo ne null}">
+<c:if test="${ordersNo ne ''}">
+<script>
+$(function(){
+
+	
+	$("#guest_orders_info_form").submit();
+	
+	
+	
+});
+</script>
+</c:if>
+</c:if>
 
 	<div class="container mt-5 mb-5">
 		<div class="row">
@@ -47,10 +63,10 @@ $(function(){
 					<h4 class="card-title mb-4 mt-1">비회원주문내역</h4>
 					<form action="${pageContext.servletContext.contextPath}/orders/guest/view" method="post" id="guest_orders_info_form">
 						<div class="form-group">
-							<input name="ordersNo" class="form-control" placeholder="주문번호" type="text" />
+							<input name="ordersNo" class="form-control" placeholder="주문번호" type="text" value="${ordersNo}" />
 						</div>
 						<div class="form-group">
-							<input name="guestPassword" class="form-control" placeholder="비밀번호" type="password" />
+							<input name="guestPassword" class="form-control" placeholder="비밀번호" type="password" value="${guestPassword}" />
 						</div>
 						<!-- form-group// -->
 						<div class="form-group">

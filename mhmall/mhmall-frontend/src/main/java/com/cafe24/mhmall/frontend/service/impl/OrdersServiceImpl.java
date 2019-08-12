@@ -167,4 +167,21 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 비회원 주문 취소
+	@Override
+	public ResponseJSONResult<Boolean> guestOrdersCancel(String ordersNo, String guestPassword) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ordersNo", ordersNo);
+	    params.put("guestPassword", guestPassword);
+	    
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/cancel", HttpMethod.PUT, params, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

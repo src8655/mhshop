@@ -1,6 +1,8 @@
 package com.cafe24.mhmall.frontend.controller;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafe24.mhmall.frontend.dto.JSONResult;
 import com.cafe24.mhmall.frontend.dto.RequestGuestOrdersStartDto;
@@ -141,6 +144,7 @@ public class OrdersController {
 		
         // 성공이면 입금 계좌 정보 출력
 		model.addAttribute("ordersVo", rJson.getData());
+		model.addAttribute("guestPassword", dto.getGuestPassword());
 		
 		
 		return "orders/guest_orders_fin";
@@ -181,6 +185,7 @@ public class OrdersController {
         // 비회원 주문 상세 출력
 		model.addAttribute("ordersItemList", rJson.getData().getOrdersItemList());
 		model.addAttribute("ordersVo", rJson.getData().getOrdersVo());
+		model.addAttribute("guestPassword", guestPassword);
 		
 		
 		return "orders/guest_view";
@@ -324,5 +329,38 @@ public class OrdersController {
         }
         
 		return "redirect:/orders/member/list";
+	}
+	
+
+	// 비회원 주문 취소
+	@RequestMapping(value = "/guest/cancel", method = RequestMethod.POST)
+	public String guestCancel(
+			@RequestParam("ordersNo") String ordersNo,
+			@RequestParam("guestPassword") String guestPassword,
+			RedirectAttributes redirectAttributes,
+			Model model
+			) {
+		
+		
+		// 비회원 주문 취소
+		ResponseJSONResult<Boolean> rJson = ordersService.guestOrdersCancel(ordersNo, guestPassword);
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "취소 실패");
+        	return "post/error";
+        }
+        
+        
+        redirectAttributes.addFlashAttribute("ordersNo", ordersNo);
+        redirectAttributes.addFlashAttribute("guestPassword", guestPassword);
+        
+        
+		return "redirect:/orders/guest/view";
 	}
 }
