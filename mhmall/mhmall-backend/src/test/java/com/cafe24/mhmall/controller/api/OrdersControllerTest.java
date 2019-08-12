@@ -306,7 +306,7 @@ public class OrdersControllerTest {
 						+ "\"optionCnts\":[11]"
 						+ "}"));
 		// 응답이 400 인지
-		resultActions
+		resultActions.andDo(print())
 		.andExpect(status().isBadRequest());
 		
 		

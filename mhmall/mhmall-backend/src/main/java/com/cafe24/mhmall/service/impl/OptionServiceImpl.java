@@ -88,7 +88,7 @@ public class OptionServiceImpl implements OptionService {
 	
 	// 옵션의 재고가 있는지 확인
 	// sqlException 발생 시 롤백
-	@Transactional(rollbackFor=Exception.class)
+	//@Transactional(rollbackFor=Exception.class)
 	@Override
 	public boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) throws Exception {
 		// 잘못된 접근은 무조건 없는 재고
@@ -108,6 +108,7 @@ public class OptionServiceImpl implements OptionService {
 				
 				if(result != 1) {
 					// Exception을 발생시켜 롤백시키기
+					System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee!!!");
 					throw new Exception();
 				}
 			}
