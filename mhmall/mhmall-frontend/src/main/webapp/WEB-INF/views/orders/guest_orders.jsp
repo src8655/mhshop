@@ -105,7 +105,7 @@ $(function(){
 							</figure>
 
 						</div>
-						<div class="col-lg-2 col-4 text-center">${oidata.cnt}</div>
+						<div class="col-lg-2 col-4 text-center">${oidata.cnt}개</div>
 						<div class="col-lg-2 col-4 text-center">
 							<div class="price-wrap">
 								<var class="price">

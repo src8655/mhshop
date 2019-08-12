@@ -56,7 +56,12 @@
 			
 			</sec:authorize>
 			<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/item/basket">장바구니</a></li>
-			<li class="nav-item active"><a class="nav-link" href="">주문정보</a></li>
+			<sec:authorize access="!isAuthenticated()">
+				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/orders/guest/view">주문정보</a></li>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/orders/member/list">주문정보</a></li>
+			</sec:authorize>
         </ul>
         
 	      <form class="col-lg-4 row form-inline">

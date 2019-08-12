@@ -12,6 +12,7 @@ import com.cafe24.mhmall.frontend.dto.RequestGuestOrdersStartDto;
 import com.cafe24.mhmall.frontend.dto.RequestOrdersWriteGuestDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.dto.ResponseOrdersDto;
+import com.cafe24.mhmall.frontend.dto.ResponseOrdersViewDto;
 import com.cafe24.mhmall.frontend.service.OrdersService;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
 import com.cafe24.mhmall.frontend.vo.GuestVo;
@@ -63,6 +64,23 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
+
+	// 비회원 주문 상세
+	@Override
+	public ResponseJSONResult<ResponseOrdersViewDto> guestOrdersView(String ordersNo, String guestPassword) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ordersNo", ordersNo);
+	    params.put("guestPassword", guestPassword);
+	    
+		ResponseJSONResult<ResponseOrdersViewDto> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/view", HttpMethod.POST, params, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ResponseOrdersViewDto data = mapper.convertValue(rJson.getData(), ResponseOrdersViewDto.class);
     	rJson.setData(data);
 		
 		return rJson;

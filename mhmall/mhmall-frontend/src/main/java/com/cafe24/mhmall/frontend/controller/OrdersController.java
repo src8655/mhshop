@@ -30,6 +30,7 @@ import com.cafe24.mhmall.frontend.dto.RequestGuestOrdersStartDto;
 import com.cafe24.mhmall.frontend.dto.RequestOrdersWriteGuestDto;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.dto.ResponseOrdersDto;
+import com.cafe24.mhmall.frontend.dto.ResponseOrdersViewDto;
 import com.cafe24.mhmall.frontend.security.AuthUser;
 import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.BasketService;
@@ -139,4 +140,43 @@ public class OrdersController {
 		return "orders/guest_orders_fin";
 	}
 	
+	
+	// 비회원 주문상세 비회원정보 입력 페이지
+	@RequestMapping(value = "/guest/view", method = RequestMethod.GET)
+	public String guestViewForm(
+			Model model
+			) {
+		
+		
+		return "orders/guest_view_form";
+	}
+	
+	
+	// 비회원 주문 상세
+	@RequestMapping(value = "/guest/view", method = RequestMethod.POST)
+	public String guestView(
+			@RequestParam("ordersNo") String ordersNo,
+			@RequestParam("guestPassword") String guestPassword,
+			Model model
+			) {
+		
+		
+		// 비회원 주문 상세
+		ResponseJSONResult<ResponseOrdersViewDto> rJson = ordersService.guestOrdersView(ordersNo, guestPassword);
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        
+		
+        // 비회원 주문 상세 출력
+		model.addAttribute("ordersItemList", rJson.getData().getOrdersItemList());
+		model.addAttribute("ordersVo", rJson.getData().getOrdersVo());
+		
+		
+		return "orders/guest_view";
+	}
 }
