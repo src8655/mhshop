@@ -248,7 +248,6 @@ public class OrdersController {
 	
 	
 	// 회원 주문
-	@Auth
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	public String member(
 			@RequestParam("optionNos") Long[] optionNos,
@@ -279,7 +278,6 @@ public class OrdersController {
 	
 
 	// 회원 주문완료
-	@Auth
 	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
 	public String memberUpdate(
 			@ModelAttribute RequestOrdersWriteGuestDto dto,
@@ -308,7 +306,6 @@ public class OrdersController {
 	
 	
 	// 회원 주문 리스트
-	@Auth
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
 	public String memberList(
 			@AuthUser SecurityUser authUser,
@@ -336,7 +333,6 @@ public class OrdersController {
 
 	
 	// 회원 주문 상세
-	@Auth
 	@RequestMapping(value = "/member/view/{ordersNo}", method = RequestMethod.GET)
 	public String memberView(
 			@PathVariable("ordersNo") String ordersNo,
@@ -365,7 +361,6 @@ public class OrdersController {
 	
 
 	// 회원 주문 취소
-	@Auth
 	@RequestMapping(value = "/member/cancel", method = RequestMethod.POST)
 	public String memberCancel(
 			@RequestParam("ordersNo") String ordersNo,

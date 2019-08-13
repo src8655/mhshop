@@ -46,7 +46,7 @@ public class AdminMemberController {
 	
 
 	// 관리자 회원목록
-	@Auth(role = Role.ROLE_ADMIN)
+	
 	@RequestMapping(value = {"", "/{search}"}, method = RequestMethod.GET)
 	public String member(
 			@PathVariable("search") Optional<String> search,
@@ -68,7 +68,7 @@ public class AdminMemberController {
 	
 	
 	// 관리자 회원 삭제
-	@Auth(role = Role.ROLE_ADMIN)
+	
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String member_delete(
 			@RequestParam(name = "id", required = true, defaultValue = "-1") String id,
