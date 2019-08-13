@@ -9,8 +9,8 @@ public interface BasketService {
 	
 	public static class ListBasketVo extends ArrayList<BasketVo> {}
 
-	ResponseJSONResult<Boolean> guestAdd(Long optionNo, Long cnt, String guestSession);		// 비회원 장바구니 추가 요청
-	ResponseJSONResult<Boolean> memberAdd(String mockToken, Long optionNo, Long cnt);		// 회원장바구니 추가 요청
+	ResponseJSONResult<Boolean> guestAdd(Long[] optionNos, Long[] optionCnts, String guestSession);		// 비회원 장바구니 추가 요청
+	ResponseJSONResult<Boolean> memberAdd(String mockToken, Long[] optionNos, Long[] optionCnts);		// 회원장바구니 추가 요청
 	ResponseJSONResult<ListBasketVo> guestList(String guestSession);						// 비회원일 때 비회원장바구니 리스트 요청
 	ResponseJSONResult<ListBasketVo> memberList(String mockToken);							// 회원일 때 회원장바구니 리스트 요청
 	ResponseJSONResult<Boolean> guestUpdate(Long no, Long cnt, String guestSession);		// 비회원일 때 비회원장바구니 수정 요청

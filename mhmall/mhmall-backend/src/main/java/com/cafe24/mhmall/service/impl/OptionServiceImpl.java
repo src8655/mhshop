@@ -145,23 +145,57 @@ public class OptionServiceImpl implements OptionService {
 		return true;
 	}
 
-
+	
 	// 존재하는 옵션인지 확인
 	@Override
-	public boolean isExistOption(Long optionNo) {
-		Integer count = optionDao.countByNo(optionNo);
-		return count != 0;
+	public boolean isExistOption(Long optionNos) {
+		Integer count = optionDao.countByNo(optionNos);
+		if(count == 0) return false;
+		
+		return true;
+	}
+	
+	
+	// 옵션의 재고가 수량만큼 존재하는지 확인
+	@Override
+	public boolean isExistCnt(Long optionNos, Long optionCnt) {
+		Integer count = optionDao.selectCnt(optionNos);
+			
+		// 비 재고상품이 아닐 때
+		if(count != -1) if(count < optionCnt) return false;
+
+		return true;
+		
+	}
+	
+
+	// 존재하는 옵션인지 확인(여러개로 변경)
+	@Override
+	public boolean isExistOption(Long[] optionNos) {
+		if(optionNos.length == 0) return false;
+		
+		for(Long no : optionNos) {
+			Integer count = optionDao.countByNo(no);
+			if(count == 0) return false;
+		}
+		
+		return true;
 	}
 
 
-	// 옵션의 재고가 수량만큼 존재하는지 확인
+	// 옵션의 재고가 수량만큼 존재하는지 확인(여러개로 변경)
 	@Override
-	public boolean isExistCnt(Long optionNo, Long cnt) {
-		Integer count = optionDao.selectCnt(optionNo);
+	public boolean isExistCnt(Long[] optionNos, Long[] optionCnt) {
+		if(optionNos.length == 0 || optionCnt.length == 0) return false;
 		
-		// 비 재고상품이 아닐 때
-		if(count != -1) if(count < cnt) return false;
+		for(int i=0;i<optionNos.length;i++) {
+			Integer count = optionDao.selectCnt(optionNos[i]);
+			
+			// 비 재고상품이 아닐 때
+			if(count != -1) if(count < optionCnt[i]) return false;
+		}
 		return true;
+		
 	}
 
 

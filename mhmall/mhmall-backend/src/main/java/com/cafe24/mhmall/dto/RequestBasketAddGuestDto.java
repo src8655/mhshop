@@ -9,35 +9,30 @@ import com.cafe24.mhmall.vo.BasketVo;
 
 public class RequestBasketAddGuestDto {
 	@NotNull
-	private Long optionNo;
+	private Long[] optionNos;
 	@NotEmpty
 	private String guestSession;
 	@NotNull
-	@Min(1)
-	private Long cnt;
-
-	public BasketVo toVo() {
-		return new BasketVo(null, optionNo, null, guestSession, null, cnt, null, null, null, null, null);
+	private Long[] optionCnts;
+	public Long[] getOptionNos() {
+		return optionNos;
 	}
-	public Long getOptionNo() {
-		return optionNo;
+	public void setOptionNos(Long[] optionNos) {
+		this.optionNos = optionNos;
 	}
-	public void setOptionNo(Long optionNo) {
-		this.optionNo = optionNo;
-	}
-
 	public String getGuestSession() {
 		return guestSession;
 	}
 	public void setGuestSession(String guestSession) {
 		this.guestSession = guestSession;
 	}
-	public Long getCnt() {
-		return cnt;
+	public Long[] getOptionCnts() {
+		return optionCnts;
 	}
-	public void setCnt(Long cnt) {
-		this.cnt = cnt;
+	public void setOptionCnts(Long[] optionCnts) {
+		this.optionCnts = optionCnts;
 	}
+
 
 	
 }

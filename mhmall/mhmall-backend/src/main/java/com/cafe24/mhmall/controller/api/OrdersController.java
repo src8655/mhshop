@@ -93,15 +93,14 @@ public class OrdersController {
 		
 		
 		// 존재하는 옵션인지 확인
-		for(Long optionNo : dto.getOptionNos()) {
-			if(!optionService.isExistOption(optionNo)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
-		}
+		if(!optionService.isExistOption(dto.getOptionNos())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
 		
 
 		// 옵션의 재고가 수량만큼 존재하는지 확인
-		for(int i=0;i<dto.getOptionNos().length;i++) {
-			if(!optionService.isExistCnt(dto.getOptionNos()[i], dto.getOptionCnts()[i].longValue())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
-		}
+		Long[] optionCnts = new Long[dto.getOptionCnts().length];
+		for(int i=0;i<optionCnts.length;i++)
+			optionCnts[i] = dto.getOptionCnts()[i].longValue();
+		if(!optionService.isExistCnt(dto.getOptionNos(), optionCnts)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
 		
 		// 성공여부 리턴

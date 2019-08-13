@@ -9,26 +9,23 @@ import com.cafe24.mhmall.vo.BasketVo;
 
 public class RequestBasketAddDto {
 	@NotNull
-	private Long optionNo;
+	private Long[] optionNos;
 	@NotNull
-	@Min(1)
-	private Long cnt;
+	private Long[] optionCnts;
+	public Long[] getOptionNos() {
+		return optionNos;
+	}
+	public void setOptionNos(Long[] optionNos) {
+		this.optionNos = optionNos;
+	}
+	public Long[] getOptionCnts() {
+		return optionCnts;
+	}
+	public void setOptionCnts(Long[] optionCnts) {
+		this.optionCnts = optionCnts;
+	}
 
-	public BasketVo toVo() {
-		return new BasketVo(null, optionNo, null, null, null, cnt, null, null, null, null, null);
-	}
-	public Long getOptionNo() {
-		return optionNo;
-	}
-	public void setOptionNo(Long optionNo) {
-		this.optionNo = optionNo;
-	}
-	public Long getCnt() {
-		return cnt;
-	}
-	public void setCnt(Long cnt) {
-		this.cnt = cnt;
-	}
+
 
 	
 }

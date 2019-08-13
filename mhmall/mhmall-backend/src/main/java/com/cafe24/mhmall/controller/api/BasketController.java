@@ -109,16 +109,16 @@ public class BasketController {
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// 존재하는 옵션인지 확인
-		if(!optionService.isExistOption(dto.getOptionNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
+		if(!optionService.isExistOption(dto.getOptionNos())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
-		if(!optionService.isExistCnt(dto.getOptionNo(), dto.getCnt())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
+		if(!optionService.isExistCnt(dto.getOptionNos(), dto.getOptionCnts())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
 		// 현재 장바구니에 같은 옵션 삭제
-		basketService.deleteByOptionGuest(dto.toVo());
+		basketService.deleteByOptionGuest(dto.getOptionNos(), dto.getOptionCnts(), dto.getGuestSession());
 		
 		// 비회원 장바구니 추가
-		boolean isSuccess = basketService.addGuest(dto.toVo());
+		boolean isSuccess = basketService.addGuest(dto.getOptionNos(), dto.getOptionCnts(), dto.getGuestSession());
 		
 		// 성공여부 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));
@@ -216,16 +216,16 @@ public class BasketController {
 		if(result.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(result.getAllErrors().get(0).getDefaultMessage()));
 		
 		// 존재하는 옵션인지 확인
-		if(!optionService.isExistOption(dto.getOptionNo())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
+		if(!optionService.isExistOption(dto.getOptionNos())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("존재하지 않는 상품입니다."));
 		
 		// 옵션의 재고가 수량만큼 존재하는지 확인
-		if(!optionService.isExistCnt(dto.getOptionNo(), dto.getCnt())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
+		if(!optionService.isExistCnt(dto.getOptionNos(), dto.getOptionCnts())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족합니다."));
 		
 		// 현재 장바구니에 같은 옵션 삭제(회원)
-		basketService.deleteByOptionMember(authMember.getId(), dto.getOptionNo());
+		basketService.deleteByOptionMember(authMember.getId(), dto.getOptionNos());
 		
 		// 회원 장바구니 추가
-		boolean isSuccess = basketService.addMember(dto.toVo(), authMember.getId());
+		boolean isSuccess = basketService.addMember(dto.getOptionNos(), dto.getOptionCnts(), authMember.getId());
 		
 		// 성공여부 리턴
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(isSuccess));

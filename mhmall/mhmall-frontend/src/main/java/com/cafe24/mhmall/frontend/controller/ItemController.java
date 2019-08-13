@@ -115,8 +115,8 @@ public class ItemController {
 	@RequestMapping(value = "/basket", method = RequestMethod.POST)
 	public String basketAdd(
 			@RequestParam("itemNo") Long itemNo,
-			@RequestParam("optionNos") Long optionNos,
-			@RequestParam("optionCnts") Long optionCnts,
+			@RequestParam("optionNos") Long[] optionNos,
+			@RequestParam("optionCnts") Long[] optionCnts,
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
 			@AuthUser SecurityUser authUser,
 			Model model

@@ -49,17 +49,22 @@ public class BasketServiceImpl implements BasketService {
 
 	// 현재 장바구니에 같은 옵션 삭제
 	@Override
-	public boolean deleteByOptionGuest(BasketVo vo) {
-		Integer result = basketDao.deleteByOptionGuest(vo);
-		return result != 0;
+	public boolean deleteByOptionGuest(Long[] optionNos, Long[] optionCnts, String guestSession) {
+		for(int i=0;i<optionNos.length;i++) {
+			Integer result = basketDao.deleteByOptionGuest(new BasketVo(null, optionNos[i], null, guestSession, null, optionCnts[i], null, null, null, null, null));
+		}
+		return true;
 	}
 
 
 	// 비회원 장바구니 추가
 	@Override
-	public boolean addGuest(BasketVo vo) {
-		Integer result = basketDao.insertGuest(vo);
-		return result != 0;
+	public boolean addGuest(Long[] optionNos, Long[] optionCnts, String guestSession) {
+		for(int i=0;i<optionNos.length;i++) {
+			Integer result = basketDao.insertGuest(new BasketVo(null, optionNos[i], null, guestSession, null, optionCnts[i], null, null, null, null, null));
+			if(result == 0) return false;
+		}
+		return true;
 	}
 
 
@@ -118,21 +123,29 @@ public class BasketServiceImpl implements BasketService {
 
 	// 현재 장바구니에 같은 옵션 삭제(회원)
 	@Override
-	public boolean deleteByOptionMember(String id, Long optionNo) {
-		BasketVo basketVo = new BasketVo();
-		basketVo.setMemberId(id);
-		basketVo.setOptionNo(optionNo);
-		Integer result = basketDao.deleteByOptionMember(basketVo);
-		return result != 0;
+	public boolean deleteByOptionMember(String id, Long[] optionNos) {
+		for(Long optionNo : optionNos) {
+			BasketVo basketVo = new BasketVo();
+			basketVo.setMemberId(id);
+			basketVo.setOptionNo(optionNo);
+			Integer result = basketDao.deleteByOptionMember(basketVo);
+		}
+		return true;
 	}
 
 
 	// 회원 장바구니 추가
 	@Override
-	public boolean addMember(BasketVo vo, String id) {
-		vo.setMemberId(id);
-		Integer result = basketDao.insertMember(vo);
-		return result == 1;
+	public boolean addMember(Long[] optionNos, Long[] optionCnts, String id) {
+		for(int i=0;i<optionNos.length;i++) {
+			BasketVo vo = new BasketVo();
+			vo.setOptionNo(optionNos[i]);
+			vo.setCnt(optionCnts[i]);
+			vo.setMemberId(id);
+			Integer result = basketDao.insertMember(vo);
+			if(result != 1) return false;
+		}
+		return true;
 	}
 
 

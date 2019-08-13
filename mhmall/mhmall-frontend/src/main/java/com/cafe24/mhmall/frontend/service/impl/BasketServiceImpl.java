@@ -22,10 +22,10 @@ public class BasketServiceImpl implements BasketService {
 	
 	// 비회원 장바구니 추가 요청
 	@Override
-	public ResponseJSONResult<Boolean> guestAdd(Long optionNo, Long cnt, String guestSession) {
+	public ResponseJSONResult<Boolean> guestAdd(Long[] optionNo, Long[] cnt, String guestSession) {
 		Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("optionNo", optionNo);
-	    params.put("cnt", cnt);
+	    params.put("optionNos", optionNo);
+	    params.put("optionCnts", cnt);
 	    params.put("guestSession", guestSession);
 	    
 		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/guest", HttpMethod.POST, params, null);
@@ -40,10 +40,10 @@ public class BasketServiceImpl implements BasketService {
 
 	// 회원장바구니 추가 요청
 	@Override
-	public ResponseJSONResult<Boolean> memberAdd(String mockToken, Long optionNo, Long cnt) {
+	public ResponseJSONResult<Boolean> memberAdd(String mockToken, Long[] optionNo, Long[] cnt) {
 		Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("optionNo", optionNo);
-	    params.put("cnt", cnt);
+	    params.put("optionNos", optionNo);
+	    params.put("optionCnts", cnt);
 	    
 		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/member", HttpMethod.POST, params, mockToken);
 		

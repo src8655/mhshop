@@ -12,24 +12,36 @@
 $(function(){
 	
 	// 수량 감소
-	$(".minus-btn").click(function(){
-		
+	$("#tmp_item").on("click", ".minus-btn", function(){
 		if($(this).parent().next().attr("disabled") == "disabled")
 			return ;
 		
 		var cnt = $(this).parent().next().val();
 		cnt = cnt-1;
-		if(cnt <= 0) cnt = 1;
 		$(this).parent().next().val(cnt);
+		$(this).parent().next().trigger("change");
 	});
 	// 수량 증가
-	$(".plus-btn").click(function(){
+	$("#tmp_item").on("click", ".plus-btn", function(){
 		if($(this).parent().prev().attr("disabled") == "disabled")
 			return ;
 		
-		var cnt = $(this).parent().prev().val();
+		var cnt = $(this).parent().prev().prev().val();
 		cnt = Number(cnt)+1;
-		$(this).parent().prev().val(cnt);
+		$(this).parent().prev().prev().val(cnt);
+		$(this).parent().prev().prev().trigger("change");
+	});
+	// 수량검사
+	$("#tmp_item").on("change", ".opcnt", function(){
+		var cnt = Number($(this).val());
+		var max_cnt = Number($(this).next().val());
+		
+		if(cnt <= 0) $(this).val(1);
+		if(cnt > max_cnt) $(this).val(max_cnt);
+	});
+	// 템플릿 닫기 버튼
+	$("#tmp_item").on("click", ".closeTemplate", function(){
+		$(this).parent().parent().parent().remove();
 	});
 	
 	
@@ -38,14 +50,6 @@ $(function(){
 	
 	// 옵션1을 선택했을 때 해당하는 옵션2를 요청
 	$("#option1").change(function(){
-		// 남은수량 초기화
-		$("#left_cnt").html("수량");
-		// 선택된 옵션번호 초기화
-		$("#option_selected_no").val("-1");
-		
-		// 수량 초기화
-		$("#cnt_input").val("-");
-		$("#cnt_input").attr("disabled", true);
 		
 		var optionDetailNo1 = $(this).val();
 		if(optionDetailNo1 == -1) {
@@ -66,8 +70,8 @@ $(function(){
 					return;
 				}
 				
+				// 옵션 생성
 				var htmls = '<option value="-1">선택</option>';
-				
 				var i = 0;
 				for(i=0;i<response.data.length;i++) {
 					var optionVo = response.data[i];
@@ -93,14 +97,7 @@ $(function(){
 		// 옵션2가 선택되지 않은 상태면
 		var optionDetailNo2 = $(this).val();
 		if(optionDetailNo2 == -1) {
-			// 남은수량 초기화
-			$("#left_cnt").html("수량");
-			// 선택된 옵션번호 초기화
-			$("#option_selected_no").val("-1");
 	    	
-			// 수량 초기화
-			$("#cnt_input").val("-");
-			$("#cnt_input").attr("disabled", true);
 			return;
 		}
 		
@@ -109,27 +106,45 @@ $(function(){
 		var selected = $(this).find('option:selected');
 	    var cnt = selected.data('cnt');
 	    var no = selected.data('no');
-	    if(cnt == -1)
-	    	$("#left_cnt").html("제한없음");
-	    else
-	    	$("#left_cnt").html(cnt + "개 남음");
-		$("#option_selected_no").val(no);
+	    
+	    // 없는 재고이면 오류
+	    if(cnt == 0) {
+	    	alert("매진된 옵션입니다.");
+	    	return;
+	    }
 		
-
-		// 수량 
-		$("#cnt_input").val("1");
-		$("#cnt_input").attr("disabled", false);
+	    // -1이면 남은수량 제한없음
+		var tmp_cnt = cnt;
+		if(tmp_cnt == -1) tmp_cnt = "제한없음";
+		
+		// 템플릿에 넣을 데이터
+		var data = [
+			{
+				"options1":$("#option1 option:selected").html(),
+				"options2":$("#option2 option:selected").html(),
+				"optionsCnt":tmp_cnt,
+				"optionsNo":no
+			}
+		];
+		
+		// 옵션이 이미 있는지 확인
+		var isExist = false;
+		$(".optionNos").each(function(){
+			var no_str = no + "";
+			if($(this).val() == no_str) isExist = true;
+		});
+		if(isExist) return;
+		
+		// 템플릿 생성
+		$("#companyTemplate").template("companyTmpl");
+		$.tmpl("companyTmpl" , data).appendTo("#tmp_item");
+		
 	});
-	
-	
-	
 	
 	
 	// 장바구니 추가 버튼
 	$("#view-basket-btn").click(function(){
-		if($("#cnt_input").attr("disabled") == "disabled") {
-			return ;
-		}
+		if($(".optionNos").length == 0) return ;
 		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/item/basket");
 		$("#item_view_form").submit();
 	});
@@ -149,9 +164,7 @@ $(function(){
 
 	// 바로 구매 버튼
 	$("#view-buy-btn").click(function(){
-		if($("#cnt_input").attr("disabled") == "disabled") {
-			return ;
-		}
+		if($(".optionNos").length == 0) return ;
 		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/orders/guestinfo");
 		$("#item_view_form").submit();
 	});
@@ -168,9 +181,7 @@ $(function(){
 
 	// 바로 구매 버튼
 	$("#view-buy-btn").click(function(){
-		if($("#cnt_input").attr("disabled") == "disabled") {
-			return ;
-		}
+		if($(".optionNos").length == 0) return ;
 		$("#item_view_form").attr("action", "${pageContext.request.contextPath}/orders/member");
 		$("#item_view_form").submit();
 	});
@@ -206,7 +217,6 @@ $(function(){
 
 
 		<form action="#" method="post" id="item_view_form">
-		<input type="hidden" name="optionNos" value="-1" id="option_selected_no" />
 		<input type="hidden" name="itemNo" value="${itemVo.no}" />
 			<div class="mt-4 row">
 				<div class="col-md-6">
@@ -221,8 +231,7 @@ $(function(){
 					</h4>
 
 					<div class="mb-2">
-						<label for="option1">1차 옵션</label> <select name="optionDetailNo1"
-							class="form-control" id="option1">
+						<label for="option1">1차 옵션</label> <select name="optionDetailNo1" class="form-control" id="option1">
 							<option value="-1">선택</option>
 							<c:forEach items="${optionList}" var="odate">
 								<option value="${odate.optionDetailNo1}">${odate.optionDetailName1}</option>
@@ -230,30 +239,52 @@ $(function(){
 						</select>
 					</div>
 					<div class="mb-2">
-						<label for="option2">2차 옵션</label> <select name="optionDetailNo2"
-							class="form-control" id="option2" disabled>
+						<label for="option2">2차 옵션</label> <select name="optionDetailNo2" class="form-control" id="option2" disabled>
 							<option value="-1">-</option>
 						</select>
 					</div>
 
-					<div class="row mb-2">
-						<div class="col-6 input-group">
-							<div class="btn text-center" id="left_cnt" style="width: 100%;">수량</div>
-						</div>
-						<div class="col-6 input-group mb-2">
-							<div class="input-group" style="width: 130px;">
-								<div class="input-group-prepend">
-									<button class="btn btn-primary minus-btn" type="button"
-										style="font-weight: bold; width: 40px;">-</button>
-								</div>
-								<input type="text" class="form-control" value="-" name="optionCnts" id="cnt_input" disabled>
-								<div class="input-group-append">
-									<button class="btn btn-primary plus-btn" type="button"
-										style="font-weight: bold; width: 40px;">+</button>
-								</div>
-							</div>
-						</div>
-					</div>
+
+
+
+
+<script id="companyTemplate" type="text/x-jQuery-tmpl">
+<div class="row mb-2 mr-1 ml-1 p-2" style="background:#eeeeee;">
+	<input type="hidden" name="optionNos" value="{{= optionsNo}}" class="optionNos" />
+	<div class="col-lg-12 col-xl-7">
+		<div class="text-left mb-2" style="width: 100%;font-size:14px;">
+			<button type="button" class="btn btn-secondary p-0 mr-2 closeTemplate" style="font-size:12px;width:17px;height:17px;line-height:7px;">X</button>
+			{{= options1}} / {{= options2}} 수량({{= optionsCnt}})
+		</div>
+	</div>
+
+	<div class="col-12 col-lg-12 col-xl-5 row p-0">
+		<div class="col-6 col-lg-6 col-xl-0"></div>
+		<div class="col-6 col-lg-6 col-xl-12">
+			<div class="input-group" style="width: 100%;">
+				<div class="input-group-prepend">
+					<button class="btn btn-primary minus-btn" type="button" style="font-weight: bold;">-</button>
+				</div>
+				<input type="text" class="form-control opcnt" value="1" name="optionCnts">
+				<input type="hidden" class="form-control" value="{{= optionsCnt}}" name="trash_cnt">
+				<div class="input-group-append">
+					<button class="btn btn-primary plus-btn" type="button" style="font-weight: bold;">+</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+<div id="tmp_item">
+
+</div>
+					
+					
+					
+					
+					
+					
+					
 
 					<div class="row">
 						<div class="col-sm-6 mb-2">
@@ -283,6 +314,17 @@ $(function(){
 					</p>
 				</div>
 			</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

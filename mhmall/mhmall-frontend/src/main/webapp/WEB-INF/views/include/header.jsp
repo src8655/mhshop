@@ -20,6 +20,7 @@
   <!-- Custom styles for this template -->
   <link href="${pageContext.servletContext.contextPath}/assets/css/shop-homepage.css" rel="stylesheet">
   <script src="${pageContext.servletContext.contextPath}/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="${pageContext.servletContext.contextPath}/assets/vendor/jquery/jquery.tmpl.min.js"></script>
 
 </head>
 
