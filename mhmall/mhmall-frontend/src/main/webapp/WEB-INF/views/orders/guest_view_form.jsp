@@ -32,6 +32,14 @@ $(function(){
 		forms.submit();
 	});
 	
+	// 입력 후 엔터
+	$(".guest_view_input").keydown(function (key) {
+		if(key.keyCode == 13) {
+			$("#orders_btn").trigger("click");
+			return;
+		}
+	});
+	
 	
 	
 });
@@ -63,14 +71,14 @@ $(function(){
 					<h4 class="card-title mb-4 mt-1">비회원<br />주문내역</h4>
 					<form action="${pageContext.servletContext.contextPath}/orders/guest/view" method="post" id="guest_orders_info_form">
 						<div class="form-group">
-							<input name="ordersNo" class="form-control" placeholder="주문번호" type="text" value="${ordersNo}" />
+							<input name="ordersNo" class="form-control guest_view_input" placeholder="주문번호" type="text" value="${ordersNo}" />
 						</div>
 						<div class="form-group">
-							<input name="guestPassword" class="form-control" placeholder="비밀번호" type="password" value="${guestPassword}" />
+							<input name="guestPassword" class="form-control guest_view_input" placeholder="비밀번호" type="password" value="${guestPassword}" />
 						</div>
 						<!-- form-group// -->
 						<div class="form-group">
-							<button type="button" class="btn btn-primary btn-block" id="orders_btn">주문내역조회</button>
+							<button type="button" class="btn btn-primary btn-block" id="orders_btn">주문상세조회</button>
 						</div>
 						<!-- form-group// -->
 					</form>

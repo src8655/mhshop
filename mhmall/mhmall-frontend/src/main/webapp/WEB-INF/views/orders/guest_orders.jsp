@@ -10,6 +10,18 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 $(function(){
+	
+	$(".info_input_check").change(function(){
+		if($(this).is(":checked")) {
+			$(".info_input").each(function(){
+				$(this).val($(this).attr("data-member"));
+			});
+		}else{
+			$(".info_input").each(function(){
+				$(this).val("");
+			});
+		}
+	})
 
 	$("#orders_btn").click(function(){
 		
@@ -140,17 +152,22 @@ $(function(){
 		<div class="col-lg-8 col-md-8 col-sm-10">
 			<div class="card" style="margin-top: 20px;">
 				<article class="card-body">
-					<h4 class="card-title mb-4 mt-1">주문서 작성</h4>
+					<h4 class="card-title mb-2 mt-1">주문서 작성</h4>
+					<div class="form-check mb-2">
+					  <label class="form-check-label">
+					    <input type="checkbox" class="form-check-input info_input_check" value="1">비회원정보와 동일
+					  </label>
+					</div>
 					<form action="${pageContext.servletContext.contextPath}/orders/guest/update" method="post" id="guest_orders_form">
 					<input name="ordersNo" type="hidden" value="${ordersNo}" />
 					<input name="guestPassword" type="hidden" value="${guestPassword}" />
 						<div class="form-group">
-							<input name="toName" class="form-control" placeholder="받는사람 이름" type="text" />
+							<input name="toName" class="info_input form-control" placeholder="받는사람 이름" type="text" data-member="${guestName}" />
 						</div>
 						<div class="form-group">
-							<input name="toPhone1" class="form-control float-left mb-3" style="width: 30%;" placeholder="010" type="text" />
-							<input name="toPhone2" class="form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" />
-							<input name="toPhone3" class="form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" />
+							<input name="toPhone1" class="info_input form-control float-left mb-3" style="width: 30%;" placeholder="010" type="text" data-member="${guestPhone1}" />
+							<input name="toPhone2" class="info_input form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" data-member="${guestPhone2}" />
+							<input name="toPhone3" class="info_input form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" data-member="${guestPhone3}" />
 						</div>
 						<div class="form-group">
 							<input name="toZipcode" class="form-control float-left mb-3" style="width: 45%;" placeholder="우편번호" type="text" id="zipcode" />

@@ -41,6 +41,16 @@ $(function(){
 	});
 	
 	
+	
+	// 입력 후 엔터
+	$(".guest_info_input").keydown(function (key) {
+		if(key.keyCode == 13) {
+			$("#orders_btn").trigger("click");
+			return;
+		}
+	});
+	
+	
 });
 </script>
 
@@ -61,15 +71,15 @@ $(function(){
 				  	  	<input type="hidden" name="optionCnts" value="${optionCnt}" />
 				  	  </c:forEach>
 						<div class="form-group">
-							<input name="guestName" class="form-control" placeholder="이름" type="text" />
+							<input name="guestName" class="guest_info_input form-control" placeholder="이름" type="text" />
 						</div>
 						<div class="form-group">
-							<input name="phone1" class="form-control float-left mb-3"style="width:30%;" placeholder="010" type="text" />
-							<input name="phone2" class="form-control float-left mb-3 ml-1"style="width:30%;" placeholder="0000" type="text" />
-							<input name="phone3" class="form-control float-left mb-3 ml-1"style="width:30%;" placeholder="0000" type="text" />
+							<input name="phone1" class="guest_info_input form-control float-left mb-3"style="width:30%;" placeholder="010" type="text" />
+							<input name="phone2" class="guest_info_input form-control float-left mb-3 ml-1"style="width:30%;" placeholder="0000" type="text" />
+							<input name="phone3" class="guest_info_input form-control float-left mb-3 ml-1"style="width:30%;" placeholder="0000" type="text" />
 						</div>
 						<div class="form-group">
-							<input name="guestPassword" class="form-control" placeholder="비밀번호" type="password" />
+							<input name="guestPassword" class="guest_info_input form-control" placeholder="비밀번호" type="password" />
 						</div>
 						<!-- form-group// -->
 						<div class="form-group">

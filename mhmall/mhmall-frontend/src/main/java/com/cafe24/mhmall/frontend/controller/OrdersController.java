@@ -131,6 +131,10 @@ public class OrdersController {
 		model.addAttribute("ordersItemList", rJson.getData().getOrdersItemList());
 		model.addAttribute("ordersNo", rJson.getData().getOrdersNo());
 		model.addAttribute("guestPassword", dto.getGuestPassword());
+		model.addAttribute("guestName", dto.getGuestName());
+		model.addAttribute("guestPhone1", dto.getPhone1());
+		model.addAttribute("guestPhone2", dto.getPhone2());
+		model.addAttribute("guestPhone3", dto.getPhone3());
 		
 		
 		return "orders/guest_orders";
