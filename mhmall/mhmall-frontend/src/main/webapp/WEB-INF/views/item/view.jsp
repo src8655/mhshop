@@ -76,7 +76,8 @@ $(function(){
 				for(i=0;i<response.data.length;i++) {
 					var optionVo = response.data[i];
 					htmls += '<option value="'+optionVo.optionDetailNo2+'" data-cnt="'+optionVo.cnt+'" data-no="'+optionVo.no+'">';
-					htmls += '' + optionVo.optionDetailName2;
+					if(Number(optionVo.cnt) == 0) htmls += '' + optionVo.optionDetailName2 + " - (매진)";
+					else htmls += '' + optionVo.optionDetailName2;
 					htmls += '</option>';
 				}
 				
