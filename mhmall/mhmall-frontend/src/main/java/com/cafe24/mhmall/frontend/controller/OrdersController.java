@@ -207,6 +207,39 @@ public class OrdersController {
 	}
 	
 	
+	// 비회원 주문 취소
+	@RequestMapping(value = "/guest/cancel", method = RequestMethod.POST)
+	public String guestCancel(
+			@RequestParam("ordersNo") String ordersNo,
+			@RequestParam("guestPassword") String guestPassword,
+			RedirectAttributes redirectAttributes,
+			Model model
+			) {
+		
+		
+		// 비회원 주문 취소
+		ResponseJSONResult<Boolean> rJson = ordersService.guestOrdersCancel(ordersNo, guestPassword);
+		
+		
+	    // 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+        if(!rJson.getData()) {
+        	model.addAttribute("message", "취소 실패");
+        	return "post/error";
+        }
+        
+        
+        redirectAttributes.addFlashAttribute("ordersNo", ordersNo);
+        redirectAttributes.addFlashAttribute("guestPassword", guestPassword);
+        
+        
+		return "redirect:/orders/guest/view";
+	}
+	
+	
 	// 회원 주문
 	@RequestMapping(value = "/member", method = RequestMethod.POST)
 	public String member(
@@ -345,37 +378,5 @@ public class OrdersController {
         
 		return "redirect:/orders/member/list";
 	}
-	
 
-	// 비회원 주문 취소
-	@RequestMapping(value = "/guest/cancel", method = RequestMethod.POST)
-	public String guestCancel(
-			@RequestParam("ordersNo") String ordersNo,
-			@RequestParam("guestPassword") String guestPassword,
-			RedirectAttributes redirectAttributes,
-			Model model
-			) {
-		
-		
-		// 비회원 주문 취소
-		ResponseJSONResult<Boolean> rJson = ordersService.guestOrdersCancel(ordersNo, guestPassword);
-		
-		
-	    // 실패면
-        if("fail".equals(rJson.getResult())) {
-        	model.addAttribute("message", rJson.getMessage());
-        	return "post/error";
-        }
-        if(!rJson.getData()) {
-        	model.addAttribute("message", "취소 실패");
-        	return "post/error";
-        }
-        
-        
-        redirectAttributes.addFlashAttribute("ordersNo", ordersNo);
-        redirectAttributes.addFlashAttribute("guestPassword", guestPassword);
-        
-        
-		return "redirect:/orders/guest/view";
-	}
 }

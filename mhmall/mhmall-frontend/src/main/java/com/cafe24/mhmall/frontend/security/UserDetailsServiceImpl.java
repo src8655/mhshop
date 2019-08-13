@@ -31,6 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		SecurityUser securityUser = new SecurityUser();
 		System.out.println(memberVo);
 		if(memberVo != null) {
+			securityUser.setPhone(memberVo.getPhone());
+			securityUser.setZipcode(memberVo.getZipcode());
+			securityUser.setAddr(memberVo.getAddr());
 			securityUser.setMockToken(memberVo.getMockToken());
 			securityUser.setName(memberVo.getName());
 			securityUser.setUsername(memberVo.getId());

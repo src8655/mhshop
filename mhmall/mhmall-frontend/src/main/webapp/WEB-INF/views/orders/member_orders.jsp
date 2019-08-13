@@ -10,6 +10,19 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 $(function(){
+	
+	$(".info_input_check").change(function(){
+		if($(this).is(":checked")) {
+			$(".info_input").each(function(){
+				$(this).val($(this).attr("data-member"));
+			});
+		}else{
+			$(".info_input").each(function(){
+				$(this).val("");
+			});
+		}
+	})
+	
 
 	$("#orders_btn").click(function(){
 		
@@ -95,8 +108,7 @@ $(function(){
 								<figcaption class="media-body">
 									<h6 class="title text-truncate pr-2"
 										style="width: 230px; height: 20px; line-height: 20px; oveflow: hidden;">
-										<a
-											style="color: #676767;">${oidata.itemName}</a>
+										<a style="color: #676767;">${oidata.itemName}</a>
 									</h6>
 									<dl class="dlist-inline small">
 										<dd>${oidata.itemOptionDetail1} ${oidata.itemOptionDetail2}</dd>
@@ -140,24 +152,28 @@ $(function(){
 		<div class="col-lg-8 col-md-8 col-sm-10">
 			<div class="card" style="margin-top: 20px;">
 				<article class="card-body">
-					<h4 class="card-title mb-4 mt-1">주문서 작성</h4>
+					<h4 class="card-title mb-2 mt-1">주문서 작성</h4>
+					<div class="form-check mb-2">
+					  <label class="form-check-label">
+					    <input type="checkbox" class="form-check-input info_input_check" value="1">회원정보와 동일
+					  </label>
+					</div>
 					<form action="${pageContext.servletContext.contextPath}/orders/member/update" method="post" id="guest_orders_form">
 					<input name="ordersNo" type="hidden" value="${ordersNo}" />
 						<div class="form-group">
-							<input name="toName" class="form-control" placeholder="받는사람 이름" type="text" />
+							<input name="toName" class="info_input form-control" placeholder="받는사람 이름" type="text" data-member='<sec:authentication property="principal.name"/>' />
 						</div>
 						<div class="form-group">
-							<input name="toPhone1" class="form-control float-left mb-3" style="width: 30%;" placeholder="010" type="text" />
-							<input name="toPhone2" class="form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" />
-							<input name="toPhone3" class="form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" />
+							<input name="toPhone1" class="info_input form-control float-left mb-3" style="width: 30%;" placeholder="010" type="text" data-member='<sec:authentication property="principal.phone1"/>' />
+							<input name="toPhone2" class="info_input form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" data-member='<sec:authentication property="principal.phone2"/>' />
+							<input name="toPhone3" class="info_input form-control float-left mb-3 ml-1" style="width: 30%;" placeholder="0000" type="text" data-member='<sec:authentication property="principal.phone3"/>' />
 						</div>
 						<div class="form-group">
-							<input name="toZipcode" class="form-control float-left mb-3" style="width: 45%;" placeholder="우편번호" type="text" id="zipcode" />
+							<input name="toZipcode" class="info_input form-control float-left mb-3" style="width: 45%;" placeholder="우편번호" type="text" id="zipcode" data-member='<sec:authentication property="principal.zipcode"/>' />
 							<a href="#10" class="float-right btn btn-outline-primary" style="width: 50%;" id="zipcode_btn">우편번호찾기</a>
 						</div>
 						<div class="form-group">
-							<input name="toAddr" class="form-control" placeholder="주소"
-								type="text" id="addr" />
+							<input name="toAddr" class="info_input form-control" placeholder="주소" type="text" id="addr" data-member='<sec:authentication property="principal.addr"/>' />
 						</div>
 						<!-- form-group// -->
 						<div class="form-group">
