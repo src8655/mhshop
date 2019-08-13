@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
@@ -22,7 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ItemImgServiceImpl implements ItemImgService {
 	private static final String SAVE_PATH_IMG = "/mhmall-uploads";
 	private static final String URL = "/images";
+	
 
+	@Autowired
+	RestTemplate restTemplate;
 	
 	// 상품이미지 추가 요청
 	@Override
@@ -39,7 +45,7 @@ public class ItemImgServiceImpl implements ItemImgService {
 	    params.put("itemNo", itemNo);
 	    params.put("itemImg", itemImg);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item/img", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/img", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -57,7 +63,7 @@ public class ItemImgServiceImpl implements ItemImgService {
 	// 상품이미지리스트 요청
 	@Override
 	public ResponseJSONResult<ListItemImgVo> getList(Long itemNo) {
-		ResponseJSONResult<ListItemImgVo> rJson = MhmallRestTemplate.request(null, "/api/item/img/"+itemNo, HttpMethod.GET, null, null);
+		ResponseJSONResult<ListItemImgVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/img/"+itemNo, HttpMethod.GET, null, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListItemImgVo data = mapper.convertValue(rJson.getData(), ListItemImgVo.class);
@@ -73,7 +79,7 @@ public class ItemImgServiceImpl implements ItemImgService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item/img", HttpMethod.DELETE, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/img", HttpMethod.DELETE, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);

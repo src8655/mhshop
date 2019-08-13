@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.service.CategoryService;
@@ -15,6 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+
+	@Autowired
+	RestTemplate restTemplate;
+
 	
 	// 카테고리 추가요청
 	@Override
@@ -23,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
         Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("name", categoryName);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/category", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -37,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public ResponseJSONResult<ListCategoryVo> getList() {
 		
-		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(null, "/api/category/list", HttpMethod.GET, null, null);
+		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/category/list", HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListCategoryVo data = mapper.convertValue(rJson.getData(), ListCategoryVo.class);
@@ -54,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
         Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/category", HttpMethod.DELETE, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.DELETE, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -72,10 +79,22 @@ public class CategoryServiceImpl implements CategoryService {
 	    params.put("name", categoryName);
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/category", HttpMethod.PUT, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/category", HttpMethod.PUT, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
+		rJson.setData(data);
+		
+		return rJson;
+	}
+
+
+	@Override
+	public ResponseJSONResult<ListCategoryVo> getList(RestTemplate restTemplate) {
+		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/category/list", HttpMethod.GET, null, null);
+	    
+		ObjectMapper mapper = new ObjectMapper();
+		ListCategoryVo data = mapper.convertValue(rJson.getData(), ListCategoryVo.class);
 		rJson.setData(data);
 		
 		return rJson;

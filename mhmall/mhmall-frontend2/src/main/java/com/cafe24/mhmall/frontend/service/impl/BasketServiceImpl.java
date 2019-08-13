@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.service.BasketService;
@@ -16,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class BasketServiceImpl implements BasketService {
 
 
+	@Autowired
+	RestTemplate restTemplate;
 	
 	// 비회원 장바구니 추가 요청
 	@Override
@@ -25,7 +30,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("optionCnts", cnt);
 	    params.put("guestSession", guestSession);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/guest", HttpMethod.POST, params, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/guest", HttpMethod.POST, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -42,7 +47,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("optionNos", optionNo);
 	    params.put("optionCnts", cnt);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/member", HttpMethod.POST, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/member", HttpMethod.POST, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -56,7 +61,7 @@ public class BasketServiceImpl implements BasketService {
 	@Override
 	public ResponseJSONResult<ListBasketVo> guestList(String guestSession) {
 	    
-		ResponseJSONResult<ListBasketVo> rJson = MhmallRestTemplate.request(null, "/api/basket/guest/" + guestSession, HttpMethod.GET, null, null);
+		ResponseJSONResult<ListBasketVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/guest/" + guestSession, HttpMethod.GET, null, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListBasketVo data = mapper.convertValue(rJson.getData(), ListBasketVo.class);
@@ -69,7 +74,7 @@ public class BasketServiceImpl implements BasketService {
 	// 회원일 때 회원장바구니 리스트 요청
 	@Override
 	public ResponseJSONResult<ListBasketVo> memberList(String mockToken) {
-		ResponseJSONResult<ListBasketVo> rJson = MhmallRestTemplate.request(null, "/api/basket/member", HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<ListBasketVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/member", HttpMethod.GET, null, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListBasketVo data = mapper.convertValue(rJson.getData(), ListBasketVo.class);
@@ -87,7 +92,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("cnt", cnt);
 	    params.put("guestSession", guestSession);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/guest", HttpMethod.PUT, params, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/guest", HttpMethod.PUT, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -104,7 +109,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("no", no);
 	    params.put("cnt", cnt);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/member", HttpMethod.PUT, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/member", HttpMethod.PUT, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -121,7 +126,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("no", no);
 	    params.put("guestSession", guestSession);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/guest", HttpMethod.DELETE, params, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/guest", HttpMethod.DELETE, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -137,7 +142,7 @@ public class BasketServiceImpl implements BasketService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/basket/member", HttpMethod.DELETE, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/basket/member", HttpMethod.DELETE, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -154,7 +159,7 @@ public class BasketServiceImpl implements BasketService {
 	    params.put("optionNos", optionNos);
 	    params.put("optionCnts", optionCnts);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/orders/hascnt", HttpMethod.POST, params, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/hascnt", HttpMethod.POST, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);

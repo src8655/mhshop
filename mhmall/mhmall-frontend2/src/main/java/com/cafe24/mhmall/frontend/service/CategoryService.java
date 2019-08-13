@@ -2,6 +2,8 @@ package com.cafe24.mhmall.frontend.service;
 
 import java.util.ArrayList;
 
+import org.springframework.web.client.RestTemplate;
+
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.vo.CategoryVo;
 
@@ -13,4 +15,6 @@ public interface CategoryService {
 	ResponseJSONResult<Boolean> edit(String mockToken, Long no, String categoryName);	// 카테고리 수정요청
 
 	public static class ListCategoryVo extends ArrayList<CategoryVo> {}
+
+	ResponseJSONResult<ListCategoryVo> getList(RestTemplate restTemplate);
 }

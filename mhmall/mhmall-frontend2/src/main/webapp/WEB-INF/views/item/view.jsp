@@ -158,7 +158,7 @@ $(function(){
 
 
 <!-- 비회원일때 -->
-<sec:authorize access="!isAuthenticated()">
+<c:if test="${authUser eq null}">
 <script>
 $(function(){
 
@@ -171,11 +171,11 @@ $(function(){
 
 });
 </script>
-</sec:authorize>
+</c:if>
 
 
 <!-- 회원일때 -->
-<sec:authorize access="isAuthenticated()">
+<c:if test="${authUser ne null}">
 <script>
 $(function(){
 
@@ -188,7 +188,7 @@ $(function(){
 
 });
 </script>
-</sec:authorize>
+</c:if>
 
 
 

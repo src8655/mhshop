@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
@@ -26,9 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ItemServiceImpl implements ItemService {
 	private static final String SAVE_PATH = "/mhmall-uploads";
 	private static final String URL = "/images";
-
-
 	
+
+
+	@Autowired
+	RestTemplate restTemplate;
 	
 	// 상품작성 요청
 	@Override
@@ -46,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
 	    params.put("thumbnail", itemVo.getThumbnail());
 	    params.put("categoryNo", itemVo.getCategoryNo());
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item", HttpMethod.POST, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item", HttpMethod.POST, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -68,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
 		if(categoryNo.isPresent()) {
 			cateNo = categoryNo.get();
 		}
-		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(null, "/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/list/" + cateNo, HttpMethod.GET, null, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);
@@ -81,7 +86,7 @@ public class ItemServiceImpl implements ItemService {
 	// 상품정보 요청
 	@Override
 	public ResponseJSONResult<ItemVo> get(Long no) {
-		ResponseJSONResult<ItemVo> rJson = MhmallRestTemplate.request(null, "/api/item/" + no, HttpMethod.GET, null, null);
+		ResponseJSONResult<ItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/" + no, HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ItemVo data = mapper.convertValue(rJson.getData(), ItemVo.class);
@@ -114,7 +119,7 @@ public class ItemServiceImpl implements ItemService {
 	    params.put("thumbnail", itemVo.getThumbnail());
 	    params.put("categoryNo", itemVo.getCategoryNo());
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item", HttpMethod.PUT, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item", HttpMethod.PUT, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -138,7 +143,7 @@ public class ItemServiceImpl implements ItemService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item", HttpMethod.DELETE, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item", HttpMethod.DELETE, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -156,7 +161,7 @@ public class ItemServiceImpl implements ItemService {
 	    params.put("no", no);
 	    params.put("display", display);
 	    
-	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item/display", HttpMethod.PUT, params, mockToken);
+	    ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/display", HttpMethod.PUT, params, mockToken);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -170,7 +175,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public ResponseJSONResult<ListItemVo> getNewList(Long CategoryNo, Integer cnt) {
 	    
-	    ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(null, "/api/item/list/new/"+CategoryNo+"/"+cnt, HttpMethod.GET, null, null);
+	    ResponseJSONResult<ListItemVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/new/"+CategoryNo+"/"+cnt, HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListItemVo data = mapper.convertValue(rJson.getData(), ListItemVo.class);
@@ -184,7 +189,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public ResponseJSONResult<ListMainImgVo> getNewImgList(Integer cnt) {
 
-	    ResponseJSONResult<ListMainImgVo> rJson = MhmallRestTemplate.request(null, "/api/item/list/img/new/"+cnt, HttpMethod.GET, null, null);
+	    ResponseJSONResult<ListMainImgVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/img/new/"+cnt, HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ListMainImgVo data = mapper.convertValue(rJson.getData(), ListMainImgVo.class);
@@ -210,7 +215,7 @@ public class ItemServiceImpl implements ItemService {
 			}
 		}
 		
-		ResponseJSONResult<ItemsVo> rJson = MhmallRestTemplate.request(null, "/api/item/list/"+categoryNoPath + "/" + pagesPath + "/" + kwdPath, HttpMethod.GET, null, null);
+		ResponseJSONResult<ItemsVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/list/"+categoryNoPath + "/" + pagesPath + "/" + kwdPath, HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();
 		ItemsVo data = mapper.convertValue(rJson.getData(), ItemsVo.class);

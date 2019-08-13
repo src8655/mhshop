@@ -5,8 +5,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.service.OptionService;
@@ -16,7 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class OptionServiceImpl implements OptionService {
+	
 
+	@Autowired
+	RestTemplate restTemplate;
 
 	
 	// 옵션 추가
@@ -32,7 +38,7 @@ public class OptionServiceImpl implements OptionService {
 	    params.put("cnt", optionVo.getCnt());
 	    params.put("itemNo", optionVo.getItemNo());
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item/option", HttpMethod.POST, params, authorization);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/option", HttpMethod.POST, params, authorization);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -48,7 +54,7 @@ public class OptionServiceImpl implements OptionService {
 		Long oNo = -1L;
 		if(optionDetailNo1.isPresent())
 			oNo = optionDetailNo1.get();
-		ResponseJSONResult<ListOptionVo> rJson = MhmallRestTemplate.request(null, "/api/item/option/list/"+itemNo + "/" + oNo, HttpMethod.GET, null, null);
+		ResponseJSONResult<ListOptionVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/item/option/list/"+itemNo + "/" + oNo, HttpMethod.GET, null, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ListOptionVo data = mapper.convertValue(rJson.getData(), ListOptionVo.class);
@@ -64,7 +70,7 @@ public class OptionServiceImpl implements OptionService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("no", no);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/item/option", HttpMethod.DELETE, params, authorization);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/item/option", HttpMethod.DELETE, params, authorization);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);

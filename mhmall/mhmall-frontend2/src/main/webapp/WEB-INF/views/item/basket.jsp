@@ -98,12 +98,12 @@ $(function(){
         
         
 	    <div class="text-right">
-		<sec:authorize access="!isAuthenticated()">
+		<c:if test="${authUser eq null}">
 			<form action="${pageContext.servletContext.contextPath}/orders/guestinfo" method="post">
-		</sec:authorize>
-		<sec:authorize access="isAuthenticated()">
+		</c:if>
+		<c:if test="${authUser ne null}">
 			<form action="${pageContext.servletContext.contextPath}/orders/member" method="post">
-		</sec:authorize>
+		</c:if>
 	  	  <c:forEach items="${basketList}" var="bdata">
 	  	  	<input type="hidden" name="optionNos" value="${bdata.optionNo}" />
 	  	  	<input type="hidden" name="optionCnts" value="${bdata.cnt}" />

@@ -29,9 +29,9 @@ public class MhmallRestTemplate {
 	public static final String BACKENDHOST = "http://localhost:8888/mhmall";
 	
 	
-	public static ResponseJSONResult request(RestTemplate restTemplates, String uri, HttpMethod method , Map<String, Object> params, String authorization) {
-        RestTemplate restTemplate = new RestTemplate();
- 
+	public static ResponseJSONResult request(RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization) {
+        //RestTemplate restTemplate = new RestTemplate();
+        //if(restTemplates != null) restTemplate = restTemplates;
         // 서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
         // 인증

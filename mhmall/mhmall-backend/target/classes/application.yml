@@ -26,6 +26,17 @@ spring:
               url: jdbc:mariadb://192.168.0.10:3307/mshop?allowMultiQueries=true&amp;sql_safe_updates=0
               username: mshop
               password: mshop
+       application:
+           name: back-end-server
+       zipkin:
+           baseUrl: http://192.168.0.10:9411/
+       sleuth:
+           enabled: true
+       sampler:
+           probability: 1.0
+sample:
+  zipkin:
+    enabled: true
 mybatis:
        config-location: classpath:mybatis/configuration.xml
 

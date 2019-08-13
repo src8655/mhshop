@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.frontend.dto.RequestGuestOrdersStartDto;
 import com.cafe24.mhmall.frontend.dto.RequestOrdersWriteGuestDto;
@@ -21,6 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class OrdersServiceImpl implements OrdersService {
 	
+
+	@Autowired
+	RestTemplate restTemplate;
+    
 	// 비회원 주문 시작
 	@Override
 	public ResponseJSONResult<ResponseOrdersDto> guestOrders(RequestGuestOrdersStartDto dto, String guestSession) {
@@ -33,7 +40,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("optionCnts", dto.getOptionCnts());
 	    params.put("guestSession", guestSession);
 	    
-		ResponseJSONResult<ResponseOrdersDto> rJson = MhmallRestTemplate.request(null, "/api/orders/guest", HttpMethod.POST, params, null);
+		ResponseJSONResult<ResponseOrdersDto> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest", HttpMethod.POST, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ResponseOrdersDto data = mapper.convertValue(rJson.getData(), ResponseOrdersDto.class);
@@ -55,7 +62,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("toAddr", dto.getToAddr());
 	    params.put("ordersNo", dto.getOrdersNo());
 	    
-		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(null, "/api/orders/guest", HttpMethod.PUT, params, null);
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest", HttpMethod.PUT, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
@@ -72,7 +79,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("ordersNo", ordersNo);
 	    params.put("guestPassword", guestPassword);
 	    
-		ResponseJSONResult<ResponseOrdersViewDto> rJson = MhmallRestTemplate.request(null, "/api/orders/guest/view", HttpMethod.POST, params, null);
+		ResponseJSONResult<ResponseOrdersViewDto> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/view", HttpMethod.POST, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ResponseOrdersViewDto data = mapper.convertValue(rJson.getData(), ResponseOrdersViewDto.class);
@@ -89,7 +96,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("optionNos", optionNos);
 	    params.put("optionCnts", optionCnts);
 	    
-		ResponseJSONResult<ResponseOrdersDto> rJson = MhmallRestTemplate.request(null, "/api/orders/member", HttpMethod.POST, params, mockToken);
+		ResponseJSONResult<ResponseOrdersDto> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member", HttpMethod.POST, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ResponseOrdersDto data = mapper.convertValue(rJson.getData(), ResponseOrdersDto.class);
@@ -110,7 +117,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("toAddr", dto.getToAddr());
 	    params.put("ordersNo", dto.getOrdersNo());
 	    
-		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(null, "/api/orders/member", HttpMethod.PUT, params, mockToken);
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member", HttpMethod.PUT, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
@@ -123,7 +130,7 @@ public class OrdersServiceImpl implements OrdersService {
 	// 회원 주문 리스트
 	@Override
 	public ResponseJSONResult<OrdersVoList> memberOrdersList(String mockToken) {
-		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(null, "/api/orders/member/list", HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/list", HttpMethod.GET, null, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
@@ -137,7 +144,7 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public ResponseJSONResult<OrdersVo> memberOrdersView(String ordersNo, String mockToken) {
 	    
-		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(null, "/api/orders/member/view/" + ordersNo, HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/view/" + ordersNo, HttpMethod.GET, null, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
@@ -153,7 +160,7 @@ public class OrdersServiceImpl implements OrdersService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("ordersNo", ordersNo);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/orders/member/cancel", HttpMethod.PUT, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/member/cancel", HttpMethod.PUT, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -170,7 +177,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("ordersNo", ordersNo);
 	    params.put("guestPassword", guestPassword);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/orders/guest/cancel", HttpMethod.PUT, params, null);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/cancel", HttpMethod.PUT, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -183,7 +190,7 @@ public class OrdersServiceImpl implements OrdersService {
 	// 관리자 주문 리스트 조회
 	@Override
 	public ResponseJSONResult<OrdersVoList> getAdminList(String mockToken) {
-		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(null, "/api/admin/orders/list", HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/list", HttpMethod.GET, null, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
@@ -196,7 +203,7 @@ public class OrdersServiceImpl implements OrdersService {
 	// 관리자 주문 상세 조회
 	@Override
 	public ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken) {
-		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(null, "/api/admin/orders/view/" + ordersNo, HttpMethod.GET, null, mockToken);
+		ResponseJSONResult<OrdersVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/view/" + ordersNo, HttpMethod.GET, null, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVo data = mapper.convertValue(rJson.getData(), OrdersVo.class);
@@ -212,7 +219,7 @@ public class OrdersServiceImpl implements OrdersService {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("ordersNo", ordersNo);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/orders/paycheck", HttpMethod.PUT, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/paycheck", HttpMethod.PUT, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -229,7 +236,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("ordersNo", ordersNo);
 	    params.put("trackingNum", trackingNum);
 	    
-		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(null, "/api/admin/orders/tnumcheck", HttpMethod.PUT, params, mockToken);
+		ResponseJSONResult<Boolean> rJson = MhmallRestTemplate.request(restTemplate, "/api/admin/orders/tnumcheck", HttpMethod.PUT, params, mockToken);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Boolean data = mapper.convertValue(rJson.getData(), Boolean.class);
@@ -248,7 +255,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    params.put("guestPhone", guestPhone1 + guestPhone2 + guestPhone3);
 	    params.put("guestPassword", guestPassword);
 	    
-		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(null, "/api/orders/guest/ordersno", HttpMethod.POST, params, null);
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/ordersno", HttpMethod.POST, params, null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
