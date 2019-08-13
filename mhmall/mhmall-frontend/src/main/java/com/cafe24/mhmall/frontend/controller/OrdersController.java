@@ -378,5 +378,40 @@ public class OrdersController {
         
 		return "redirect:/orders/member/list";
 	}
+	
+
+	// 비회원 주문번호 찾기 입력 페이지
+	@RequestMapping(value = "/guest/find/ordersno", method = RequestMethod.GET)
+	public String guestFindOrdersnoForm() {
+		
+		return "orders/guest_find_ordersno_form";
+	}
+	
+	
+	// 비회원 주문번호 찾기
+	@RequestMapping(value = "/guest/find/ordersno", method = RequestMethod.POST)
+	public String guestFindOrdersno(
+			@RequestParam("guestName") String guestName,
+			@RequestParam("guestPhone1") String guestPhone1,
+			@RequestParam("guestPhone2") String guestPhone2,
+			@RequestParam("guestPhone3") String guestPhone3,
+			@RequestParam("guestPassword") String guestPassword,
+			Model model
+			) {
+		
+		// 비회원 주문번호 찾기
+		ResponseJSONResult<OrdersService.OrdersVoList> rJson = ordersService.guestFindOrdersNo(guestName, guestPhone1, guestPhone2, guestPhone3, guestPassword);
+		
+		// 실패면
+        if("fail".equals(rJson.getResult())) {
+        	model.addAttribute("message", rJson.getMessage());
+        	return "post/error";
+        }
+
+		model.addAttribute("ordersList", rJson.getData());
+		model.addAttribute("guestPassword", guestPassword);
+		
+		return "orders/guest_find_ordersno";
+	}
 
 }

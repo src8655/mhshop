@@ -243,4 +243,23 @@ public class OrdersServiceImpl implements OrdersService {
 		return rJson;
 	}
 
+
+	// 비회원 주문번호 찾기
+	@Override
+	public ResponseJSONResult<OrdersVoList> guestFindOrdersNo(String guestName, String guestPhone1, String guestPhone2,
+			String guestPhone3, String guestPassword) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("guestName", guestName);
+	    params.put("guestPhone", guestPhone1 + guestPhone2 + guestPhone3);
+	    params.put("guestPassword", guestPassword);
+	    
+		ResponseJSONResult<OrdersVoList> rJson = MhmallRestTemplate.request(restTemplate, "/api/orders/guest/ordersno", HttpMethod.POST, params, null);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		OrdersVoList data = mapper.convertValue(rJson.getData(), OrdersVoList.class);
+    	rJson.setData(data);
+		
+		return rJson;
+	}
+
 }

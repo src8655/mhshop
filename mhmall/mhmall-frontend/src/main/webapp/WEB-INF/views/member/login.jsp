@@ -12,8 +12,7 @@
 			<div class="col-lg-4 col-md-3 col-sm-1"></div>
 			<div class="col-lg-4 col-md-6 col-sm-10">
 				<div class="card">
-					<article class="card-body"> <a href="${pageContext.servletContext.contextPath}/member/join"
-						class="float-right btn btn-outline-primary">회원가입</a>
+					<article class="card-body"> <a href="${pageContext.servletContext.contextPath}/member/join" class="float-right btn btn-outline-primary">회원가입</a>
 					<h4 class="card-title mb-4 mt-1">로그인</h4>
 					<form action="${pageContext.servletContext.contextPath}/member/login" method="post">
 						<div class="form-group">

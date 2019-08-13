@@ -59,8 +59,8 @@ $(function(){
 			<div class="col-lg-4 col-md-3 col-sm-1"></div>
 			<div class="col-lg-4 col-md-6 col-sm-10">
 				<div class="card" style="margin-top:20px;">
-					<article class="card-body">
-					<h4 class="card-title mb-4 mt-1">비회원주문내역</h4>
+					<article class="card-body"> <a href="${pageContext.servletContext.contextPath}/orders/guest/find/ordersno" class="float-right btn btn-outline-primary">주문번호찾기</a>
+					<h4 class="card-title mb-4 mt-1">비회원<br />주문내역</h4>
 					<form action="${pageContext.servletContext.contextPath}/orders/guest/view" method="post" id="guest_orders_info_form">
 						<div class="form-group">
 							<input name="ordersNo" class="form-control" placeholder="주문번호" type="text" value="${ordersNo}" />

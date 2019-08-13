@@ -27,6 +27,8 @@ public interface OrdersService {
 	ResponseJSONResult<OrdersVo> getAdminView(String ordersNo, String mockToken);								// 관리자 주문 상세 조회
 	ResponseJSONResult<Boolean> getAdminPaycheck(String ordersNo, String mockToken);							// 관리자 주문 입금확인
 	ResponseJSONResult<Boolean> getAdminTnumcheck(String ordersNo, String trackingNum, String mockToken);		// 관리자 운송장번호 등록
+	ResponseJSONResult<OrdersVoList> guestFindOrdersNo(String guestName, String guestPhone1, String guestPhone2,// 비회원 주문번호 찾기
+			String guestPhone3, String guestPassword);
 
 
 }
