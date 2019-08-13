@@ -36,6 +36,7 @@
 	<modules>
 		<module>mhmall-backend</module>
 		<module>mhmall-frontend</module>
+		<module>mhmall-frontend2</module>
 	</modules>
 	
 </project>

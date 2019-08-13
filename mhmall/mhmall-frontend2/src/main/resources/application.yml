@@ -1,0 +1,29 @@
+server:
+       port: 8080
+#       servlet:
+#               context-path: /mhmall-frontend2
+       contextPath: /mhmall-frontend2
+
+
+spring:
+       profiles:
+                active: dev
+       devtools:
+                livereload:
+                           enabled: true
+       http:
+            encoding:
+                     charset: UTF-8
+                     enabled: true
+                     forced: true
+                     forced-request: true
+                     forced-response: true
+       aop:
+           auto: true
+       aop-proxy-target-class: true
+       servlet:
+           multipart:
+               enabled:true
+               max-file-size:50MB
+               max-request-size:50MB
+

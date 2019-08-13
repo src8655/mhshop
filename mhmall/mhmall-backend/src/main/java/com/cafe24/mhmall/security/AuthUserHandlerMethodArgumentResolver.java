@@ -58,8 +58,8 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 		memberVo.setPassword(auth_split[1]);
 		
 		// 회원정보
-		//MemberVo authMember = memberService.login(memberVo);
-		MemberVo authMember = memberService.getById(memberVo);
+		MemberVo authMember = memberService.login(memberVo);
+		//MemberVo authMember = memberService.getById(memberVo);
 		return authMember;
 	}
 
