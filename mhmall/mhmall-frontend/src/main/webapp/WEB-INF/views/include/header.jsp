@@ -22,6 +22,26 @@
   <script src="${pageContext.servletContext.contextPath}/assets/vendor/jquery/jquery.min.js"></script>
   <script src="${pageContext.servletContext.contextPath}/assets/vendor/jquery/jquery.tmpl.min.js"></script>
 
+<script>
+$(function(){
+
+	// 검색버튼
+	$(".search_btn").click(function(){
+		var action = $(this).parent().parent().attr("data-action");
+		var kwd = $(this).parent().prev().children().val();
+		location.href=action + kwd;
+	});
+	
+	// 검색어 입력 후 엔터
+	$(".search_inp").keydown(function (key) {
+		if(key.keyCode == 13) {
+			$(".search_btn").trigger("click");
+			return;
+		}
+	});
+
+});
+</script>
 </head>
 
 <body>
@@ -65,14 +85,21 @@
 			</sec:authorize>
         </ul>
         
-	      <form class="col-lg-4 row form-inline">
+        <div
+        <c:if test="${categoryNoPath eq null}">
+	       data-action="${pageContext.servletContext.contextPath}/item/list/-1/1/"
+        </c:if>
+        <c:if test="${categoryNoPath ne null}">
+	       data-action="${pageContext.servletContext.contextPath}/item/list/${categoryNoPath}/1/"
+        </c:if>
+        class="col-lg-4 row form-inline">
 	        <div class="col-md-8 col-sm-9 col-8 pr-0">
-		        <input class="form-control mr-1" type="search" placeholder="Search" style="width:100%;" aria-label="Search">
+		        <input class="form-control mr-1 search_inp" type="text" placeholder="Search" style="width:100%;" aria-label="Search" value="${kwdPath}" />
 		      </div>
 	        <div class="col-md-4 col-sm-3 col-4 pl-1 pr-0">
-		      <button class="btn btn-outline-white pl-0 pr-0" style="width:100%;border:1px solid #ffffff;color:#ffffff;" type="submit">Search</button>
+		      <button class="btn btn-outline-white pl-0 pr-0 search_btn" style="width:100%;border:1px solid #ffffff;color:#ffffff;" type="button">Search</button>
 		      </div>
-		  </form>
+		  </div>
 		  
       </div>
       

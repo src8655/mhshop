@@ -18,26 +18,26 @@ $(function(){
         <div class="mb-4 list-group d-lg-block d-md-none d-sm-none d-none">
         	<c:if test="${categoryNoPath ne null}">
 				<c:if test="${categoryNoPath eq -1}">
-					<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item active">전체</a>
+					<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item active">전체</a>
 				</c:if>
 				<c:if test="${categoryNoPath ne -1}">
-					<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item">전체</a>
+					<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item">전체</a>
 				</c:if>
 			</c:if>
 			<c:if test="${categoryNoPath eq null}">
-				<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item">전체</a>
+				<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item">전체</a>
 			</c:if>
 			<c:forEach items="${categoryList}" var="cdata">
 				<c:if test="${categoryNoPath ne null}">
 					<c:if test="${categoryNoPath eq cdata.no}">
-						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item active">${cdata.name}</a>
+						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item active">${cdata.name}</a>
 					</c:if>
 					<c:if test="${categoryNoPath ne cdata.no}">
-						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item">${cdata.name}</a>
+						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item">${cdata.name}</a>
 					</c:if>
 				</c:if>
 				<c:if test="${categoryNoPath eq null}">
-          			<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item">${cdata.name}</a>
+          			<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item">${cdata.name}</a>
           		</c:if>
 			</c:forEach>
         </div>
@@ -45,26 +45,26 @@ $(function(){
         <div class="list-group d-lg-none" style="display:none;">
         	<c:if test="${categoryNoPath ne null}">
 				<c:if test="${categoryNoPath eq -1}">
-					<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item active">전체</a>
+					<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item active">전체</a>
 				</c:if>
 				<c:if test="${categoryNoPath ne -1}">
-					<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item">전체</a>
+					<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item">전체</a>
 				</c:if>
 			</c:if>
 			<c:if test="${categoryNoPath eq null}">
-				<a href="${pageContext.servletContext.contextPath}/item/list/-1" class="list-group-item">전체</a>
+				<a href="${pageContext.servletContext.contextPath}/item/list/-1/1/${kwdPath}" class="list-group-item">전체</a>
 			</c:if>
 			<c:forEach items="${categoryList}" var="cdata">
 				<c:if test="${categoryNoPath ne null}">
 					<c:if test="${categoryNoPath eq cdata.no}">
-						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item active">${cdata.name}</a>
+						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item active">${cdata.name}</a>
 					</c:if>
 					<c:if test="${categoryNoPath ne cdata.no}">
-						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item">${cdata.name}</a>
+						<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item">${cdata.name}</a>
 					</c:if>
 				</c:if>
 				<c:if test="${categoryNoPath eq null}">
-          			<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}" class="list-group-item">${cdata.name}</a>
+          			<a href="${pageContext.servletContext.contextPath}/item/list/${cdata.no}/1/${kwdPath}" class="list-group-item">${cdata.name}</a>
           		</c:if>
 			</c:forEach>
         </div>

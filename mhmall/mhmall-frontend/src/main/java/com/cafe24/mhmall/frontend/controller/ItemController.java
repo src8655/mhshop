@@ -61,9 +61,10 @@ public class ItemController {
 	
 
 	// 상품상세
-	@RequestMapping("/view/{no}")
+	@RequestMapping(value = {"/view/{no}","/view/{no}/{kwd}"})
 	public String item_view(
 			@PathVariable("no") Long no,
+			@PathVariable Optional<String> kwd,
 			Model model
 			) {
 		
@@ -88,6 +89,8 @@ public class ItemController {
 		
 
 		model.addAttribute("categoryNoPath", rJsonItem.getData().getCategoryNo());
+		if(kwd.isPresent()) model.addAttribute("kwdPath", kwd.get());
+		else model.addAttribute("kwdPath", "");
 		
 		return "item/view";
 	}
@@ -264,6 +267,7 @@ public class ItemController {
 		model.addAttribute("paging", rJson.getData().getPaging());
 		model.addAttribute("categoryNoPath", rJson.getData().getPaging().getCategoryNo());
 		model.addAttribute("pagesPath", rJson.getData().getPaging().getPages());
+		model.addAttribute("kwdPath", rJson.getData().getPaging().getKwd());
         
 		
 		return "item/list";

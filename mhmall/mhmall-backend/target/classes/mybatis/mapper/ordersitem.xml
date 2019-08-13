@@ -13,7 +13,7 @@
 			item_thumbnail as itemThumbnail, 
 			item_option_detail1 as itemOptionDetail1, 
 			item_option_detail2 as itemOptionDetail2, 
-			money, 
+			money*cnt as money,
 			cnt
 		from orders_item
 		where orders_no=#{ordersNo}

@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 		mapCnt.put("categoryNo", categoryNoPath);
 		mapCnt.put("kwd", kwdPath);
 		int count = itemDao.countU(mapCnt);
-		System.out.println("----------------------------------------- count : " + count);
+		//System.out.println("----------------------------------------- count : " + count);
 
 		
 		// 페이징 만들기
@@ -113,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
 		if(categoryNoPath == null) paging.setCategoryNo(-1L); else paging.setCategoryNo(categoryNoPath);
 		paging.setPages(pagesPath);
 		if(kwdPath == null) paging.setKwd(""); else paging.setKwd(kwdPath);
-		System.out.println("----------------------------------------- paging : " + paging);
+		//System.out.println("----------------------------------------- paging : " + paging);
 		
 		
 		// 리스트 구하기
@@ -123,7 +123,7 @@ public class ItemServiceImpl implements ItemService {
 		daoMap.put("kwd", kwdPath);
 		daoMap.put("categoryNo", categoryNoPath);
 		List<ItemVo> itemList = itemDao.selectListU(daoMap);
-		System.out.println("----------------------------------------- itemList : " + itemList);
+		//System.out.println("----------------------------------------- itemList : " + itemList);
 		
 		return new ItemsVo(itemList, paging);
 	}
