@@ -44,13 +44,14 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 	}
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		/*
 		registry
 		.addInterceptor(authInterceptor())
 		.excludePathPatterns("/member/join")
 		.excludePathPatterns("/member/login")
 		.excludePathPatterns("/member/logout")
 		.excludePathPatterns("/assets/**");
-		
+		*/
 		
 		registry.addInterceptor(guestInterceptor());
 	}

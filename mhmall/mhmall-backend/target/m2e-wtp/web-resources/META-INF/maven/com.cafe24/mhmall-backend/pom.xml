@@ -37,7 +37,7 @@
 		</dependency>
 
 		<!-- Spring Security -->
-  		<!-- <dependency>
+  		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-        </dependency> -->
+        </dependency>
         		
 		<!-- Validation -->
 		<dependency>
@@ -154,7 +154,6 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
 		
-		
 		<!-- zipkin -->
  		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
@@ -167,9 +166,6 @@
 		    <version>1.3.2.RELEASE</version>
 		</dependency>
 		
-		
-		
-
 	</dependencies>
 
 	<build>

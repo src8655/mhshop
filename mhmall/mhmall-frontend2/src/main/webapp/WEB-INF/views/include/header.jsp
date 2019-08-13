@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -56,32 +57,32 @@ $(function(){
       
       
         <ul class="navbar-nav mr-auto">
-			<c:if test="${authUser eq null}">
+			<sec:authorize access="!isAuthenticated()">
 		        <li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/member/login">로그인</a></li>
 		        <li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/member/join">회원가입</a></li>
-			</c:if>
-			<c:if test="${authUser ne null}">
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
 				<li class="nav-item active">
 					<a class="nav-link">
 						<span style="font-weight:bold;">
-							${authUser.name}
+							<sec:authentication property="principal.name"/>
 						</span>
 						님
 					</a>
 				</li>
-				<c:if test="${authUser.role eq 'ROLE_ADMIN'}">
+				<sec:authorize access="hasRole('ADMIN')">
 					<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/item" style="font-weight:bold;">관리페이지</a></li>
-				</c:if>
+				</sec:authorize>
 				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/member/logout">로그아웃</a><li>
 			
-			</c:if>
+			</sec:authorize>
 			<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/item/basket">장바구니</a></li>
-			<c:if test="${authUser eq null}">
+			<sec:authorize access="!isAuthenticated()">
 				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/orders/guest/view">주문정보</a></li>
-			</c:if>
-			<c:if test="${authUser ne null}">
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
 				<li class="nav-item active"><a class="nav-link" href="${pageContext.servletContext.contextPath}/orders/member/list">주문정보</a></li>
-			</c:if>
+			</sec:authorize>
         </ul>
         
         <div

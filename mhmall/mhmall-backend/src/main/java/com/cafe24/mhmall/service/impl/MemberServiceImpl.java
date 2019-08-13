@@ -38,11 +38,11 @@ public class MemberServiceImpl implements MemberService {
 	public Boolean add(MemberVo memberVo) {
 
 		memberVo.setRole(Auth.Role.ROLE_USER.toString());
-		/*
+
 		// 암호화
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
-		 */
+		
 		int result = memberDao.insert(memberVo);
 		return result == 1;
 	}
@@ -51,11 +51,11 @@ public class MemberServiceImpl implements MemberService {
 	// 로그인
 	@Override
 	public MemberVo login(MemberVo memberVo) {
-		MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
-		//MemberVo newMemberVo = memberDao.selectOneById(memberVo);
+		//MemberVo newMemberVo = memberDao.selectByIdAndPassword(memberVo);
+		MemberVo newMemberVo = memberDao.selectOneById(memberVo);
 		
 		if(newMemberVo != null) {
-			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((memberVo.getId()+":"+memberVo.getPassword()).getBytes()));
+			newMemberVo.setMockToken(Base64.getEncoder().encodeToString((newMemberVo.getId()+":"+newMemberVo.getPassword()).getBytes()));
 		}
 		
 		return newMemberVo;

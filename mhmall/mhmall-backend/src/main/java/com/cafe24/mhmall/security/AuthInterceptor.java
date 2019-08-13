@@ -82,8 +82,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		memberVo.setPassword(auth_split[1]);
 		
 		// 회원정보가 없으면 실패
-		MemberVo authMember = memberService.login(memberVo);
-		//MemberVo authMember = memberService.getById(memberVo);
+		//MemberVo authMember = memberService.login(memberVo);
+		MemberVo authMember = memberService.getById(memberVo);
 		if(authMember == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.setHeader("WWW-Authenticate", "Basic realm=\"id:password\"");

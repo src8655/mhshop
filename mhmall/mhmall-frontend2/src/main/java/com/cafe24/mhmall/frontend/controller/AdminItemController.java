@@ -30,6 +30,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.service.ItemImgService;
 import com.cafe24.mhmall.frontend.service.ItemService;
@@ -72,7 +73,7 @@ public class AdminItemController {
 	@RequestMapping(value = {"", "/{categoryNo}"}, method = RequestMethod.GET)
 	public String item(
 			@PathVariable("categoryNo") Optional<Long> categoryNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -96,7 +97,7 @@ public class AdminItemController {
 	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String item_write_form(
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -114,7 +115,7 @@ public class AdminItemController {
 	public String item_write(
 			@ModelAttribute ItemVo itemVo,
 			@RequestParam(value="thumbnailFile") MultipartFile thumbnailFile,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -142,7 +143,7 @@ public class AdminItemController {
 	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
 	public String item_edit_form(
 			@PathVariable("no") Long no,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -189,7 +190,7 @@ public class AdminItemController {
 	@RequestMapping(value = "/optiondetail", method = RequestMethod.POST)
 	public String optionDetailAdd(
 			@ModelAttribute OptionDetailVo optionDetailVo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -216,7 +217,7 @@ public class AdminItemController {
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	public String optionAdd(
 			@ModelAttribute OptionVo optionVo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -244,7 +245,7 @@ public class AdminItemController {
 	public JSONResult optionList(
 			@PathVariable("itemNo") Long itemNo,
 			@PathVariable("optionDetailNo1") Optional<Long> optionDetailNo1,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -264,7 +265,7 @@ public class AdminItemController {
 	public String optionDetailDelete(
 			@RequestParam("itemNo") Long itemNo,
 			@RequestParam("no") Long no,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -292,7 +293,7 @@ public class AdminItemController {
 	public String optionDelete(
 			@RequestParam("itemNo") Long itemNo,
 			@RequestParam("no") Long no,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -320,7 +321,7 @@ public class AdminItemController {
 	public String itemImgAdd(
 			@RequestParam("itemNo") Long itemNo,
 			@RequestParam(value="itemImgFile") MultipartFile itemImgFile,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -347,7 +348,7 @@ public class AdminItemController {
 	public String itemImgDelete(
 			@RequestParam("no") Long no,
 			@RequestParam("itemNo") Long itemNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -373,7 +374,7 @@ public class AdminItemController {
 	public String item_edit(
 			@ModelAttribute ItemVo itemVo,
 			@RequestParam(value="thumbnailFile") MultipartFile thumbnailFile,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -400,7 +401,7 @@ public class AdminItemController {
 	public String item_delete(
 			@RequestParam("no") Long no,
 			@RequestParam(name = "categoryNo", required = true, defaultValue = "-1") Long categoryNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -428,7 +429,7 @@ public class AdminItemController {
 			@RequestParam("no") Long no,
 			@RequestParam("display") String display,
 			@RequestParam(name = "categoryNo", required = true, defaultValue = "-1") Long categoryNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

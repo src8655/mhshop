@@ -29,6 +29,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
 import com.cafe24.mhmall.frontend.util.MhmallRestTemplate;
@@ -49,7 +50,7 @@ public class AdminMemberController {
 	@RequestMapping(value = {"", "/{search}"}, method = RequestMethod.GET)
 	public String member(
 			@PathVariable("search") Optional<String> search,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		System.out.println(authUser);
@@ -71,7 +72,7 @@ public class AdminMemberController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String member_delete(
 			@RequestParam(name = "id", required = true, defaultValue = "-1") String id,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

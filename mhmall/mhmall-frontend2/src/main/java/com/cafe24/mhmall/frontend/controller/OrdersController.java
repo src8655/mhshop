@@ -36,6 +36,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseOrdersDto;
 import com.cafe24.mhmall.frontend.dto.ResponseOrdersViewDto;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.service.BasketService;
 import com.cafe24.mhmall.frontend.service.CategoryService;
@@ -252,7 +253,7 @@ public class OrdersController {
 	public String member(
 			@RequestParam("optionNos") Long[] optionNos,
 			@RequestParam("optionCnts") Long[] optionCnts,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -282,7 +283,7 @@ public class OrdersController {
 	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
 	public String memberUpdate(
 			@ModelAttribute RequestOrdersWriteGuestDto dto,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -310,7 +311,7 @@ public class OrdersController {
 	@Auth
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
 	public String memberList(
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -339,7 +340,7 @@ public class OrdersController {
 	@RequestMapping(value = "/member/view/{ordersNo}", method = RequestMethod.GET)
 	public String memberView(
 			@PathVariable("ordersNo") String ordersNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -368,7 +369,7 @@ public class OrdersController {
 	@RequestMapping(value = "/member/cancel", method = RequestMethod.POST)
 	public String memberCancel(
 			@RequestParam("ordersNo") String ordersNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

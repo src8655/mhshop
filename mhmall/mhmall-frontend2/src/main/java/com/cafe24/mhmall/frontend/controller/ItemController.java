@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cafe24.mhmall.frontend.dto.JSONResult;
 import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.BasketService;
 import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.service.ItemImgService;
@@ -101,7 +102,7 @@ public class ItemController {
 	public JSONResult optionList(
 			@PathVariable("itemNo") Long itemNo,
 			@PathVariable("optionDetailNo1") Optional<Long> optionDetailNo1,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -120,7 +121,7 @@ public class ItemController {
 			@RequestParam("optionNos") Long[] optionNos,
 			@RequestParam("optionCnts") Long[] optionCnts,
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -149,7 +150,7 @@ public class ItemController {
 	@RequestMapping(value = "/basket", method = RequestMethod.GET)
 	public String basket(
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		System.out.println(guestSession + "------basket");
@@ -178,7 +179,7 @@ public class ItemController {
 			@RequestParam("no") Long no,
 			@RequestParam("cnt") Long cnt,
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -210,7 +211,7 @@ public class ItemController {
 	public String basketDelete(
 			@RequestParam("no") Long no,
 			@CookieValue(name = "GuestSession", required = true, defaultValue = "") String guestSession,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

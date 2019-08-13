@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
 
 
 	@Autowired
-	RestTemplate restTemplate;
+	OAuth2RestTemplate restTemplate;
 	
 	// 상품작성 요청
 	@Override

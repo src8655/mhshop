@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
@@ -29,7 +30,7 @@ public class MhmallRestTemplate {
 	public static final String BACKENDHOST = "http://localhost:8888/mhmall";
 	
 	
-	public static ResponseJSONResult request(RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization) {
+	public static ResponseJSONResult request(OAuth2RestTemplate restTemplate, String uri, HttpMethod method , Map<String, Object> params, String authorization) {
         //RestTemplate restTemplate = new RestTemplate();
         //if(restTemplates != null) restTemplate = restTemplates;
         // 서버로 요청할 Header

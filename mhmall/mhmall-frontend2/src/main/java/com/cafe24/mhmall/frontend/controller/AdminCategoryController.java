@@ -29,6 +29,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.CategoryService;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.impl.MemberServiceImpl;
@@ -50,7 +51,7 @@ public class AdminCategoryController {
 	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String category(
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -69,7 +70,7 @@ public class AdminCategoryController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String category_add(
 			@RequestParam(name = "categoryName", required = true, defaultValue = "") String categoryName,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -92,7 +93,7 @@ public class AdminCategoryController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String category_delete(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -118,7 +119,7 @@ public class AdminCategoryController {
 	public String category_edit(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
 			@RequestParam(name = "categoryName", required = true, defaultValue = "") String categoryName,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

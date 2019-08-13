@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
@@ -98,12 +99,12 @@ $(function(){
         
         
 	    <div class="text-right">
-		<c:if test="${authUser eq null}">
+		<sec:authorize access="!isAuthenticated()">
 			<form action="${pageContext.servletContext.contextPath}/orders/guestinfo" method="post">
-		</c:if>
-		<c:if test="${authUser ne null}">
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated()">
 			<form action="${pageContext.servletContext.contextPath}/orders/member" method="post">
-		</c:if>
+		</sec:authorize>
 	  	  <c:forEach items="${basketList}" var="bdata">
 	  	  	<input type="hidden" name="optionNos" value="${bdata.optionNo}" />
 	  	  	<input type="hidden" name="optionCnts" value="${bdata.cnt}" />

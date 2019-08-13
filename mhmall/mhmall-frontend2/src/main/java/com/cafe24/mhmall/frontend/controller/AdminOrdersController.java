@@ -29,6 +29,7 @@ import com.cafe24.mhmall.frontend.dto.ResponseJSONResult;
 import com.cafe24.mhmall.frontend.security.Auth;
 import com.cafe24.mhmall.frontend.security.Auth.Role;
 import com.cafe24.mhmall.frontend.security.AuthUser;
+import com.cafe24.mhmall.frontend.security.SecurityUser;
 import com.cafe24.mhmall.frontend.service.MemberService;
 import com.cafe24.mhmall.frontend.service.OrdersService;
 import com.cafe24.mhmall.frontend.service.OrdersService.OrdersVoList;
@@ -52,7 +53,7 @@ public class AdminOrdersController {
 	@Auth(role = Role.ROLE_ADMIN)
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String ordersList(
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -72,7 +73,7 @@ public class AdminOrdersController {
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
 	public String ordersView(
 			@PathVariable("ordersNo") String ordersNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -92,7 +93,7 @@ public class AdminOrdersController {
 	@RequestMapping(value = "/paycheck", method = RequestMethod.POST)
 	public String ordersPaycheck(
 			@RequestParam("ordersNo") String ordersNo,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		
@@ -120,7 +121,7 @@ public class AdminOrdersController {
 	public String ordersPaycheck(
 			@RequestParam("ordersNo") String ordersNo,
 			@RequestParam("trackingNum") String trackingNum,
-			@AuthUser MemberVo authUser,
+			@AuthUser SecurityUser authUser,
 			Model model
 			) {
 		

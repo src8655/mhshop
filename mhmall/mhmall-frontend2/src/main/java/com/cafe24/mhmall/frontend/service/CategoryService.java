@@ -16,5 +16,4 @@ public interface CategoryService {
 
 	public static class ListCategoryVo extends ArrayList<CategoryVo> {}
 
-	ResponseJSONResult<ListCategoryVo> getList(RestTemplate restTemplate);
 }

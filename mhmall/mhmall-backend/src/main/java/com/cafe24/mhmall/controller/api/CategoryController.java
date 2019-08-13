@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,8 +47,6 @@ public class CategoryController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "카테고리 리스트", notes = "카테고리 리스트 요청 API")
 	public ResponseEntity<JSONResult> list() {
-		Logger logger = LoggerFactory.getLogger(this.getClass());
-		logger.info("Before CategoryList...");
 		// Service에 카테고리리스트 요청
 		List<CategoryVo> list = categoryService.getList();
 		

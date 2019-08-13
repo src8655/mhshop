@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +27,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 
 	@Autowired
-	RestTemplate restTemplate;
+	OAuth2RestTemplate restTemplate;
     
 	// 비회원 주문 시작
 	@Override

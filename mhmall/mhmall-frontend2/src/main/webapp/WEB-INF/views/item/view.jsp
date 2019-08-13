@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
@@ -158,7 +159,7 @@ $(function(){
 
 
 <!-- 비회원일때 -->
-<c:if test="${authUser eq null}">
+<sec:authorize access="!isAuthenticated()">
 <script>
 $(function(){
 
@@ -171,11 +172,11 @@ $(function(){
 
 });
 </script>
-</c:if>
+</sec:authorize>
 
 
 <!-- 회원일때 -->
-<c:if test="${authUser ne null}">
+<sec:authorize access="isAuthenticated()">
 <script>
 $(function(){
 
@@ -188,7 +189,7 @@ $(function(){
 
 });
 </script>
-</c:if>
+</sec:authorize>
 
 
 

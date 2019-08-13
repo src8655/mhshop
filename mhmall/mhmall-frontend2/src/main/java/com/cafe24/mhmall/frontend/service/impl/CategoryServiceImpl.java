@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 	@Autowired
-	RestTemplate restTemplate;
+	OAuth2RestTemplate restTemplate;
 
 	
 	// 카테고리 추가요청
@@ -89,15 +90,5 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 
-	@Override
-	public ResponseJSONResult<ListCategoryVo> getList(RestTemplate restTemplate) {
-		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/category/list", HttpMethod.GET, null, null);
-	    
-		ObjectMapper mapper = new ObjectMapper();
-		ListCategoryVo data = mapper.convertValue(rJson.getData(), ListCategoryVo.class);
-		rJson.setData(data);
-		
-		return rJson;
-	}
 
 }
