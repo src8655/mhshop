@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.GuestDao;
@@ -12,6 +13,13 @@ import com.cafe24.mhmall.vo.OrdersVo;
 
 @Repository
 public class GuestDaoImpl implements GuestDao {
+	
+	@Autowired
+	private Tracer tracer;
+	public void addTag(String queryId, Object parameter) {
+		String query = sqlSession.getConfiguration().getMappedStatement(queryId).getSqlSource().getBoundSql(parameter).getSql();
+		tracer.addTag("basket.query", query);
+	}
 
 	@Autowired
 	SqlSession sqlSession;
@@ -24,6 +32,7 @@ public class GuestDaoImpl implements GuestDao {
 	@Override
 	public GuestVo selectOne(GuestVo guestVo) {
 		guestVo.setAesKey(aesKey);
+		addTag("guest.selectOne", guestVo);
 		return (GuestVo)sqlSession.selectOne("guest.selectOne", guestVo);
 	}
 
@@ -32,6 +41,7 @@ public class GuestDaoImpl implements GuestDao {
 	@Override
 	public Integer insert(GuestVo vo) {
 		vo.setAesKey(aesKey);
+		addTag("guest.insert", vo);
 		return sqlSession.insert("guest.insert", vo);
 	}
 
@@ -40,6 +50,7 @@ public class GuestDaoImpl implements GuestDao {
 	@Override
 	public List<OrdersVo> findOrdersNo(GuestVo vo) {
 		vo.setAesKey(aesKey);
+		addTag("guest.findOrdersNo", vo);
 		return sqlSession.selectList("guest.findOrdersNo", vo);
 	}
 
@@ -48,6 +59,7 @@ public class GuestDaoImpl implements GuestDao {
 	@Override
 	public Integer findPw(GuestVo vo) {
 		vo.setAesKey(aesKey);
+		addTag("guest.findPw", vo);
 		return (Integer)sqlSession.selectOne("guest.findPw", vo);
 	}
 
@@ -56,6 +68,7 @@ public class GuestDaoImpl implements GuestDao {
 	@Override
 	public Integer changePw(GuestVo vo) {
 		vo.setAesKey(aesKey);
+		addTag("guest.updatePw", vo);
 		return sqlSession.update("guest.updatePw", vo);
 	}
 	

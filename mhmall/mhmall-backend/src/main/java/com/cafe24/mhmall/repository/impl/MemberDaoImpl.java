@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.MemberDao;
@@ -16,7 +17,14 @@ import com.cafe24.mhmall.vo.MemberVo;
 public class MemberDaoImpl implements MemberDao {
 	
 	@Autowired
-	SqlSession session;
+	private Tracer tracer;
+	public void addTag(String queryId, Object parameter) {
+		String query = sqlSession.getConfiguration().getMappedStatement(queryId).getSqlSource().getBoundSql(parameter).getSql();
+		tracer.addTag("basket.query", query);
+	}
+	
+	@Autowired
+	SqlSession sqlSession;
 
 	// AES키 관리
 	private final String aesKey = "mhshop_key";
@@ -29,7 +37,8 @@ public class MemberDaoImpl implements MemberDao {
 		MemberVo memberVo = new MemberVo();
 		memberVo.setId(id);
 		memberVo.setAesKey(aesKey);
-		return (Integer)session.selectOne("member.countById", memberVo);
+		addTag("member.countById", memberVo);
+		return (Integer)sqlSession.selectOne("member.countById", memberVo);
 	}
 
 
@@ -37,7 +46,8 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public Integer insert(MemberVo memberVo) {
 		memberVo.setAesKey(aesKey);
-		return (Integer)session.insert("member.inserts", memberVo);
+		addTag("member.inserts", memberVo);
+		return (Integer)sqlSession.insert("member.inserts", memberVo);
 	}
 
 
@@ -46,7 +56,8 @@ public class MemberDaoImpl implements MemberDao {
 	public MemberVo selectByIdAndPassword(MemberVo memberVo) {
 
 		memberVo.setAesKey(aesKey);
-		return (MemberVo)session.selectOne("member.selectbyidandpassword", memberVo);
+		addTag("member.selectbyidandpassword", memberVo);
+		return (MemberVo)sqlSession.selectOne("member.selectbyidandpassword", memberVo);
 	}
 
 
@@ -57,7 +68,8 @@ public class MemberDaoImpl implements MemberDao {
 		Map map = new HashMap();
 		map.put("aesKey", aesKey);
 		map.put("search", search);
-		return session.selectList("member.selectlist", map);
+		addTag("member.selectlist", map);
+		return sqlSession.selectList("member.selectlist", map);
 	}
 
 
@@ -65,7 +77,8 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public MemberVo selectOneById(MemberVo memberVo) {
 		memberVo.setAesKey(aesKey);
-		return (MemberVo)session.selectOne("member.selectonebyid", memberVo);
+		addTag("member.selectonebyid", memberVo);
+		return (MemberVo)sqlSession.selectOne("member.selectonebyid", memberVo);
 	}
 
 
@@ -76,15 +89,17 @@ public class MemberDaoImpl implements MemberDao {
 		MemberVo memberVo = new MemberVo();
 		memberVo.setId(id);
 		memberVo.setAesKey(aesKey);
-		return (Integer)session.delete("member.delete", memberVo);
+		addTag("member.delete", memberVo);
+		return (Integer)sqlSession.delete("member.delete", memberVo);
 	}
 
 
 	// 회원번호로 찾기
 	@Override
 	public MemberVo selectOneByNo(Long no) {
-		
-		return (MemberVo)session.selectOne("member.selectonebyno", no);
+
+		addTag("member.selectonebyno", no);
+		return (MemberVo)sqlSession.selectOne("member.selectonebyno", no);
 	}
 
 
@@ -93,7 +108,8 @@ public class MemberDaoImpl implements MemberDao {
 	public Integer update(MemberVo memberVo) {
 		
 		memberVo.setAesKey(aesKey);
-		return (Integer)session.delete("member.update", memberVo);
+		addTag("member.update", memberVo);
+		return (Integer)sqlSession.delete("member.update", memberVo);
 	}
 
 
@@ -103,7 +119,8 @@ public class MemberDaoImpl implements MemberDao {
 		MemberVo memberVo = new MemberVo();
 		memberVo.setMockToken(mockToken);
 		memberVo.setAesKey(aesKey);
-		return (MemberVo)session.selectOne("member.selectbymocktoken", memberVo);
+		addTag("member.selectbymocktoken", memberVo);
+		return (MemberVo)sqlSession.selectOne("member.selectbymocktoken", memberVo);
 	}
 	
 	

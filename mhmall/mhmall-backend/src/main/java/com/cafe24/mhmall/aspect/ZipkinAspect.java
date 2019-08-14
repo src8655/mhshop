@@ -21,7 +21,7 @@ public class ZipkinAspect {
     @Around("execution(* com.cafe24.mhmall.repository.impl.*.*(..))")
     public Object logging(ProceedingJoinPoint pjp) throws Throwable {   
         String methodName = pjp.getSignature().getName();
-    	
+    	 
     	Span newSpan = tracer.createSpan("DB :: " + methodName);
 		tracer.continueSpan(newSpan);
 		

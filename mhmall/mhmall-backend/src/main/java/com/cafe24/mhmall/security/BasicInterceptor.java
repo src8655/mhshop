@@ -44,7 +44,7 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 		
 		// 현재날짜를 구해서
 		Calendar cal = Calendar.getInstance();
-		String nowDate = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DATE);
+		String nowDate = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DATE);
 		
 		// 날짜가 바뀌면 실행
 		if(!updateDate.equals(nowDate)) {
