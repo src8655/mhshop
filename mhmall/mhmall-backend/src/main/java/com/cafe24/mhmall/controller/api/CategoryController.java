@@ -48,8 +48,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "CategoryController", description = "카테고리 컨트롤러")
 public class CategoryController {
 	
-	@Autowired
-	RestTemplate restTemplate;
+	/*@Autowired
+	RestTemplate restTemplate;*/
 
 	@Autowired
 	CategoryService categoryService;
@@ -67,14 +67,14 @@ public class CategoryController {
 		
 		
 		// 테스트용 -----------------------------------------------------------------
-		HttpHeaders headers = new HttpHeaders();
+		/*HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", authorization);
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         
         HttpEntity body = new HttpEntity(null, headers);
         
-        restTemplate.exchange("http://localhost:8888/mhmall/api/test", HttpMethod.GET, body, String.class);
+        restTemplate.exchange("http://localhost:8888/mhmall/api/test", HttpMethod.GET, body, String.class);*/
         // ------------------------------------------------------------------------
 		
 		// JSON 리턴 생성

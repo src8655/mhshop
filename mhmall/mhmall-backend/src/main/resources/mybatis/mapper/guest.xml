@@ -41,6 +41,7 @@
 			and guest_password=SHA2(#{guestPassword}, 512)
 		) a, orders b
 		where a.orders_no=b.orders_no
+		and status != '주문대기'
 	</select>
 	
 	
