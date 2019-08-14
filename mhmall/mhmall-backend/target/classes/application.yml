@@ -37,8 +37,14 @@ spring:
            baseUrl: http://192.168.0.10:9411/
        sleuth:
            enabled: true
-       sampler:
-           probability: 1.0
+           sampler:
+               probability: 1.0
+           baggage-keys:
+               - baz
+               - bizarrecase
+           propagation-keys:
+               - foo
+               - upper_case
 sample:
   zipkin:
     enabled: true

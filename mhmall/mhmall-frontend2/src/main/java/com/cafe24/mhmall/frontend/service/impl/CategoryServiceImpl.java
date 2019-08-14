@@ -45,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public ResponseJSONResult<ListCategoryVo> getList() {
 		
+		
 		ResponseJSONResult<ListCategoryVo> rJson = MhmallRestTemplate.request(restTemplate, "/api/category/list", HttpMethod.GET, null, null);
 	    
 		ObjectMapper mapper = new ObjectMapper();

@@ -32,8 +32,8 @@ spring:
            baseUrl: http://192.168.0.10:9411/
        sleuth:
            enabled: true
-       sampler:
-           probability: 1.0
+           sampler:
+               probability: 1.0
 sample:
   zipkin:
     enabled: true

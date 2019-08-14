@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mhmall.repository.CategoryDao;
@@ -19,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 	// 카테고리 리스트 조회
 	@Override
 	public List<CategoryVo> getList() {
+
 		return categoryDao.getList();
 	}
 

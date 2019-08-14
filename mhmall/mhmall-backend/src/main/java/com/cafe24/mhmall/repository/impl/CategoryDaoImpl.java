@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mhmall.repository.CategoryDao;
@@ -19,7 +21,10 @@ public class CategoryDaoImpl implements CategoryDao {
 	// 카테고리 리스트 조회
 	@Override
 	public List<CategoryVo> getList() {
-		return sqlSession.selectList("category.selectList");
+		
+		List<CategoryVo> list =  sqlSession.selectList("category.selectList");
+		
+		return list;
 	}
 
 

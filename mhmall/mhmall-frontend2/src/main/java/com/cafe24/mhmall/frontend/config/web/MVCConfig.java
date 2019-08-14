@@ -26,10 +26,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 public class MVCConfig extends WebMvcConfigurerAdapter {
-	@Bean
+	/*@Bean
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
-	}
+	}*/
 
     @Bean
     public AlwaysSampler alwaysSampler() {

@@ -9,13 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.cafe24.mhmall.dto.JSONResult;
 import com.cafe24.mhmall.dto.RequestCategoryEditDto;
@@ -43,41 +37,22 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-@RestController("categoryAPIController")
-@RequestMapping("/api/category")
-@Api(value = "CategoryController", description = "카테고리 컨트롤러")
-public class CategoryController {
-	
-	@Autowired
-	RestTemplate restTemplate;
+@RestController("testAPIController")
+@RequestMapping("/api/test")
+@Api(value = "TestController", description = "테스트 컨트롤러")
+public class TestController {
 
 	@Autowired
 	CategoryService categoryService;
 	
 	
 	
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	@ApiOperation(value = "카테고리 리스트", notes = "카테고리 리스트 요청 API")
-	public ResponseEntity<JSONResult> list(@RequestHeader(value = "Authorization") String authorization) {
+	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+	@ApiOperation(value = "테스트 리스트", notes = "테스트요청 API")
+	public ResponseEntity<JSONResult> test() {
 		
-		// Service에 카테고리리스트 요청
-		List<CategoryVo> list = categoryService.getList();
-		
-		
-		
-		
-		// 테스트용 -----------------------------------------------------------------
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", authorization);
-        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        
-        HttpEntity body = new HttpEntity(null, headers);
-        
-        restTemplate.exchange("http://localhost:8888/mhmall/api/test", HttpMethod.GET, body, String.class);
-        // ------------------------------------------------------------------------
 		
 		// JSON 리턴 생성
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("hello"));
 	}
 }
