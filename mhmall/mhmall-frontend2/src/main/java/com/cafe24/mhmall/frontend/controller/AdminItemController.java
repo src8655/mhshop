@@ -69,7 +69,6 @@ public class AdminItemController {
 	
 	
 	// 관리자 상품목록
-	
 	@RequestMapping(value = {"", "/{categoryNo}"}, method = RequestMethod.GET)
 	public String item(
 			@PathVariable("categoryNo") Optional<Long> categoryNo,
@@ -94,7 +93,6 @@ public class AdminItemController {
 	
 
 	// 관리자 상품작성
-	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String item_write_form(
 			@AuthUser SecurityUser authUser,
@@ -110,7 +108,6 @@ public class AdminItemController {
 	
 
 	// 관리자 상품작성 완료
-	
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String item_write(
 			@ModelAttribute ItemVo itemVo,
@@ -139,7 +136,6 @@ public class AdminItemController {
 	
 	
 	// 관리자 상품수정
-	
 	@RequestMapping(value = "/edit/{no}", method = RequestMethod.GET)
 	public String item_edit_form(
 			@PathVariable("no") Long no,
@@ -186,7 +182,6 @@ public class AdminItemController {
 	
 
 	// 관리자 상세옵션 추가
-	
 	@RequestMapping(value = "/optiondetail", method = RequestMethod.POST)
 	public String optionDetailAdd(
 			@ModelAttribute OptionDetailVo optionDetailVo,
@@ -213,7 +208,6 @@ public class AdminItemController {
 	
 
 	// 관리자 옵션 추가
-	
 	@RequestMapping(value = "/option", method = RequestMethod.POST)
 	public String optionAdd(
 			@ModelAttribute OptionVo optionVo,
@@ -260,7 +254,6 @@ public class AdminItemController {
 	
 
 	// 관리자 상세옵션 삭제
-	
 	@RequestMapping(value = "/optiondetail/delete", method = RequestMethod.POST)
 	public String optionDetailDelete(
 			@RequestParam("itemNo") Long itemNo,
@@ -288,7 +281,6 @@ public class AdminItemController {
 	
 
 	// 관리자 옵션 삭제
-	
 	@RequestMapping(value = "/option/delete", method = RequestMethod.POST)
 	public String optionDelete(
 			@RequestParam("itemNo") Long itemNo,

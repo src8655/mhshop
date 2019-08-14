@@ -50,7 +50,6 @@ public class AdminOrdersController {
 
 	
 	// 관리자 주문 리스트
-	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String ordersList(
 			@AuthUser SecurityUser authUser,
@@ -69,7 +68,6 @@ public class AdminOrdersController {
 	
 
 	// 관리자 주문 상세
-	
 	@RequestMapping(value = "/view/{ordersNo}", method = RequestMethod.GET)
 	public String ordersView(
 			@PathVariable("ordersNo") String ordersNo,
@@ -89,7 +87,6 @@ public class AdminOrdersController {
 	
 	
 	// 관리자 주문 입금확인
-	
 	@RequestMapping(value = "/paycheck", method = RequestMethod.POST)
 	public String ordersPaycheck(
 			@RequestParam("ordersNo") String ordersNo,
@@ -116,7 +113,6 @@ public class AdminOrdersController {
 	
 	
 	// 관리자 운송장번호 등록
-	
 	@RequestMapping(value = "/tnumcheck", method = RequestMethod.POST)
 	public String ordersPaycheck(
 			@RequestParam("ordersNo") String ordersNo,

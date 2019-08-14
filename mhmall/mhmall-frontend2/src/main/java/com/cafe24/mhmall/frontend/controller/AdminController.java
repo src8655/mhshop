@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AdminController {
 	
 	// 관리자 메인
-	
 	@RequestMapping({"", "/"})
 	public String admin() {
 		

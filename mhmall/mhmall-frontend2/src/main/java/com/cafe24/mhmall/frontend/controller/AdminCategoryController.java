@@ -48,7 +48,6 @@ public class AdminCategoryController {
 
 	
 	// 관리자 카테고리목록
-	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String category(
 			@AuthUser SecurityUser authUser,
@@ -66,7 +65,6 @@ public class AdminCategoryController {
 	
 	
 	// 관리자 카테고리추가
-	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String category_add(
 			@RequestParam(name = "categoryName", required = true, defaultValue = "") String categoryName,
@@ -89,7 +87,6 @@ public class AdminCategoryController {
 	
 
 	// 관리자 카테고리 삭제
-	
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String category_delete(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
@@ -114,7 +111,6 @@ public class AdminCategoryController {
 
 
 	// 관리자 카테고리 수정
-	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String category_edit(
 			@RequestParam(name = "no", required = true, defaultValue = "-1") Long no,
