@@ -1,5 +1,6 @@
 package com.cafe24.mhmall.security;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.cafe24.mhmall.vo.OrdersItemVo;
 
 
 public class BasicInterceptor extends HandlerInterceptorAdapter {
+	private static String updateDate = "2000-01-01";
 	private final static Long ORDERS_TIME = 2592000L;	// 1개월
 	private final static Long BASKET_TIME = 2592000L;	// 1개월
 	
@@ -39,13 +41,21 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		//System.out.println("inter!!!");
 		
+		// 현재날짜를 구해서
+		Calendar cal = Calendar.getInstance();
+		String nowDate = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DATE);
 		
-		// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
-		timeOverOrders();
-		// 시간이 초과된 비회원 장바구니들은 삭제
-		timeOverBasket();
+		// 날짜가 바뀌면 실행
+		if(!updateDate.equals(nowDate)) {
+			System.out.println("날짜변경!" + updateDate + " => " + nowDate);
+			updateDate = nowDate;
+		
+			// 시간이 초과된 주문대기 상태의 주문들 주문취소 처리
+			timeOverOrders();
+			// 시간이 초과된 비회원 장바구니들은 삭제
+			timeOverBasket();
+		}
 		
 		
 		return true;
