@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cafe24.mhmall.repository.OptionDao;
@@ -90,7 +91,7 @@ public class OptionServiceImpl implements OptionService {
 	// sqlException 발생 시 롤백
 	//@Transactional(rollbackFor=Exception.class)
 	@Override
-	public boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) throws Exception {
+	public boolean isExistAllCnt(Long[] optionNos, Integer[] optionCnts) {
 		// 잘못된 접근은 무조건 없는 재고
 		if(optionNos.length == 0) return false;
 		if(optionNos.length != optionCnts.length) return false;
@@ -108,8 +109,7 @@ public class OptionServiceImpl implements OptionService {
 				
 				if(result != 1) {
 					// Exception을 발생시켜 롤백시키기
-					System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee!!!");
-					throw new Exception();
+					return false;
 				}
 			}
 		}

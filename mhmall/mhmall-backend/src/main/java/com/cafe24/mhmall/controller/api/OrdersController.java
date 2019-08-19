@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -109,7 +111,7 @@ public class OrdersController {
 	
 
 	// sqlException 발생 시 롤백
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor=Exception.class, propagation = Propagation.REQUIRED)
 	@RequestMapping(value = "/guest", method = RequestMethod.POST)
 	@ApiOperation(value = "비회원 주문", notes = "비회원 주문 요청 API")
 	public ResponseEntity<JSONResult> guestOrders(
@@ -129,7 +131,8 @@ public class OrdersController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		try {optionService.isExistAllCnt(guestDto.getOptionNos(), guestDto.getOptionCnts());} catch (Exception e) {
+		if(!optionService.isExistAllCnt(guestDto.getOptionNos(), guestDto.getOptionCnts())) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
 		}
 
@@ -205,7 +208,9 @@ public class OrdersController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("판매중이 아닌 상품이 존재합니다."));
 		
 		// 옵션의 재고가 있는지 확인(하나라도 없는 것이 있으면 취소, 모두 있으면 남은 재고량 줄이기)
-		try {optionService.isExistAllCnt(dto.getOptionNos(), dto.getOptionCnts());} catch (Exception e) {
+		if(!optionService.isExistAllCnt(dto.getOptionNos(), dto.getOptionCnts())) {
+			//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("재고가 부족한 상품이 존재합니다."));
 		}
 
