@@ -129,8 +129,8 @@ public class BasketControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"guestSession\":\"\","
-						+ "\"optionNo\":\"1\","
-						+ "\"cnt\":\"7\""
+						+ "\"optionNos\":[\"1\"],"
+						+ "\"optionCnts\":[\"7\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions
@@ -142,8 +142,8 @@ public class BasketControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
-						+ "\"optionNo\":\"99\","
-						+ "\"cnt\":\"7\""
+						+ "\"optionNos\":[\"99\"],"
+						+ "\"optionCnts\":[\"7\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions
@@ -155,8 +155,8 @@ public class BasketControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
-						+ "\"optionNo\":\"1\","
-						+ "\"cnt\":\"99\""
+						+ "\"optionNos\":[\"1\"],"
+						+ "\"optionCnts\":[\"99\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions
@@ -168,11 +168,11 @@ public class BasketControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
 						+ "\"guestSession\":\"ODIJOSAIDPBV132012ID9V823V\","
-						+ "\"optionNo\":\"1\","
-						+ "\"cnt\":\"7\""
+						+ "\"optionNos\":[\"1\"],"
+						+ "\"optionCnts\":[\"7\"]"
 						+ "}"));
 		// 응답이 400 인지
-		resultActions
+		resultActions.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.data", is(true)));
 		
@@ -301,8 +301,8 @@ public class BasketControllerTest {
 				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"optionNo\":\"99\","
-						+ "\"cnt\":\"7\""
+						+ "\"optionNos\":[\"99\"],"
+						+ "\"optionCnts\":[\"7\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions
@@ -314,8 +314,8 @@ public class BasketControllerTest {
 				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"optionNo\":\"1\","
-						+ "\"cnt\":\"99\""
+						+ "\"optionNos\":[\"1\"],"
+						+ "\"optionCnts\":[\"99\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions
@@ -327,8 +327,8 @@ public class BasketControllerTest {
 				.header("MyAuthorization", "Basic " + myAuthorization)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"optionNo\":\"1\","
-						+ "\"cnt\":\"7\""
+						+ "\"optionNos\":[\"1\"],"
+						+ "\"optionCnts\":[\"7\"]"
 						+ "}"));
 		// 응답이 400 인지
 		resultActions

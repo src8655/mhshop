@@ -58,7 +58,7 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(value = "카테고리 리스트", notes = "카테고리 리스트 요청 API")
-	public ResponseEntity<JSONResult> list(@RequestHeader(value = "Authorization") String authorization) {
+	public ResponseEntity<JSONResult> list() {
 		
 		// Service에 카테고리리스트 요청
 		List<CategoryVo> list = categoryService.getList();
@@ -67,7 +67,9 @@ public class CategoryController {
 		
 		
 		// 테스트용 -----------------------------------------------------------------
-		/*HttpHeaders headers = new HttpHeaders();
+		/*@RequestHeader(value = "Authorization") String authorization
+		 * 
+		 * HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", authorization);
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);

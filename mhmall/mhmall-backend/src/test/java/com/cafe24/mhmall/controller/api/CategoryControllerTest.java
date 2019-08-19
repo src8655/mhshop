@@ -97,7 +97,8 @@ public class CategoryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		// 응답이 200 인지
-		resultActions.andExpect(status().isOk())
+		resultActions.andDo(print())
+		.andExpect(status().isOk())
 		
 		.andExpect(jsonPath("$.data[0].no", is(1)))
 		.andExpect(jsonPath("$.data[0].name", is("test_category1")))
